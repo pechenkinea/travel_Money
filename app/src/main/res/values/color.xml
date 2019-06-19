@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primary">@android:color/white</color>
+    <color name="primaryDark">@android:color/white</color>
+    <color name="accent">@android:color/white</color>
+
+
+</resources>

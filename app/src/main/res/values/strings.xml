@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">Travel Money</string>
+
+    <string name="refresh">Обновить</string>
+    <string name="usersList">Список участников</string>
+    <string name="tripsList">Все поездки</string>
+    <string name="newTrip">Новая поездка</string>
+    <string name="export">Экспорт</string>
+    <string name="json">.json</string>
+    <string name="csv">.csv</string>
+    <string name="who">Кто платит</string>
+    <string name="check_all">За всех</string>
+    <string name="Name">Имя</string>
+    <string name="Sum">Сумма</string>
+    <string name="confirm">Ок</string>
+    <string name="cancel">Отмена</string>
+    <string name="Color">Цвет</string>
+    <string name="whom">За кого</string>
+    <string name="Back">Назад</string>
+
+    <string name="helpAddCost">Добавить трату →</string>
+    <string name="helpAdd">Добавить →</string>
+    <string name="helpAddCostVoice">Добавить голосом →</string>
+    <string name="helpAddMembers">Добавьте участников ↗</string>
+    <string name="helpAddMember">Добавить нового участника →</string>
+    <string name="helpCommitMemberList">Завершить работу со списком →</string>
+    <string name="helpChechMembers">Галочками отмечены участники текущей поездки</string>
+    <string name="helpTripList">Галочкой отмечена текущая поездка</string>
+    <string name="helpAddNewTrip">Добавить новую поездку →</string>
+    <string name="helpAddVoiceCostsDeleteItem">Вы можете удалить лишние строки сдвинув их в сторону</string>
+    <string name="helpRefresh">Обновить →</string>
+    <string name="helpCancel">Отменить →</string>
+
+
+    <string name="Description">Описание</string>
+    <string name="Title">Название</string>
+    <string name="Current">Текущая</string>
+    <string name="ListViewToTop">↑</string>
+    <string name="edit">Редактировать</string>
+    <string name="check">Выбран</string>
+    <string name="about">О программе…</string>
+    <string name="version">Версия:</string>
+    <string name="versionCode">Код версии:</string>
+    <string name="thirdSoftware">Стороннее ПО</string>
+    <string name="Thanks">Благодарность</string>
+    <string name="addNewTrip">Добавление новой поездки</string>
+    <string name="addNewMember">Добавление нового участника</string>
+    <string name="addNewCost">Добавление новой траты</string>
+    <string name="memberEdit">Редактирование участника</string>
+    <string name="editTrip">Редактирование поездки</string>
+    <string name="wait">Подождите…</string>
+    <string name="membersList">Список участников</string>
+    <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов.  Повторное долгое нажатие вернет операцию в исходное состояние  После отмены или возврата, для актуализации итогов, обновите страницу</string>
+    <string name="errorNoActiveTask">Нет активных поездок</string>
+    <string name="errorNoData">Нет данных</string>
+    <string name="costInfo">Информация о трате</string>
+    <string name="messageAddCost">Добавлено</string>
+    <string name="costMember">Платит</string>
+
+
+    <string name="errorFillDescription">Заполните описание</string>
+    <string name="errorFillSum">Введите сумму</string>
+    <string name="errorFillMembers">Выберите участников</string>
+    <string name="errorCalc">Ошибка вычислений</string>
+    <string name="date">Дата</string>
+    <string name="foto">*Добавлено фото</string>
+    <string name="errorBigSum">Сумма свыше %s не поддерживается</string>
+    <string name="readMode">просмотр</string>
+    <string name="text">Текст</string>
+    <string name="warning_member_name">*Для правильной работы голосового добавления трат рекомендуется использовать одно слово в имени</string>
+    <string name="sum_result">Статистика</string>
+
+    <string name="fileError"><![CDATA[ Возможно у приложения нет разрешения на использоватние памяти. Настройки -> Диспетчер приложений -> Travel Money -> Разрешения -> Включить хранилище]]></string>
+
+
+</resources>

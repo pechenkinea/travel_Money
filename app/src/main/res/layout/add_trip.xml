@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/Layout" >
+
+
+    <include
+        layout="@layout/toolbar_out_main" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_out_main"
+        android:orientation="vertical">
+
+
+
+        <EditText
+            android:id="@+id/trip_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName|textCapSentences"
+            android:hint="@string/Title" >
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/trip_comment"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="15dp"
+            android:inputType="textMultiLine|textCapSentences"
+            android:hint="@string/Description">
+        </EditText>
+
+    </LinearLayout>
+
+
+    
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/trip_add_button"
+            style="@style/commitButton" />
+
+    </FrameLayout>
+
+</RelativeLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/Layout" >
+
+    <include
+        layout="@layout/toolbar_main" />
+
+    <ListView
+        android:id="@+id/main_list"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/toolbar_main"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+         />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/helpHintAddMembers"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/helpAddMembers"
+            style="@style/help"
+            />
+
+        <TextView
+            android:id="@+id/helpHintAddCost"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="30dp"
+            android:text="@string/helpAddCost"
+            style="@style/help"
+            />
+
+
+
+        <TextView
+            android:id="@+id/helpHintAddCostVoice"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="120dp"
+            android:text="@string/helpAddCostVoice"
+            style="@style/help"
+            />
+
+        <Button
+            android:id="@+id/mainPageAddbutton"
+            style="@style/addButton"
+            />
+
+
+        <ImageButton
+            android:id="@+id/mainPageSpeechRecognition"
+            style="@style/addButton"
+            android:src="@android:drawable/ic_btn_speak_now"
+            android:layout_marginBottom="100dp"
+            android:tint="#ffffff"
+            tools:ignore="ContentDescription" />
+
+        <Button
+            android:id="@+id/mainPageRevertbutton"
+            style="@style/addButton"
+            android:visibility="invisible"
+            android:text="↩"
+            android:paddingBottom="13dp"
+            android:textSize="40sp"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/mainPageListToTop"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="10dp"
+            android:text="@string/ListViewToTop"
+            android:textSize="40sp"
+            android:visibility="visible"
+            style="@style/addButton"
+            />
+
+    </FrameLayout>
+
+
+
+
+    
+
+</RelativeLayout>

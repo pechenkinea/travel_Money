@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/Layout" >
+
+    <include
+        layout="@layout/toolbar_out_main" />
+
+    <ListView
+        android:id="@+id/list_members"
+        android:layout_below="@+id/toolbar_out_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="multipleChoice"
+        />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/helpHintCheckMember"
+            android:layout_gravity="center"
+            android:padding="30dp"
+            android:text="@string/helpChechMembers"
+            style="@style/help"
+            />
+
+        <TextView
+            android:id="@+id/helpHintAddMember"
+            style="@style/help"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="122dp"
+            android:layout_marginEnd="35dp"
+            android:text="@string/helpAddMember" />
+
+        <TextView
+            android:id="@+id/helpHintCommitMemberList"
+            style="@style/help"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="35dp"
+            android:text="@string/helpCommitMemberList"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/member_list_commit"
+            style="@style/commitButton"
+            />
+
+        <Button
+            android:id="@+id/member_add_button"
+            android:layout_marginBottom="100dp"
+            style="@style/addButton"
+            />
+
+        <Button
+            android:id="@+id/member_checkAll_button"
+            android:layout_marginBottom="100dp"
+            android:text="≡"
+            style="@style/commitButton"
+            android:visibility="invisible"
+            tools:ignore="HardcodedText" />
+
+
+        <!--
+        <Button
+            style="@style/cancelButton"
+            android:onClick="showMainPage" />
+            -->
+
+    </FrameLayout>
+
+</RelativeLayout>

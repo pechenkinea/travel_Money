@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <include
+        layout="@layout/toolbar_out_main" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_out_main"
+        >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="5dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="Описание:"
+                    style="@style/normal" />
+
+                <EditText
+                    android:id="@+id/cost_comment"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="40dp"
+                    android:singleLine="true"
+                    style="@style/textEdit"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName|textCapSentences"
+
+                    >
+
+                    <requestFocus />
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="5dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/who"
+                    style="@style/normal"
+                    />
+                <Spinner
+                    android:id="@+id/cost_member"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="40dp"
+                    style="@style/textEdit"
+                    android:gravity="center_vertical"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="5dp"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/whom"
+                        style="@style/normal" />
+
+                    <Button
+                        android:id="@+id/cost_check_getAll"
+                        style="@style/blueButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/check_all" />
+
+
+                </LinearLayout>
+
+
+                <ListView
+                    android:id="@+id/cost_list_to_member"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="5dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/normal"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="@string/Sum" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/cost_sum"
+                        style="@style/textEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/litle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="по: " />
+
+                        <TextView
+                            android:id="@+id/cost_tw_po"
+                            style="@style/litle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/buttonFoto"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button"
+                android:src="@drawable/camera_add_32"/>
+
+
+
+            <TextView
+                android:id="@+id/cost_dir_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textColor="#cccccc"
+                android:visibility="invisible" />
+
+
+        </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <Button
+            android:id="@+id/cost_add_button"
+            style="@style/commitButton" />
+        <!--
+        <Button
+            style="@style/cancelButton"
+            android:onClick="showMainPage" />
+            -->
+
+    </FrameLayout>
+
+
+
+</RelativeLayout>

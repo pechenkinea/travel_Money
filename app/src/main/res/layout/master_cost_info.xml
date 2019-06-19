@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include
+        layout="@layout/toolbar_out_main" />
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar_out_main"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/memberCostInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/h3"/>
+
+            <EditText
+                android:id="@+id/cost_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName|textCapSentences"
+                android:hint="@string/Description"
+                >
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/cost_sum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:hint="@string/Sum"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/textDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="datetime"
+                android:focusable="false"
+                android:hint="@string/date" />
+
+            <TextView
+                android:id="@+id/hasFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/foto"
+                android:visibility="invisible"
+                />
+
+            <TextView
+                android:id="@+id/cost_dir_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <Button
+            android:id="@+id/cost_info_commit_button"
+            style="@style/commitButton"
+            android:paddingBottom="13dp"
+            android:text="→"
+            android:textAlignment="viewStart"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+
+        <ImageButton
+            android:id="@+id/buttonFoto"
+            android:layout_marginBottom="100dp"
+            android:tint="#ffffff"
+            android:src="@drawable/camera_32"
+            style="@style/commitButton"
+            tools:ignore="ContentDescription" />
+
+
+        <!--
+        <Button
+            style="@style/cancelButton"
+            android:onClick="showMainPage" />
+            -->
+
+    </FrameLayout>
+
+
+
+</RelativeLayout>

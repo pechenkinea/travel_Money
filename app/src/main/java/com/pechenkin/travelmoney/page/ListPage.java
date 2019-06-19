@@ -1,0 +1,56 @@
+package com.pechenkin.travelmoney.page;
+
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import com.pechenkin.travelmoney.MainActivity;
+
+/**
+ * Created by pechenkin on 19.04.2018.
+ * Шблон для страниц, где только один ListView
+ */
+
+public abstract class ListPage extends BasePage {
+    @Override
+    public void clickBackButton() {
+        PageOpenner.INSTANCE.open(MainPage.class);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return false;
+    }
+    @Override
+    protected int getFocusFieldId() {
+        return 0;
+    }
+
+    protected abstract int getListViewId();
+    protected abstract void onItemClick(ListView list, AdapterView<?> adapter, View view, int position, long id);
+    protected abstract  boolean onItemLongClick(ListView list, AdapterView<?> adapter, View view, int position, long arg3);
+
+    @Override
+    public void addEvents() {
+        final ListView list = (ListView)MainActivity.INSTANCE.findViewById(getListViewId());
+        if (list != null)
+        {
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    ListPage.this.onItemClick(list, parent, view, position, id);
+                }
+            });
+
+            list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    return ListPage.this.onItemLongClick(list, parent, view, position, id);
+                }
+            });
+        }
+    }
+
+
+}

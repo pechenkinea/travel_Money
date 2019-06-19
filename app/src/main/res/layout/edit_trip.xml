@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        layout="@layout/toolbar_out_main" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_out_main"
+        android:orientation="vertical">
+
+
+
+        <EditText
+            android:id="@+id/edit_trip_ET_Name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName|textCapSentences"
+            android:singleLine="true">
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/edit_trip_ET_Comment"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="15dp"
+            android:inputType="textMultiLine|textCapSentences">
+        </EditText>
+
+        <CheckBox
+            android:id="@+id/edit_trip_checkAction"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:checked="false"
+            android:gravity="center_vertical|start"
+            android:text="@string/Current"
+            style="@style/normal" />
+
+    </LinearLayout>
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/edit_trip_commit_button"
+            style="@style/commitButton"
+             />
+        <!--
+        <Button
+            style="@style/cancelButton"
+            android:onClick="editTripCancel"
+            />
+            -->
+
+    </FrameLayout>
+
+</RelativeLayout>

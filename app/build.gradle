@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+
+ext {
+    travelMoneyVersionName = '2.51 (Beta)'
+    //travelMoneyVersionName = '2.2'
+}
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        applicationId "com.pechenkin.travelmoney"
+        minSdkVersion 22
+        targetSdkVersion 26
+        //noinspection HighAppVersionCode20180620
+        //versionCode 2019180457
+        versionCode
+        versionName travelMoneyVersionName
+        project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName);
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.android.support:recyclerview-v7:26.+'
+    implementation 'com.android.support:appcompat-v7:26.+'
+    implementation 'com.github.skydoves:colorpickerpreference:1.0.3'
+    implementation 'com.wdullaer:materialdatetimepicker:2.3.0'
+}
