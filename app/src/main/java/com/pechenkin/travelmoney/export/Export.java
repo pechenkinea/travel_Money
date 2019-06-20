@@ -89,7 +89,7 @@ public class Export {
         for (Long m : membersList) {
 
             BaseTableRow findMemder = t_members.getMemberById(m);
-            String line = m + ";" + ((findMemder != null) ? findMemder.name : "ErrorMemderName");
+            String line = m + ";" + ((findMemder != null) ? findMemder.name : "ErrorMemberName");
             line = line.replaceAll("\n|\n\r", " ");
             valueMembers.append(line).append("\r\n");
 
@@ -102,7 +102,7 @@ public class Export {
         JSONObject exportJson = new JSONObject();
         try {
             exportJson.put("tripId", pageTrip.id);
-            exportJson.put("tripNmae", pageTrip.name);
+            exportJson.put("tripName", pageTrip.name);
 
 
             ArrayList<Long> membersList = new ArrayList<>();
