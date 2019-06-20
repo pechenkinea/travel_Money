@@ -369,11 +369,13 @@ public class MainPage extends BasePage {
                             //Переводим цвета обратно в учатников что бы вывести в список
                             for (int i = 0; i < calculationList.length; i++) {
 
-                                calculationList[i] = new ShortCost(
+                                Cost c = new ShortCost(
                                         membersByColor.get(calculationList[i].member()),
                                         membersByColor.get(calculationList[i].to_member()),
                                         calculationList[i].sum()
                                 );
+
+                                calculationList[i] = c;
 
                             }
 

@@ -118,10 +118,7 @@ public class Calculation {
 
         }
 
-        if (resultList.size() == 1) {
-            //добавляем пустую строку в итог
-            resultList.add(new ShortCost(-1, -1, 0f));
-        }
+
 
         return resultList.toArray(new Cost[0]);
 
