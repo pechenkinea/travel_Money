@@ -2,6 +2,9 @@ package com.pechenkin.travelmoney.calculation;
 
 import android.annotation.SuppressLint;
 import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.cost.ShortCost;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

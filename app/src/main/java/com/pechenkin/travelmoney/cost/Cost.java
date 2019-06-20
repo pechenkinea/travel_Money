@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.calculation;
+package com.pechenkin.travelmoney.cost;
 
 import java.util.Date;
 

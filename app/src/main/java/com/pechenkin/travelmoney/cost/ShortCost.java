@@ -1,7 +1,6 @@
-package com.pechenkin.travelmoney.calculation;
+package com.pechenkin.travelmoney.cost;
 
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * Created by pechenkin on 06.04.2018.

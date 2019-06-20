@@ -1,8 +1,6 @@
 package com.pechenkin.travelmoney.summry;
 
 import com.pechenkin.travelmoney.bd.table.row.CostBaseTableRow;
-import com.pechenkin.travelmoney.calculation.Calculation;
-import com.pechenkin.travelmoney.calculation.Cost;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -15,7 +15,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.calculation.ShortCost;
+import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.list.RecyclerAdapterCostList;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
 

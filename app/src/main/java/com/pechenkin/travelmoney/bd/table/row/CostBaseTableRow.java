@@ -2,7 +2,7 @@ package com.pechenkin.travelmoney.bd.table.row;
 
 import android.database.Cursor;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.calculation.Cost;
+import com.pechenkin.travelmoney.cost.Cost;
 import java.util.Date;
 
 

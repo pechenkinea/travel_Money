@@ -24,7 +24,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
-import com.pechenkin.travelmoney.calculation.ShortCost;
+import com.pechenkin.travelmoney.cost.ShortCost;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

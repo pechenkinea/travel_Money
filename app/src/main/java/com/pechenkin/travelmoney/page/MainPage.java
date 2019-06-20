@@ -28,8 +28,9 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.calculation.Calculation;
-import com.pechenkin.travelmoney.calculation.Cost;
-import com.pechenkin.travelmoney.calculation.ShortCost;
+import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.cost.GroupCost;
+import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.export.Export;
 import com.pechenkin.travelmoney.export.ExportFileTypes;
 import com.pechenkin.travelmoney.list.AdapterCostList;
@@ -37,7 +38,10 @@ import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
 import com.pechenkin.travelmoney.page.trip.TripsListPage;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by pechenkin on 19.04.2018.
@@ -255,7 +259,7 @@ public class MainPage extends BasePage {
 
             MainActivity.INSTANCE.setSupportActionBar(toolbar);
 
-            if (getPageTrip() != null && getPageTrip().name != null &&  MainActivity.INSTANCE.getSupportActionBar() != null)
+            if (getPageTrip() != null && getPageTrip().name != null && MainActivity.INSTANCE.getSupportActionBar() != null)
                 MainActivity.INSTANCE.getSupportActionBar().setTitle(getPageTrip().name + readerCaption);
 
         }
@@ -387,7 +391,30 @@ public class MainPage extends BasePage {
 
                     if (costList.hasRows()) {
                         finalList = Help.concat(finalList, new Cost[]{new ShortCost(-1, -1, 0f, "↓ Список всех операций ↓")});
-                        finalList = Help.concat(finalList, costList.getAllRows());
+
+                        Map<String, GroupCost> groupCosts = new HashMap<>();
+                        Cost[] allCost = costList.getAllRows();
+                        for (Cost cost : allCost) {
+
+                            String key = cost.date().getTime() + cost.comment();
+                            if (groupCosts.containsKey(key)){
+                                try {
+                                    groupCosts.get(key).addCost(cost);
+                                }
+                                catch (Exception ex){
+                                    Help.alert(ex.getMessage());
+                                    return null;
+                                }
+                            }
+                            else {
+                                groupCosts.put(key, new GroupCost(cost));
+                            }
+                        }
+
+                        Collection<GroupCost> allGroupCosts = groupCosts.values();
+
+
+                        finalList = Help.concat(finalList, allGroupCosts.toArray(new GroupCost[0]));
                     }
 
                     adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), finalList);
