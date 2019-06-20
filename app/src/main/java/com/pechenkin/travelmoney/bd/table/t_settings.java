@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.result.QueryResultFactory;
 import com.pechenkin.travelmoney.bd.table.result.SettingsQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.SettingTableRow;
+
 import java.util.HashMap;
 import java.util.Map;
 

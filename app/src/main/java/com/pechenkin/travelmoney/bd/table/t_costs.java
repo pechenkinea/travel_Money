@@ -24,11 +24,11 @@ public class t_costs {
 		cv.put(Namespace.FIELD_ACTIVE, 1);
 		cv.put(Namespace.FIELD_TRIP, tripId);
 		cv.put(Namespace.FIELD_DATE, date.getTime());
-		
-				
-		SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase();
-		long rowID = db.insert(Namespace.TABLE_COSTS, null, cv);
-		db.close();
+
+		long rowID;
+		try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
+			rowID = db.insert(Namespace.TABLE_COSTS, null, cv);
+		}
 		return rowID;
     }
 	
@@ -40,24 +40,25 @@ public class t_costs {
 
 	static public void disable_cost(long id)
 	{		
-		SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase();
-		
+
 		ContentValues cv = new ContentValues();
 		cv.put(Namespace.FIELD_ACTIVE, 0);
-		
-        db.update(Namespace.TABLE_COSTS, cv, Namespace.FIELD_ID + " = " + id, null);
-        db.close();
+
+		try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
+			db.update(Namespace.TABLE_COSTS, cv, Namespace.FIELD_ID + " = " + id, null);
+		}
+
 	}
 	
 	static public void enable_cost(long id)
 	{		
-		SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase();
-		
 		ContentValues cv = new ContentValues();
 		cv.put(Namespace.FIELD_ACTIVE, 1);
-		
-        db.update(Namespace.TABLE_COSTS, cv, Namespace.FIELD_ID + " = " + id, null);
-        db.close();
+
+		try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
+			db.update(Namespace.TABLE_COSTS, cv, Namespace.FIELD_ID + " = " + id, null);
+		}
+
 	}
 
 

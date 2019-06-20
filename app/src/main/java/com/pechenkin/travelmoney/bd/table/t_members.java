@@ -1,5 +1,10 @@
 package com.pechenkin.travelmoney.bd.table;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.util.LongSparseArray;
+
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.NamesHashMap;
 import com.pechenkin.travelmoney.bd.Namespace;
@@ -9,11 +14,6 @@ import com.pechenkin.travelmoney.bd.table.result.QueryResultFactory;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.util.LongSparseArray;
-
 import java.util.Map;
 
 public class t_members {
@@ -21,7 +21,7 @@ public class t_members {
 	static public Boolean isAdded(String user_name)
     {
     	String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + user_name + "'";
-		BaseQueryResult result = (BaseQueryResult) QueryResultFactory.createQueryResult(sql, BaseQueryResult.class);
+		BaseQueryResult result = QueryResultFactory.createQueryResult(sql, BaseQueryResult.class);
 		return result != null && result.hasRows();
     }
 	
@@ -37,10 +37,11 @@ public class t_members {
 			cv.put(Namespace.FIELD_COLOR, Color.BLACK);
 		}
 		cv.put(Namespace.FIELD_ACTIVE, "1");
-		
-		SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase();
-		long rowID = db.insert(Namespace.TABLE_MEMBERS, null, cv);
-		db.close();
+		long rowID;
+
+		try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
+			rowID = db.insert(Namespace.TABLE_MEMBERS, null, cv);
+		}
 
 		updateMembersCache();
 		return rowID;
@@ -48,8 +49,6 @@ public class t_members {
 	
 	static public void edit(long id, String name, int color)
     {
-    	SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase();
-    	
     	ContentValues cv = new ContentValues();
 		cv.put(Namespace.FIELD_NAME, name);
 
@@ -61,8 +60,9 @@ public class t_members {
 			cv.put(Namespace.FIELD_COLOR, Color.BLACK);
 		}
 
-        db.update(Namespace.TABLE_MEMBERS, cv, Namespace.FIELD_ID + " = " + id, null);
-        db.close();
+		try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
+			db.update(Namespace.TABLE_MEMBERS, cv, Namespace.FIELD_ID + " = " + id, null);
+		}
 
 		memberCache.remove(id);
 		updateMembersCache();
@@ -71,7 +71,7 @@ public class t_members {
 	static public MembersQueryResult getAll()
 	{
 		String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS;
-		return (MembersQueryResult) QueryResultFactory.createQueryResult(sql, MembersQueryResult.class);
+		return QueryResultFactory.createQueryResult(sql, MembersQueryResult.class);
 
 	}
 
@@ -95,7 +95,7 @@ public class t_members {
 		BaseTableRow row = membersNamesCache.get(m_name);
 		if (row == null) {
 			String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + m_name + "'";
-			BaseQueryResult result = (BaseQueryResult) QueryResultFactory.createQueryResult(sql, BaseQueryResult.class);
+			BaseQueryResult result = QueryResultFactory.createQueryResult(sql, BaseQueryResult.class);
 			if (result != null) {
 				row = result.getFirstRow();
 				if (row != null) {
@@ -169,7 +169,7 @@ public class t_members {
 		MemberBaseTableRow result = memberCache.get(_id);
 		if (result == null) {
 			String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_ID + " = '" + _id + "'";
-			MembersQueryResult find = (MembersQueryResult) QueryResultFactory.createQueryResult(sql, MembersQueryResult.class);
+			MembersQueryResult find = QueryResultFactory.createQueryResult(sql, MembersQueryResult.class);
 			if (find != null)
 			{
 				result = find.getFirstRow();
@@ -186,7 +186,7 @@ public class t_members {
 				+ " inner join " + Namespace.TABLE_MEMBERS + " as m"
 				+ " on t." + Namespace.FIELD_MEMBER + " = m." + Namespace.FIELD_ID + " and t." + Namespace.FIELD_TRIP + " = '" + t_id + "'";
 
-		return (MembersQueryResult) QueryResultFactory.createQueryResult(sql, MembersQueryResult.class);
+		return QueryResultFactory.createQueryResult(sql, MembersQueryResult.class);
 	}
 	
 }
