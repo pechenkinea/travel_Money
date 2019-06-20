@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     t_settings.INSTANCE.revertBoolean(NamespaceSettings.HIDE_ALL_HELP);
                     PageOpenner.INSTANCE.getCurrentPage().open();
                     return true;
+
                 case R.id.group_by_color:
                     t_settings.INSTANCE.revertBoolean(NamespaceSettings.GROUP_BY_COLOR);
                     PageOpenner.INSTANCE.getCurrentPage().open();
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                if (cc != null && cc.hasCosts()) {
+                if (cc.hasCosts()) {
                     PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
                     PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
                 } else {

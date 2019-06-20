@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 /**
  * Created by pechenkin on 22.05.2018.
- *
  */
 
 public class WordCollection {
@@ -20,9 +19,9 @@ public class WordCollection {
 
     private static String HALF = "<half>";
 
-    private  String[] words;
-    private  int length;
-    private  int position = -1;
+    private String[] words;
+    private int length;
+    private int position = -1;
 
     private static StringNumeric[] NUMERIC_NAMES = {
             new StringNumeric("(од)([а-я]{2})", "1"),   //одИН, одНА, одНУ
@@ -52,11 +51,10 @@ public class WordCollection {
     };
 
 
-    public  WordCollection(String text)
-    {
+    public WordCollection(String text) {
         words = new WrapperString(text.toLowerCase())
                 .replaceAll("[,\\.]", "") // убираем все запятые и точки для обработки 3.000
-                .replaceAll("(^|[^\\d])(\\d{1,2})\\s(\\d{3})($|[^\\d])", " $2$3" ) //убираем пробел между числами если певое 1 или 2 значное а второе 3 значное. Обработка 3 500 или 11 700
+                .replaceAll("(^|[^\\d])(\\d{1,2})\\s(\\d{3})($|[^\\d])", " $2$3") //убираем пробел между числами если певое 1 или 2 значное а второе 3 значное. Обработка 3 500 или 11 700
                 .replaceNumeric(NUMERIC_NAMES)
                 .replaceAll("(\\d+(\\.\\d+)?)", " $1 ") //все цифры отделяем пробелами для обработки таких строк как 350руб
                 .replaceAll(" и | за ", " ")  //убираем лишние слова в центре
@@ -71,136 +69,117 @@ public class WordCollection {
     }
 
 
-
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         return position + 1 < length && length > 0;
     }
 
-    public String getNext()
-    {
-        if (hasNext())
-        {
+    public String getNext() {
+        if (hasNext()) {
             position++;
-            return  words[position];
-        }
-        else
+            return words[position];
+        } else
             return "";
     }
 
-    public String viewNext(int addPosition)
-    {
+    public String viewNext(int addPosition) {
         return getPosition(position + addPosition);
     }
 
-    public String viewBefore(int downPosition)
-    {
+    public String viewBefore(int downPosition) {
         return getPosition(position - downPosition);
     }
 
-    public void movePosition(int moveTo)
-    {
+    public void movePosition(int moveTo) {
         position += moveTo;
         if (position < -1)
             position = -1;
     }
 
-    private String getPosition(int returnPosition)
-    {
-        if (returnPosition >=0 && returnPosition < length && length > 0)
-        {
-            return  words[returnPosition];
-        }
-        else
+    private String getPosition(int returnPosition) {
+        if (returnPosition >= 0 && returnPosition < length) {
+            return words[returnPosition];
+        } else
             return "";
     }
 
 
-
-    private static  class WrapperString
-    {
+    private static class WrapperString {
         String text;
-        WrapperString(String text)
-        {
+
+        WrapperString(String text) {
             this.text = text;
         }
 
         WrapperString replaceAll(String regex, String replacement) {
-            return  new WrapperString(text.replaceAll(regex,replacement));
+            return new WrapperString(text.replaceAll(regex, replacement));
         }
 
         WrapperString replaceAllWords(String[] words, String replacement) {
             String returnText = text;
-            for (String word:words) {
-                returnText = returnText.replaceAll(String.format("( |^)%s( |$)", word), String.format(" %s ", replacement ) );
+            for (String word : words) {
+                returnText = returnText.replaceAll(String.format("( |^)%s( |$)", word), String.format(" %s ", replacement));
             }
 
-            return  new WrapperString(returnText);
+            return new WrapperString(returnText);
         }
 
         WrapperString trim() {
-            return  new WrapperString(text.trim());
+            return new WrapperString(text.trim());
         }
 
-        WrapperString replaceNumeric(StringNumeric[] numeric)
-        {
+        WrapperString replaceNumeric(StringNumeric[] numeric) {
             String returnText = text;
 
             //заменяем слова на экранированные цифры
             //две с пловиной тысячи -> {n}2{/n} {n}1.5{/n} {n}1000{/n}
-            for (StringNumeric sNumeric:numeric) {
+            for (StringNumeric sNumeric : numeric) {
                 returnText = returnText.replaceAll(sNumeric.regex, sNumeric.value);
             }
 
             //составляем из цифр выражения и экранируем их
             //{n}2{/n} {n}1.5{/n} {n}1000{/n} -> {n}2*1.5*1000{/n}
-            returnText = textReplaсeAll(returnText,"(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\}) +(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\})", " {n}$2*$5{/n} ");
+            returnText = textReplaceAll(returnText, "(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\}) +(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\})", " {n}$2*$5{/n} ");
 
             //Вносим в экран рядом стоящие неэкранированные цифры
             // 200 {n}2*1.5*1000{/n} -> {n}200*2*1.5*1000{/n}
-            returnText = textReplaсeAll(returnText,"(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\}) +(\\d+)", " {n}$2*$4{/n} ");
-            returnText = textReplaсeAll(returnText,"(\\d+) +(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\})", " {n}$1*$3{/n} ");
+            returnText = textReplaceAll(returnText, "(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\}) +(\\d+)", " {n}$2*$4{/n} ");
+            returnText = textReplaceAll(returnText, "(\\d+) +(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\})", " {n}$1*$3{/n} ");
 
 
             //Находим экрнированные числа со знаком умножения и производим вычисления оставляя экраны
             Pattern regexMultiplication = Pattern.compile("(\\{n\\})([^\\{\\/n\\}]+\\*[^\\{\\/n\\}]+)(\\{\\/n\\})");
             Matcher matcher = regexMultiplication.matcher(returnText);
-            while(matcher.find())
-            {
+            while (matcher.find()) {
                 returnText = matcher.replaceFirst(" {n}" + multiplied(matcher.group(2)) + "{/n} ");
                 matcher = regexMultiplication.matcher(returnText);
             }
 
             //убираем экраны
-            returnText = textReplaсeAll(returnText,"(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\})", " $2 ");
+            returnText = textReplaceAll(returnText, "(\\{n\\})([^\\{\\/n\\}]+)(\\{\\/n\\})", " $2 ");
 
-            return  new WrapperString(returnText);
+            return new WrapperString(returnText);
         }
 
-        private static String textReplaсeAll(String text, String regex, String replacement)
-        {
+        private static String textReplaceAll(String text, String regex, String replacement) {
             Pattern regexPattern = Pattern.compile(regex);
-            while(regexPattern.matcher(text).find())
-            {
+            while (regexPattern.matcher(text).find()) {
                 text = regexPattern.matcher(text).replaceAll(replacement);
             }
-            return  text;
+            return text;
         }
 
-        static String multiplied(String text)
-        {
+        static String multiplied(String text) {
             double result = 0;
             String[] numerics = text.split("\\*");
-            for (String s: numerics) {
+            for (String s : numerics) {
 
                 if (s.equals(HALF)) {
 
-                    double divider = 1;
                     String resultStr = Help.DoubleToString(result).replaceAll(" ", "")
                             .replaceAll("(.+)?([1-9]\\d{0,2})((000)+)?$", "$1$2")
                             .replaceAll("null", "");
 
-                    divider =  Help.StringToDouble(resultStr);
+                    double divider = Help.StringToDouble(resultStr);
                     if (divider > 0) {
                         result += result * 0.5 / divider;
                     }
@@ -224,22 +203,19 @@ public class WordCollection {
         }
 
         String[] splitSpace() {
-            return  text.split(" ");
+            return text.split(" ");
         }
     }
 
-    private static  class StringNumeric
-    {
+    private static class StringNumeric {
         String regex;
         String value;
-        StringNumeric(String regex, String value)
-        {
+
+        StringNumeric(String regex, String value) {
             this.regex = regex + "(\\s|$)";
             this.value = String.format(" {n}%s{/n} ", value);
         }
     }
-
-
 
 
 }

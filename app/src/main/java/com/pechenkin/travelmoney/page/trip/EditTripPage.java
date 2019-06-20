@@ -32,13 +32,13 @@ public class EditTripPage extends BasePage {
 
     @Override
     public void addEvents() {
-        Button commitButton = (Button)MainActivity.INSTANCE.findViewById(R.id.edit_trip_commit_button);
+        Button commitButton = MainActivity.INSTANCE.findViewById(R.id.edit_trip_commit_button);
         commitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                EditText trName = (EditText) MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Name);
-                EditText trComment = (EditText) MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Comment);
+                EditText trName =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Name);
+                EditText trComment =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Comment);
 
                 String strName = trName.getText().toString();
                 if (strName.length() > 0)
@@ -54,7 +54,7 @@ public class EditTripPage extends BasePage {
                     }
 
                     t_trips.edit(getParam().getId(), strName, trComment.getText().toString());
-                    CheckBox isActive = (CheckBox)MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
+                    CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
 
                     if (isActive.isChecked())
                         t_trips.set_active(getParam().getId());
@@ -97,13 +97,13 @@ public class EditTripPage extends BasePage {
             return false;
         }
 
-        EditText t_name = (EditText) MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Name);
+        EditText t_name =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Name);
         t_name.setText(trip.name);
 
-        EditText t_comment = (EditText) MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Comment);
+        EditText t_comment =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Comment);
         t_comment.setText(trip.comment);
 
-        CheckBox isActive = (CheckBox)MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
+        CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
         if (t_trips.isActive(trip.id))
             isActive.setChecked(true);
         else

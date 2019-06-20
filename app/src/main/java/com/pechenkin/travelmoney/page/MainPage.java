@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.widget.Toolbar;
 import android.util.LongSparseArray;
-import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -19,30 +18,26 @@ import android.widget.TextView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
-import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
-import com.pechenkin.travelmoney.page.trip.TripsListPage;
-import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
+import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.calculation.Calculation;
 import com.pechenkin.travelmoney.calculation.Cost;
 import com.pechenkin.travelmoney.calculation.ShortCost;
 import com.pechenkin.travelmoney.export.Export;
 import com.pechenkin.travelmoney.export.ExportFileTypes;
 import com.pechenkin.travelmoney.list.AdapterCostList;
+import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
+import com.pechenkin.travelmoney.page.trip.TripsListPage;
+import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by pechenkin on 19.04.2018.
@@ -260,7 +255,7 @@ public class MainPage extends BasePage {
 
             MainActivity.INSTANCE.setSupportActionBar(toolbar);
 
-            if (getPageTrip() != null && getPageTrip().name != null)
+            if (getPageTrip() != null && getPageTrip().name != null &&  MainActivity.INSTANCE.getSupportActionBar() != null)
                 MainActivity.INSTANCE.getSupportActionBar().setTitle(getPageTrip().name + readerCaption);
 
         }
@@ -295,7 +290,7 @@ public class MainPage extends BasePage {
         }
     }
 
-    private static volatile boolean isPrintCostThreadyRun = false;
+    //private static volatile boolean isPrintCostThreadyRun = false;
     private static long refreshClickTime = 0;
 
     @SuppressLint("SetTextI18n")

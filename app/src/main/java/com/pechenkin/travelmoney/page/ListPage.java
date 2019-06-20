@@ -31,7 +31,7 @@ public abstract class ListPage extends BasePage {
 
     @Override
     public void addEvents() {
-        final ListView list = (ListView)MainActivity.INSTANCE.findViewById(getListViewId());
+        final ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
         if (list != null)
         {
             list.setOnItemClickListener(new AdapterView.OnItemClickListener()

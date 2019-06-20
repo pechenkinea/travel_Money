@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.speech.RecognizerIntent;
 import android.widget.Toast;
 
+import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 
 import java.util.List;
@@ -74,7 +75,8 @@ public class SpeechRecognitionHelper {
                 return true;				// то умеем распознавать речь
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
+            Help.alert(e.getMessage());
         }
 
         return false; // не умеем распознавать речь

@@ -46,7 +46,7 @@ public abstract class BasePage implements Page {
         MainActivity.INSTANCE.setContentView(getPageId());
 
         //Настраиваем тулбар
-        TextView toolbarTitle = (TextView)MainActivity.INSTANCE.findViewById(R.id.toolBarOutMainTitle);
+        TextView toolbarTitle = MainActivity.INSTANCE.findViewById(R.id.toolBarOutMainTitle);
         if (toolbarTitle != null)
         {
             toolbarTitle.setText(getTitleHeader());

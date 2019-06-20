@@ -2,10 +2,10 @@ package com.pechenkin.travelmoney.speech.recognition;
 
 import android.text.TextUtils;
 
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.calculation.ShortCost;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
 
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class CostCreator {
     private WordCollection words;
-    private String text = "";
+    private String text;
 
     public CostCreator(String text)
     {
@@ -42,7 +42,7 @@ public class CostCreator {
 
     public ShortCost[] getCosts()
     {
-        return  costs.toArray(new ShortCost[costs.size()]);
+        return  costs.toArray(new ShortCost[0]);
     }
     public  boolean hasCosts()
     {

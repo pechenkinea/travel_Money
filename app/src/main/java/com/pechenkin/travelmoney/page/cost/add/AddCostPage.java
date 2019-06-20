@@ -18,14 +18,15 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.MainPage;
@@ -36,12 +37,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
 import static android.app.Activity.RESULT_OK;
 
 
 /**
  * Created by pechenkin on 19.04.2018.
  * Страница добавления траты
+ * <p>
+ * Больше не используется. теперь добавление через мастер
  */
 @Deprecated
 public class AddCostPage extends BasePage {
@@ -56,23 +60,21 @@ public class AddCostPage extends BasePage {
     }
 
     private List<Long> list_id = new ArrayList<>();
-    private void commitForm()
-    {
+
+    private void commitForm() {
         //Help.hideKeyboard();
 
-        EditText et_comment = (EditText)MainActivity.INSTANCE.findViewById(R.id.cost_comment);
+        EditText et_comment = MainActivity.INSTANCE.findViewById(R.id.cost_comment);
         String comment = et_comment.getText().toString();
-        if (comment.length() == 0)
-        {
+        if (comment.length() == 0) {
             Help.message("Заполните описание");
             Help.setActiveEditText(R.id.cost_comment);
             return;
         }
 
-        Spinner spin_member = (Spinner)MainActivity.INSTANCE.findViewById(R.id.cost_member);
+        Spinner spin_member = MainActivity.INSTANCE.findViewById(R.id.cost_member);
 
-        if (spin_member.getCount() < 1)
-        {
+        if (spin_member.getCount() < 1) {
             Help.hideKeyboard();
             Help.message("Выберите кто платил");
             return;
@@ -80,75 +82,67 @@ public class AddCostPage extends BasePage {
         String member = spin_member.getSelectedItem().toString();
         long member_id = t_members.getIdByName(member);
 
-        if (member_id < 0)
-        {
+        if (member_id < 0) {
             Help.hideKeyboard();
-            Help.message("Ошибка. Не найден участник " + member );
+            Help.message("Ошибка. Не найден участник " + member);
             return;
         }
 
-        if (list_id.size() == 0)
-        {
+        if (list_id.size() == 0) {
             Help.hideKeyboard();
             Help.message("Выберите \"За кого\"");
             return;
         }
 
 
-
-        EditText et_sum = (EditText)MainActivity.INSTANCE.findViewById(R.id.cost_sum);
+        EditText et_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
 
         String sum = et_sum.getText().toString();
 
-        if (sum.length() == 0)
-        {
+        if (sum.length() == 0) {
             Help.message("Введите сумму");
             Help.setActiveEditText(R.id.cost_sum);
             return;
         }
 
 
-
-        TextView tv_dir = (TextView)MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView);
+        TextView tv_dir = MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView);
         String image_dir = tv_dir.getText().toString();
 
 
         double sum_on_one;
-        try
-        {
+        try {
             double f_sum = Help.StringToDouble(sum);
-            sum_on_one = f_sum/list_id.size();
+            sum_on_one = f_sum / list_id.size();
 
-            if (sum_on_one > 10000000)
-            {
+            if (sum_on_one > 10000000) {
                 Help.alert("Сумма свыше 10 000 000 на участника не поддерживается.");
                 Help.setActiveEditText(R.id.cost_sum);
                 return;
             }
 
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             Help.message("Ошибка вычислений. Запись не добавлена");
             return;
         }
 
-        for (long to_memmber_id : list_id)
-        {
-            t_costs.add(member_id, to_memmber_id, comment, sum_on_one, image_dir, t_trips.ActiveTrip.id, new Date());
+        Date date = new Date();
+        for (long to_memmber_id : list_id) {
+            t_costs.add(member_id, to_memmber_id, comment, sum_on_one, image_dir, t_trips.ActiveTrip.id, date);
         }
 
-        Help.message("Запись добавлена. По " +  Help.DoubleToString(sum_on_one));
+        Help.message("Запись добавлена. По " + Help.DoubleToString(sum_on_one));
 
         list_id.clear();
 
         PageOpenner.INSTANCE.open(MainPage.class);
     }
+
     @Override
     public void addEvents() {
 
         //Кнопак добавления
-        Button commitButton = (Button)MainActivity.INSTANCE.findViewById(R.id.cost_add_button);
+        Button commitButton = MainActivity.INSTANCE.findViewById(R.id.cost_add_button);
         commitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,26 +151,20 @@ public class AddCostPage extends BasePage {
         });
 
 
-
-        final ListView list1 = (ListView)MainActivity.INSTANCE.findViewById(R.id.cost_list_to_member);
+        final ListView list1 = MainActivity.INSTANCE.findViewById(R.id.cost_list_to_member);
         //Выбор участника из списка
-        list1.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        list1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                AdapterMembersList adapter  = (AdapterMembersList)list1.getAdapter();
+                AdapterMembersList adapter = (AdapterMembersList) list1.getAdapter();
                 BaseTableRow item = adapter.getItem(position).getMemberRow();
 
                 SparseBooleanArray sbArray = list1.getCheckedItemPositions();
-                if (!sbArray.get(position, false))
-                {
+                if (!sbArray.get(position, false)) {
                     list1.setItemChecked(position, false);
                     list_id.removeAll(Collections.singletonList(item.id));
-                }
-                else
-                {
+                } else {
                     list1.setItemChecked(position, true);
                     list_id.add(item.id);
                 }
@@ -188,8 +176,7 @@ public class AddCostPage extends BasePage {
         });
 
 
-
-        final EditText cost_sum = (EditText)MainActivity.INSTANCE.findViewById(R.id.cost_sum);
+        final EditText cost_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
 
         cost_sum.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -207,13 +194,17 @@ public class AddCostPage extends BasePage {
             public void onTextChanged(CharSequence cs, int s, int b, int c) {
                 setSum();
             }
-            public void afterTextChanged(Editable editable) { }
+
+            public void afterTextChanged(Editable editable) {
+            }
+
             public void beforeTextChanged(CharSequence cs, int i, int j, int
-                    k) { }
+                    k) {
+            }
         });
 
         //Завершение работы с описанием
-        EditText commentText = (EditText) MainActivity.INSTANCE.findViewById(R.id.cost_comment);
+        EditText commentText = MainActivity.INSTANCE.findViewById(R.id.cost_comment);
         commentText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -221,7 +212,7 @@ public class AddCostPage extends BasePage {
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
                     Help.hideKeyboard();
 
-                    Spinner member_s = (Spinner) MainActivity.INSTANCE.findViewById(R.id.cost_member);
+                    Spinner member_s = MainActivity.INSTANCE.findViewById(R.id.cost_member);
                     member_s.performClick();
 
                     Help.setActiveEditText(R.id.cost_sum);
@@ -232,23 +223,20 @@ public class AddCostPage extends BasePage {
         });
 
 
-
         //Кнопка за всех
-        Button checkAllButton = (Button)MainActivity.INSTANCE.findViewById(R.id.cost_check_getAll);
+        Button checkAllButton = MainActivity.INSTANCE.findViewById(R.id.cost_check_getAll);
         checkAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                ListView list1 = (ListView)MainActivity.INSTANCE.findViewById(R.id.cost_list_to_member);
-                AdapterMembersList adapter = (AdapterMembersList)list1.getAdapter();
+                ListView list1 = MainActivity.INSTANCE.findViewById(R.id.cost_list_to_member);
+                AdapterMembersList adapter = (AdapterMembersList) list1.getAdapter();
                 list_id.clear();
 
-                for (int i = 0; i < adapter.getCount(); i++)
-                {
+                for (int i = 0; i < adapter.getCount(); i++) {
                     long m_id = adapter.getItemId(i);
 
-                    if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, m_id))
-                    {
+                    if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, m_id)) {
                         list1.setItemChecked(i, true);
                         list_id.add(m_id);
                     }
@@ -259,7 +247,7 @@ public class AddCostPage extends BasePage {
             }
         });
 
-        ImageButton fotoButton = (ImageButton)MainActivity.INSTANCE.findViewById(R.id.buttonFoto);
+        ImageButton fotoButton = MainActivity.INSTANCE.findViewById(R.id.buttonFoto);
         fotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,8 +264,7 @@ public class AddCostPage extends BasePage {
 
 
                 File f1 = new File(path.getAbsolutePath() + "/travel_Money");
-                if (!f1.exists() && !f1.mkdirs())
-                {
+                if (!f1.exists() && !f1.mkdirs()) {
                     Help.alert("Ошибка. Не удалось создать папку для хранения файла. " + f1.getAbsolutePath() + MainActivity.INSTANCE.getString(R.string.fileError));
                     return;
                 }
@@ -286,8 +273,7 @@ public class AddCostPage extends BasePage {
 
                 MainActivity.INSTANCE.outputFileUri = Uri.fromFile(file);
 
-                if (MainActivity.INSTANCE.outputFileUri == null)
-                {
+                if (MainActivity.INSTANCE.outputFileUri == null) {
                     Help.alert("Ошибка. Не удалось создать файл для фото.");
                     return;
                 }
@@ -317,28 +303,24 @@ public class AddCostPage extends BasePage {
     @Override
     protected boolean fillFields() {
 
-        if (t_trips.ActiveTrip == null)
-        {
+        if (t_trips.ActiveTrip == null) {
             Help.message("Нет активных поездок");
             return false;
         }
 
         //кто
-        final Spinner member_s = (Spinner) MainActivity.INSTANCE.findViewById(R.id.cost_member);
+        final Spinner member_s = MainActivity.INSTANCE.findViewById(R.id.cost_member);
         MembersQueryResult tripMembers = t_members.getAllByTripId(t_trips.ActiveTrip.id);
 
-        if (tripMembers.hasRows())
-        {
+        if (tripMembers.hasRows()) {
             Help.fill_cost_Spinner(tripMembers.getAllRows(), member_s);
-        }
-        else
-        {
+        } else {
             Help.message("Нет участников");
             PageOpenner.INSTANCE.open(MainPage.class);
             return false;
         }
 
-        final ListView list1 = (ListView)MainActivity.INSTANCE.findViewById(R.id.cost_list_to_member);
+        final ListView list1 = MainActivity.INSTANCE.findViewById(R.id.cost_list_to_member);
         Help.fill_list_view(t_trips.ActiveTrip.id, list1);
         Help.setListViewHeightBasedOnChildren(list1);
 
@@ -359,10 +341,9 @@ public class AddCostPage extends BasePage {
     }
 
 
-    private void setSum()
-    {
-        EditText cost_sum = (EditText)MainActivity.INSTANCE.findViewById(R.id.cost_sum);
-        TextView cost_po = (TextView)MainActivity.INSTANCE.findViewById(R.id.cost_tw_po);
+    private void setSum() {
+        EditText cost_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
+        TextView cost_po = MainActivity.INSTANCE.findViewById(R.id.cost_tw_po);
         String str_sum = cost_sum.getText().toString();
         double sum = Help.StringToDouble(str_sum);
 
@@ -370,7 +351,7 @@ public class AddCostPage extends BasePage {
             sum = sum / list_id.size();
 
 
-        str_sum =  Help.DoubleToString(sum);
+        str_sum = Help.DoubleToString(sum);
         cost_po.setText(str_sum);
     }
 }
