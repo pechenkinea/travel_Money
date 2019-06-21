@@ -158,7 +158,13 @@ public class AdapterCostList extends BaseAdapter {
                     MemberBaseTableRow to_member = t_members.getMemberById(cost.to_member());
 
                     String strColor = String.format("#%06X", 0xFFFFFF & to_member.color);
-                    String to_memberLine = "<font color='" + strColor + "'>" + to_member.name + "</font>";
+
+                    String to_memberName = to_member.name;
+                    if (to_memberName.length() > 12){
+                        to_memberName = to_memberName.substring(0, 9).trim() + "...";
+                    }
+
+                    String to_memberLine = "<font color='" + strColor + "'>" + to_memberName + "</font>";
 
                     to_memberText.append(to_memberLine);
 
