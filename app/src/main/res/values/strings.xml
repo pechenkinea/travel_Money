@@ -73,7 +73,11 @@
     <string name="warning_member_name">*Для правильной работы голосового добавления трат рекомендуется использовать одно слово в имени</string>
     <string name="sum_result">Статистика</string>
 
-    <string name="fileError"><![CDATA[ Возможно у приложения нет разрешения на использоватние памяти. Настройки -> Диспетчер приложений -> Travel Money -> Разрешения -> Включить хранилище]]></string>
+    <string name="fileError"><![CDATA[ Возможно у приложения нет разрешения на использоватние памяти. Посмотрите тут: Настройки -> Диспетчер приложений -> Travel Money -> Разрешения -> Включить хранилище]]></string>
+
+    <string name="helps_on_off">Подсказки</string>
+    <string name="group_by_color_on_off">Группировка итогов по цветам</string>
+    <string name="group_cost_lost_on_off">Группировка списка операций</string>
 
 
 </resources>
