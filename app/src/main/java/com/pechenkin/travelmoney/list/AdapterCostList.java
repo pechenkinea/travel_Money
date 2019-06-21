@@ -14,6 +14,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +78,7 @@ public class AdapterCostList extends BaseAdapter {
             holder = new ViewHolder();
 
             holder.title = convertView.findViewById(R.id.sum_title); // title
-            holder.to_member = convertView.findViewById(R.id.sum_to_member);
+            holder.to_member = convertView.findViewById(R.id.to_member);
             holder.sum_group_sum = convertView.findViewById(R.id.sum_group_sum);
             holder.sum_sum = convertView.findViewById(R.id.sum_sum);
             holder.sum_line = convertView.findViewById(R.id.sum_line);
@@ -151,26 +153,33 @@ public class AdapterCostList extends BaseAdapter {
 
                     Cost cost = costs.get(i);
                     MemberBaseTableRow to_member = t_members.getMemberById(cost.to_member());
-                    to_memberText.append(to_member.name);
+
+                    String strColor = String.format("#%06X", 0xFFFFFF & to_member.color);
+                    String to_memberLine = "<font color='" + strColor + "'>" + to_member.name + "</font>";
+                    to_memberText.append(to_memberLine);
 
                     String s = Help.DoubleToString(cost.sum());
                     sumText.append((cost.sum() != 0) ? s : "");
 
                     if (i < costs.size() - 1) {
-                        to_memberText.append("\n");
+                        to_memberText.append("<br>");
                         sumText.append("\n");
                     }
                 }
 
 
-                holder.to_member.setText(to_memberText.toString());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    holder.to_member.setText(Html.fromHtml(to_memberText.toString(), Html.FROM_HTML_MODE_COMPACT), TextView.BufferType.SPANNABLE);
+                } else {
+                    holder.to_member.setText(Html.fromHtml(to_memberText.toString()), TextView.BufferType.SPANNABLE);
+                }
+
                 holder.sum_sum.setText(sumText.toString());
             }
 
             if (costs.size() == 1) {
                 holder.sum_group_sum.setText("");
-            }
-            else {
+            } else {
                 holder.sumSeparator.setVisibility(View.VISIBLE);
             }
 

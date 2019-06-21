@@ -37,7 +37,7 @@
                 android:text="-->" />
 
             <TextView
-                android:id="@+id/sum_to_member"
+                android:id="@+id/to_member"
                 style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
