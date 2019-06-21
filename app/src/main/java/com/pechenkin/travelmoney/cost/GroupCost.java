@@ -9,7 +9,7 @@ import java.util.List;
  * Что бы можно было группировать
  */
 public class GroupCost implements Cost {
-    private double sum;
+    private double sum = 0;
     private String comment;
     private List<Cost> costs;
     private Date date;
@@ -17,24 +17,29 @@ public class GroupCost implements Cost {
 
     public GroupCost(Cost cost) {
         this.costs = new ArrayList<>();
-        this.sum = cost.sum();
         this.comment = cost.comment();
         this.date = cost.date();
         this.image_dir = cost.image_dir();
 
+        if (cost.active() != 0) {
+            this.sum = cost.sum();
+        }
+
         this.costs.add(cost);
+
     }
 
     public void addCost(Cost cost) throws Exception {
 
-        if(this.date.getTime() != cost.date().getTime() || !this.comment.equals(cost.comment())){
+        if (this.date.getTime() != cost.date().getTime() || !this.comment.equals(cost.comment())) {
             throw new Exception("В группу пробует добавится проводка, которая к ней не относится");
         }
 
-        this.sum += cost.sum();
+        if (cost.active() != 0) {
+            this.sum += cost.sum();
+        }
         this.costs.add(cost);
     }
-
 
 
     public List<Cost> getCosts() {

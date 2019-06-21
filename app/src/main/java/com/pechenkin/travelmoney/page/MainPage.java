@@ -39,11 +39,8 @@ import com.pechenkin.travelmoney.page.trip.TripsListPage;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by pechenkin on 19.04.2018.
@@ -100,8 +97,36 @@ public class MainPage extends BasePage {
             changeCostStateTime = new Date().getTime();
             refreshClickTime = 0;
             return true;
-        } else
-            return false;
+        }
+        if (item instanceof GroupCost) {
+
+            List<Cost> groupCosts = ((GroupCost) item).getCosts();
+            if (groupCosts.size() > 0) {
+                long statusFirst = groupCosts.get(0).active();
+                if (statusFirst == 1) {
+                    for (Cost cost : groupCosts) {
+                        t_costs.disable_cost(cost.id());
+                        cost.setActive(0);
+                    }
+                }
+                else {
+                    for (Cost cost : groupCosts) {
+                        cost.setActive(1);
+                        t_costs.enable_cost(cost.id());
+                    }
+                }
+
+                //обновляем список
+                ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
+                listViewCosts.invalidateViews();
+                changeCostStateTime = new Date().getTime();
+                refreshClickTime = 0;
+                return true;
+
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -142,7 +167,7 @@ public class MainPage extends BasePage {
         final ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
         listViewCosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @SuppressLint("ResourceAsColor")
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int index, long id) {
 
@@ -168,6 +193,8 @@ public class MainPage extends BasePage {
 
             }
         });
+
+
 
         listViewCosts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -411,8 +438,7 @@ public class MainPage extends BasePage {
                                     Help.alert(ex.getMessage());
                                     return null;
                                 }
-                            }
-                            else {
+                            } else {
                                 groupCostList.add(new GroupCost(cost));
                                 lastKey = key;
                             }

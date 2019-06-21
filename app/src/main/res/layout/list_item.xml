@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:descendantFocusability="blocksDescendants"
-     android:layout_height="wrap_content"
-     android:layout_width="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
 
-    <RelativeLayout
-        style="@style/list_item_layout">
+    <RelativeLayout style="@style/list_item_layout">
 
         <ImageButton
             android:id="@+id/lm_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/check_18"
-            android:gravity="top"
             android:background="@null"
-            android:contentDescription="@string/check" />
+            android:contentDescription="@string/check"
+            android:gravity="top"
+            android:src="@drawable/check_18" />
 
         <TextView
             android:id="@+id/lm_name"
+            style="@style/normal"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:gravity="top"
             android:layout_marginStart="25dp"
-            style="@style/normal"
+            android:gravity="top"
             android:typeface="sans" />
 
 
@@ -57,10 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingEnd="10dp"
         android:paddingStart="50dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
         android:visibility="invisible" />
 
 </RelativeLayout>
