@@ -60,12 +60,17 @@
 		android:id="@+id/hide_show_helps"
 		android:orderInCategory="1"
 		android:icon="@drawable/hint_on"
-		android:title=""/>
+		android:title="Подсказки"/>
 	<item
 		android:id="@+id/group_by_color"
 		android:orderInCategory="1"
 		android:icon="@drawable/hint_off"
-		android:title=""/>
+		android:title="Группировка итогов по цветам"/>
+	<item
+		android:id="@+id/group_cost"
+		android:orderInCategory="1"
+		android:icon="@drawable/hint_off"
+		android:title="Группировка трат"/>
 
 	<item
 		android:id="@+id/menu_about"

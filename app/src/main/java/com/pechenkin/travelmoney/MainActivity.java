@@ -100,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
                     PageOpenner.INSTANCE.getCurrentPage().open();
                     return true;
 
+                case R.id.group_cost:
+                    t_settings.INSTANCE.revertBoolean(NamespaceSettings.GROUP_COST);
+                    PageOpenner.INSTANCE.getCurrentPage().open();
+                    return true;
+
                 case R.id.menu_about:
                     PageOpenner.INSTANCE.open(AboutPage.class);
                     return true;
@@ -132,14 +137,20 @@ public class MainActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem hide_show_helps = menu.findItem(R.id.hide_show_helps);
         if (hide_show_helps != null) {
-            hide_show_helps.setTitle(t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP) ? "Включить подсказки" : "Выключить подсказки");
+            //hide_show_helps.setTitle(t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP) ? "Включить подсказки" : "Выключить подсказки");
             hide_show_helps.setIcon(t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP) ? R.drawable.hint_off : R.drawable.hint_on);
         }
 
         MenuItem group_by_color = menu.findItem(R.id.group_by_color);
         if (group_by_color != null) {
-            group_by_color.setTitle(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR) ? "Выключить группировку по цветам" : "Включить группировку по цветам");
+            //group_by_color.setTitle(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR) ? "Выкл. группировку итогов по цветам" : "Группировка итогов по цветам");
             group_by_color.setIcon(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR) ? R.drawable.hint_on : R.drawable.hint_off);
+        }
+
+        MenuItem group_cost = menu.findItem(R.id.group_cost);
+        if (group_cost != null) {
+            //group_cost.setTitle(t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST) ? "Выключить группировку трат" : "Выключить группировку трат");
+            group_cost.setIcon(t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST) ? R.drawable.hint_on : R.drawable.hint_off);
         }
 
         return super.onPrepareOptionsMenu(menu);
