@@ -235,8 +235,8 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         }
 
         MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
-        holder.sum_to_member.setText((to_member!=null)?to_member.name:"");
-        holder.sum_to_member.setTextColor((to_member!=null)?to_member.color: Color.BLACK);
+        holder.to_member.setText((to_member!=null)?to_member.name:"");
+        holder.to_member.setTextColor((to_member!=null)?to_member.color: Color.BLACK);
     }
 
     @Override
@@ -249,7 +249,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
-        TextView sum_to_member;
+        TextView to_member;
         TextView sum_sum;
         TextView sum_line;
         TextView sum_comment;
@@ -260,7 +260,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         ViewHolder(View convertView) {
             super(convertView);
             title = convertView.findViewById(R.id.sum_title); // title
-            sum_to_member = convertView.findViewById(R.id.sum_to_member);
+            to_member = convertView.findViewById(R.id.to_member);
             sum_sum = convertView.findViewById(R.id.sum_sum);
             sum_line = convertView.findViewById(R.id.sum_line);
             sum_comment = convertView.findViewById(R.id.sum_comment);

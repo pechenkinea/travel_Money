@@ -15,8 +15,7 @@
         android:layout_height="wrap_content"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:clickable="true"
-        android:focusable="true" />
+        />
 
     <FrameLayout
         android:layout_width="match_parent"

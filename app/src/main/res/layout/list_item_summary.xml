@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/list_item_layout"
-    >
+    style="@style/list_item_layout">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,37 +17,37 @@
 
             <TextView
                 android:id="@+id/sum_title"
+                style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:layout_weight="3"
                 android:gravity="top"
-                android:text="Member"
-                style="@style/normal"/>
+                android:text="Member" />
 
             <TextView
                 android:id="@+id/sum_line"
+                style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="-->"
-                style="@style/normal" />
+                android:text="-->" />
 
             <TextView
-                android:id="@+id/sum_to_member"
+                android:id="@+id/to_member"
+                style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="To_member"
-                style="@style/normal" />
+                android:text="To_member" />
 
             <TextView
                 android:id="@+id/sum_sum"
+                style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Sum"
-                style="@style/normal" />
+                android:text="Sum" />
         </LinearLayout>
 
 
@@ -62,12 +61,12 @@
             android:layout_height="wrap_content" />
 
         <View
-            android:layout_marginTop="5dp"
             android:id="@+id/costSeparator"
-            android:background="#cccbcb"
-            android:layout_width = "fill_parent"
+            android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end"
+            android:layout_marginTop="5dp"
+            android:background="#cccbcb" />
 
     </LinearLayout>
 
@@ -78,10 +77,10 @@
 
         <TextView
             android:id="@+id/labelHeader"
+            style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            style="@style/h2" />
+            android:layout_gravity="start" />
 
         <ImageView
             android:id="@+id/sum_havefoto"
@@ -92,7 +91,6 @@
             android:src="@android:drawable/ic_menu_camera"
             android:visibility="visible"
             tools:ignore="ContentDescription" />
-
 
 
     </FrameLayout>
