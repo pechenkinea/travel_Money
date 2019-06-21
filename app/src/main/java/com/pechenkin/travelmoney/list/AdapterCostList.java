@@ -84,12 +84,14 @@ public class AdapterCostList extends BaseAdapter {
             holder.have_foto = convertView.findViewById(R.id.sum_havefoto);
             holder.labelHeader = convertView.findViewById(R.id.labelHeader);
             holder.costSeparator = convertView.findViewById(R.id.costSeparator);
+            holder.sumSeparator = convertView.findViewById(R.id.sumSeparator);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         holder.costSeparator.setVisibility(View.VISIBLE);
+        holder.sumSeparator.setVisibility(View.INVISIBLE);
 
         if (song == null) {
             return convertView;
@@ -115,7 +117,6 @@ public class AdapterCostList extends BaseAdapter {
         comment += dateText + "  " + song.comment();
         holder.sum_comment.setText(comment);
 
-        holder.sum_line.setText("-->");
 
         if (song.id() >= 0) {
 
@@ -137,31 +138,41 @@ public class AdapterCostList extends BaseAdapter {
         if (song instanceof GroupCost) {
             List<Cost> costs = ((GroupCost) song).getCosts();
 
-            StringBuilder memberText = new StringBuilder();
-            StringBuilder to_memberText = new StringBuilder();
-            StringBuilder sumText = new StringBuilder();
-            StringBuilder sumLineText = new StringBuilder();
+            if (costs.size() > 0) {
 
-            for (Cost cost : costs) {
-
-                MemberBaseTableRow member = t_members.getMemberById(cost.member());
-                memberText.append(member.name).append("\n");
-
-                MemberBaseTableRow to_member = t_members.getMemberById(cost.to_member());
-                to_memberText.append(to_member.name).append("\n");
-
-                String s = Help.DoubleToString(cost.sum());
-                sumText.append((cost.sum() != 0) ? s : "").append("\n");
-
-                sumLineText.append("-->").append("\n");
-
+                MemberBaseTableRow member = t_members.getMemberById(costs.get(0).member());
                 holder.title.setTextColor(member.color);
+                holder.title.setText(member.name);
+
+                StringBuilder to_memberText = new StringBuilder();
+                StringBuilder sumText = new StringBuilder();
+
+                for (int i = 0; i < costs.size(); i++) {
+
+                    Cost cost = costs.get(i);
+                    MemberBaseTableRow to_member = t_members.getMemberById(cost.to_member());
+                    to_memberText.append(to_member.name);
+
+                    String s = Help.DoubleToString(cost.sum());
+                    sumText.append((cost.sum() != 0) ? s : "");
+
+                    if (i < costs.size() - 1) {
+                        to_memberText.append("\n");
+                        sumText.append("\n");
+                    }
+                }
+
+
+                holder.to_member.setText(to_memberText.toString());
+                holder.sum_sum.setText(sumText.toString());
             }
 
-            holder.title.setText(memberText.toString());
-            holder.to_member.setText(to_memberText.toString());
-            holder.sum_sum.setText(sumText.toString());
-            holder.sum_line.setText(sumLineText.toString());
+            if (costs.size() == 1) {
+                holder.sum_group_sum.setText("");
+            }
+            else {
+                holder.sumSeparator.setVisibility(View.VISIBLE);
+            }
 
         } else {
 
@@ -200,6 +211,7 @@ public class AdapterCostList extends BaseAdapter {
         ImageView have_foto;
         TextView labelHeader;
         View costSeparator;
+        View sumSeparator;
 
     }
 

@@ -13,12 +13,14 @@ public class GroupCost implements Cost {
     private String comment;
     private List<Cost> costs;
     private Date date;
+    private String image_dir;
 
     public GroupCost(Cost cost) {
         this.costs = new ArrayList<>();
         this.sum = cost.sum();
         this.comment = cost.comment();
         this.date = cost.date();
+        this.image_dir = cost.image_dir();
 
         this.costs.add(cost);
     }
@@ -72,7 +74,7 @@ public class GroupCost implements Cost {
 
     @Override
     public String image_dir() {
-        return "";
+        return image_dir;
     }
 
     @Override

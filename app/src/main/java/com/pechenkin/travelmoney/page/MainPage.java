@@ -38,9 +38,11 @@ import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
 import com.pechenkin.travelmoney.page.trip.TripsListPage;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -392,29 +394,32 @@ public class MainPage extends BasePage {
                     if (costList.hasRows()) {
                         finalList = Help.concat(finalList, new Cost[]{new ShortCost(-1, -1, 0f, "↓ Список всех операций ↓")});
 
-                        Map<String, GroupCost> groupCosts = new HashMap<>();
+                        List<GroupCost> groupCostList = new ArrayList<>();
+
                         Cost[] allCost = costList.getAllRows();
+
+
+                        String lastKey = "";
+
                         for (Cost cost : allCost) {
 
                             String key = cost.date().getTime() + cost.comment();
-                            if (groupCosts.containsKey(key)){
+                            if (key.equals(lastKey)) {
                                 try {
-                                    groupCosts.get(key).addCost(cost);
-                                }
-                                catch (Exception ex){
+                                    groupCostList.get(groupCostList.size() - 1).addCost(cost);
+                                } catch (Exception ex) {
                                     Help.alert(ex.getMessage());
                                     return null;
                                 }
                             }
                             else {
-                                groupCosts.put(key, new GroupCost(cost));
+                                groupCostList.add(new GroupCost(cost));
+                                lastKey = key;
                             }
                         }
 
-                        Collection<GroupCost> allGroupCosts = groupCosts.values();
+                        finalList = Help.concat(finalList, groupCostList.toArray(new GroupCost[0]));
 
-
-                        finalList = Help.concat(finalList, allGroupCosts.toArray(new GroupCost[0]));
                     }
 
                     adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), finalList);
