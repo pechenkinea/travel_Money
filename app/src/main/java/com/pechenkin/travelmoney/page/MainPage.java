@@ -108,13 +108,14 @@ public class MainPage extends BasePage {
                         t_costs.disable_cost(cost.id());
                         cost.setActive(0);
                     }
-                }
-                else {
+                } else {
                     for (Cost cost : groupCosts) {
                         cost.setActive(1);
                         t_costs.enable_cost(cost.id());
                     }
                 }
+
+                ((GroupCost) item).updateSum();
 
                 //обновляем список
                 ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
@@ -193,7 +194,6 @@ public class MainPage extends BasePage {
 
             }
         });
-
 
 
         listViewCosts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -421,30 +421,37 @@ public class MainPage extends BasePage {
                     if (costList.hasRows()) {
                         finalList = Help.concat(finalList, new Cost[]{new ShortCost(-1, -1, 0f, "↓ Список всех операций ↓")});
 
-                        List<GroupCost> groupCostList = new ArrayList<>();
+                        if (!t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST)) {
+                            // Если группировка не нужна выводим как есть
+                            finalList = Help.concat(finalList, costList.getAllRows());
+                        } else {
+                            // Группировка
+                            Cost[] allCost = costList.getAllRows();
+                            List<GroupCost> groupCostList = new ArrayList<>();
+                            String lastKey = "";
 
-                        Cost[] allCost = costList.getAllRows();
-
-
-                        String lastKey = "";
-
-                        for (Cost cost : allCost) {
-
-                            String key = cost.date().getTime() + cost.comment();
-                            if (key.equals(lastKey)) {
-                                try {
-                                    groupCostList.get(groupCostList.size() - 1).addCost(cost);
-                                } catch (Exception ex) {
-                                    Help.alert(ex.getMessage());
-                                    return null;
+                            /*
+                                Предполагается, что getAllRows выдает отсортированный по дате массив поэтому дополнительная сортировка не нужна.
+                                Достаточно "набивать" группу до тех пор, пока не дойдем до следующей даты, все что дальше - следующая группа
+                                Для дополнительной надежности проверяется не только дата но и комментарий
+                             */
+                            for (Cost cost : allCost) {
+                                String key = cost.date().getTime() + cost.comment();
+                                if (key.equals(lastKey)) {
+                                    try {
+                                        groupCostList.get(groupCostList.size() - 1).addCost(cost);
+                                    } catch (Exception ex) {
+                                        Help.alert(ex.getMessage());
+                                        return null;
+                                    }
+                                } else {
+                                    groupCostList.add(new GroupCost(cost));
+                                    lastKey = key;
                                 }
-                            } else {
-                                groupCostList.add(new GroupCost(cost));
-                                lastKey = key;
                             }
-                        }
 
-                        finalList = Help.concat(finalList, groupCostList.toArray(new GroupCost[0]));
+                            finalList = Help.concat(finalList, groupCostList.toArray(new GroupCost[0]));
+                        }
 
                     }
 
@@ -468,6 +475,12 @@ public class MainPage extends BasePage {
                         && !t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP)) {
                     Help.alertHelp(MainActivity.INSTANCE.getString(R.string.deleteCostHelp));
                     t_settings.INSTANCE.revertBoolean(NamespaceSettings.DELETE_COST_SHOWED_HELP);
+                }
+
+
+                if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST_NEED_MESSAGE)){
+                    Help.alertHelp(MainActivity.INSTANCE.getString(R.string.groupCostMessage));
+                    t_settings.INSTANCE.revertBoolean(NamespaceSettings.GROUP_COST_NEED_MESSAGE);
                 }
             }
         };

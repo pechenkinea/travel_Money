@@ -20,5 +20,9 @@ public interface NamespaceSettings {
     //Нужно ли дополнительно группировать траты участников с учетом  их цвета, например когда у семьи общий бюджет
     String GROUP_BY_COLOR = "GROUP_BY_COLOR";
 
+    //Нужно ли группировать проводки в общем списке
+    String GROUP_COST = "GROUP_COST";
+    String GROUP_COST_NEED_MESSAGE = "GROUP_COST_NEED_MESSAGE";
+
 
 }

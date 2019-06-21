@@ -37,14 +37,17 @@ public class AdapterCostList extends BaseAdapter {
         return data;
     }
 
+    @Override
     public int getCount() {
         return (data != null) ? data.length : 0;
     }
 
+    @Override
     public Cost getItem(int position) {
         return data[position];
     }
 
+    @Override
     public long getItemId(int position) {
         return position;
     }
@@ -53,7 +56,7 @@ public class AdapterCostList extends BaseAdapter {
     @Override
     public boolean isEnabled(int position) {
         Cost item = data[position];
-        return item != null && item.id() > 0;
+        return item != null && (item.id() > 0 || item instanceof GroupCost);
     }
 
     @Override
@@ -108,9 +111,12 @@ public class AdapterCostList extends BaseAdapter {
 
         holder.labelHeader.setVisibility(View.INVISIBLE);
         holder.sum_group_sum.setPaintFlags(holder.sum_group_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        holder.sum_sum.setPaintFlags(holder.sum_group_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
         String summ = Help.DoubleToString(song.sum());
         holder.sum_group_sum.setText((song.sum() != 0) ? summ : "");
+
+
         String comment = "";
         String dateText = "";
         if (song.date() != null) {
@@ -120,25 +126,22 @@ public class AdapterCostList extends BaseAdapter {
         holder.sum_comment.setText(comment);
 
 
-        if (song.id() >= 0) {
 
-            if (song.active() == 0) {
-                convertView.setBackgroundResource(R.drawable.background_delete_item);
-                holder.sum_group_sum.setPaintFlags(holder.sum_group_sum.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                holder.sum_group_sum.setText(String.format(" %s ", holder.sum_group_sum.getText()));
-            }
 
-            String dir = song.image_dir();
-            if (dir.length() > 0)
-                holder.have_foto.setVisibility(View.VISIBLE);
-            else
-                holder.have_foto.setVisibility(View.INVISIBLE);
-        } else {
+        String dir = song.image_dir();
+        if (dir.length() > 0)
+            holder.have_foto.setVisibility(View.VISIBLE);
+        else
             holder.have_foto.setVisibility(View.INVISIBLE);
-        }
+
+
 
         if (song instanceof GroupCost) {
             List<Cost> costs = ((GroupCost) song).getCosts();
+
+            if (song.sum() == 0){
+                convertView.setBackgroundResource(R.drawable.background_delete_item);
+            }
 
             if (costs.size() > 0) {
 
@@ -156,25 +159,37 @@ public class AdapterCostList extends BaseAdapter {
 
                     String strColor = String.format("#%06X", 0xFFFFFF & to_member.color);
                     String to_memberLine = "<font color='" + strColor + "'>" + to_member.name + "</font>";
+
                     to_memberText.append(to_memberLine);
 
+
                     String s = Help.DoubleToString(cost.sum());
-                    sumText.append((cost.sum() != 0) ? s : "");
+                    if (cost.active() != 0) {
+                        sumText.append(s);
+                    }
+                    else {
+                        /*
+                            тут надо бы зачеркивать сумму, но в текущей версии Html.fromHtml не умеет писать зачеркнутый текст
+                            поэтому пишем ноль и рядом, серым цветом, сумма
+                         */
+                        sumText.append("0 <font color='#696969'>(").append(s).append(")</font>");
+                    }
 
                     if (i < costs.size() - 1) {
                         to_memberText.append("<br>");
-                        sumText.append("\n");
+                        sumText.append("<br>");
                     }
                 }
 
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     holder.to_member.setText(Html.fromHtml(to_memberText.toString(), Html.FROM_HTML_MODE_COMPACT), TextView.BufferType.SPANNABLE);
+                    holder.sum_sum.setText(Html.fromHtml(sumText.toString(), Html.FROM_HTML_MODE_COMPACT), TextView.BufferType.SPANNABLE);
                 } else {
                     holder.to_member.setText(Html.fromHtml(to_memberText.toString()), TextView.BufferType.SPANNABLE);
+                    holder.sum_sum.setText(Html.fromHtml(sumText.toString()), TextView.BufferType.SPANNABLE);
                 }
 
-                holder.sum_sum.setText(sumText.toString());
             }
 
             if (costs.size() == 1) {
@@ -185,8 +200,15 @@ public class AdapterCostList extends BaseAdapter {
 
         } else {
 
+
             holder.sum_sum.setText((song.sum() != 0) ? summ : "");
             holder.sum_group_sum.setText("");
+
+            if (song.active() == 0) {
+                convertView.setBackgroundResource(R.drawable.background_delete_item);
+                holder.sum_sum.setPaintFlags(holder.sum_group_sum.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                holder.sum_sum.setText(String.format(" %s ", holder.sum_sum.getText()));  //пробелы нужны для красоты, что бы зачеркивание выходило за рамки текста
+            }
 
             MemberBaseTableRow member = t_members.getMemberById(song.member());
             if (member != null) {
@@ -204,6 +226,10 @@ public class AdapterCostList extends BaseAdapter {
             MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
             holder.to_member.setText((to_member != null) ? to_member.name : "");
             holder.to_member.setTextColor((to_member != null) ? to_member.color : Color.BLACK);
+
+
+
+
 
         }
 

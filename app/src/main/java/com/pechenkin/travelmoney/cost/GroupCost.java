@@ -41,6 +41,15 @@ public class GroupCost implements Cost {
         this.costs.add(cost);
     }
 
+    public void updateSum() {
+        this.sum = 0;
+        for (Cost cost : costs) {
+            if (cost.active() != 0) {
+                this.sum += cost.sum();
+            }
+        }
+    }
+
 
     public List<Cost> getCosts() {
         return costs;

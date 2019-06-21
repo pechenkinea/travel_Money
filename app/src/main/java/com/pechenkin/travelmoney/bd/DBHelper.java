@@ -8,7 +8,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 6);
+        super(context, Namespace.DB_NAME, null, 7);
     }
 
     @Override
@@ -42,7 +42,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " VALUES ('1', '1');");
 
 
-
         createTableCost(db);
 
         addSettingTable(db);
@@ -51,7 +50,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    private void createTableCost(SQLiteDatabase db){
+    private void createTableCost(SQLiteDatabase db) {
 
         db.execSQL("create table " + Namespace.TABLE_COSTS + " ("
                 + Namespace.FIELD_ID + " integer primary key autoincrement, "
@@ -98,6 +97,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.DELETE_COST_SHOWED_HELP + "', '0');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_BY_COLOR + "', '0');");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '1');");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '0');");
 
 
     }
@@ -130,8 +131,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
         //Добавлена настройка для группировки по цветам
-        if (oldVersion < 6){
+        if (oldVersion < 6) {
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_BY_COLOR + "', '0');");
+        }
+
+        //Добавлена настройка для группировки транзакций
+        if (oldVersion < 7) {
+            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '0');");
+            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '1');");
         }
 
 
