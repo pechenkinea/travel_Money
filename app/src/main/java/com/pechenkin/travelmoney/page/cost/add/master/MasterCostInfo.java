@@ -122,7 +122,7 @@ public class MasterCostInfo extends BasePage {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    Help.setActiveEditText(R.id.cost_sum);
+                    Help.setActiveEditText(R.id.cost_sum, true);
                     return true;
                 }
                 return false;

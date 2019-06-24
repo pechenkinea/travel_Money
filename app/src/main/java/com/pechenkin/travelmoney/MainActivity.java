@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
     static public MainActivity INSTANCE;
 
+    public static int TAKE_COST_FOTO = 2;
+    public static int VOICE_RECOGNITION_REQUEST_CODE = 3;
+
     public MainActivity() {
 
     }
@@ -177,79 +180,82 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static int TAKE_COST_FOTO = 3;
-    public static int VOICE_RECOGNITION_REQUEST_CODE = 3;
     public Uri outputFileUri = null;
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == TAKE_COST_FOTO && resultCode == RESULT_OK) {
-            TextView textDir = findViewById(R.id.cost_dir_textView);
-            if (outputFileUri != null) {
-                textDir.setText(outputFileUri.toString());
-                MainActivity.INSTANCE.findViewById(R.id.hasFoto).setVisibility(View.VISIBLE);
+
+        if (resultCode == RESULT_OK) {
+
+            // если это результаты отправки на получение фото
+            if (requestCode == TAKE_COST_FOTO) {
+                TextView textDir = findViewById(R.id.cost_dir_textView);
+                if (outputFileUri != null) {
+                    textDir.setText(outputFileUri.toString());
+                    MainActivity.INSTANCE.findViewById(R.id.hasFoto).setVisibility(View.VISIBLE);
+                }
             }
-        }
+            // если это результаты распознавания речи
+            else if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
+                // получаем список текстовых строк - результат распознавания
+                // строк может быть несколько, так как не всегда удается точно распознать речь
+                // более релевантные результаты идут в начале списка
+                final ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-        // если это результаты распознавания речи
-        // и процесс распознавания прошел успешно
-        if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
-            // получаем список текстовых строк - результат распознавания
-            // строк может быть несколько, так как не всегда удается точно распознать речь
-            // более релевантные результаты идут в начале списка
-            final ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                // все, в массиве matches мы получили результаты...
+                if (matches.size() > 0) {
+                    CostCreator cc = null;
 
-            // все, в массиве matches мы получили результаты...
-            if (matches.size() > 0) {
-                CostCreator cc = null;
+                    for (int i = 0; i < matches.size(); i++) {
+                        cc = new CostCreator(matches.get(i));
+                        if (cc.hasCosts())
+                            break;
+                    }
 
-                for (int i = 0; i < matches.size(); i++) {
-                    cc = new CostCreator(matches.get(i));
-                    if (cc.hasCosts())
-                        break;
+                    if (cc.hasCosts()) {
+                        PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
+                        PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
+                        builder.setTitle("")
+                                .setMessage(String.format("Не удалось разобрать\n%s", matches.get(0)))
+                                .setCancelable(false)
+
+                                .setNeutralButton("Повторить", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                        SpeechRecognitionHelper.run(MainActivity.INSTANCE);
+                                    }
+                                })
+                                .setPositiveButton("Продолжить", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                        CostCreator cc = new CostCreator(matches.get(0));
+                                        PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
+                                        PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
+                                    }
+                                })
+                                .setNegativeButton("Отмена",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+
+                    }
+
                 }
 
-                if (cc.hasCosts()) {
-                    PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
-                    PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
-                    builder.setTitle("")
-                            .setMessage(String.format("Не удалось разобрать\n%s", matches.get(0)))
-                            .setCancelable(false)
-
-                            .setNeutralButton("Повторить", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                    SpeechRecognitionHelper.run(MainActivity.INSTANCE);
-                                }
-                            })
-                            .setPositiveButton("Продолжить", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                    CostCreator cc = new CostCreator(matches.get(0));
-                                    PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
-                                    PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
-                                }
-                            })
-                            .setNegativeButton("Отмена",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                    AlertDialog alert = builder.create();
-                    alert.show();
-
-                }
-
             }
 
         }
+
     }
 
 
