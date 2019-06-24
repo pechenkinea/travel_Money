@@ -160,6 +160,8 @@ public class AdapterCostList extends BaseAdapter {
                     String strColor = String.format("#%06X", 0xFFFFFF & to_member.color);
 
                     String to_memberName = to_member.name;
+                    // TODO надо вынести максимальную длину в БД, что бы можно было настраивать кому как нравится.
+                    // Но переносить надо только после создания отдельной странички для настроек
                     if (to_memberName.length() > 12){
                         to_memberName = to_memberName.substring(0, 9).trim() + "...";
                     }
