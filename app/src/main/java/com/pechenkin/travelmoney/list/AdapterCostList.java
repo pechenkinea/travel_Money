@@ -122,6 +122,10 @@ public class AdapterCostList extends BaseAdapter {
         holder.sum_group_sum.setText("");
         holder.sum_line.setText("-->");
 
+        holder.title.setTextColor(Color.BLACK);
+        holder.sum_line.setTextColor(Color.BLACK);
+        holder.sum_comment.setTextColor(Color.BLACK);
+
         holder.labelHeader.setVisibility(View.INVISIBLE);
         holder.sum_group_sum.setPaintFlags(holder.sum_group_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         holder.sum_sum.setPaintFlags(holder.sum_group_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
@@ -150,16 +154,26 @@ public class AdapterCostList extends BaseAdapter {
             List<Cost> costs = ((GroupCost) song).getCosts();
 
 
-            String colorDisableSum = "#CCCCCC";
-            if (song.sum() == 0) {
+            String colorDisable = "#CCCCCC";
+            int colorDisableColor = Color.parseColor(colorDisable);
+
+            /*if (song.sum() == 0) {
                 convertView.setBackgroundResource(R.drawable.background_delete_item);
                 colorDisableSum = "#696969";
-            }
+            }*/
 
             if (costs.size() > 0) {
 
                 MemberBaseTableRow member = t_members.getMemberById(costs.get(0).member());
-                holder.title.setTextColor(member.color);
+
+                if (song.sum() == 0) {
+                    holder.title.setTextColor(colorDisableColor);
+                    holder.sum_line.setTextColor(colorDisableColor);
+                    holder.sum_comment.setTextColor(colorDisableColor);
+                }
+                else {
+                    holder.title.setTextColor(member.color);
+                }
                 holder.title.setText(member.name);
 
                 StringBuilder to_memberText = new StringBuilder();
@@ -172,6 +186,14 @@ public class AdapterCostList extends BaseAdapter {
 
                     String strColor = String.format("#%06X", 0xFFFFFF & to_member.color);
 
+                    String s = Help.DoubleToString(cost.sum());
+                    if (cost.active() != 0) {
+                        sumText.append(s);
+                    } else {
+                        sumText.append("<font color='").append(colorDisable).append("'>").append(s).append("</font>");
+                        strColor = colorDisable;
+                    }
+
                     String to_memberName = to_member.name;
                     if (to_memberName.length() > to_member_text_length) {
                         to_memberName = to_memberName.substring(0, to_member_text_length - 3).trim() + "...";
@@ -180,18 +202,6 @@ public class AdapterCostList extends BaseAdapter {
                     String to_memberLine = "<font color='" + strColor + "'>" + to_memberName + "</font>";
 
                     to_memberText.append(to_memberLine);
-
-
-                    String s = Help.DoubleToString(cost.sum());
-                    if (cost.active() != 0) {
-                        sumText.append(s);
-                    } else {
-                        /*
-                            тут надо бы зачеркивать сумму, но в текущей версии Html.fromHtml не умеет писать зачеркнутый текст
-                            поэтому пишем серым цветом
-                         */
-                        sumText.append("<font color='").append(colorDisableSum).append("'>").append(s).append("</font>");
-                    }
 
                     if (i < costs.size() - 1) {
                         to_memberText.append("<br>");
