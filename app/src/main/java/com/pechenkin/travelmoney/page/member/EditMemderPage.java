@@ -85,6 +85,8 @@ public class EditMemderPage extends BasePage {
         selectColorButton.setOnClickListener(v -> {
             ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(MainActivity.INSTANCE, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
             builder.setTitle("Выберите цвет");
+            builder.attachAlphaSlideBar(false);
+            builder.attachBrightnessSlideBar(false);
             builder.setPreferenceName("ColorPickerDialog");
             builder.setPositiveButton(MainActivity.INSTANCE.getString(R.string.confirm), (ColorListener) (color, fromUser) -> {
                 @SuppressLint("CutPasteId") Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
