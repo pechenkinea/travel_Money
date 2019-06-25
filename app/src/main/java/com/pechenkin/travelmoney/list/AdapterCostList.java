@@ -86,7 +86,7 @@ public class AdapterCostList extends BaseAdapter {
 
         ViewHolder holder;
 
-        Cost song = data[position];
+
 
 
         if (convertView == null) {
@@ -110,6 +110,10 @@ public class AdapterCostList extends BaseAdapter {
 
         holder.costSeparator.setVisibility(View.VISIBLE);
         holder.sumSeparator.setVisibility(View.INVISIBLE);
+
+
+
+        Cost song = data[position];
 
         if (song == null) {
             return convertView;
@@ -149,18 +153,12 @@ public class AdapterCostList extends BaseAdapter {
         else
             holder.have_foto.setVisibility(View.INVISIBLE);
 
-
         if (song instanceof GroupCost) {
             List<Cost> costs = ((GroupCost) song).getCosts();
 
 
             String colorDisable = "#CCCCCC";
             int colorDisableColor = Color.parseColor(colorDisable);
-
-            /*if (song.sum() == 0) {
-                convertView.setBackgroundResource(R.drawable.background_delete_item);
-                colorDisableSum = "#696969";
-            }*/
 
             if (costs.size() > 0) {
 

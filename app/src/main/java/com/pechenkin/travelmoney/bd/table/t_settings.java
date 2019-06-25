@@ -60,13 +60,13 @@ public class t_settings {
                 } else {
                     db.insert(Namespace.TABLE_SETTINGS, null, cv);
                 }
+
+                settings.put(name, value);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 Help.alert(ex.getMessage());
             }
         }
-        getSettings();
-
     }
 
     public synchronized boolean active(String name) {
@@ -83,9 +83,11 @@ public class t_settings {
     public void revertBoolean(String name) {
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
 
+
+            String newValue = t_settings.INSTANCE.active(name) ? "0" : "1"; //Было 1 ставим 0. и наоборот
             ContentValues cv = new ContentValues();
             cv.put(Namespace.FIELD_NAME, name);
-            cv.put(Namespace.FIELD_VALUE, t_settings.INSTANCE.active(name) ? 0 : 1); //Было 0 ставим 1. и наоборот
+            cv.put(Namespace.FIELD_VALUE, newValue);
 
             try {
                 if (settings.containsKey(name)) {
@@ -93,12 +95,13 @@ public class t_settings {
                 } else {
                     db.insert(Namespace.TABLE_SETTINGS, null, cv);
                 }
+
+                settings.put(name, newValue);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 Help.alert(ex.getMessage());
             }
         }
-        getSettings();
     }
 
 

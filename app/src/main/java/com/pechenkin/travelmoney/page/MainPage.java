@@ -474,19 +474,22 @@ public class MainPage extends BasePage {
                         && !t_settings.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)
                         && !t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP)) {
                     Help.alertHelp(MainActivity.INSTANCE.getString(R.string.deleteCostHelp));
-                    t_settings.INSTANCE.revertBoolean(NamespaceSettings.DELETE_COST_SHOWED_HELP);
+
+                    t_settings.INSTANCE.setActive(NamespaceSettings.DELETE_COST_SHOWED_HELP, true);
                 }
 
+                //Если 10 операций уже внесено то пусть подсказки больше не показываются
+                if (adapter.getCount() > 10 && !t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP)) {
+                    t_settings.INSTANCE.setActive(NamespaceSettings.HIDE_ALL_HELP, true);
+                }
 
-                if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST_NEED_MESSAGE)){
+                if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST_NEED_MESSAGE)) {
                     Help.alertHelp(MainActivity.INSTANCE.getString(R.string.groupCostMessage));
-                    t_settings.INSTANCE.revertBoolean(NamespaceSettings.GROUP_COST_NEED_MESSAGE);
+                    t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_COST_NEED_MESSAGE, false);
                 }
             }
         };
 
         async.execute();
-
-
     }
 }

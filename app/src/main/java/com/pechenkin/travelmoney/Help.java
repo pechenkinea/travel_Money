@@ -214,6 +214,12 @@ public class Help {
 		{
 			result = "0" + result;
 		}
+
+		// если больше 100_000 то копейки скрываем, что бы не получались сильно длинные цифры
+		if (value >= 100_000){
+			result = result.replaceAll("\\..*", "");
+		}
+
 		return result;
 	}
 

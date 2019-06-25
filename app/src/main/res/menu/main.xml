@@ -77,8 +77,6 @@
 		android:visible="false"
 		tools:ignore="HardcodedText" />
 
-
-
 	<item
 		android:id="@+id/testBigCostList"
 		android:orderInCategory="1"
