@@ -1,9 +1,7 @@
 package com.pechenkin.travelmoney;
 
 import com.pechenkin.travelmoney.bd.DBHelper;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.page.AboutPage;
 import com.pechenkin.travelmoney.page.AddCostsListPage;
 import com.pechenkin.travelmoney.page.SettingsPage;
@@ -24,7 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;

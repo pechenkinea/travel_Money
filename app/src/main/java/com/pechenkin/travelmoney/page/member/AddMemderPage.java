@@ -22,9 +22,10 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpenner;
-import com.skydoves.colorpickerpreference.ColorEnvelope;
-import com.skydoves.colorpickerpreference.ColorListener;
-import com.skydoves.colorpickerpreference.ColorPickerDialog;
+import com.skydoves.colorpickerview.ColorEnvelope;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.listeners.ColorListener;
+
 
 /**
  * Created by pechenkin on 19.04.2018.
@@ -126,15 +127,15 @@ public class AddMemderPage extends BasePage {
         selectColorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(MainActivity.INSTANCE, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
                 builder.setTitle("Выберите цвет");
                 builder.setPreferenceName("ColorPickerDialog");
-                //builder.setFlagView(new CustomFlag(this, R.layout.layout_flag));
                 builder.setPositiveButton(MainActivity.INSTANCE.getString(R.string.confirm), new ColorListener() {
                     @Override
-                    public void onColorSelected(ColorEnvelope colorEnvelope) {
+                    public void onColorSelected(int color, boolean fromUser) {
                         Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-                        textView.setBackgroundColor(colorEnvelope.getColor());
+                        textView.setBackgroundColor(color);
                     }
                 });
                 builder.setNegativeButton(MainActivity.INSTANCE.getString(R.string.cancel), new DialogInterface.OnClickListener() {

@@ -22,9 +22,10 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpenner;
-import com.skydoves.colorpickerpreference.ColorEnvelope;
-import com.skydoves.colorpickerpreference.ColorListener;
-import com.skydoves.colorpickerpreference.ColorPickerDialog;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.listeners.ColorListener;
+
+import java.util.Objects;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -94,13 +95,13 @@ public class EditMemderPage extends BasePage {
                 ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(MainActivity.INSTANCE, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
                 builder.setTitle("Выберите цвет");
                 builder.setPreferenceName("ColorPickerDialog");
-                //builder.setFlagView(new CustomFlag(this, R.layout.layout_flag));
                 builder.setPositiveButton(MainActivity.INSTANCE.getString(R.string.confirm), new ColorListener() {
                     @Override
-                    public void onColorSelected(ColorEnvelope colorEnvelope) {
+                    public void onColorSelected(int color, boolean fromUser) {
                         Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-                        textView.setBackgroundColor(colorEnvelope.getColor());
+                        textView.setBackgroundColor(color);
                     }
+
                 });
                 builder.setNegativeButton(MainActivity.INSTANCE.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
@@ -118,7 +119,7 @@ public class EditMemderPage extends BasePage {
                     }
                 });
 
-                builder.getColorPickerView().setPaletteDrawable(MainActivity.INSTANCE.getDrawable(R.drawable.colors));
+                builder.getColorPickerView().setPaletteDrawable(Objects.requireNonNull(MainActivity.INSTANCE.getDrawable(R.drawable.colors)));
 
                 builder.show();
             }

@@ -21,14 +21,14 @@
 				android:orderInCategory="1"
 				android:icon="@drawable/json_48"
 				android:title="@string/json"
-				app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+				app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
 				/>
 			<item
 				android:id="@+id/exportToCSV"
 				android:orderInCategory="1"
 				android:icon="@drawable/csv_48"
 				android:title="@string/csv"
-				app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
+				app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"/>
 		</menu>
 	</item>
 

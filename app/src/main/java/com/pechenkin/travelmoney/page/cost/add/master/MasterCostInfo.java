@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -18,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.core.content.FileProvider;
+
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -25,7 +26,6 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpenner;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
@@ -227,7 +227,7 @@ public class MasterCostInfo extends BasePage {
 
                         TimePickerDialog timeDialog = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
                             @Override
-                            public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+                            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
                                 Calendar cal = Calendar.getInstance();
                                 cal.set(Calendar.YEAR, year);
                                 cal.set(Calendar.MONTH, monthOfYear);
@@ -241,13 +241,14 @@ public class MasterCostInfo extends BasePage {
                                 selectDate = cal.getTime();
                             }
 
+
                         }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true);
 
                         if (c.get(Calendar.YEAR) == year && c.get(Calendar.DAY_OF_MONTH) == dayOfMonth && c.get(Calendar.DAY_OF_MONTH) == dayOfMonth) {
                             timeDialog.setMaxTime(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND));
                         }
 
-                        timeDialog.show(MainActivity.INSTANCE.getFragmentManager(), "");
+                        timeDialog.show(MainActivity.INSTANCE.getSupportFragmentManager(), "");
                     }
                 }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
