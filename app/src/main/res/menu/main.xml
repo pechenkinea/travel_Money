@@ -56,21 +56,12 @@
 		android:icon="@drawable/summary_48"
 		android:title="@string/sum_result"/>
 
+
 	<item
-		android:id="@+id/hide_show_helps"
+		android:id="@+id/settings"
 		android:orderInCategory="1"
-		android:icon="@drawable/hint_on"
-		android:title="@string/helps_on_off"/>
-	<item
-		android:id="@+id/group_by_color"
-		android:orderInCategory="1"
-		android:icon="@drawable/hint_off"
-		android:title="@string/group_by_color_on_off"/>
-	<item
-		android:id="@+id/group_cost"
-		android:orderInCategory="1"
-		android:icon="@drawable/hint_off"
-		android:title="@string/group_cost_lost_on_off"/>
+		android:icon="@drawable/settings_48"
+		android:title="@string/settings"/>
 
 	<item
 		android:id="@+id/menu_about"

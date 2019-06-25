@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <include
+        layout="@layout/toolbar_out_main" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_out_main"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/checkBox_hide_show_helps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/helps_on_off" />
+
+            <CheckBox
+                android:id="@+id/checkBox_group_cost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/group_cost_on_off" />
+
+            <CheckBox
+                android:id="@+id/checkBox_group_by_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/group_by_color_on_off" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="@string/group_by_color_description" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/to_member_text_length_label"
+                android:labelFor="@+id/to_member_text_length"/>
+
+            <EditText
+                android:id="@+id/to_member_text_length"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberSigned"
+                tools:ignore="Autofill" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+</RelativeLayout>

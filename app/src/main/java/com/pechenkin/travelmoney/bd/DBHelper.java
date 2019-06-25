@@ -8,7 +8,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 7);
+        super(context, Namespace.DB_NAME, null, 8);
     }
 
     @Override
@@ -99,6 +99,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_BY_COLOR + "', '0');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '1');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '0');");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
 
 
     }
@@ -141,6 +142,11 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '1');");
         }
 
+
+        // Вынесено в настройки кол-во символов учатников в графе "Кому" при включенной группировке
+        if (oldVersion < 8) {
+            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
+        }
 
     }
 }

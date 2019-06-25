@@ -6,6 +6,7 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.page.AboutPage;
 import com.pechenkin.travelmoney.page.AddCostsListPage;
+import com.pechenkin.travelmoney.page.SettingsPage;
 import com.pechenkin.travelmoney.page.trip.AddTripPage;
 import com.pechenkin.travelmoney.page.MainPage;
 import com.pechenkin.travelmoney.page.member.MembersListPage;
@@ -93,19 +94,8 @@ public class MainActivity extends AppCompatActivity {
                     PageOpenner.INSTANCE.open(TripsListPage.class);
                     return true;
 
-                case R.id.hide_show_helps:
-                    t_settings.INSTANCE.revertBoolean(NamespaceSettings.HIDE_ALL_HELP);
-                    PageOpenner.INSTANCE.getCurrentPage().open();
-                    return true;
-
-                case R.id.group_by_color:
-                    t_settings.INSTANCE.revertBoolean(NamespaceSettings.GROUP_BY_COLOR);
-                    PageOpenner.INSTANCE.getCurrentPage().open();
-                    return true;
-
-                case R.id.group_cost:
-                    t_settings.INSTANCE.revertBoolean(NamespaceSettings.GROUP_COST);
-                    PageOpenner.INSTANCE.getCurrentPage().open();
+                case R.id.settings:
+                    PageOpenner.INSTANCE.open(SettingsPage.class);
                     return true;
 
                 case R.id.menu_about:
@@ -138,24 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem hide_show_helps = menu.findItem(R.id.hide_show_helps);
-        if (hide_show_helps != null) {
-            //hide_show_helps.setTitle(t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP) ? "Включить подсказки" : "Выключить подсказки");
-            hide_show_helps.setIcon(t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP) ? R.drawable.hint_off : R.drawable.hint_on);
-        }
-
-        MenuItem group_by_color = menu.findItem(R.id.group_by_color);
-        if (group_by_color != null) {
-            //group_by_color.setTitle(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR) ? "Выкл. группировку итогов по цветам" : "Группировка итогов по цветам");
-            group_by_color.setIcon(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR) ? R.drawable.hint_on : R.drawable.hint_off);
-        }
-
-        MenuItem group_cost = menu.findItem(R.id.group_cost);
-        if (group_cost != null) {
-            //group_cost.setTitle(t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST) ? "Выключить группировку трат" : "Выключить группировку трат");
-            group_cost.setIcon(t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST) ? R.drawable.hint_on : R.drawable.hint_off);
-        }
-
         return super.onPrepareOptionsMenu(menu);
     }
 

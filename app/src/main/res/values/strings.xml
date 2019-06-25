@@ -41,6 +41,7 @@
     <string name="edit">Редактировать</string>
     <string name="check">Выбран</string>
     <string name="about">О программе…</string>
+    <string name="settings">Настройки</string>
     <string name="version">Версия:</string>
     <string name="versionCode">Код версии:</string>
     <string name="thirdSoftware">Стороннее ПО</string>
@@ -53,7 +54,7 @@
     <string name="wait">Подождите…</string>
     <string name="membersList">Список участников</string>
     <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов.  Повторное долгое нажатие вернет операцию в исходное состояние  После отмены или возврата, для актуализации итогов, обновите страницу</string>
-    <string name="groupCostMessage">Появилась возможность группировать операции в общем списке. Многим этот режим нравится больше, попробуйте и Вы! Включить или выключить эту опцию можно в меню</string>
+    <string name="groupCostMessage">Появилась возможность группировать операции. Включить или выключить эти опции можно на странице настроек</string>
     <string name="errorNoActiveTask">Нет активных поездок</string>
     <string name="errorNoData">Нет данных</string>
     <string name="costInfo">Информация о трате</string>
@@ -77,7 +78,10 @@
 
     <string name="helps_on_off">Подсказки</string>
     <string name="group_by_color_on_off">Группировка итогов по цветам</string>
-    <string name="group_cost_lost_on_off">Группировка списка операций</string>
+    <string name="group_by_color_description">При включенной опции участники одного цвета будут иметь общий бюджет при подсчете итогов</string>
+
+    <string name="group_cost_on_off">Группировка в общем списке операций</string>
+    <string name="to_member_text_length_label">Разрешенное количество символов для участников в поле \'кому\' при включенной группировке общего списка операций</string>
 
 
 </resources>

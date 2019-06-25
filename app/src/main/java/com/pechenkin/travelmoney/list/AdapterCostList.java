@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.R;
@@ -28,8 +30,19 @@ public class AdapterCostList extends BaseAdapter {
     private Cost[] data;
     private static LayoutInflater inflater = null;
 
+    private int to_member_text_length = 12;
+
     public AdapterCostList(Context a, Cost[] data) {
         this.data = data;
+        try {
+            to_member_text_length = Integer.parseInt(t_settings.INSTANCE.get(NamespaceSettings.TO_MEMBER_TEXT_LENGTH));
+            if (to_member_text_length < 4){
+                to_member_text_length = 4;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -126,8 +139,6 @@ public class AdapterCostList extends BaseAdapter {
         holder.sum_comment.setText(comment);
 
 
-
-
         String dir = song.image_dir();
         if (dir.length() > 0)
             holder.have_foto.setVisibility(View.VISIBLE);
@@ -135,12 +146,14 @@ public class AdapterCostList extends BaseAdapter {
             holder.have_foto.setVisibility(View.INVISIBLE);
 
 
-
         if (song instanceof GroupCost) {
             List<Cost> costs = ((GroupCost) song).getCosts();
 
-            if (song.sum() == 0){
+
+            String colorDisableSum = "#CCCCCC";
+            if (song.sum() == 0) {
                 convertView.setBackgroundResource(R.drawable.background_delete_item);
+                colorDisableSum = "#696969";
             }
 
             if (costs.size() > 0) {
@@ -160,10 +173,8 @@ public class AdapterCostList extends BaseAdapter {
                     String strColor = String.format("#%06X", 0xFFFFFF & to_member.color);
 
                     String to_memberName = to_member.name;
-                    // TODO надо вынести максимальную длину в БД, что бы можно было настраивать кому как нравится.
-                    // Но переносить надо только после создания отдельной странички для настроек
-                    if (to_memberName.length() > 12){
-                        to_memberName = to_memberName.substring(0, 9).trim() + "...";
+                    if (to_memberName.length() > to_member_text_length) {
+                        to_memberName = to_memberName.substring(0, to_member_text_length - 3).trim() + "...";
                     }
 
                     String to_memberLine = "<font color='" + strColor + "'>" + to_memberName + "</font>";
@@ -174,13 +185,12 @@ public class AdapterCostList extends BaseAdapter {
                     String s = Help.DoubleToString(cost.sum());
                     if (cost.active() != 0) {
                         sumText.append(s);
-                    }
-                    else {
+                    } else {
                         /*
                             тут надо бы зачеркивать сумму, но в текущей версии Html.fromHtml не умеет писать зачеркнутый текст
-                            поэтому пишем ноль и рядом, серым цветом, сумма
+                            поэтому пишем серым цветом
                          */
-                        sumText.append("0 <font color='#696969'>(").append(s).append(")</font>");
+                        sumText.append("<font color='").append(colorDisableSum).append("'>").append(s).append("</font>");
                     }
 
                     if (i < costs.size() - 1) {
@@ -234,9 +244,6 @@ public class AdapterCostList extends BaseAdapter {
             MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
             holder.to_member.setText((to_member != null) ? to_member.name : "");
             holder.to_member.setTextColor((to_member != null) ? to_member.color : Color.BLACK);
-
-
-
 
 
         }
