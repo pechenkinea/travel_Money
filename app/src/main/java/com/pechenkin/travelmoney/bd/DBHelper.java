@@ -45,7 +45,11 @@ public class DBHelper extends SQLiteOpenHelper {
         createTableCost(db);
 
         addSettingTable(db);
-        //addHistoryTable(db);
+        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.DELETE_COST_SHOWED_HELP + "', '0');");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_BY_COLOR + "', '0');");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '1');");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '0');");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
 
 
     }
@@ -68,21 +72,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 + ");");
     }
 
-    /**
-     * Добавит таблицу для хранения записей истории
-     * пока не используется
-     */
-    private void addHistoryTable(SQLiteDatabase db) {
-
-        db.execSQL("create table " + Namespace.TABLE_HISTORY + " ("
-                + Namespace.FIELD_ID + " integer primary key autoincrement, "
-                + Namespace.FIELD_OBJECT_ID + " integer not null,"
-                + Namespace.FIELD_DATE + " integer,"
-                + Namespace.FIELD_DESCRIPTION + " text"
-                + ");");
-
-    }
-
     private void addSettingTable(SQLiteDatabase db) {
         db.execSQL("create table " + Namespace.TABLE_SETTINGS + " ("
                 + Namespace.FIELD_NAME + " text primary key not null,"
@@ -94,13 +83,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MAIN_PAGE_HELP_ADD_MEMBERS + "', '1');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MEMBERS_LIST_HELP + "', '1');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TRIPS_LIST_HELP + "', '1');");
-
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.DELETE_COST_SHOWED_HELP + "', '0');");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_BY_COLOR + "', '0');");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '1');");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '0');");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
-
 
     }
 
@@ -118,7 +100,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         //Добавлена настройка DELETE_COST_SHOWED_HELP
-        if (oldVersion == 3) {
+        if (oldVersion < 4) {
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.DELETE_COST_SHOWED_HELP + "', '0');");
         }
 
@@ -141,7 +123,6 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '0');");
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '1');");
         }
-
 
         // Вынесено в настройки кол-во символов учатников в графе "Кому" при включенной группировке
         if (oldVersion < 8) {

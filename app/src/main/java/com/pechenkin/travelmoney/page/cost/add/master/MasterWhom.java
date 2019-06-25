@@ -25,7 +25,7 @@ import java.util.Set;
 
 /**
  * Created by pechenkin on 15.05.2018.
- * Страница мастера добавления траты. Кто платил
+ * Страница мастера добавления траты. За кого платил
  */
 
 public class MasterWhom extends ListPage {
