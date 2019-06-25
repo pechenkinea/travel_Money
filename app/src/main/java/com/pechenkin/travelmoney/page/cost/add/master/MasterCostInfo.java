@@ -85,9 +85,9 @@ public class MasterCostInfo extends BasePage {
 
         EditText et_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
         String sum = et_sum.getText().toString();
-        if (sum.length() == 0) {
+        if (sum.length() == 0 ||  Help.StringToDouble(sum) <= 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorFillSum));
-            Help.setActiveEditText(R.id.cost_sum);
+            Help.setActiveEditText(R.id.cost_sum, true);
             return;
         }
 
