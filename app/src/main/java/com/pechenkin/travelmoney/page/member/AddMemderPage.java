@@ -1,19 +1,17 @@
 package com.pechenkin.travelmoney.page.member;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
@@ -22,9 +20,10 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpenner;
-import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorListener;
+
+import java.util.Objects;
 
 
 /**
@@ -80,23 +79,15 @@ public class AddMemderPage extends BasePage {
     public void addEvents() {
 
         Button commitButton = MainActivity.INSTANCE.findViewById(R.id.add_member_commit);
-        commitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                formCommit();
-            }
-        });
+        commitButton.setOnClickListener(v -> formCommit());
 
         final EditText nameField = MainActivity.INSTANCE.findViewById(R.id.editName);
-        nameField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    formCommit();
-                    return true;
-                }
-                return false;
+        nameField.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                formCommit();
+                return true;
             }
+            return false;
         });
 
 
@@ -124,40 +115,26 @@ public class AddMemderPage extends BasePage {
 
         //Выбор цвета
         Button selectColorButton =  MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-        selectColorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        selectColorButton.setOnClickListener(v -> {
 
-                ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(MainActivity.INSTANCE, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
-                builder.setTitle("Выберите цвет");
-                builder.setPreferenceName("ColorPickerDialog");
-                builder.setPositiveButton(MainActivity.INSTANCE.getString(R.string.confirm), new ColorListener() {
-                    @Override
-                    public void onColorSelected(int color, boolean fromUser) {
-                        Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-                        textView.setBackgroundColor(color);
-                    }
-                });
-                builder.setNegativeButton(MainActivity.INSTANCE.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+            ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(MainActivity.INSTANCE, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+            builder.setTitle("Выберите цвет");
+            builder.setPreferenceName("ColorPickerDialog");
+            builder.setPositiveButton(MainActivity.INSTANCE.getString(R.string.confirm), (ColorListener) (color, fromUser) -> {
+                @SuppressLint("CutPasteId") Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
+                textView.setBackgroundColor(color);
+            });
+            builder.setNegativeButton(MainActivity.INSTANCE.getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss());
 
-                builder.setNeutralButton("По умолчанию", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-                        textView.setBackgroundColor(Color.BLACK);
-                        dialogInterface.dismiss();
-                    }
-                });
+            builder.setNeutralButton("По умолчанию", (dialogInterface, i) -> {
+                @SuppressLint("CutPasteId") Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
+                textView.setBackgroundColor(Color.BLACK);
+                dialogInterface.dismiss();
+            });
 
-                builder.getColorPickerView().setPaletteDrawable(MainActivity.INSTANCE.getDrawable(R.drawable.colors));
+            builder.getColorPickerView().setPaletteDrawable(Objects.requireNonNull(MainActivity.INSTANCE.getDrawable(R.drawable.colors)));
 
-                builder.show();
-            }
+            builder.show();
         });
 
     }

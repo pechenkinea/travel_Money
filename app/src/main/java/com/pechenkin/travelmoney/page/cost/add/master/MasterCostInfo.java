@@ -7,12 +7,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -108,38 +106,27 @@ public class MasterCostInfo extends BasePage {
     @Override
     public void addEvents() {
         Button commitButton = MainActivity.INSTANCE.findViewById(R.id.cost_info_commit_button);
-        commitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                commitForm();
-            }
-        });
+        commitButton.setOnClickListener(v -> commitForm());
 
         //Завершение работы с описанием
         EditText commentText = MainActivity.INSTANCE.findViewById(R.id.cost_comment);
-        commentText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        commentText.setOnEditorActionListener((v, actionId, event) -> {
 
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    Help.setActiveEditText(R.id.cost_sum, true);
-                    return true;
-                }
-                return false;
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                Help.setActiveEditText(R.id.cost_sum, true);
+                return true;
             }
+            return false;
         });
 
         //Кнопка "готово" на сумме
         final EditText cost_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
-        cost_sum.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    commitForm();
-                    return true;
-                }
-                return false;
+        cost_sum.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                commitForm();
+                return true;
             }
+            return false;
         });
 
 
@@ -168,100 +155,86 @@ public class MasterCostInfo extends BasePage {
 
         //Кнопка для фотографии
         ImageButton fotoButton = MainActivity.INSTANCE.findViewById(R.id.buttonFoto);
-        fotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Help.hideKeyboard();
+        fotoButton.setOnClickListener(v -> {
+            Help.hideKeyboard();
 
-                if (!Environment.getExternalStorageState().equals(
-                        Environment.MEDIA_MOUNTED)) {
-                    Help.alert("SD-карта не доступна: " + Environment.getExternalStorageState());
-                    return;
-                }
-
-                Date now = new Date();
-                File path = Environment.getExternalStorageDirectory();
-
-
-                File f1 = new File(path.getAbsolutePath() + "/travel_Money");
-                if (!f1.exists() && !f1.mkdirs()) {
-                    Help.alert("Ошибка. Не удалось создать папку для хранения фото. " + f1.getAbsolutePath() + MainActivity.INSTANCE.getString(R.string.fileError));
-                    return;
-                }
-
-                File file = new File(f1.getAbsolutePath(), now.getTime() + ".jpg");
-
-
-                MainActivity.INSTANCE.outputFileUri = FileProvider.getUriForFile(
-                        MainActivity.INSTANCE,
-                        MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", file);
-
-                if (MainActivity.INSTANCE.outputFileUri == null) {
-                    Help.alert("Ошибка. Не удалось создать файл для фото.");
-                    return;
-                }
-
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, MainActivity.INSTANCE.outputFileUri);
-
-                MainActivity.INSTANCE.setResult(RESULT_OK, intent);
-
-                MainActivity.INSTANCE.startActivityForResult(intent, MainActivity.TAKE_COST_FOTO);
+            if (!Environment.getExternalStorageState().equals(
+                    Environment.MEDIA_MOUNTED)) {
+                Help.alert("SD-карта не доступна: " + Environment.getExternalStorageState());
+                return;
             }
+
+            Date now = new Date();
+            File path = Environment.getExternalStorageDirectory();
+
+
+            File f1 = new File(path.getAbsolutePath() + "/travel_Money");
+            if (!f1.exists() && !f1.mkdirs()) {
+                Help.alert("Ошибка. Не удалось создать папку для хранения фото. " + f1.getAbsolutePath() + MainActivity.INSTANCE.getString(R.string.fileError));
+                return;
+            }
+
+            File file = new File(f1.getAbsolutePath(), now.getTime() + ".jpg");
+
+
+            MainActivity.INSTANCE.outputFileUri = FileProvider.getUriForFile(
+                    MainActivity.INSTANCE,
+                    MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", file);
+
+            if (MainActivity.INSTANCE.outputFileUri == null) {
+                Help.alert("Ошибка. Не удалось создать файл для фото.");
+                return;
+            }
+
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, MainActivity.INSTANCE.outputFileUri);
+
+            MainActivity.INSTANCE.setResult(RESULT_OK, intent);
+
+            MainActivity.INSTANCE.startActivityForResult(intent, MainActivity.TAKE_COST_FOTO);
         });
 
 
         EditText textDate = MainActivity.INSTANCE.findViewById(R.id.textDate);
-        textDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        textDate.setOnClickListener(v -> {
 
-                Calendar c = Calendar.getInstance();
-                c.setTime(selectDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(selectDate);
 
-                DatePickerDialog dateDialog = new DatePickerDialog(MainActivity.INSTANCE, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
+            DatePickerDialog dateDialog = new DatePickerDialog(MainActivity.INSTANCE, (view, year, monthOfYear, dayOfMonth) -> {
 
-                        Calendar c = Calendar.getInstance();
+                Calendar c1 = Calendar.getInstance();
 
-                        TimePickerDialog timeDialog = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-                                Calendar cal = Calendar.getInstance();
-                                cal.set(Calendar.YEAR, year);
-                                cal.set(Calendar.MONTH, monthOfYear);
-                                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                                cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                cal.set(Calendar.MINUTE, minute);
+                TimePickerDialog timeDialog = TimePickerDialog.newInstance((view1, hourOfDay, minute, second) -> {
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.YEAR, year);
+                    cal.set(Calendar.MONTH, monthOfYear);
+                    cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    cal.set(Calendar.MINUTE, minute);
 
-                                ((TextView) MainActivity.INSTANCE.findViewById(R.id.textDate))
-                                        .setText(dateFormat.format(cal.getTime()));
+                    ((TextView) MainActivity.INSTANCE.findViewById(R.id.textDate))
+                            .setText(dateFormat.format(cal.getTime()));
 
-                                selectDate = cal.getTime();
-                            }
+                    selectDate = cal.getTime();
+                }, c1.get(Calendar.HOUR_OF_DAY), c1.get(Calendar.MINUTE), true);
 
+                if (c1.get(Calendar.YEAR) == year && c1.get(Calendar.DAY_OF_MONTH) == dayOfMonth && c1.get(Calendar.DAY_OF_MONTH) == dayOfMonth) {
+                    timeDialog.setMaxTime(c1.get(Calendar.HOUR_OF_DAY), c1.get(Calendar.MINUTE), c1.get(Calendar.SECOND));
+                }
 
-                        }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true);
-
-                        if (c.get(Calendar.YEAR) == year && c.get(Calendar.DAY_OF_MONTH) == dayOfMonth && c.get(Calendar.DAY_OF_MONTH) == dayOfMonth) {
-                            timeDialog.setMaxTime(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND));
-                        }
-
-                        timeDialog.show(MainActivity.INSTANCE.getSupportFragmentManager(), "");
-                    }
-                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                timeDialog.show(MainActivity.INSTANCE.getSupportFragmentManager(), "");
+            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
 
-                Calendar cMax = Calendar.getInstance();
-                cMax.set(Calendar.HOUR_OF_DAY, 23);
-                cMax.set(Calendar.MINUTE, 59);
+            Calendar cMax = Calendar.getInstance();
+            cMax.set(Calendar.HOUR_OF_DAY, 23);
+            cMax.set(Calendar.MINUTE, 59);
 
 
-                dateDialog.getDatePicker().setMaxDate(cMax.getTime().getTime());
+            dateDialog.getDatePicker().setMaxDate(cMax.getTime().getTime());
 
-                dateDialog.show();
-            }
+            dateDialog.show();
         });
 
 

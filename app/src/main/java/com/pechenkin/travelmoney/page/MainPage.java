@@ -135,75 +135,54 @@ public class MainPage extends BasePage {
 
         Button addCostButton = MainActivity.INSTANCE.findViewById(R.id.mainPageAddbutton);
         if (addCostButton != null) {
-            addCostButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Открываем мастер Добавления траты
-                    PageOpenner.INSTANCE.open(MasterWho.class);
-                }
+            addCostButton.setOnClickListener(v -> {
+                // Открываем мастер Добавления траты
+                PageOpenner.INSTANCE.open(MasterWho.class);
             });
         }
 
         ImageButton mainPageSpeechRecognition = MainActivity.INSTANCE.findViewById(R.id.mainPageSpeechRecognition);
 
-        mainPageSpeechRecognition.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SpeechRecognitionHelper.run(MainActivity.INSTANCE);
-            }
-        });
+        mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
 
 
         Button mainPageRevertbutton = MainActivity.INSTANCE.findViewById(R.id.mainPageRevertbutton);
         if (mainPageRevertbutton != null) {
-            mainPageRevertbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickBackButton();
-                }
-            });
+            mainPageRevertbutton.setOnClickListener(v -> clickBackButton());
         }
 
 
         final ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
-        listViewCosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewCosts.setOnItemClickListener((parent, view, index, id) -> {
 
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int index, long id) {
+            ListAdapter adapter = listViewCosts.getAdapter();
+            Cost item = (Cost) adapter.getItem(index);
 
+            if (new Date().getTime() - changeCostStateTime < 2000) {
+                revertStatus(item);
+            } else {
+                if (item != null && item.image_dir() != null && item.image_dir().length() > 0) {
 
-                ListAdapter adapter = listViewCosts.getAdapter();
-                Cost item = (Cost) adapter.getItem(index);
+                    PageParam.BuildingPageParam param = new PageParam.BuildingPageParam()
+                            .setFotoUrl(item.image_dir());
 
-                if (new Date().getTime() - changeCostStateTime < 2000) {
-                    revertStatus(item);
-                } else {
-                    if (item != null && item.image_dir() != null && item.image_dir().length() > 0) {
-
-                        PageParam.BuildingPageParam param = new PageParam.BuildingPageParam()
-                                .setFotoUrl(item.image_dir());
-
-                        if (hasParam() && getParam().getId() > -1) {
-                            param.setId(getParam().getId());
-                        }
-
-                        PageOpenner.INSTANCE.open(FotoPage.class, param.getParam());
+                    if (hasParam() && getParam().getId() > -1) {
+                        param.setId(getParam().getId());
                     }
-                }
 
+                    PageOpenner.INSTANCE.open(FotoPage.class, param.getParam());
+                }
             }
+
         });
 
 
-        listViewCosts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View v, int index, long arg3) {
+        listViewCosts.setOnItemLongClickListener((arg0, v, index, arg3) -> {
 
-                ListAdapter adapter = listViewCosts.getAdapter();
-                Cost item = (Cost) adapter.getItem(index);
-                return revertStatus(item);
-            }
+            ListAdapter adapter = listViewCosts.getAdapter();
+            Cost item = (Cost) adapter.getItem(index);
+            return revertStatus(item);
         });
 
 
@@ -225,15 +204,12 @@ public class MainPage extends BasePage {
             }
         });
 
-        buttonListToTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonListToTop.setOnClickListener(v -> {
 
-                if (scrollPosition > 10) {
-                    listViewCosts.setSelection(10);
-                }
-                listViewCosts.smoothScrollToPosition(0);
+            if (scrollPosition > 10) {
+                listViewCosts.setSelection(10);
             }
+            listViewCosts.smoothScrollToPosition(0);
         });
 
     }

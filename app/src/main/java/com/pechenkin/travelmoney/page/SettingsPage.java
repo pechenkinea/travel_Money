@@ -3,14 +3,9 @@ package com.pechenkin.travelmoney.page;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.pechenkin.travelmoney.BuildConfig;
-import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
@@ -36,28 +31,13 @@ public class SettingsPage extends BasePage {
     public void addEvents() {
 
         CheckBox hide_show_helps = MainActivity.INSTANCE.findViewById(R.id.checkBox_hide_show_helps);
-        hide_show_helps.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                t_settings.INSTANCE.setActive(NamespaceSettings.HIDE_ALL_HELP, !isChecked);
-            }
-        });
+        hide_show_helps.setOnCheckedChangeListener((buttonView, isChecked) -> t_settings.INSTANCE.setActive(NamespaceSettings.HIDE_ALL_HELP, !isChecked));
 
         CheckBox group_cost = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_cost);
-        group_cost.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_COST, isChecked);
-            }
-        });
+        group_cost.setOnCheckedChangeListener((buttonView, isChecked) -> t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_COST, isChecked));
 
         CheckBox group_by_color = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_by_color);
-        group_by_color.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_BY_COLOR, isChecked);
-            }
-        });
+        group_by_color.setOnCheckedChangeListener((buttonView, isChecked) -> t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_BY_COLOR, isChecked));
 
 
         final EditText to_member_text_length = MainActivity.INSTANCE.findViewById(R.id.to_member_text_length);

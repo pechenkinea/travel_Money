@@ -1,18 +1,18 @@
 package com.pechenkin.travelmoney.page.trip;
 
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
-import com.pechenkin.travelmoney.page.member.MembersListPage;
 import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.member.MembersListPage;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -33,42 +33,39 @@ public class EditTripPage extends BasePage {
     @Override
     public void addEvents() {
         Button commitButton = MainActivity.INSTANCE.findViewById(R.id.edit_trip_commit_button);
-        commitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        commitButton.setOnClickListener(v -> {
 
-                EditText trName =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Name);
-                EditText trComment =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Comment);
+            EditText trName =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Name);
+            EditText trComment =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Comment);
 
-                String strName = trName.getText().toString();
-                if (strName.length() > 0)
+            String strName = trName.getText().toString();
+            if (strName.length() > 0)
+            {
+                if (t_trips.isAdded(strName))
                 {
-                    if (t_trips.isAdded(strName))
+                    if (getParam().getId() != t_trips.getIdByName(strName))
                     {
-                        if (getParam().getId() != t_trips.getIdByName(strName))
-                        {
-                            Help.message("Название занято");
-                            Help.setActiveEditText(R.id.edit_trip_ET_Name);
-                            return;
-                        }
+                        Help.message("Название занято");
+                        Help.setActiveEditText(R.id.edit_trip_ET_Name);
+                        return;
                     }
-
-                    t_trips.edit(getParam().getId(), strName, trComment.getText().toString());
-                    CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
-
-                    if (isActive.isChecked())
-                        t_trips.set_active(getParam().getId());
-
-                    Help.message("Сохранено");
-                    PageOpenner.INSTANCE.open(MembersListPage.class);
-                }
-                else
-                {
-                    Help.message("Введите название");
-                    Help.setActiveEditText(R.id.edit_trip_ET_Name);
                 }
 
+                t_trips.edit(getParam().getId(), strName, trComment.getText().toString());
+                CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
+
+                if (isActive.isChecked())
+                    t_trips.set_active(getParam().getId());
+
+                Help.message("Сохранено");
+                PageOpenner.INSTANCE.open(MembersListPage.class);
             }
+            else
+            {
+                Help.message("Введите название");
+                Help.setActiveEditText(R.id.edit_trip_ET_Name);
+            }
+
         });
     }
 

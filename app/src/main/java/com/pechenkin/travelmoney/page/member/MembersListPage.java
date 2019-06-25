@@ -45,20 +45,10 @@ public class MembersListPage extends ListPage {
         super.addEvents();
 
         Button addMemberButton = MainActivity.INSTANCE.findViewById(R.id.member_add_button);
-        addMemberButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageOpenner.INSTANCE.open(AddMemderPage.class);
-            }
-        });
+        addMemberButton.setOnClickListener(v -> PageOpenner.INSTANCE.open(AddMemderPage.class));
 
         Button member_list_commit = MainActivity.INSTANCE.findViewById(R.id.member_list_commit);
-        member_list_commit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageOpenner.INSTANCE.open(MainPage.class);
-            }
-        });
+        member_list_commit.setOnClickListener(v -> PageOpenner.INSTANCE.open(MainPage.class));
 
 
 

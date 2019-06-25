@@ -92,28 +92,26 @@ public class SpeechRecognitionHelper {
 
         // создаем диалог, который спросит у пользователя хочет ли он
         // установить Голосовой Поиск
+        // положительная кнопка
+// обработчик нажатия на кнопку Установить
         Dialog dialog = new AlertDialog.Builder(ownerActivity)
                 .setMessage("Для распознавания речи необходимо установить \"Голосовой поиск Google\"")	// сообщение
                 .setTitle("Внимание")	// заголовок диалога
-                .setPositiveButton("Установить", new DialogInterface.OnClickListener() {	// положительная кнопка
-
-                    // обработчик нажатия на кнопку Установить
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            // создаем Intent для открытия в маркете странички с приложением
-                            // Голосовой Поиск имя пакета: com.google.android.voicesearch
-                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.voicesearch"));
-                            // настраиваем флаги, чтобы маркет не попал к в историю нашего приложения (стек Activity)
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                            // отправляем Intent
-                            ownerActivity.startActivity(intent);
-                        } catch (Exception ex) {
-                            // не удалось открыть маркет
-                            // например из-за того что он не установлен
-                            // ничего не поделаешь
-                        }
-                    }})
+                .setPositiveButton("Установить", (dialog1, which) -> {
+                    try {
+                        // создаем Intent для открытия в маркете странички с приложением
+                        // Голосовой Поиск имя пакета: com.google.android.voicesearch
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.voicesearch"));
+                        // настраиваем флаги, чтобы маркет не попал к в историю нашего приложения (стек Activity)
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                        // отправляем Intent
+                        ownerActivity.startActivity(intent);
+                    } catch (Exception ex) {
+                        // не удалось открыть маркет
+                        // например из-за того что он не установлен
+                        // ничего не поделаешь
+                    }
+                })
 
                 .setNegativeButton("Отмена", null)	// негативная кнопка
                 .create();

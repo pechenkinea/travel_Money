@@ -32,26 +32,23 @@ public class AddTripPage extends BasePage {
     @Override
     public void addEvents() {
         Button commitButton = MainActivity.INSTANCE.findViewById(R.id.trip_add_button);
-        commitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
-                EditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
-                String strName = trName.getText().toString();
-                if (strName.length() > 0) {
-                    if (t_trips.getIdByName(strName) == -1) {
+        commitButton.setOnClickListener(v -> {
+            EditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
+            EditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
+            String strName = trName.getText().toString();
+            if (strName.length() > 0) {
+                if (t_trips.getIdByName(strName) == -1) {
 
-                        long t_id = t_trips.add(strName, trComment.getText().toString());
-                        t_trips.set_active(t_id);
-                        PageOpenner.INSTANCE.open(MembersListPage.class);
-                    } else {
-                        Help.message("Поездка с таким названием уже существует");
-                        Help.setActiveEditText(R.id.trip_name);
-                    }
+                    long t_id = t_trips.add(strName, trComment.getText().toString());
+                    t_trips.set_active(t_id);
+                    PageOpenner.INSTANCE.open(MembersListPage.class);
                 } else {
-                    Help.message("Введите название");
+                    Help.message("Поездка с таким названием уже существует");
                     Help.setActiveEditText(R.id.trip_name);
                 }
+            } else {
+                Help.message("Введите название");
+                Help.setActiveEditText(R.id.trip_name);
             }
         });
     }

@@ -3,7 +3,6 @@ package com.pechenkin.travelmoney.page;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.pechenkin.travelmoney.BuildConfig;

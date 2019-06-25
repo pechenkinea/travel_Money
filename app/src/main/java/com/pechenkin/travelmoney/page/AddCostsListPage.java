@@ -1,5 +1,6 @@
 package com.pechenkin.travelmoney.page;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -56,89 +57,70 @@ public class AddCostsListPage extends BasePage {
     public void addEvents() {
 
         Button add_cost_list_commit = MainActivity.INSTANCE.findViewById(R.id.add_cost_list_commit);
-        add_cost_list_commit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        add_cost_list_commit.setOnClickListener(v -> {
 
 
-                RecyclerView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.list_add_costs);
-                RecyclerAdapterCostList adapter = (RecyclerAdapterCostList)listViewCosts.getAdapter();
+            RecyclerView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.list_add_costs);
+            RecyclerAdapterCostList adapter = (RecyclerAdapterCostList)listViewCosts.getAdapter();
 
-                EditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
-                String comment = add_cost_comment.getText().toString().trim();
+            EditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
+            String comment = add_cost_comment.getText().toString().trim();
 
-                if (comment.length() == 0)
-                {
-                    Help.message(MainActivity.INSTANCE.getString(R.string.errorFillDescription));
-                    Help.setActiveEditText(R.id.add_cost_comment);
-                    return;
-                }
-
-                List<ShortCost> costs = adapter.getData();
-
-                boolean added = false;
-                Date addCostDate = new Date();
-                for(ShortCost c : costs)
-                {
-                    if (c.member() > -1 && c.sum() > 0)
-                    {
-                        t_costs.add(c.member(), c.to_member(), comment, c.sum(), "", t_trips.ActiveTrip.id, addCostDate);
-                        added = true;
-                    }
-                }
-
-                if (added)
-                {
-                    Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
-                }
-
-                PageOpenner.INSTANCE.open(MainPage.class);
+            if (comment.length() == 0)
+            {
+                Help.message(MainActivity.INSTANCE.getString(R.string.errorFillDescription));
+                Help.setActiveEditText(R.id.add_cost_comment);
+                return;
             }
+
+            List<ShortCost> costs = adapter.getData();
+
+            boolean added = false;
+            Date addCostDate = new Date();
+            for(ShortCost c : costs)
+            {
+                if (c.member() > -1 && c.sum() > 0)
+                {
+                    t_costs.add(c.member(), c.to_member(), comment, c.sum(), "", t_trips.ActiveTrip.id, addCostDate);
+                    added = true;
+                }
+            }
+
+            if (added)
+            {
+                Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
+            }
+
+            PageOpenner.INSTANCE.open(MainPage.class);
         });
 
 
 
         Button add_costs_list_revert_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_revert_button);
-        add_costs_list_revert_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickBackButton();
-            }
-        });
+        add_costs_list_revert_button.setOnClickListener(view -> clickBackButton());
 
 
         Button add_costs_list_refresh_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button);
-        add_costs_list_refresh_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refreshForm();
-            }
-        });
+        add_costs_list_refresh_button.setOnClickListener(view -> refreshForm());
 
 
 
         EditText add_costs_text = MainActivity.INSTANCE.findViewById(R.id.add_costs_text);
-        add_costs_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    refreshForm();
-                    return true;
-                }
-                return false;
+        add_costs_text.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                refreshForm();
+                return true;
             }
+            return false;
         });
 
         EditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
-        add_cost_comment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    refreshForm();
-                    return true;
-                }
-                return false;
+        add_cost_comment.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                refreshForm();
+                return true;
             }
+            return false;
         });
 
     }
@@ -198,9 +180,11 @@ public class AddCostsListPage extends BasePage {
 
 
         final ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return true;
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
             }
 
             @Override

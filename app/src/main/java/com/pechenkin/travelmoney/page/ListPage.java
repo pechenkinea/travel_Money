@@ -34,21 +34,9 @@ public abstract class ListPage extends BasePage {
         final ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
         if (list != null)
         {
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                {
-                    ListPage.this.onItemClick(list, parent, view, position, id);
-                }
-            });
+            list.setOnItemClickListener((parent, view, position, id) -> ListPage.this.onItemClick(list, parent, view, position, id));
 
-            list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    return ListPage.this.onItemLongClick(list, parent, view, position, id);
-                }
-            });
+            list.setOnItemLongClickListener((parent, view, position, id) -> ListPage.this.onItemLongClick(list, parent, view, position, id));
         }
     }
 

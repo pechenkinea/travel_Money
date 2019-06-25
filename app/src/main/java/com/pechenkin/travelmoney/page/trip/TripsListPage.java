@@ -42,20 +42,10 @@ public class TripsListPage extends ListPage {
         super.addEvents();
 
         Button addTripButton = MainActivity.INSTANCE.findViewById(R.id.trips_list_add_button);
-        addTripButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageOpenner.INSTANCE.open(AddTripPage.class);
-            }
-        });
+        addTripButton.setOnClickListener(v -> PageOpenner.INSTANCE.open(AddTripPage.class));
 
         Button member_list_commit = MainActivity.INSTANCE.findViewById(R.id.trip_list_commit);
-        member_list_commit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageOpenner.INSTANCE.open(MainPage.class);
-            }
-        });
+        member_list_commit.setOnClickListener(v -> PageOpenner.INSTANCE.open(MainPage.class));
     }
 
     @Override

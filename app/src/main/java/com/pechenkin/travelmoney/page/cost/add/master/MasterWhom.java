@@ -140,56 +140,53 @@ public class MasterWhom extends ListPage {
         super.addEvents();
 
         Button member_list_commit = MainActivity.INSTANCE.findViewById(R.id.member_list_commit);
-        member_list_commit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        member_list_commit.setOnClickListener(v -> {
 
-                //Кому
-                Set<Long> list_id = getSelectedIds();
+            //Кому
+            Set<Long> list_id = getSelectedIds();
 
-                if (list_id.size() == 0)
+            if (list_id.size() == 0)
+            {
+                Help.message(MainActivity.INSTANCE.getString(R.string.errorFillMembers));
+                return;
+            }
+
+
+
+            ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
+            SparseBooleanArray sbArray = list.getCheckedItemPositions();
+            AdapterMembersList adapter = (AdapterMembersList)list.getAdapter();
+
+            for (int i = 0; i < sbArray.size(); i++) {
+                int key = sbArray.keyAt(i);
+                if (sbArray.get(key)) {
+                    CostMemberBaseTableRow item = adapter.getItem(key);
+                    if (item != null && item.getSum() > 0) {
+                        t_costs.add(getParam().getId(), item.getMemberRow().id, getParam().getName(), item.getSum(), getParam().getFotoUrl(), t_trips.ActiveTrip.id, getParam().getSelectDate());
+                    }
+                }
+            }
+
+
+            /*
+                double sum_on_one;
+                try {
+                    sum_on_one = getParam().getSum()/list_id.size();
+                }
+                catch (Exception ex)
                 {
-                    Help.message(MainActivity.INSTANCE.getString(R.string.errorFillMembers));
+                    Help.message(MainActivity.INSTANCE.getString(R.string.errorCalc));
                     return;
                 }
 
-
-
-                ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
-                SparseBooleanArray sbArray = list.getCheckedItemPositions();
-                AdapterMembersList adapter = (AdapterMembersList)list.getAdapter();
-
-                for (int i = 0; i < sbArray.size(); i++) {
-                    int key = sbArray.keyAt(i);
-                    if (sbArray.get(key)) {
-                        CostMemberBaseTableRow item = adapter.getItem(key);
-                        if (item != null && item.getSum() > 0) {
-                            t_costs.add(getParam().getId(), item.getMemberRow().id, getParam().getName(), item.getSum(), getParam().getFotoUrl(), t_trips.ActiveTrip.id, getParam().getSelectDate());
-                        }
-                    }
+                for (long to_memmber_id : list_id)
+                {
+                    t_costs.add(getParam().getId(), to_memmber_id, getParam().getName(), sum_on_one, getParam().getFotoUrl(), t_trips.ActiveTrip.id, getParam().getSelectDate());
                 }
+            */
+            Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
+            PageOpenner.INSTANCE.open(MainPage.class);
 
-
-                /*
-                    double sum_on_one;
-                    try {
-                        sum_on_one = getParam().getSum()/list_id.size();
-                    }
-                    catch (Exception ex)
-                    {
-                        Help.message(MainActivity.INSTANCE.getString(R.string.errorCalc));
-                        return;
-                    }
-
-                    for (long to_memmber_id : list_id)
-                    {
-                        t_costs.add(getParam().getId(), to_memmber_id, getParam().getName(), sum_on_one, getParam().getFotoUrl(), t_trips.ActiveTrip.id, getParam().getSelectDate());
-                    }
-                */
-                Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
-                PageOpenner.INSTANCE.open(MainPage.class);
-
-            }
         });
 
 
@@ -197,32 +194,29 @@ public class MasterWhom extends ListPage {
 
         Button member_checkAll_button = MainActivity.INSTANCE.findViewById(R.id.member_checkAll_button);
 
-        member_checkAll_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        member_checkAll_button.setOnClickListener(v -> {
 
-                ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
-                AdapterMembersList adapter = (AdapterMembersList)list.getAdapter();
+            ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
+            AdapterMembersList adapter = (AdapterMembersList)list.getAdapter();
 
-                SparseBooleanArray sbArray = list.getCheckedItemPositions();
+            SparseBooleanArray sbArray = list.getCheckedItemPositions();
 
-                boolean hasUnchecked = sbArray.size() == adapter.getCount();
-                if (hasUnchecked) {
-                    for (int i = 0; i < sbArray.size(); i++) {
-                        int key = sbArray.keyAt(i);
-                        if (!sbArray.get(key)) {
-                            hasUnchecked = false;
-                            break;
-                        }
+            boolean hasUnchecked = sbArray.size() == adapter.getCount();
+            if (hasUnchecked) {
+                for (int i = 0; i < sbArray.size(); i++) {
+                    int key = sbArray.keyAt(i);
+                    if (!sbArray.get(key)) {
+                        hasUnchecked = false;
+                        break;
                     }
                 }
-
-                for (int i = 0; i < adapter.getCount(); i++)
-                {
-                    list.setItemChecked(i, !hasUnchecked);
-                }
-
             }
+
+            for (int i = 0; i < adapter.getCount(); i++)
+            {
+                list.setItemChecked(i, !hasUnchecked);
+            }
+
         });
 
 
