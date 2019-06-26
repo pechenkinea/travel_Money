@@ -10,7 +10,6 @@
 		app:showAsAction="ifRoom" />
 
 	<item
-		android:id="@+id/action_exportMenu"
 		android:orderInCategory="1"
 		app:showAsAction="ifRoom"
 		android:icon="@drawable/share_48"
