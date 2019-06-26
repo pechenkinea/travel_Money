@@ -120,7 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //Добавлена настройка для группировки транзакций
         if (oldVersion < 7) {
-            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '0');");
+            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '1');");
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '1');");
         }
 

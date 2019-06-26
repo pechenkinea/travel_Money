@@ -36,7 +36,7 @@ public class AdapterCostList extends BaseAdapter {
         this.data = data;
         try {
             to_member_text_length = Integer.parseInt(t_settings.INSTANCE.get(NamespaceSettings.TO_MEMBER_TEXT_LENGTH));
-            if (to_member_text_length < 4){
+            if (to_member_text_length < 4) {
                 to_member_text_length = 4;
             }
         } catch (Exception ex) {
@@ -85,33 +85,15 @@ public class AdapterCostList extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
-
-
-
-
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item_summary_group, null);
-            holder = new ViewHolder();
-
-            holder.title = convertView.findViewById(R.id.sum_title); // title
-            holder.to_member = convertView.findViewById(R.id.to_member);
-            holder.sum_group_sum = convertView.findViewById(R.id.sum_group_sum);
-            holder.sum_sum = convertView.findViewById(R.id.sum_sum);
-            holder.sum_line = convertView.findViewById(R.id.sum_line);
-            holder.sum_comment = convertView.findViewById(R.id.sum_comment);
-            holder.have_foto = convertView.findViewById(R.id.sum_havefoto);
-            holder.labelHeader = convertView.findViewById(R.id.labelHeader);
-            holder.costSeparator = convertView.findViewById(R.id.costSeparator);
-            holder.sumSeparator = convertView.findViewById(R.id.sumSeparator);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.costSeparator.setVisibility(View.VISIBLE);
-        holder.sumSeparator.setVisibility(View.INVISIBLE);
-
-
+        holder.toDefaultView();
 
         Cost song = data[position];
 
@@ -119,46 +101,25 @@ public class AdapterCostList extends BaseAdapter {
             return convertView;
         }
 
-
-        convertView.setBackgroundResource(R.drawable.background_normal_item);
-
-        holder.sum_sum.setText("");
-        holder.sum_group_sum.setText("");
-        holder.sum_line.setText("-->");
-
-        holder.title.setTextColor(Color.BLACK);
-        holder.sum_line.setTextColor(Color.BLACK);
-        holder.sum_comment.setTextColor(Color.BLACK);
-
-        holder.labelHeader.setVisibility(View.INVISIBLE);
-        holder.sum_group_sum.setPaintFlags(holder.sum_group_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-        holder.sum_sum.setPaintFlags(holder.sum_group_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-
         String summ = Help.DoubleToString(song.sum());
         holder.sum_group_sum.setText((song.sum() != 0) ? summ : "");
 
-
-        String comment = "";
         String dateText = "";
         if (song.date() != null) {
             dateText = df2.format(song.date());
         }
-        comment += dateText + "  " + song.comment();
+        String comment = dateText + "  " + song.comment();
         holder.sum_comment.setText(comment);
 
 
-        String dir = song.image_dir();
-        if (dir.length() > 0)
-            holder.have_foto.setVisibility(View.VISIBLE);
-        else
-            holder.have_foto.setVisibility(View.INVISIBLE);
+        holder.fotoImage(song.image_dir());
+
+
+        String colorDisable = "#CCCCCC";
+        int colorDisableColor = Color.parseColor(colorDisable);
 
         if (song instanceof GroupCost) {
             List<Cost> costs = ((GroupCost) song).getCosts();
-
-
-            String colorDisable = "#CCCCCC";
-            int colorDisableColor = Color.parseColor(colorDisable);
 
             if (costs.size() > 0) {
 
@@ -168,8 +129,7 @@ public class AdapterCostList extends BaseAdapter {
                     holder.title.setTextColor(colorDisableColor);
                     holder.sum_line.setTextColor(colorDisableColor);
                     holder.sum_comment.setTextColor(colorDisableColor);
-                }
-                else {
+                } else {
                     holder.title.setTextColor(member.color);
                 }
                 holder.title.setText(member.name);
@@ -230,12 +190,6 @@ public class AdapterCostList extends BaseAdapter {
             holder.sum_sum.setText((song.sum() != 0) ? summ : "");
             holder.sum_group_sum.setText("");
 
-            if (song.active() == 0) {
-                convertView.setBackgroundResource(R.drawable.background_delete_item);
-                holder.sum_sum.setPaintFlags(holder.sum_group_sum.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                holder.sum_sum.setText(String.format(" %s ", holder.sum_sum.getText()));  //пробелы нужны для красоты, что бы зачеркивание выходило за рамки текста
-            }
-
             MemberBaseTableRow member = t_members.getMemberById(song.member());
             if (member != null) {
                 holder.title.setText(member.name);
@@ -254,6 +208,14 @@ public class AdapterCostList extends BaseAdapter {
             holder.to_member.setTextColor((to_member != null) ? to_member.color : Color.BLACK);
 
 
+            if (song.active() == 0) {
+                holder.title.setTextColor(colorDisableColor);
+                holder.sum_line.setTextColor(colorDisableColor);
+                holder.sum_comment.setTextColor(colorDisableColor);
+                holder.sum_sum.setTextColor(colorDisableColor);
+                holder.to_member.setTextColor(colorDisableColor);
+            }
+
         }
 
         return convertView;
@@ -270,6 +232,51 @@ public class AdapterCostList extends BaseAdapter {
         TextView labelHeader;
         View costSeparator;
         View sumSeparator;
+
+        ViewHolder(View convertView) {
+            this.title = convertView.findViewById(R.id.sum_title);
+            this.to_member = convertView.findViewById(R.id.to_member);
+            this.sum_group_sum = convertView.findViewById(R.id.sum_group_sum);
+            this.sum_sum = convertView.findViewById(R.id.sum_sum);
+            this.sum_line = convertView.findViewById(R.id.sum_line);
+            this.sum_comment = convertView.findViewById(R.id.sum_comment);
+            this.have_foto = convertView.findViewById(R.id.sum_havefoto);
+            this.labelHeader = convertView.findViewById(R.id.labelHeader);
+            this.costSeparator = convertView.findViewById(R.id.costSeparator);
+            this.sumSeparator = convertView.findViewById(R.id.sumSeparator);
+        }
+
+        /**
+         * Взвращает строку в изначальное положение. а то бывает, чт при прокрутке списка вьюха запоминает параметры от чужой строки
+         */
+        void toDefaultView() {
+
+            this.sum_sum.setText("");
+            this.sum_group_sum.setText("");
+            this.sum_line.setText("-->");
+
+            this.title.setTextColor(Color.BLACK);
+            this.sum_line.setTextColor(Color.BLACK);
+            this.sum_comment.setTextColor(Color.BLACK);
+            this.to_member.setTextColor(Color.BLACK);
+            this.sum_sum.setTextColor(Color.BLACK);
+
+            this.labelHeader.setVisibility(View.INVISIBLE);
+            this.sumSeparator.setVisibility(View.INVISIBLE);
+
+            this.costSeparator.setVisibility(View.VISIBLE);
+        }
+
+        /**
+         * показывает/скрывает иконку фотографии в зависимости от наличия ссылки
+         */
+        void fotoImage(String dir) {
+            if (dir.length() > 0) {
+                this.have_foto.setVisibility(View.VISIBLE);
+            } else {
+                this.have_foto.setVisibility(View.INVISIBLE);
+            }
+        }
 
     }
 
