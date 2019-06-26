@@ -1,21 +1,8 @@
 package com.pechenkin.travelmoney.list;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
-
-import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_settings;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.cost.GroupCost;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Build;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -24,6 +11,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.table.t_settings;
+import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.cost.GroupCost;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class AdapterCostList extends BaseAdapter {
 
@@ -46,9 +45,9 @@ public class AdapterCostList extends BaseAdapter {
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public Cost[] getData() {
+    /*public Cost[] getData() {
         return data;
-    }
+    }*/
 
     @Override
     public int getCount() {
