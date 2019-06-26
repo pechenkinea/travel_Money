@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.text.InputType;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +17,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.ShortCost;
 
 import java.text.SimpleDateFormat;
@@ -34,157 +36,131 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
 
 
     private List<ShortCost> data;
-    public void remove(int position)
-    {
+
+    public void remove(int position) {
         data.remove(position);
         notifyItemRemoved(position);
     }
 
-    public ShortCost getItem(ShortCost cost)
-    {
-        for (ShortCost c: data) {
+    public ShortCost getItem(ShortCost cost) {
+        for (ShortCost c : data) {
             if (c.equals(cost))
                 return c;
         }
         return null;
     }
 
-    public ShortCost getItem(int position)
-    {
+    public ShortCost getItem(int position) {
         try {
             return data.get(position);
-        }
-        catch (Exception ex)
-        {
-            return  null;
+        } catch (Exception ex) {
+            return null;
         }
     }
 
-    public  List<ShortCost> getData()
-    {
-        return  data;
+    public List<ShortCost> getData() {
+        return data;
     }
 
     private static LayoutInflater inflater = null;
 
     public RecyclerAdapterCostList(Context a, List<ShortCost> data) {
-        this.data=data;
+        this.data = data;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
 
-
-
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = inflater.inflate(R.layout.list_item_summary, null);
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-
-                final RecyclerView listView;
-                try {
-                    listView = (RecyclerView) v.getParent();
-                }
-                catch (Exception ex)
-                {
-                    Help.alertError(ex.getMessage());
-                    return;
-                }
-
-                final RecyclerAdapterCostList adapter = (RecyclerAdapterCostList)listView.getAdapter();
-                final ShortCost item = adapter.getItem(listView.getChildLayoutPosition(v));
-
-                if (item != null && item.member() > -1) {
-
-                    final EditText input = new EditText(MainActivity.INSTANCE);
-                    input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-
-                    input.setText(((TextView)v.findViewById(R.id.sum_sum)).getText());
-
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT);
-                    input.setLayoutParams(lp);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
-                    builder.setTitle("")
-                            .setCancelable(false)
-                            .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    commitEditSum(input,item,adapter,dialog,listView, false);
-                                }
-                            })
-                            .setNegativeButton("Отмена",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    })
-                            .setNeutralButton("По умолчанию", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    commitEditSum(input, item, adapter, dialog, listView, true);
-                                }
-                            });
 
 
-                    final AlertDialog alert = builder.create();
-                    alert.setView(input);
-                    if (alert.getWindow() != null)
-                        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        /*
+          При клике на строку открывает диалог для изменения суммы
+         */
+        v.setOnClickListener(v1 -> {
+
+            final RecyclerView listView;
+            try {
+                listView = (RecyclerView) v1.getParent();
+            } catch (Exception ex) {
+                Help.alertError(ex.getMessage());
+                return;
+            }
+
+            final RecyclerAdapterCostList adapter = (RecyclerAdapterCostList) listView.getAdapter();
+            if (adapter == null) {
+                Help.alertError("adapter is null");
+                return;
+            }
+            final ShortCost item = adapter.getItem(listView.getChildLayoutPosition(v1));
+
+            if (item != null && item.member() > -1) {
+
+                final EditText input = new EditText(MainActivity.INSTANCE);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+                input.setText(((TextView) v1.findViewById(R.id.sum_sum)).getText());
+
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
+                builder.setTitle("")
+                        .setCancelable(false)
+                        .setPositiveButton("Ок", (dialog, which) -> commitEditSum(input, item, adapter, dialog, listView, false))
+                        .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel())
+                        .setNeutralButton("По умолчанию", (dialog, which) -> commitEditSum(input, item, adapter, dialog, listView, true));
 
 
-                    input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                        @Override
-                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                                commitEditSum(input, item, adapter, alert, listView, false);
-                                return true;
-                            }
-                            return false;
-                        }
-                    });
+                final AlertDialog alert = builder.create();
+                alert.setView(input);
+                if (alert.getWindow() != null)
+                    alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-                    alert.show();
 
-                    Help.setActiveEditText(input, true);
+                input.setOnEditorActionListener((v11, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        commitEditSum(input, item, adapter, alert, listView, false);
+                        return true;
+                    }
+                    return false;
+                });
 
-                }
+                alert.show();
 
+                Help.setActiveEditText(input, true);
 
             }
+
+
         });
         return new ViewHolder(v);
     }
-
 
 
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yy HH:mm");
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder h, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         ShortCost song = data.get(h.getAdapterPosition());
 
-        ViewHolder holder = (ViewHolder)h;
+        ViewHolder holder = (ViewHolder) h;
 
 
         holder.labelHeader.setVisibility(View.INVISIBLE);
-        holder.sum_sum.setPaintFlags( holder.sum_sum.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-
-
+        holder.sum_sum.setPaintFlags(holder.sum_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
 
         String summ = Help.DoubleToString(song.sum());
 
-        if (song.isChange())
-        {
+        if (song.isChange()) {
             holder.sum_sum.setText(Html.fromHtml("<b>" + summ + "</b> "));
-        }
-        else
-        {
-            holder.sum_sum.setText((song.sum() != 0)?summ:"");
+        } else {
+            holder.sum_sum.setText((song.sum() != 0) ? summ : "");
         }
 
 
@@ -211,21 +187,16 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
                 holder.have_foto.setVisibility(View.VISIBLE);
             else
                 holder.have_foto.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
+        } else {
             holder.have_foto.setVisibility(View.INVISIBLE);
         }
 
 
-
         MemberBaseTableRow member = t_members.getMemberById(song.member());
-        if (member!=null) {
-            holder.title.setText( member.name);
+        if (member != null) {
+            holder.title.setText(member.name);
             holder.title.setTextColor(member.color);
-        }
-        else
-        {
+        } else {
             holder.labelHeader.setVisibility(View.VISIBLE);
             holder.labelHeader.setText(song.comment());
             holder.sum_line.setText("");
@@ -235,16 +206,14 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         }
 
         MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
-        holder.to_member.setText((to_member!=null)?to_member.name:"");
-        holder.to_member.setTextColor((to_member!=null)?to_member.color: Color.BLACK);
+        holder.to_member.setText((to_member != null) ? to_member.name : "");
+        holder.to_member.setTextColor((to_member != null) ? to_member.color : Color.BLACK);
     }
 
     @Override
     public int getItemCount() {
         return data.size();
     }
-
-
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -266,12 +235,14 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             sum_comment = convertView.findViewById(R.id.sum_comment);
             have_foto = convertView.findViewById(R.id.sum_havefoto);
             labelHeader = convertView.findViewById(R.id.labelHeader);
-            costSeparator =  convertView.findViewById(R.id.costSeparator);
+            costSeparator = convertView.findViewById(R.id.costSeparator);
         }
     }
 
-    private static void commitEditSum(final EditText input, final ShortCost item, final RecyclerAdapterCostList adapter, DialogInterface dialog, final RecyclerView listView, boolean toDefault)
-    {
+    /**
+     * Обработка редактирования суммы одной строки
+     */
+    private static void commitEditSum(final EditText input, final ShortCost item, final RecyclerAdapterCostList adapter, DialogInterface dialog, final RecyclerView listView, boolean toDefault) {
         double editSum = Help.StringToDouble(String.valueOf(input.getText()));
 
         double sumGroup = 0;
@@ -281,9 +252,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         if (toDefault) {
             item.setChange(false);
             costGroup.add(item);
-        }
-        else
-        {
+        } else {
             sumGroup = item.sum();
             item.sum = editSum;
             item.setChange(true);
@@ -310,8 +279,8 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             sumGroup = 0;
 
 
-        for (ShortCost c:costGroup) {
-            c.sum = sumGroup/costGroup.size();
+        for (ShortCost c : costGroup) {
+            c.sum = sumGroup / costGroup.size();
         }
 
         dialog.cancel();
