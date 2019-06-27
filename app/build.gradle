@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 ext {
-    travelMoneyVersionName = '2.55 (Beta)'
-    //travelMoneyVersionName = '2.2'
+    //travelMoneyVersionName = '2.55 (Beta)'
+    travelMoneyVersionName = '2.6'
 }
 
 android {
@@ -11,11 +11,11 @@ android {
 
     defaultConfig {
         applicationId "com.pechenkin.travelmoney"
-        minSdkVersion 22
+        minSdkVersion 16
         targetSdkVersion 29
         //noinspection HighAppVersionCode20180620
-        versionCode 2019180461
-        //versionCode
+        //versionCode 2019180461
+        versionCode 20190627
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName);
     }
