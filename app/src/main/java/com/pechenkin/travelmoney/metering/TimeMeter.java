@@ -21,6 +21,9 @@ public class TimeMeter {
 
     public void stop()
     {
-        Log.i("TimeMeter " + name, "" + (System.nanoTime() - startTime) / 1000000L) ;
+        Log.i("TimeMeter " + name, "" + (System.nanoTime() - startTime) / 1000000L + "ms") ;
     }
+
+
+
 }

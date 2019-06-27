@@ -3,17 +3,17 @@ package com.pechenkin.travelmoney.page;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import androidx.appcompat.widget.Toolbar;
 import android.util.LongSparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
@@ -334,23 +334,21 @@ public class MainPage extends BasePage {
 
                 if (getPageTrip() != null) {
 
-                    //Список всех операций по поездке
-                    //TimeMeter timeMetr = new TimeMeter("Список всех поездок");
+                    //TimeMeter allTimer = new TimeMeter("Общее");
                     CostQueryResult costList = t_costs.getAllByTripId(getPageTrip().id);
-                    //timeMetr.stop();
-
 
                     Cost[] calculationList = {};
                     if (costList.hasRows()) {
-                        //TimeMeter timeMetrCalc = new TimeMeter("Вычисление");
                         calculationList = Calculation.call(costList.getAllRows());
-                        //timeMetrCalc.stop();
 
                         // Группируем, если есть группировка по цветам
                         if (calculationList.length > 0 && t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)) {
                             /*
                                берем итоговый список, вместо id участников ставим id их цветов и закидываем еще раз на пересчет
                             */
+
+                            //TimeMeter groupTimer = new TimeMeter("Группировка");
+
                             Cost[] calcListCosts = new Cost[calculationList.length];
                             LongSparseArray<Long> membersByColor = new LongSparseArray<>();
                             for (int i = 0; i < calculationList.length; i++) {
@@ -382,6 +380,9 @@ public class MainPage extends BasePage {
                                 calculationList[i] = c;
 
                             }
+
+
+                            //groupTimer.stop();
 
                         }
                     }
@@ -430,6 +431,8 @@ public class MainPage extends BasePage {
                         }
 
                     }
+
+                    //allTimer.stop();
 
                     adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), finalList);
 

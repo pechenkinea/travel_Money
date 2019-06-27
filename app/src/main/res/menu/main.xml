@@ -79,7 +79,7 @@
 	<item
 		android:id="@+id/testBigCostList"
 		android:orderInCategory="1"
-		android:title="Тест. Добавить 10000 записей"
+		android:title="Тест. Добавить 1000 записей"
 		android:visible="false"
 		tools:ignore="HardcodedText" />
 
