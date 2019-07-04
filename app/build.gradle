@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 ext {
-    //travelMoneyVersionName = '2.55 (Beta)'
-    travelMoneyVersionName = '2.6'
+    travelMoneyVersionName = '2.6.1 (Beta)'
+    //travelMoneyVersionName = '2.6'
 }
 
 android {
@@ -15,7 +15,7 @@ android {
         targetSdkVersion 29
         //noinspection HighAppVersionCode20180620
         //versionCode 2019180461
-        versionCode 20190627
+        versionCode 20190628
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName);
     }
@@ -36,6 +36,5 @@ android {
 dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.github.skydoves:colorpickerpreference:2.0.0'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.1'
 }

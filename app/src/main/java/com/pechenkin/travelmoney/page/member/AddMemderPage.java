@@ -20,8 +20,6 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpenner;
-import com.skydoves.colorpickerview.ColorPickerDialog;
-import com.skydoves.colorpickerview.listeners.ColorListener;
 
 import java.util.Objects;
 
@@ -117,7 +115,7 @@ public class AddMemderPage extends BasePage {
         Button selectColorButton =  MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
         selectColorButton.setOnClickListener(v -> {
 
-            ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(MainActivity.INSTANCE, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+            /*ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(MainActivity.INSTANCE, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
             builder.setTitle("Выберите цвет");
             builder.attachAlphaSlideBar(false);
             builder.attachBrightnessSlideBar(false);
@@ -136,7 +134,7 @@ public class AddMemderPage extends BasePage {
 
             builder.getColorPickerView().setPaletteDrawable(Objects.requireNonNull(MainActivity.INSTANCE.getDrawable(R.drawable.colors)));
 
-            builder.show();
+            builder.show();*/
         });
 
     }
