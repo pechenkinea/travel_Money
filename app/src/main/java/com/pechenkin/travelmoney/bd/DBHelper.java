@@ -3,12 +3,13 @@ package com.pechenkin.travelmoney.bd;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 
 public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 8);
+        super(context, Namespace.DB_NAME, null, 12);
     }
 
     @Override
@@ -52,6 +53,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
 
 
+        createTableColors(db);
+
     }
 
     private void createTableCost(SQLiteDatabase db) {
@@ -75,7 +78,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private void addSettingTable(SQLiteDatabase db) {
         db.execSQL("create table " + Namespace.TABLE_SETTINGS + " ("
                 + Namespace.FIELD_NAME + " text primary key not null,"
-                + Namespace.FIELD_VALUE + " text not null"  //текст - на перспективу, что бы была возможность хранить в настройках что угодно
+                + Namespace.FIELD_VALUE + " text not null"
                 + ");");
 
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.HIDE_ALL_HELP + "', '0');");
@@ -83,6 +86,27 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MAIN_PAGE_HELP_ADD_MEMBERS + "', '1');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MEMBERS_LIST_HELP + "', '1');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TRIPS_LIST_HELP + "', '1');");
+
+    }
+
+
+    private void createTableColors(SQLiteDatabase db) {
+
+        db.execSQL("create table " + Namespace.TABLE_COLORS + " ("
+                + Namespace.FIELD_ID + " integer primary key not null"
+                + ");");
+
+        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.BLACK + ");");
+
+        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#ff1e1c") + ");");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#f9e701") + ");");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#0172b6") + ");");
+
+        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#fe8f00") + ");");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#008f59") + ");");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#7b358e") + ");");
+
+        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#ff00ff") + ");");
 
     }
 
@@ -127,6 +151,11 @@ public class DBHelper extends SQLiteOpenHelper {
         // Вынесено в настройки кол-во символов учатников в графе "Кому" при включенной группировке
         if (oldVersion < 8) {
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
+        }
+
+        // Добалена таблица для хранения цветов
+        if (oldVersion < 12) {
+            createTableColors(db);
         }
 
     }

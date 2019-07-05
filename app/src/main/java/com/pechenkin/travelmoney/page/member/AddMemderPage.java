@@ -18,6 +18,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.dialog.ColorDialog;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpenner;
 
@@ -115,26 +116,12 @@ public class AddMemderPage extends BasePage {
         Button selectColorButton =  MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
         selectColorButton.setOnClickListener(v -> {
 
-            /*ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(MainActivity.INSTANCE, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
-            builder.setTitle("Выберите цвет");
-            builder.attachAlphaSlideBar(false);
-            builder.attachBrightnessSlideBar(false);
-            builder.setPreferenceName("ColorPickerDialog");
-            builder.setPositiveButton(MainActivity.INSTANCE.getString(R.string.confirm), (ColorListener) (color, fromUser) -> {
-                @SuppressLint("CutPasteId") Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-                textView.setBackgroundColor(color);
-            });
-            builder.setNegativeButton(MainActivity.INSTANCE.getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss());
+            String text = nameField.getText().toString();
+            if (text.length() == 0){
+                text = "Имя не задано";
+            }
 
-            builder.setNeutralButton("По умолчанию", (dialogInterface, i) -> {
-                @SuppressLint("CutPasteId") Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-                textView.setBackgroundColor(Color.BLACK);
-                dialogInterface.dismiss();
-            });
-
-            builder.getColorPickerView().setPaletteDrawable(Objects.requireNonNull(MainActivity.INSTANCE.getDrawable(R.drawable.colors)));
-
-            builder.show();*/
+            ColorDialog.selectColor(MainActivity.INSTANCE, text, selectColorButton::setBackgroundColor);
         });
 
     }

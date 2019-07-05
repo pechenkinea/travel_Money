@@ -14,8 +14,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 29
         //noinspection HighAppVersionCode20180620
-        //versionCode 2019180461
-        versionCode 20190628
+        versionCode 2019180462
+        //versionCode 20190628  relize
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName);
     }

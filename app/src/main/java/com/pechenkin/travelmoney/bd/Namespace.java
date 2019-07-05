@@ -15,7 +15,7 @@ public interface Namespace {
     String TABLE_MEMBERS = "members";
 
     String TABLE_SETTINGS = "settings";
-    String TABLE_HISTORY = "history";
+    String TABLE_COLORS = "colors";
 
     String FIELD_ID = "_id";
     String FIELD_NAME = "name";
@@ -30,12 +30,7 @@ public interface Namespace {
     String FIELD_DATE = "date";
     String FIELD_ACTIVE = "active";
     String FIELD_VALUE = "value";
-    String FIELD_SUM_FROM = "sumFrom";
-    String FIELD_SUM_TO = "sumTo";
 
-    //history
-    String FIELD_OBJECT_ID = "object_id";
-    String FIELD_DESCRIPTION = "description";
 
 
 

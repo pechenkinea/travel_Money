@@ -1,8 +1,5 @@
 package com.pechenkin.travelmoney.page.member;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
@@ -18,10 +15,9 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.dialog.ColorDialog;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpenner;
-
-import java.util.Objects;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -41,67 +37,39 @@ public class EditMemderPage extends BasePage {
     }
 
 
-    private void formCommit()
-    {
+    private void formCommit() {
         EditText etName = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
         String name = etName.getText().toString();
 
-        if (name.length() < 1)
-        {
+        if (name.length() < 1) {
             Help.message("Введите имя");
             Help.setActiveEditText(getFocusFieldId());
             return;
         }
 
         long findId = t_members.getIdByName(etName.getText().toString());
-        if ( findId >= 0 && findId != getParam().getId())
-        {
+        if (findId >= 0 && findId != getParam().getId()) {
             Help.message("Имя занято другим участником");
             Help.setActiveEditText(getFocusFieldId());
             return;
         }
 
 
-        Button buttonColor =  MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-        Drawable background = buttonColor.getBackground();
-        int color = 0;
-        if (background instanceof ColorDrawable)
-            color = ((ColorDrawable) background).getColor();
+        Button buttonColor = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
+        int color = Help.getBackgroundColor(buttonColor);
 
         t_members.edit(getParam().getId(), name, color);
         Help.message("Успешно");
 
         PageOpenner.INSTANCE.open(MembersListPage.class);
     }
+
     @Override
     public void addEvents() {
         Button commitButton = MainActivity.INSTANCE.findViewById(R.id.edit_member_commit_button);
         commitButton.setOnClickListener(v -> formCommit());
 
-        //Выбор цвета
-        @SuppressLint("CutPasteId") Button selectColorButton = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-        selectColorButton.setOnClickListener(v -> {
-            /*ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(MainActivity.INSTANCE, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
-            builder.setTitle("Выберите цвет");
-            builder.attachAlphaSlideBar(false);
-            builder.attachBrightnessSlideBar(false);
-            builder.setPreferenceName("ColorPickerDialog");
-            builder.setPositiveButton(MainActivity.INSTANCE.getString(R.string.confirm), (ColorListener) (color, fromUser) -> {
-                @SuppressLint("CutPasteId") Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-                textView.setBackgroundColor(color);
-            });
-            builder.setNegativeButton(MainActivity.INSTANCE.getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss());
 
-            builder.setNeutralButton("По умолчанию", (dialogInterface, i) -> {
-                @SuppressLint("CutPasteId") Button textView = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-                textView.setBackgroundColor(Color.BLACK);
-                dialogInterface.dismiss();
-            });
-
-            builder.getColorPickerView().setPaletteDrawable(Objects.requireNonNull(MainActivity.INSTANCE.getDrawable(R.drawable.colors)));
-
-            builder.show();*/
-        });
 
 
         final EditText nameField = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
@@ -114,7 +82,7 @@ public class EditMemderPage extends BasePage {
         });
 
 
-        nameField.addTextChangedListener(new TextWatcher(){
+        nameField.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -135,6 +103,22 @@ public class EditMemderPage extends BasePage {
 
             }
         });
+
+
+        //Выбор цвета
+        Button selectColorButton = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
+        selectColorButton.setOnClickListener(v -> {
+
+            String text = nameField.getText().toString();
+            if (text.length() == 0){
+                text = "Имя не задано";
+            }
+
+            ColorDialog.selectColor(MainActivity.INSTANCE, text, selectColorButton::setBackgroundColor);
+
+
+
+        });
     }
 
     @Override
@@ -149,27 +133,24 @@ public class EditMemderPage extends BasePage {
 
     @Override
     protected boolean fillFields() {
-        if (!hasParam())
-        {
+        if (!hasParam()) {
             Help.message("Ошибка. Нет участника для редактирования");
             return false;
         }
 
         MemberBaseTableRow member = t_members.getMemberById(getParam().getId());
-        if (member == null)
-        {
+        if (member == null) {
             Help.message("Ошибка. Не найден учатсяник с id " + getParam().getId());
             return false;
         }
 
-        EditText edit_name =  MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
+        EditText edit_name = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
         edit_name.setText(member.name);
-        if (member.name.contains(" "))
-        {
+        if (member.name.contains(" ")) {
             MainActivity.INSTANCE.findViewById(R.id.memberNameWarning).setVisibility(View.VISIBLE);
         }
 
-        Button buttonColor =  MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
+        Button buttonColor = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
         buttonColor.setBackgroundColor(member.color);
 
 
@@ -178,7 +159,7 @@ public class EditMemderPage extends BasePage {
 
     @Override
     protected int getFocusFieldId() {
-        return  R.id.edit_member_Name;
+        return R.id.edit_member_Name;
     }
 
     @Override

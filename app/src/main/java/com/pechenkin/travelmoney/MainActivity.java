@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney;
 
 import com.pechenkin.travelmoney.bd.DBHelper;
+import com.pechenkin.travelmoney.bd.table.t_colors;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.AboutPage;
 import com.pechenkin.travelmoney.page.AddCostsListPage;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(getApplicationContext());
         INSTANCE = this;
         t_members.updateMembersCache();
+
+        t_colors.resetColors();
         PageOpenner.INSTANCE.open(MainPage.class);
     }
 

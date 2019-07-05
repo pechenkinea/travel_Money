@@ -7,6 +7,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -221,6 +223,16 @@ public class Help {
         doubleFormat.setDecimalFormatSymbols(decimalFormatSymbols);
     }
 
+
+
+    public static int getBackgroundColor(View view){
+        Drawable background = view.getBackground();
+        int color = 0;
+        if (background instanceof ColorDrawable)
+            color = ((ColorDrawable) background).getColor();
+
+        return color;
+    }
 
     static void createBigCostList() {
 
