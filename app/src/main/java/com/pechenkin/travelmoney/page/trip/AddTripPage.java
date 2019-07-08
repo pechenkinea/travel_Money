@@ -1,7 +1,6 @@
 package com.pechenkin.travelmoney.page.trip;
 
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -11,7 +10,7 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.member.MembersListPage;
-import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.PageOpener;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -21,7 +20,7 @@ import com.pechenkin.travelmoney.page.PageOpenner;
 public class AddTripPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpenner.INSTANCE.open(TripsListPage.class);
+        PageOpener.INSTANCE.open(TripsListPage.class);
     }
 
     @Override
@@ -41,7 +40,7 @@ public class AddTripPage extends BasePage {
 
                     long t_id = t_trips.add(strName, trComment.getText().toString());
                     t_trips.set_active(t_id);
-                    PageOpenner.INSTANCE.open(MembersListPage.class);
+                    PageOpener.INSTANCE.open(MembersListPage.class);
                 } else {
                     Help.message("Поездка с таким названием уже существует");
                     Help.setActiveEditText(R.id.trip_name);

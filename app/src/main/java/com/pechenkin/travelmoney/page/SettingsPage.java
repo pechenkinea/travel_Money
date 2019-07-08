@@ -19,7 +19,7 @@ import com.pechenkin.travelmoney.bd.table.t_settings;
 public class SettingsPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpenner.INSTANCE.open(MainPage.class);
+        PageOpener.INSTANCE.open(MainPage.class);
     }
 
     @Override

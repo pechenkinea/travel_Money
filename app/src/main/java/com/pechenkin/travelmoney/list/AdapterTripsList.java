@@ -1,14 +1,6 @@
 package com.pechenkin.travelmoney.list;
 
 
-import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
-import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.page.trip.EditTripPage;
-import com.pechenkin.travelmoney.page.MainPage;
-import com.pechenkin.travelmoney.page.PageOpenner;
-import com.pechenkin.travelmoney.page.PageParam;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -20,14 +12,23 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.page.MainPage;
+import com.pechenkin.travelmoney.page.PageOpener;
+import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.trip.EditTripPage;
+
 public class AdapterTripsList extends BaseAdapter {
 
     private BaseTableRow[] data;
     private static LayoutInflater inflater = null;
-    private  boolean showEditButton = false;
+    private  boolean showEditButton;
  
-    public AdapterTripsList(Activity a, BaseTableRow[] itemDetailsrrayList, boolean showEditButton) {
-        data = itemDetailsrrayList;
+    public AdapterTripsList(Activity a, BaseTableRow[] data, boolean showEditButton) {
+        this.data = data;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showEditButton = showEditButton;
     }
@@ -57,48 +58,42 @@ public class AdapterTripsList extends BaseAdapter {
             holder.check = convertView.findViewById(R.id.lm_check);
             holder.editButton =  convertView.findViewById(R.id.listEditButton);
             if (showEditButton) {
-                holder.editButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        BaseTableRow item;
-                        try {
-                            View parentRow = (View) v.getParent();
-                            ListView listView = (ListView) parentRow.getParent();
-                            int position = listView.getPositionForView(parentRow);
-                            item = getItem(position);
-                        } catch (Exception ex) {
-                            Help.alert(ex.getMessage());
-                            return;
-                        }
-
-                        if (item != null) {
-                            PageOpenner.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
-                        }
-                    }
-                });
-            }
-
-            holder.viewButton = convertView.findViewById(R.id.listViewButton);
-            holder.viewButton.setVisibility(View.VISIBLE);
-            holder.viewButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                holder.editButton.setOnClickListener(v -> {
 
                     BaseTableRow item;
                     try {
                         View parentRow = (View) v.getParent();
                         ListView listView = (ListView) parentRow.getParent();
-                        int position = listView.getPositionForView(parentRow);
-                        item = getItem(position);
+                        int position1 = listView.getPositionForView(parentRow);
+                        item = getItem(position1);
                     } catch (Exception ex) {
                         Help.alert(ex.getMessage());
                         return;
                     }
 
                     if (item != null) {
-                        PageOpenner.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
+                        PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
                     }
+                });
+            }
+
+            holder.viewButton = convertView.findViewById(R.id.listViewButton);
+            holder.viewButton.setVisibility(View.VISIBLE);
+            holder.viewButton.setOnClickListener(v -> {
+
+                BaseTableRow item;
+                try {
+                    View parentRow = (View) v.getParent();
+                    ListView listView = (ListView) parentRow.getParent();
+                    int position12 = listView.getPositionForView(parentRow);
+                    item = getItem(position12);
+                } catch (Exception ex) {
+                    Help.alert(ex.getMessage());
+                    return;
+                }
+
+                if (item != null) {
+                    PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
                 }
             });
 

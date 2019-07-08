@@ -40,7 +40,7 @@ public class Total {
             result.add(new Summary(value.id, value.sumIn, value.sumOut));
         }
 
-        return result.toArray(new Summary[result.size()]);
+        return result.toArray(new Summary[0]);
     }
 
 

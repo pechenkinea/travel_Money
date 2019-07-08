@@ -17,7 +17,7 @@ import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.list.AdapterTripsList;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.MainPage;
-import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 
 /**
@@ -42,10 +42,10 @@ public class TripsListPage extends ListPage {
         super.addEvents();
 
         Button addTripButton = MainActivity.INSTANCE.findViewById(R.id.trips_list_add_button);
-        addTripButton.setOnClickListener(v -> PageOpenner.INSTANCE.open(AddTripPage.class));
+        addTripButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AddTripPage.class));
 
         Button member_list_commit = MainActivity.INSTANCE.findViewById(R.id.trip_list_commit);
-        member_list_commit.setOnClickListener(v -> PageOpenner.INSTANCE.open(MainPage.class));
+        member_list_commit.setOnClickListener(v -> PageOpener.INSTANCE.open(MainPage.class));
     }
 
     @Override
@@ -107,7 +107,7 @@ public class TripsListPage extends ListPage {
     protected boolean onItemLongClick(ListView list, AdapterView<?> adapter, View view, int position, long arg3) {
         AdapterTripsList tripAdapter = (AdapterTripsList)list.getAdapter();
         BaseTableRow trip = tripAdapter.getItem(position);
-        PageOpenner.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(trip.id).getParam());
+        PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(trip.id).getParam());
         return true;
     }
 }

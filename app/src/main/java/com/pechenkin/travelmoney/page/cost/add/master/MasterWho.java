@@ -14,7 +14,7 @@ import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.list.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.ListPage;
-import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 
 /**
@@ -89,7 +89,7 @@ public class MasterWho extends ListPage {
         AdapterMembersList adapter =  (AdapterMembersList)list.getAdapter();
         BaseTableRow item = adapter.getItem(position).getMemberRow();
         PageParam param = new PageParam.BuildingPageParam(getParam()).setId(item.id).getParam();
-        PageOpenner.INSTANCE.open(MasterCostInfo.class, param);
+        PageOpener.INSTANCE.open(MasterCostInfo.class, param);
     }
 
     @Override

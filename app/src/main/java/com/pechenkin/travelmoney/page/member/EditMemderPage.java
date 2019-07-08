@@ -1,7 +1,5 @@
 package com.pechenkin.travelmoney.page.member;
 
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -17,7 +15,7 @@ import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.dialog.ColorDialog;
 import com.pechenkin.travelmoney.page.BasePage;
-import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.PageOpener;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -28,7 +26,7 @@ import com.pechenkin.travelmoney.page.PageOpenner;
 public class EditMemderPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpenner.INSTANCE.open(MembersListPage.class);
+        PageOpener.INSTANCE.open(MembersListPage.class);
     }
 
     @Override
@@ -61,7 +59,7 @@ public class EditMemderPage extends BasePage {
         t_members.edit(getParam().getId(), name, color);
         Help.message("Успешно");
 
-        PageOpenner.INSTANCE.open(MembersListPage.class);
+        PageOpener.INSTANCE.open(MembersListPage.class);
     }
 
     @Override

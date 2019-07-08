@@ -56,7 +56,7 @@ public class MainPage extends BasePage {
     @Override
     public void clickBackButton() {
         if (hasParam() && getParam().getId() > -1) {
-            PageOpenner.INSTANCE.open(TripsListPage.class);
+            PageOpener.INSTANCE.open(TripsListPage.class);
         } else
             MainActivity.INSTANCE.finish();
     }
@@ -142,7 +142,7 @@ public class MainPage extends BasePage {
         if (addCostButton != null) {
             addCostButton.setOnClickListener(v -> {
                 // Открываем мастер Добавления траты
-                PageOpenner.INSTANCE.open(MasterWho.class);
+                PageOpener.INSTANCE.open(MasterWho.class);
             });
         }
 

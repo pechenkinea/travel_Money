@@ -14,7 +14,7 @@ import com.pechenkin.travelmoney.MainActivity;
 public abstract class ListPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpenner.INSTANCE.open(MainPage.class);
+        PageOpener.INSTANCE.open(MainPage.class);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -19,7 +19,7 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.AboutPage;
 import com.pechenkin.travelmoney.page.AddCostsListPage;
 import com.pechenkin.travelmoney.page.MainPage;
-import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.SettingsPage;
 import com.pechenkin.travelmoney.page.SumResultListPage;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(getApplicationContext());
         INSTANCE = this;
         t_members.updateMembersCache();
-        PageOpenner.INSTANCE.open(MainPage.class);
+        PageOpener.INSTANCE.open(MainPage.class);
     }
 
     @Override
@@ -78,30 +78,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (!PageOpenner.INSTANCE.getCurrentPage().onOptionsItemSelected(item)) {
+        if (!PageOpener.INSTANCE.getCurrentPage().onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.action_trip_add:
-                    PageOpenner.INSTANCE.open(AddTripPage.class);
+                    PageOpener.INSTANCE.open(AddTripPage.class);
                     return true;
 
                 case R.id.staff_peoples:
-                    PageOpenner.INSTANCE.open(MembersListPage.class);
+                    PageOpener.INSTANCE.open(MembersListPage.class);
                     return true;
 
                 case R.id.staff_trips:
-                    PageOpenner.INSTANCE.open(TripsListPage.class);
+                    PageOpener.INSTANCE.open(TripsListPage.class);
                     return true;
 
                 case R.id.settings:
-                    PageOpenner.INSTANCE.open(SettingsPage.class);
+                    PageOpener.INSTANCE.open(SettingsPage.class);
                     return true;
 
                 case R.id.menu_about:
-                    PageOpenner.INSTANCE.open(AboutPage.class);
+                    PageOpener.INSTANCE.open(AboutPage.class);
                     return true;
 
                 case R.id.trip_summary:
-                    PageOpenner.INSTANCE.open(SumResultListPage.class);
+                    PageOpener.INSTANCE.open(SumResultListPage.class);
                     return true;
 
 
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                     String text = "Я себе 25030 с половиной";
                     CostCreator cc = new CostCreator(text);
                     PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
-                    PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
+                    PageOpener.INSTANCE.open(AddCostsListPage.class, param);
                     return true;
 
                 case R.id.testBigCostList:
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        PageOpenner.INSTANCE.getCurrentPage().clickBackButton();
+        PageOpener.INSTANCE.getCurrentPage().clickBackButton();
     }
 
 
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (cc.hasCosts()) {
                         PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
-                        PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
+                        PageOpener.INSTANCE.open(AddCostsListPage.class, param);
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
                         builder.setTitle("")
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                                     dialog.cancel();
                                     CostCreator cc1 = new CostCreator(matches.get(0));
                                     PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc1).getParam();
-                                    PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
+                                    PageOpener.INSTANCE.open(AddCostsListPage.class, param);
                                 })
                                 .setNegativeButton("Отмена",
                                         (dialog, id) -> dialog.cancel());

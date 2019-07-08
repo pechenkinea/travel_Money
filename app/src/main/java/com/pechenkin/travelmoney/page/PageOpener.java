@@ -6,13 +6,13 @@ import com.pechenkin.travelmoney.Help;
  * Created by pechenkin on 19.04.2018.
  */
 
-public class PageOpenner {
-    private PageOpenner(){
+public class PageOpener {
+    private PageOpener(){
 
     }
-    public static PageOpenner INSTANCE;
+    public static PageOpener INSTANCE;
     static {
-        INSTANCE = new PageOpenner();
+        INSTANCE = new PageOpener();
     }
 
     private Page currentPage = null;
@@ -43,9 +43,9 @@ public class PageOpenner {
 
         page.setParam(param);
         currentPage = page;
-        //TimeMeter openPageTimemetr = new TimeMeter("Открытие страницы " + pageClass.getName());
+        //TimeMeter openPageTimer = new TimeMeter("Открытие страницы " + pageClass.getName());
         page.open();
-        //openPageTimemetr.stop();
+        //openPageTimer.stop();
     }
 
 

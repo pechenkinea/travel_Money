@@ -11,7 +11,7 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
-import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.member.MembersListPage;
 
 /**
@@ -22,7 +22,7 @@ import com.pechenkin.travelmoney.page.member.MembersListPage;
 public class EditTripPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpenner.INSTANCE.open(TripsListPage.class);
+        PageOpener.INSTANCE.open(TripsListPage.class);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class EditTripPage extends BasePage {
                     t_trips.set_active(getParam().getId());
 
                 Help.message("Сохранено");
-                PageOpenner.INSTANCE.open(MembersListPage.class);
+                PageOpener.INSTANCE.open(MembersListPage.class);
             }
             else
             {

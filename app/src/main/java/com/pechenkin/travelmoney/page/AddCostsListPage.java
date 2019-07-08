@@ -44,7 +44,7 @@ public class AddCostsListPage extends BasePage {
 
     @Override
     public void clickBackButton() {
-        PageOpenner.INSTANCE.open(MainPage.class);
+        PageOpener.INSTANCE.open(MainPage.class);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class AddCostsListPage extends BasePage {
                 Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
             }
 
-            PageOpenner.INSTANCE.open(MainPage.class);
+            PageOpener.INSTANCE.open(MainPage.class);
         });
 
 
@@ -131,7 +131,7 @@ public class AddCostsListPage extends BasePage {
         if (text.length() > 0) {
             CostCreator cc = new CostCreator(text, add_cost_comment.getText().toString());
             PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
-            PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
+            PageOpener.INSTANCE.open(AddCostsListPage.class, param);
         }
     }
 

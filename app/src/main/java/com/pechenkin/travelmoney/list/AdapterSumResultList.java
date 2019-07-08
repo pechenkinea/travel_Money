@@ -21,23 +21,20 @@ public class AdapterSumResultList extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
 
-    public AdapterSumResultList(Activity a, Summary[] dataList)
-    {
-        data=dataList;
+    public AdapterSumResultList(Activity a, Summary[] dataList) {
+        data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-       
+
     }
- 
+
     public int getCount() {
         return data.length;
     }
- 
+
     public Summary getItem(int position) {
         try {
             return data[position];
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             return null;
         }
     }
@@ -60,22 +57,14 @@ public class AdapterSumResultList extends BaseAdapter {
 
     @SuppressLint("InflateParams")
     public View getView(int position, View convertView, ViewGroup parent) {
-        
+
         ViewHolder holder;
-        if(convertView == null)
-        {
-        	convertView = inflater.inflate(R.layout.list_sum_result_item, null);
-            holder = new ViewHolder();
-            holder.name = convertView.findViewById(R.id.sum_result_member);
-            holder.in = convertView.findViewById(R.id.sum_result_in);
-            holder.out = convertView.findViewById(R.id.sum_result_out);
-            holder.sum = convertView.findViewById(R.id.sum_result_sum);
-          
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.list_sum_result_item, null);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        }
-        else
-        {
-        	holder = (ViewHolder) convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         Summary item = data[position];
@@ -86,23 +75,26 @@ public class AdapterSumResultList extends BaseAdapter {
 
         double sum = item.sumOut - item.sumIn;
         holder.sum.setText(Help.DoubleToString(sum));
-        if (sum < 0)
-        {
+        if (sum < 0) {
             holder.sum.setTextColor(Color.parseColor("#b43232"));
-        }
-        else
-        {
+        } else {
             holder.sum.setTextColor(Color.parseColor("#3db432"));
         }
 
         return convertView;
     }
-    
-    static class ViewHolder 
-    {
+
+    static class ViewHolder {
         TextView name;
         TextView in;
         TextView out;
         TextView sum;
+        ViewHolder(View convertView){
+            this.name = convertView.findViewById(R.id.sum_result_member);
+            this.in = convertView.findViewById(R.id.sum_result_in);
+            this.out = convertView.findViewById(R.id.sum_result_out);
+            this.sum = convertView.findViewById(R.id.sum_result_sum);
+
+        }
     }
 }

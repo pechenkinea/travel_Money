@@ -17,7 +17,7 @@ import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.list.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.MainPage;
-import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 
 import java.util.HashSet;
@@ -35,7 +35,7 @@ public class MasterWhom extends ListPage {
 
         PageParam.BuildingPageParam param = new PageParam.BuildingPageParam(getParam());
         param.setSelectedIds(getSelectedIds());
-        PageOpenner.INSTANCE.open(MasterCostInfo.class, param.getParam());
+        PageOpener.INSTANCE.open(MasterCostInfo.class, param.getParam());
     }
 
     @Override
@@ -185,7 +185,7 @@ public class MasterWhom extends ListPage {
                 }
             */
             Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
-            PageOpenner.INSTANCE.open(MainPage.class);
+            PageOpener.INSTANCE.open(MainPage.class);
 
         });
 

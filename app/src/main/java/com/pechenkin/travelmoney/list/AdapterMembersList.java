@@ -1,21 +1,12 @@
 package com.pechenkin.travelmoney.list;
 
-import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
-import com.pechenkin.travelmoney.page.member.EditMemderPage;
-import com.pechenkin.travelmoney.page.PageOpenner;
-import com.pechenkin.travelmoney.page.PageParam;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.Html;
 import android.text.InputType;
 import android.util.SparseBooleanArray;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +18,14 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.page.PageOpener;
+import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.member.EditMemderPage;
 
 public class AdapterMembersList extends BaseAdapter {
 
@@ -93,108 +92,89 @@ public class AdapterMembersList extends BaseAdapter {
 
 
             if (showEditButton) {
-                holder.editButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                holder.editButton.setOnClickListener(v -> {
 
-                        MemberBaseTableRow item;
-                        try {
-                            View parentRow = (View) v.getParent();
-                            ListView listView = (ListView) parentRow.getParent();
-                            int position = listView.getPositionForView(parentRow);
-                            item = getItem(position).getMemberRow();
-                        } catch (Exception ex) {
-                            Help.alert(ex.getMessage());
-                            return;
-                        }
-
-                        if (item != null) {
-                            PageOpenner.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
-                        }
-                    }
-                });
-            }
-            holder.memberSumText = convertView.findViewById(R.id.memberSumText);
-
-            holder.memberSumText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    final  CostMemberBaseTableRow item;
-                    final ListView listView;
+                    MemberBaseTableRow item;
                     try {
                         View parentRow = (View) v.getParent();
-                        listView = (ListView) parentRow.getParent();
-                        int position = listView.getPositionForView(parentRow);
-                        item = getItem(position);
+                        ListView listView = (ListView) parentRow.getParent();
+                        int position12 = listView.getPositionForView(parentRow);
+                        item = getItem(position12).getMemberRow();
                     } catch (Exception ex) {
                         Help.alert(ex.getMessage());
                         return;
                     }
 
-
                     if (item != null) {
-
-                        final EditText input = new EditText(MainActivity.INSTANCE);
-                        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                        input.setText(((TextView)v).getText());
-
-                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.MATCH_PARENT );
-                        input.setLayoutParams(lp);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
-                        builder	.setTitle("")
-                                .setCancelable(false)
-                                .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //((TextView) v).setText(input.getText());
-                                        item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
-                                        item.setChange(true);
-                                        dialog.cancel();
-                                        listView.invalidateViews();
-                                    }
-                                })
-                                .setNegativeButton("Отмена",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        })
-                                .setNeutralButton("По умолчанию", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        item.setChange(false);
-                                        dialog.cancel();
-                                        listView.invalidateViews();
-                                    }
-                                });
-
-
-
-                        final AlertDialog alert = builder.create();
-                        alert.setView(input);
-                        if (alert.getWindow() != null)
-                            alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-                        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                            @Override
-                            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                                    item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
-                                    item.setChange(true);
-                                    alert.cancel();
-                                    listView.invalidateViews();
-                                    return true;
-                                }
-                                return false;
-                            }
-                        });
-
-                        alert.show();
-
-                        Help.setActiveEditText(input, true);
+                        PageOpener.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
                     }
+                });
+            }
+            holder.memberSumText = convertView.findViewById(R.id.memberSumText);
+
+            holder.memberSumText.setOnClickListener(v -> {
+                final  CostMemberBaseTableRow item;
+                final ListView listView;
+                try {
+                    View parentRow = (View) v.getParent();
+                    listView = (ListView) parentRow.getParent();
+                    int position1 = listView.getPositionForView(parentRow);
+                    item = getItem(position1);
+                } catch (Exception ex) {
+                    Help.alert(ex.getMessage());
+                    return;
+                }
+
+
+                if (item != null) {
+
+                    final EditText input = new EditText(MainActivity.INSTANCE);
+                    input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    input.setText(((TextView)v).getText());
+
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT );
+                    input.setLayoutParams(lp);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
+                    builder	.setTitle("")
+                            .setCancelable(false)
+                            .setPositiveButton("Ок", (dialog, which) -> {
+                                //((TextView) v).setText(input.getText());
+                                item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
+                                item.setChange(true);
+                                dialog.cancel();
+                                listView.invalidateViews();
+                            })
+                            .setNegativeButton("Отмена",
+                                    (dialog, id) -> dialog.cancel())
+                            .setNeutralButton("По умолчанию", (dialog, which) -> {
+                                item.setChange(false);
+                                dialog.cancel();
+                                listView.invalidateViews();
+                            });
+
+
+
+                    final AlertDialog alert = builder.create();
+                    alert.setView(input);
+                    if (alert.getWindow() != null)
+                        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                    input.setOnEditorActionListener((v1, actionId, event) -> {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
+                            item.setChange(true);
+                            alert.cancel();
+                            listView.invalidateViews();
+                            return true;
+                        }
+                        return false;
+                    });
+
+                    alert.show();
+
+                    Help.setActiveEditText(input, true);
                 }
             });
 
@@ -223,7 +203,7 @@ public class AdapterMembersList extends BaseAdapter {
 
             final ListView lv = (ListView) parent;
             SparseBooleanArray sbArray = lv.getCheckedItemPositions();
-            Boolean checked = sbArray.get(position, false);
+            boolean checked = sbArray.get(position, false);
             holder.memberSumText.setVisibility(View.INVISIBLE);
             if(checked)
             {

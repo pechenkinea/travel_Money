@@ -23,7 +23,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.BasePage;
-import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -46,7 +46,7 @@ public class MasterCostInfo extends BasePage {
     @Override
     public void clickBackButton() {
         setParam();
-        PageOpenner.INSTANCE.open(MasterWho.class, getParam());
+        PageOpener.INSTANCE.open(MasterWho.class, getParam());
     }
 
     private Date selectDate = new Date();
@@ -100,7 +100,7 @@ public class MasterCostInfo extends BasePage {
         }
 
         setParam();
-        PageOpenner.INSTANCE.open(MasterWhom.class, getParam());
+        PageOpener.INSTANCE.open(MasterWhom.class, getParam());
 
     }
 

@@ -5,32 +5,23 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
-import com.pechenkin.travelmoney.list.AdapterMembersList;
-import com.pechenkin.travelmoney.list.CostMemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
@@ -83,52 +74,10 @@ public class Help {
                 .setMessage(mes)
                 .setCancelable(false)
                 .setNegativeButton("ОК",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                        (dialog, id) -> dialog.cancel());
         AlertDialog alert = builder.create();
         alert.show();
     }
-
-    // заполнить выпадающий список
-    public static void fill_cost_Spinner(BaseTableRow[] rows, Spinner spinner) {
-        ArrayList<String> nameList = new ArrayList<>();
-        int selectedObject = 0;
-        for (BaseTableRow row : rows) {
-            nameList.add(row.name);
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.INSTANCE.getApplicationContext(), R.layout.spinner, nameList);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setSelection(selectedObject);
-    }
-
-    // высота listView
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
-
-        int totalHeight = 0;
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
-
 
     // два массыва в один
     public static <T> T[] concat(T[] first, T[] second) {
@@ -162,21 +111,7 @@ public class Help {
         }
     }
 
-    public static void fill_list_view(long t_id, ListView list1) {
-        MembersQueryResult c = t_members.getAllByTripId(t_id);
 
-        list1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-
-        if (!c.hasRows()) {
-            Help.message("Нет данных");
-            list1.setAdapter(null);
-        } else {
-            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMemberBaseTableRow.createCostMemberBaseTableRow(c.getAllRows(), 0), false);
-            list1.setAdapter(adapter);
-
-        }
-    }
 
     public static double StringToDouble(String value) {
         if (value == null || value.length() == 0)
@@ -236,50 +171,47 @@ public class Help {
 
     static void createBigCostList() {
 
-        final ProgressDialog progDailog = ProgressDialog.show(MainActivity.INSTANCE,
+        final ProgressDialog progressDialog = ProgressDialog.show(MainActivity.INSTANCE,
                 "",
                 MainActivity.INSTANCE.getString(R.string.wait), true);
 
-        Thread printCostThready = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        Thread printCostThready = new Thread(() -> {
 
-                MembersQueryResult currentTripMembers = t_members.getAllByTripId(t_trips.ActiveTrip.id);
-                BaseTableRow[] members = currentTripMembers.getAllRows();
+            MembersQueryResult currentTripMembers = t_members.getAllByTripId(t_trips.ActiveTrip.id);
+            BaseTableRow[] members = currentTripMembers.getAllRows();
 
-                try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
+            try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
 
 
-                    long date = new Date().getTime();
+                long date = new Date().getTime();
 
-                    Random memberRandom = new Random();
+                Random memberRandom = new Random();
 
-                    for (int i = 0; i < 1000; i++) {
+                for (int i = 0; i < 1000; i++) {
 
-                        BaseTableRow member = members[memberRandom.nextInt(members.length)];
-                        String comment = "comment " + i;
+                    BaseTableRow member = members[memberRandom.nextInt(members.length)];
+                    String comment = "comment " + i;
 
-                        String dateStr = String.valueOf(date + i);
+                    String dateStr = String.valueOf(date + i);
 
-                        for (int g = 0; g < 4; g++) {
+                    for (int g = 0; g < 4; g++) {
 
-                            ContentValues cv = new ContentValues();
-                            cv.put(Namespace.FIELD_MEMBER, member.id);
-                            cv.put(Namespace.FIELD_TO_MEMBER, members[memberRandom.nextInt(members.length)].id);
-                            cv.put(Namespace.FIELD_COMMENT, comment);
-                            cv.put(Namespace.FIELD_SUM, String.valueOf(new Random().nextInt(300)));
-                            cv.put(Namespace.FIELD_IMAGE_DIR, "");
-                            cv.put(Namespace.FIELD_ACTIVE, 1);
-                            cv.put(Namespace.FIELD_TRIP, t_trips.ActiveTrip.id);
-                            cv.put(Namespace.FIELD_DATE, dateStr);
+                        ContentValues cv = new ContentValues();
+                        cv.put(Namespace.FIELD_MEMBER, member.id);
+                        cv.put(Namespace.FIELD_TO_MEMBER, members[memberRandom.nextInt(members.length)].id);
+                        cv.put(Namespace.FIELD_COMMENT, comment);
+                        cv.put(Namespace.FIELD_SUM, String.valueOf(new Random().nextInt(300)));
+                        cv.put(Namespace.FIELD_IMAGE_DIR, "");
+                        cv.put(Namespace.FIELD_ACTIVE, 1);
+                        cv.put(Namespace.FIELD_TRIP, t_trips.ActiveTrip.id);
+                        cv.put(Namespace.FIELD_DATE, dateStr);
 
-                            db.insert(Namespace.TABLE_COSTS, null, cv);
-                        }
-
+                        db.insert(Namespace.TABLE_COSTS, null, cv);
                     }
+
                 }
-                progDailog.dismiss();
             }
+            progressDialog.dismiss();
         });
 
         printCostThready.start();

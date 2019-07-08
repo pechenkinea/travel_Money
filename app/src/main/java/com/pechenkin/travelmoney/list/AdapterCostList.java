@@ -111,7 +111,7 @@ public class AdapterCostList extends BaseAdapter {
         holder.sum_comment.setText(comment);
 
 
-        holder.fotoImage(song.image_dir());
+        holder.photoImage(song.image_dir());
 
 
         String colorDisable = "#CCCCCC";
@@ -269,7 +269,7 @@ public class AdapterCostList extends BaseAdapter {
         /**
          * показывает/скрывает иконку фотографии в зависимости от наличия ссылки
          */
-        void fotoImage(String dir) {
+        void photoImage(String dir) {
             if (dir.length() > 0) {
                 this.have_foto.setVisibility(View.VISIBLE);
             } else {

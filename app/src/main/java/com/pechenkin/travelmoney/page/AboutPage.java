@@ -18,7 +18,7 @@ import com.pechenkin.travelmoney.SafeURLSpan;
 public class AboutPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpenner.INSTANCE.open(MainPage.class);
+        PageOpener.INSTANCE.open(MainPage.class);
     }
 
     @Override

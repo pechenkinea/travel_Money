@@ -98,15 +98,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.BLACK + ");");
 
-        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#ff1e1c") + ");");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#f9e701") + ");");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#0172b6") + ");");
+        String[] colors = {
+                "#ff1e1c",
+                "#f9e701",
+                "#0172b6",
+                "#fe8f00",
+                "#008f59",
+                "#7b358e",
+                "#ff00ff"
+        };
 
-        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#fe8f00") + ");");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#008f59") + ");");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#7b358e") + ");");
-
-        db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor("#ff00ff") + ");");
+        for (String color : colors) {
+            db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor(color) + ");");
+        }
 
     }
 
