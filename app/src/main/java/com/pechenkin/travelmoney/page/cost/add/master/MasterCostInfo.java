@@ -192,7 +192,7 @@ public class MasterCostInfo extends BasePage {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
             MainActivity.INSTANCE.setResult(RESULT_OK, intent);
-            MainActivity.INSTANCE.startActivityForResult(intent, MainActivity.TAKE_COST_FOTO);
+            MainActivity.INSTANCE.startActivityForResult(intent, MainActivity.TAKE_COST_PHOTO);
         });
 
 

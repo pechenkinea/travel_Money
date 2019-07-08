@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     static public MainActivity INSTANCE;
 
-    public static int TAKE_COST_FOTO = 2;
+    public static int TAKE_COST_PHOTO = 2;
     public static int VOICE_RECOGNITION_REQUEST_CODE = 3;
 
     public MainActivity() {
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
 
             // если это результаты отправки на получение фото
-            if (requestCode == TAKE_COST_FOTO) {
+            if (requestCode == TAKE_COST_PHOTO) {
                 TextView textDir = findViewById(R.id.cost_dir_textView);
                 if (photoFileUri != null) {
                     textDir.setText(photoFileUri);
