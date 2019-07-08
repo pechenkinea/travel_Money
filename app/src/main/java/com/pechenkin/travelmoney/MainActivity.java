@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private DBHelper dbHelper;
 
-    synchronized public DBHelper getDbHelper() {
+    public DBHelper getDbHelper() {
         return dbHelper;
     }
 
@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                     return true;
 
 
+                /*
+                //тест голосового ввода
                 case R.id.test:
                     String text = "Я себе 25030 с половиной";
                     CostCreator cc = new CostCreator(text);
@@ -112,10 +114,12 @@ public class MainActivity extends AppCompatActivity {
                     PageOpener.INSTANCE.open(AddCostsListPage.class, param);
                     return true;
 
+                //тестирование скорости работы на большом кол-ве операций
                 case R.id.testBigCostList:
                     Help.createBigCostList();
                     return true;
 
+                */
                 default:
                     return super.onOptionsItemSelected(item);
             }

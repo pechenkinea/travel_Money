@@ -69,7 +69,7 @@
 		android:title="@string/about"/>
 
 
-	<item
+	<!--<item
 		android:id="@+id/test"
 		android:orderInCategory="1"
 		android:title="Тест. текста"
@@ -81,10 +81,6 @@
 		android:orderInCategory="1"
 		android:title="Тест. Добавить 1000 записей"
 		android:visible="false"
-		tools:ignore="HardcodedText" />
-
-
-
-
+		tools:ignore="HardcodedText" />-->
 
 </menu>

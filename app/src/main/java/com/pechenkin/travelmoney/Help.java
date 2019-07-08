@@ -2,10 +2,7 @@ package com.pechenkin.travelmoney;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
@@ -14,17 +11,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Random;
 
 public class Help {
 
@@ -169,6 +158,12 @@ public class Help {
         return color;
     }
 
+
+    /*
+     * Добавляет в текущую поездку 4000 операций разом.
+     * каждые 4 имеют общую дату и комментарий для возможности группировки
+     */
+    /*
     static void createBigCostList() {
 
         final ProgressDialog progressDialog = ProgressDialog.show(MainActivity.INSTANCE,
@@ -218,6 +213,8 @@ public class Help {
 
 
     }
+    */
+
 
 
 }
