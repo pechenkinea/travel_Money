@@ -14,7 +14,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 29
         //noinspection HighAppVersionCode20190628
-        versionCode 2019180462
+        versionCode 2019180463
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName);
     }

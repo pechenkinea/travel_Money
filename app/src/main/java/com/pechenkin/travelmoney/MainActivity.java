@@ -1,34 +1,33 @@
 package com.pechenkin.travelmoney;
 
-import com.pechenkin.travelmoney.bd.DBHelper;
-import com.pechenkin.travelmoney.bd.table.t_colors;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.page.AboutPage;
-import com.pechenkin.travelmoney.page.AddCostsListPage;
-import com.pechenkin.travelmoney.page.SettingsPage;
-import com.pechenkin.travelmoney.page.trip.AddTripPage;
-import com.pechenkin.travelmoney.page.MainPage;
-import com.pechenkin.travelmoney.page.member.MembersListPage;
-import com.pechenkin.travelmoney.page.PageOpenner;
-import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.SumResultListPage;
-import com.pechenkin.travelmoney.page.trip.TripsListPage;
-import com.pechenkin.travelmoney.speech.recognition.CostCreator;
-import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.net.Uri;
-import android.os.Bundle;
 import android.content.Intent;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.pechenkin.travelmoney.bd.DBHelper;
+import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.page.AboutPage;
+import com.pechenkin.travelmoney.page.AddCostsListPage;
+import com.pechenkin.travelmoney.page.MainPage;
+import com.pechenkin.travelmoney.page.PageOpenner;
+import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.SettingsPage;
+import com.pechenkin.travelmoney.page.SumResultListPage;
+import com.pechenkin.travelmoney.page.member.MembersListPage;
+import com.pechenkin.travelmoney.page.trip.AddTripPage;
+import com.pechenkin.travelmoney.page.trip.TripsListPage;
+import com.pechenkin.travelmoney.speech.recognition.CostCreator;
+import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -56,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(getApplicationContext());
         INSTANCE = this;
         t_members.updateMembersCache();
-
-        t_colors.resetColors();
         PageOpenner.INSTANCE.open(MainPage.class);
     }
 
@@ -80,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!PageOpenner.INSTANCE.getCurrentPage().onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.action_trip_add:
@@ -138,12 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton ImageButton = findViewById(R.id.toolBarBackButton);
         if (ImageButton != null) {
-            ImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
+            ImageButton.setOnClickListener(v -> onBackPressed());
         }
     }
 
@@ -153,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public Uri outputFileUri = null;
+    public String photoFileUri = null;
 
 
     @Override
@@ -164,9 +156,10 @@ public class MainActivity extends AppCompatActivity {
             // если это результаты отправки на получение фото
             if (requestCode == TAKE_COST_FOTO) {
                 TextView textDir = findViewById(R.id.cost_dir_textView);
-                if (outputFileUri != null) {
-                    textDir.setText(outputFileUri.toString());
-                    MainActivity.INSTANCE.findViewById(R.id.hasFoto).setVisibility(View.VISIBLE);
+                if (photoFileUri != null) {
+                    textDir.setText(photoFileUri);
+                    MainActivity.INSTANCE.findViewById(R.id.hasPhoto).setVisibility(View.VISIBLE);
+                    photoFileUri = null;
                 }
             }
             // если это результаты распознавания речи
@@ -177,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 final ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
                 // все, в массиве matches мы получили результаты...
-                if (matches.size() > 0) {
+                if (matches != null && matches.size() > 0) {
                     CostCreator cc = null;
 
                     for (int i = 0; i < matches.size(); i++) {
@@ -195,28 +188,18 @@ public class MainActivity extends AppCompatActivity {
                                 .setMessage(String.format("Не удалось разобрать\n%s", matches.get(0)))
                                 .setCancelable(false)
 
-                                .setNeutralButton("Повторить", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                        SpeechRecognitionHelper.run(MainActivity.INSTANCE);
-                                    }
+                                .setNeutralButton("Повторить", (dialog, which) -> {
+                                    dialog.cancel();
+                                    SpeechRecognitionHelper.run(MainActivity.INSTANCE);
                                 })
-                                .setPositiveButton("Продолжить", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                        CostCreator cc = new CostCreator(matches.get(0));
-                                        PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
-                                        PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
-                                    }
+                                .setPositiveButton("Продолжить", (dialog, which) -> {
+                                    dialog.cancel();
+                                    CostCreator cc1 = new CostCreator(matches.get(0));
+                                    PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc1).getParam();
+                                    PageOpenner.INSTANCE.open(AddCostsListPage.class, param);
                                 })
                                 .setNegativeButton("Отмена",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        });
+                                        (dialog, id) -> dialog.cancel());
 
                         AlertDialog alert = builder.create();
                         alert.show();

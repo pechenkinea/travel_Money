@@ -52,7 +52,7 @@
                 android:hint="@string/date" />
 
             <TextView
-                android:id="@+id/hasFoto"
+                android:id="@+id/hasPhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/foto"

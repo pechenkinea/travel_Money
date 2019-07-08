@@ -2,7 +2,10 @@ package com.pechenkin.travelmoney.page;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.LongSparseArray;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
@@ -38,6 +42,7 @@ import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
 import com.pechenkin.travelmoney.page.trip.TripsListPage;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -164,14 +169,30 @@ public class MainPage extends BasePage {
             } else {
                 if (item != null && item.image_dir() != null && item.image_dir().length() > 0) {
 
-                    PageParam.BuildingPageParam param = new PageParam.BuildingPageParam()
-                            .setFotoUrl(item.image_dir());
+                    String realPath = item.image_dir();
 
-                    if (hasParam() && getParam().getId() > -1) {
-                        param.setId(getParam().getId());
+                    if (item.image_dir().contains(".provider")){
+                        //костыль, т.к. раньше в БД хранилось значение уже после работы FileProvider
+                        String badPath = "content://" + MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider/external_files";
+                        realPath = item.image_dir().replaceFirst(badPath, Environment.getExternalStorageDirectory().getAbsolutePath());
                     }
 
-                    PageOpenner.INSTANCE.open(FotoPage.class, param.getParam());
+
+                    File file = new File(realPath);
+                    if (!file.exists()){
+                        Help.alertError("Файл не найден. " + realPath);
+                        return;
+                    }
+
+                    Uri uri = FileProvider.getUriForFile(
+                            MainActivity.INSTANCE,
+                            MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", file);
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setDataAndType(uri, "image/*");
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    MainActivity.INSTANCE.startActivity(intent);
+
                 }
             }
 

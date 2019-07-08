@@ -3,6 +3,7 @@ package com.pechenkin.travelmoney.page.cost.add.master;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -158,6 +159,7 @@ public class MasterCostInfo extends BasePage {
         fotoButton.setOnClickListener(v -> {
             Help.hideKeyboard();
 
+
             if (!Environment.getExternalStorageState().equals(
                     Environment.MEDIA_MOUNTED)) {
                 Help.alert("SD-карта не доступна: " + Environment.getExternalStorageState());
@@ -165,32 +167,32 @@ public class MasterCostInfo extends BasePage {
             }
 
             Date now = new Date();
-            File path = Environment.getExternalStorageDirectory();
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-
-            File f1 = new File(path.getAbsolutePath() + "/travel_Money");
-            if (!f1.exists() && !f1.mkdirs()) {
-                Help.alert("Ошибка. Не удалось создать папку для хранения фото. " + f1.getAbsolutePath() + MainActivity.INSTANCE.getString(R.string.fileError));
+            File folderForPhoto = new File(path.getAbsolutePath() + "/travel_Money");
+            if (!folderForPhoto.exists() && !folderForPhoto.mkdirs()) {
+                Help.alert("Ошибка. Не удалось создать папку для хранения фото. " + folderForPhoto.getAbsolutePath() + MainActivity.INSTANCE.getString(R.string.fileError));
                 return;
             }
 
-            File file = new File(f1.getAbsolutePath(), now.getTime() + ".jpg");
+            File file = new File(folderForPhoto.getAbsolutePath(), now.getTime() + ".jpg");
 
 
-            MainActivity.INSTANCE.outputFileUri = FileProvider.getUriForFile(
+            //Создаем uri, через который будет доступен файл для intent камеры
+            Uri outputFileUri = FileProvider.getUriForFile(
                     MainActivity.INSTANCE,
                     MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", file);
 
-            if (MainActivity.INSTANCE.outputFileUri == null) {
+            if (outputFileUri == null) {
                 Help.alert("Ошибка. Не удалось создать файл для фото.");
                 return;
             }
 
+            MainActivity.INSTANCE.photoFileUri = file.getAbsolutePath(); // Значение, для хранения в базе
+
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, MainActivity.INSTANCE.outputFileUri);
-
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
             MainActivity.INSTANCE.setResult(RESULT_OK, intent);
-
             MainActivity.INSTANCE.startActivityForResult(intent, MainActivity.TAKE_COST_FOTO);
         });
 
@@ -273,7 +275,7 @@ public class MasterCostInfo extends BasePage {
                     ((TextView) MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView))
                             .setText(getParam().getFotoUrl());
 
-                    MainActivity.INSTANCE.findViewById(R.id.hasFoto).setVisibility(View.VISIBLE);
+                    MainActivity.INSTANCE.findViewById(R.id.hasPhoto).setVisibility(View.VISIBLE);
                 }
 
 
