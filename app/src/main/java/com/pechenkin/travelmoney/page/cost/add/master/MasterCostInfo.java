@@ -160,8 +160,7 @@ public class MasterCostInfo extends BasePage {
             Help.hideKeyboard();
 
 
-            if (!Environment.getExternalStorageState().equals(
-                    Environment.MEDIA_MOUNTED)) {
+            if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 Help.alert("SD-карта не доступна: " + Environment.getExternalStorageState());
                 return;
             }
