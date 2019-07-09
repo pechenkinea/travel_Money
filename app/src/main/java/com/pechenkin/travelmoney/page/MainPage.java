@@ -378,14 +378,13 @@ public class MainPage extends BasePage {
                                 MemberBaseTableRow member = t_members.getMemberById(calcCost.member());
                                 MemberBaseTableRow to_member = t_members.getMemberById(calcCost.to_member());
 
-
+                                //В приоритете запомнить учатсника, кому должны
                                 membersByColor.put(to_member.color, to_member.id);
-
                                 if (membersByColor.indexOfKey(member.color) < 0) {
                                     membersByColor.put(member.color, member.id);
                                 }
 
-                                // т.к. в calculationList приходит кто кому должен надо перевернуть значения.
+                                // т.к. в calculationList приходит "кто кому должен" надо перевернуть значения, что бы получилось "кто кому дал"
                                 // поэтому первым параметром в ShortCost отдаем to_member а вторым member
                                 Cost forGroupCost = new ShortCost(to_member.color, member.color, calcCost.sum());
                                 calcListCosts[i] = forGroupCost;
