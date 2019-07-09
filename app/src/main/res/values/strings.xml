@@ -78,5 +78,15 @@
     <string name="group_cost_on_off">Группировка в общем списке операций</string>
     <string name="to_member_text_length_label">Разрешенное количество символов для участников в поле \'кому\' при включенной группировке общего списка операций</string>
 
+    <string-array name="member_colors">
+        <item>#3db432</item>
+        <item>#ff1e1c</item>
+        <item>#f9e701</item>
+        <item>#0172b6</item>
+        <item>#fe8f00</item>
+        <item>#008f59</item>
+        <item>#7b358e</item>
+        <item>#ff00ff</item>
+    </string-array>
 
 </resources>

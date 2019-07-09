@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbHelper = new DBHelper(getApplicationContext());
         INSTANCE = this;
+        dbHelper = new DBHelper(getApplicationContext());
         t_members.updateMembersCache();
         PageOpener.INSTANCE.open(MainPage.class);
     }

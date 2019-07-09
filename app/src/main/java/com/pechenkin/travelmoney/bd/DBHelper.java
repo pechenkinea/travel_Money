@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 
+import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.R;
+
 public class DBHelper extends SQLiteOpenHelper {
 
 
@@ -52,9 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '0');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
 
-
         createTableColors(db);
-
     }
 
     private void createTableCost(SQLiteDatabase db) {
@@ -98,16 +99,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.BLACK + ");");
 
-        String[] colors = {
-                "#ff1e1c",
-                "#f9e701",
-                "#0172b6",
-                "#fe8f00",
-                "#008f59",
-                "#7b358e",
-                "#ff00ff"
-        };
-
+        String[] colors = MainActivity.INSTANCE.getResources().getStringArray(R.array.member_colors);
         for (String color : colors) {
             db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor(color) + ");");
         }
