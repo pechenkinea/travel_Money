@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 ext {
-    travelMoneyVersionName = '2.6.2 (Beta)'
+    travelMoneyVersionName = '2.6.3 (Beta)'
     //travelMoneyVersionName = '2.6'
 }
 
@@ -14,7 +14,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 29
         //noinspection HighAppVersionCode20190628
-        versionCode 2019180463
+        versionCode 2019180464
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName);
     }
