@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.page;
 
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
  * Created by pechenkin on 19.04.2018.

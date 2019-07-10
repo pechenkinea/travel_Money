@@ -16,7 +16,7 @@ import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.list.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.ListPage;
-import com.pechenkin.travelmoney.page.MainPage;
+import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 

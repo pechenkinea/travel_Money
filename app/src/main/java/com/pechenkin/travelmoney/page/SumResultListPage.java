@@ -17,7 +17,7 @@ import com.pechenkin.travelmoney.summry.Total;
 
 /**
  * Created by pechenkin on 19.04.2018.]
- * Страница с итогами
+ * Страница "Статистика"
  */
 
 public class SumResultListPage extends ListPage {

@@ -16,7 +16,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.page.MainPage;
+import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;

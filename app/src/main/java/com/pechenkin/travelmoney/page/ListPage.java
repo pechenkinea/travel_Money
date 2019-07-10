@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
  * Created by pechenkin on 19.04.2018.

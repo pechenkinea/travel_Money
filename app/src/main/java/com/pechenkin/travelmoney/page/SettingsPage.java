@@ -10,6 +10,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.t_settings;
+import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
  * Created by pechenkin on 11.05.2018.

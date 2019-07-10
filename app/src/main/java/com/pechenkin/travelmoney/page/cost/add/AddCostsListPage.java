@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.page;
+package com.pechenkin.travelmoney.page.cost.add;
 
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +18,10 @@ import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.list.RecyclerAdapterCostList;
+import com.pechenkin.travelmoney.page.BasePage;
+import com.pechenkin.travelmoney.page.PageOpener;
+import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
 
 import java.util.ArrayList;
