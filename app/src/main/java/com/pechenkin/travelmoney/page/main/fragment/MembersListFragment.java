@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -23,6 +24,7 @@ import com.pechenkin.travelmoney.list.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.member.AddMemderPage;
 import com.pechenkin.travelmoney.page.member.EditMemderPage;
 
 public class MembersListFragment extends Fragment {
@@ -37,6 +39,9 @@ public class MembersListFragment extends Fragment {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
             return fragmentView;
         }
+
+        FloatingActionButton addMemberButton = fragmentView.findViewById(R.id.member_add_button);
+        addMemberButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AddMemderPage.class));
 
         MembersQueryResult allMembers = t_members.getAll();
         ListView list = fragmentView.findViewById(R.id.list_members);

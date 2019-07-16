@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -19,6 +20,7 @@ import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterTripsList;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.trip.AddTripPage;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
 
 public class TripsListFragment extends Fragment {
@@ -28,6 +30,10 @@ public class TripsListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View fragmentView = inflater.inflate(R.layout.fragment_trips_list, container, false);
+
+
+        FloatingActionButton addTripButton = fragmentView.findViewById(R.id.trips_list_add_button);
+        addTripButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AddTripPage.class));
 
         TripsQueryResult allTrips = t_trips.getAll();
         ListView list = fragmentView.findViewById(R.id.catalog_trips_list);
