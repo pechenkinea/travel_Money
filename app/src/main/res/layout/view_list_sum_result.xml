@@ -6,12 +6,9 @@
     android:orientation="vertical"
     style="@style/Layout" >
 
-    <include
-        layout="@layout/toolbar_out_main" />
 
     <ListView
         android:id="@+id/list_sum_result"
-        android:layout_below="@+id/toolbar_out_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

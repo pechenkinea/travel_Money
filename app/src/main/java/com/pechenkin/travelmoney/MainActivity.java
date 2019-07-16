@@ -1,35 +1,23 @@
 package com.pechenkin.travelmoney;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pechenkin.travelmoney.bd.DBHelper;
 import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.page.AboutPage;
-import com.pechenkin.travelmoney.page.cost.add.AddCostsListPage;
-import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.SettingsPage;
-import com.pechenkin.travelmoney.page.SumResultListPage;
-import com.pechenkin.travelmoney.page.member.MembersListPage;
-import com.pechenkin.travelmoney.page.trip.AddTripPage;
-import com.pechenkin.travelmoney.page.trip.TripsListPage;
+import com.pechenkin.travelmoney.page.cost.add.AddCostsListPage;
+import com.pechenkin.travelmoney.page.main.MainPageNew;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 
@@ -42,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     static public MainActivity INSTANCE;
 
-    public static int TAKE_COST_PHOTO = 2;
-    public static int VOICE_RECOGNITION_REQUEST_CODE = 3;
+
 
     public MainActivity() {
 
@@ -51,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         INSTANCE = this;
+        super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getApplicationContext());
         t_members.updateMembersCache();
-        PageOpener.INSTANCE.open(MainPage.class);
+        PageOpener.INSTANCE.open(MainPageNew.class);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
@@ -74,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!PageOpener.INSTANCE.getCurrentPage().onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
@@ -105,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
 
 
-                /*
+                *//*
                 //тест голосового ввода
                 case R.id.test:
                     String text = "Я себе 25030 с половиной";
@@ -119,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     Help.createBigCostList();
                     return true;
 
-                */
+                *//*
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -127,13 +114,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
 
     }
+*/
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-    }
 
-    @Override
+    /*@Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
 
@@ -141,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         if (ImageButton != null) {
             ImageButton.setOnClickListener(v -> onBackPressed());
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -151,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
     public String photoFileUri = null;
 
+    public static int TAKE_COST_PHOTO = 2;
+    public static int VOICE_RECOGNITION_REQUEST_CODE = 3;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -5,12 +5,9 @@
     style="@style/Layout" >
 
 
-    <include
-        layout="@layout/toolbar_out_main" />
 
     <ListView
         android:id="@+id/catalog_trips_list"
-        android:layout_below="@+id/toolbar_out_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>

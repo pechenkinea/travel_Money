@@ -3,19 +3,12 @@
     
     <string name="app_name">Travel Money</string>
 
-    <string name="refresh">Обновить</string>
-    <string name="usersList">Список участников</string>
-    <string name="tripsList">Все поездки</string>
-    <string name="newTrip">Новая поездка</string>
-    <string name="export">Экспорт</string>
-    <string name="json">.json</string>
-    <string name="csv">.csv</string>
+    <string name="tripsList">Поездки</string>
     <string name="who">Кто платит</string>
     <string name="Name">Имя</string>
     <string name="Sum">Сумма</string>
     <string name="Color">Цвет</string>
     <string name="whom">За кого</string>
-    <string name="Back">Назад</string>
 
     <string name="helpAddCost">Добавить трату →</string>
     <string name="helpAdd">Добавить →</string>
@@ -48,7 +41,7 @@
     <string name="memberEdit">Редактирование участника</string>
     <string name="editTrip">Редактирование поездки</string>
     <string name="wait">Подождите…</string>
-    <string name="membersList">Список участников</string>
+    <string name="membersList">Участники</string>
     <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов.  Повторное долгое нажатие вернет операцию в исходное состояние  После отмены или возврата, для актуализации итогов, обновите страницу</string>
     <string name="groupCostMessage">Появилась возможность группировать операции. Включить/выключить опции можно на странице настроек</string>
     <string name="errorNoActiveTask">Нет активных поездок</string>

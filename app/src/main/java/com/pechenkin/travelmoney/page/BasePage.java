@@ -8,6 +8,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.t_settings;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 
 /**
  * Created by pechenkin on 19.04.2018.
@@ -46,11 +47,7 @@ public abstract class BasePage implements Page {
         MainActivity.INSTANCE.setContentView(getPageId());
 
         //Настраиваем тулбар
-        TextView toolbarTitle = MainActivity.INSTANCE.findViewById(R.id.toolBarOutMainTitle);
-        if (toolbarTitle != null)
-        {
-            toolbarTitle.setText(getTitleHeader());
-        }
+        MainActivity.INSTANCE.setTitle(getTitleHeader());
 
         //Заполняем поля
         if (!fillFields()) {

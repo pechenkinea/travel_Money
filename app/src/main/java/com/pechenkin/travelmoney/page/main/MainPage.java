@@ -265,12 +265,12 @@ public class MainPage extends BasePage {
             readerCaption = " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")";
         }
 
-        Toolbar toolbar = MainActivity.INSTANCE.findViewById(R.id.toolbar_main);
+        /*Toolbar toolbar = MainActivity.INSTANCE.findViewById(R.id.toolbar_main);
         if (toolbar != null) {
             MainActivity.INSTANCE.setSupportActionBar(toolbar);
             if (getPageTrip() != null && getPageTrip().name != null && MainActivity.INSTANCE.getSupportActionBar() != null)
                 MainActivity.INSTANCE.getSupportActionBar().setTitle(getPageTrip().name + readerCaption);
-        }
+        }*/
 
         printCostList();
 

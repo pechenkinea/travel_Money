@@ -12,10 +12,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.pechenkin.travelmoney.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="nosensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:screenOrientation="nosensor">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
