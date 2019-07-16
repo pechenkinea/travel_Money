@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -64,7 +65,7 @@ public class EditMemderPage extends BasePage {
 
     @Override
     public void addEvents() {
-        Button commitButton = MainActivity.INSTANCE.findViewById(R.id.edit_member_commit_button);
+        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.edit_member_commit_button);
         commitButton.setOnClickListener(v -> formCommit());
 
 

@@ -11,13 +11,13 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -106,7 +106,7 @@ public class MasterCostInfo extends BasePage {
 
     @Override
     public void addEvents() {
-        Button commitButton = MainActivity.INSTANCE.findViewById(R.id.cost_info_commit_button);
+        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.cost_info_commit_button);
         commitButton.setOnClickListener(v -> commitForm());
 
         //Завершение работы с описанием
@@ -155,8 +155,8 @@ public class MasterCostInfo extends BasePage {
 
 
         //Кнопка для фотографии
-        ImageButton fotoButton = MainActivity.INSTANCE.findViewById(R.id.buttonFoto);
-        fotoButton.setOnClickListener(v -> {
+        FloatingActionButton photoButton = MainActivity.INSTANCE.findViewById(R.id.buttonFoto);
+        photoButton.setOnClickListener(v -> {
             Help.hideKeyboard();
 
 

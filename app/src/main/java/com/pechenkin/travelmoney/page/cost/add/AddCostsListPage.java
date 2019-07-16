@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -59,7 +60,7 @@ public class AddCostsListPage extends BasePage {
     @Override
     public void addEvents() {
 
-        Button add_cost_list_commit = MainActivity.INSTANCE.findViewById(R.id.add_cost_list_commit);
+        FloatingActionButton add_cost_list_commit = MainActivity.INSTANCE.findViewById(R.id.add_cost_list_commit);
         add_cost_list_commit.setOnClickListener(v -> {
 
             RecyclerView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.list_add_costs);
@@ -98,11 +99,11 @@ public class AddCostsListPage extends BasePage {
         });
 
 
-        Button add_costs_list_revert_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_revert_button);
+        FloatingActionButton add_costs_list_revert_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_revert_button);
         add_costs_list_revert_button.setOnClickListener(view -> clickBackButton());
 
 
-        Button add_costs_list_refresh_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button);
+        FloatingActionButton add_costs_list_refresh_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button);
         add_costs_list_refresh_button.setOnClickListener(view -> refreshForm());
 
 

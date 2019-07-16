@@ -5,6 +5,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -44,10 +46,10 @@ public class MembersListPage extends ListPage {
     public void addEvents() {
         super.addEvents();
 
-        Button addMemberButton = MainActivity.INSTANCE.findViewById(R.id.member_add_button);
+        FloatingActionButton addMemberButton = MainActivity.INSTANCE.findViewById(R.id.member_add_button);
         addMemberButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AddMemderPage.class));
 
-        Button member_list_commit = MainActivity.INSTANCE.findViewById(R.id.member_list_commit);
+        FloatingActionButton member_list_commit = MainActivity.INSTANCE.findViewById(R.id.member_list_commit);
         member_list_commit.setOnClickListener(v -> PageOpener.INSTANCE.open(MainPage.class));
 
 

@@ -6,6 +6,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -139,7 +141,7 @@ public class MasterWhom extends ListPage {
     public void addEvents() {
         super.addEvents();
 
-        Button member_list_commit = MainActivity.INSTANCE.findViewById(R.id.member_list_commit);
+        FloatingActionButton member_list_commit = MainActivity.INSTANCE.findViewById(R.id.member_list_commit);
         member_list_commit.setOnClickListener(v -> {
 
             //Кому
@@ -192,7 +194,7 @@ public class MasterWhom extends ListPage {
 
 
 
-        Button member_checkAll_button = MainActivity.INSTANCE.findViewById(R.id.member_checkAll_button);
+        FloatingActionButton member_checkAll_button = MainActivity.INSTANCE.findViewById(R.id.member_checkAll_button);
 
         member_checkAll_button.setOnClickListener(v -> {
 

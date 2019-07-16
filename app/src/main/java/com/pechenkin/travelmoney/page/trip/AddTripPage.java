@@ -1,16 +1,16 @@
 package com.pechenkin.travelmoney.page.trip;
 
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
-import com.pechenkin.travelmoney.page.member.MembersListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
+import com.pechenkin.travelmoney.page.member.MembersListPage;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -30,7 +30,7 @@ public class AddTripPage extends BasePage {
 
     @Override
     public void addEvents() {
-        Button commitButton = MainActivity.INSTANCE.findViewById(R.id.trip_add_button);
+        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.trip_add_button);
         commitButton.setOnClickListener(v -> {
             EditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
             EditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);

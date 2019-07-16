@@ -6,15 +6,13 @@ import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -27,8 +25,6 @@ import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.GroupCost;
-import com.pechenkin.travelmoney.export.Export;
-import com.pechenkin.travelmoney.export.ExportFileTypes;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
@@ -56,11 +52,17 @@ public class MainPage extends BasePage {
         if (hasParam() && getParam().getId() > -1) {
             PageOpener.INSTANCE.open(TripsListPage.class);
         } else
-            MainActivity.INSTANCE.finish();
+            PageOpener.INSTANCE.open(MainPageNew.class);
     }
 
+
+    //TODO не забыть про экспорт
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+
+        return  false;
+
+        /*switch (item.getItemId()) {
 
             case R.id.exportToJson:
                 Export.export(item, ExportFileTypes.JSON, pageTrip);
@@ -77,7 +79,7 @@ public class MainPage extends BasePage {
 
             default:
                 return false;
-        }
+        }*/
     }
 
     private boolean revertStatus(Cost item) {
@@ -131,7 +133,7 @@ public class MainPage extends BasePage {
     @Override
     public void addEvents() {
 
-        Button addCostButton = MainActivity.INSTANCE.findViewById(R.id.mainPageAddbutton);
+        FloatingActionButton addCostButton = MainActivity.INSTANCE.findViewById(R.id.mainPageAddbutton);
         if (addCostButton != null) {
             addCostButton.setOnClickListener(v -> {
                 // Открываем мастер Добавления траты
@@ -139,14 +141,14 @@ public class MainPage extends BasePage {
             });
         }
 
-        ImageButton mainPageSpeechRecognition = MainActivity.INSTANCE.findViewById(R.id.mainPageSpeechRecognition);
+        FloatingActionButton mainPageSpeechRecognition = MainActivity.INSTANCE.findViewById(R.id.mainPageSpeechRecognition);
 
         mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
 
 
-        Button mainPageRevertbutton = MainActivity.INSTANCE.findViewById(R.id.mainPageRevertbutton);
-        if (mainPageRevertbutton != null) {
-            mainPageRevertbutton.setOnClickListener(v -> clickBackButton());
+        FloatingActionButton mainPageRevertButton = MainActivity.INSTANCE.findViewById(R.id.mainPageRevertButton);
+        if (mainPageRevertButton != null) {
+            mainPageRevertButton.setOnClickListener(v -> clickBackButton());
         }
 
 
@@ -235,7 +237,7 @@ public class MainPage extends BasePage {
 
     @Override
     protected String getTitleHeader() {
-        return "";
+        return getPageTrip().name;
     }
 
     private TripBaseTableRow getPageTrip() {
@@ -260,17 +262,14 @@ public class MainPage extends BasePage {
             MainActivity.INSTANCE.findViewById(R.id.mainPageAddbutton).setVisibility(View.INVISIBLE);
             MainActivity.INSTANCE.findViewById(R.id.mainPageSpeechRecognition).setVisibility(View.INVISIBLE);
 
-            MainActivity.INSTANCE.findViewById(R.id.mainPageRevertbutton).setVisibility(View.VISIBLE);
+            MainActivity.INSTANCE.findViewById(R.id.mainPageRevertButton).setVisibility(View.VISIBLE);
 
-            readerCaption = " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")";
+            readerCaption = pageTrip.name + " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")";
+
+            MainActivity.INSTANCE.setTitle(readerCaption);
         }
 
-        /*Toolbar toolbar = MainActivity.INSTANCE.findViewById(R.id.toolbar_main);
-        if (toolbar != null) {
-            MainActivity.INSTANCE.setSupportActionBar(toolbar);
-            if (getPageTrip() != null && getPageTrip().name != null && MainActivity.INSTANCE.getSupportActionBar() != null)
-                MainActivity.INSTANCE.getSupportActionBar().setTitle(getPageTrip().name + readerCaption);
-        }*/
+
 
         printCostList();
 

@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -72,7 +73,7 @@ public class AddMemderPage extends BasePage {
     @Override
     public void addEvents() {
 
-        Button commitButton = MainActivity.INSTANCE.findViewById(R.id.add_member_commit);
+        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.add_member_commit);
         commitButton.setOnClickListener(v -> formCommit());
 
         final EditText nameField = MainActivity.INSTANCE.findViewById(R.id.editName);
