@@ -1,7 +1,7 @@
 package com.pechenkin.travelmoney.page;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.page.main.MainPageNew;
 
 /**
  * Created by pechenkin on 19.04.2018.
@@ -21,7 +21,7 @@ public class PageOpener {
     public Page getCurrentPage(){
         if (currentPage == null)
         {
-            open(MainPage.class);
+            open(MainPageNew.class);
         }
         return  currentPage;
     }

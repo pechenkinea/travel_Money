@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney.page.trip;
 
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -11,13 +10,12 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.t_settings;
-import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.bd.table.result.TripsQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_settings;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterTripsList;
 import com.pechenkin.travelmoney.page.ListPage;
-import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 

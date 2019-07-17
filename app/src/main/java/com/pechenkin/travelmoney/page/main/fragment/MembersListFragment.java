@@ -29,11 +29,13 @@ import com.pechenkin.travelmoney.page.member.EditMemderPage;
 
 public class MembersListFragment extends Fragment {
 
+    private View fragmentView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View fragmentView = inflater.inflate(R.layout.fragment_members_list, container, false);
+        fragmentView = inflater.inflate(R.layout.fragment_members_list, container, false);
 
         if (t_trips.ActiveTrip == null) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
@@ -96,4 +98,9 @@ public class MembersListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Help.showFabWithAnimation(fragmentView.findViewById(R.id.member_add_button));
+    }
 }

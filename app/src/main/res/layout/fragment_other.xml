@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:background="@drawable/background_about_fragment_button"
+                android:drawableTop="@drawable/ic_settings_24"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                android:text="@string/settings" />
+
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:drawableTop="@drawable/ic_help_24"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                android:background="@drawable/background_about_fragment_button"
+                android:text="@string/help"/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:drawableTop="@drawable/ic_share_24"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                android:background="@drawable/background_about_fragment_button"
+                android:text="@string/export"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:background="@drawable/background_about_fragment_button"
+                android:drawableTop="@drawable/ic_info_24"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                android:text="@string/about" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>
+
+

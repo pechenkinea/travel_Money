@@ -25,11 +25,12 @@ import com.pechenkin.travelmoney.page.trip.EditTripPage;
 
 public class TripsListFragment extends Fragment {
 
+    private View fragmentView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View fragmentView = inflater.inflate(R.layout.fragment_trips_list, container, false);
+        fragmentView = inflater.inflate(R.layout.fragment_trips_list, container, false);
 
 
         FloatingActionButton addTripButton = fragmentView.findViewById(R.id.trips_list_add_button);
@@ -52,6 +53,8 @@ public class TripsListFragment extends Fragment {
                     BaseTableRow item = adapter.getItem(position);
                     t_trips.set_active(item.id);
 
+                    MainActivity.INSTANCE.setTitle(item.name);
+
                     list.setItemChecked(position, true);
                     list.invalidateViews();
                 }
@@ -70,4 +73,9 @@ public class TripsListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Help.showFabWithAnimation(fragmentView.findViewById(R.id.trips_list_add_button));
+    }
 }

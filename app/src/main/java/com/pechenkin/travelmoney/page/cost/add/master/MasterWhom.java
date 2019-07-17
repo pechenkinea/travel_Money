@@ -3,7 +3,6 @@ package com.pechenkin.travelmoney.page.cost.add.master;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -11,16 +10,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.list.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.ListPage;
-import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.main.MainPageNew;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -187,7 +186,7 @@ public class MasterWhom extends ListPage {
                 }
             */
             Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
-            PageOpener.INSTANCE.open(MainPage.class);
+            PageOpener.INSTANCE.open(MainPageNew.class);
 
         });
 

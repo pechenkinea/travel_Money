@@ -1,8 +1,10 @@
 package com.pechenkin.travelmoney.page.main;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.LongSparseArray;
+import android.view.View;
 import android.widget.ListView;
 
 import com.pechenkin.travelmoney.Help;
@@ -27,12 +29,17 @@ import java.util.List;
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
     private TripBaseTableRow trip;
+    private ListView listViewCosts;
     private AdapterCostList adapter = null;
     private ProgressDialog procDialog;
     private Cost[] finalList = {};
 
-    public CostListBackground(TripBaseTableRow trip){
+    private PostRunner postRunner;
+
+    public CostListBackground(ListView listViewCosts, TripBaseTableRow trip, PostRunner postRunner){
         this.trip = trip;
+        this.listViewCosts = listViewCosts;
+        this.postRunner = postRunner;
     }
 
 
@@ -165,7 +172,6 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(result);
         procDialog.dismiss();
 
-        ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
         listViewCosts.setAdapter(adapter);
 
         if (adapter.getCount() > 5
@@ -185,5 +191,13 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
             Help.alertHelp(MainActivity.INSTANCE.getString(R.string.groupCostMessage));
             t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_COST_NEED_MESSAGE, false);
         }
+
+        if (postRunner != null){
+            postRunner.run();
+        }
+    }
+
+    public interface PostRunner{
+        void run();
     }
 }

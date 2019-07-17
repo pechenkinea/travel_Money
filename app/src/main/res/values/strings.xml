@@ -31,6 +31,8 @@
     <string name="check">Выбран</string>
     <string name="about">О программе…</string>
     <string name="settings">Настройки</string>
+    <string name="export">Экспорт</string>
+    <string name="help">Частые вопросы</string>
     <string name="version">Версия:</string>
     <string name="versionCode">Код версии:</string>
     <string name="thirdSoftware">Стороннее ПО</string>

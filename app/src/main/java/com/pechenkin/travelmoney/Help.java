@@ -1,5 +1,6 @@
 package com.pechenkin.travelmoney;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,9 +8,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -156,6 +160,31 @@ public class Help {
             color = ((ColorDrawable) background).getColor();
 
         return color;
+    }
+
+    public static void showFabWithAnimation(final FloatingActionButton fab){
+        showFabWithAnimation(fab, 50);
+    }
+
+    @SuppressLint("RestrictedApi")
+    private static void showFabWithAnimation(final FloatingActionButton fab, final int delay) {
+        fab.setVisibility(View.INVISIBLE);
+        fab.setScaleX(0.0F);
+        fab.setScaleY(0.0F);
+        fab.setAlpha(0.0F);
+        fab.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                fab.getViewTreeObserver().removeOnPreDrawListener(this);
+                fab.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fab.show();
+                    }
+                }, delay);
+                return true;
+            }
+        });
     }
 
 

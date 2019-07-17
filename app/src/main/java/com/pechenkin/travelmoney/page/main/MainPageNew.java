@@ -6,15 +6,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.page.BasePage;
-import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.main.fragment.CostListFragment;
 import com.pechenkin.travelmoney.page.main.fragment.MembersListFragment;
+import com.pechenkin.travelmoney.page.main.fragment.OtherFragment;
 import com.pechenkin.travelmoney.page.main.fragment.TripsListFragment;
-import com.pechenkin.travelmoney.page.trip.TripsListPage;
 
 public class MainPageNew extends BasePage {
     @Override
@@ -45,17 +43,15 @@ public class MainPageNew extends BasePage {
     protected void helps() {
 
 
-
     }
 
 
     @Override
     public void clickBackButton() {
         BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
-        if (navView.getSelectedItemId() == R.id.navigation_list){
+        if (navView.getSelectedItemId() == R.id.navigation_list) {
             MainActivity.INSTANCE.finish();
-        }
-        else {
+        } else {
             navView.setSelectedItemId(R.id.navigation_list);
         }
     }
@@ -70,6 +66,9 @@ public class MainPageNew extends BasePage {
         BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(menuItem -> {
 
+            if (navView.getSelectedItemId() == menuItem.getItemId()) {
+                return false;
+            }
 
             FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
             Fragment currentFragment = null;
@@ -84,10 +83,11 @@ public class MainPageNew extends BasePage {
                     currentFragment = new TripsListFragment();
                     break;
                 case R.id.navigation_more:
+                    currentFragment = new OtherFragment();
                     break;
             }
 
-            if (currentFragment != null){
+            if (currentFragment != null) {
                 manager.beginTransaction().replace(R.id.fragment, currentFragment).commit();
                 return true;
             }

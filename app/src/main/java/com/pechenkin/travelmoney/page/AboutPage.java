@@ -9,7 +9,7 @@ import com.pechenkin.travelmoney.BuildConfig;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.SafeURLSpan;
-import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.page.main.MainPageNew;
 
 /**
  * Created by pechenkin on 11.05.2018.
@@ -19,7 +19,7 @@ import com.pechenkin.travelmoney.page.main.MainPage;
 public class AboutPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class);
+        PageOpener.INSTANCE.open(MainPageNew.class);
     }
 
     @Override

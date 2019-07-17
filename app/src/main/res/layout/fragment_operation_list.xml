@@ -6,12 +6,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/main_list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/main_list_layout_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:id="@+id/main_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,6 +31,11 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="88dp"
         app:srcCompat="@drawable/ic_mic_24"
+
+        android:scaleX="0"
+        android:scaleY="0"
+        android:visibility="invisible"
+
         tools:ignore="RtlHardcoded" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -31,6 +45,11 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         app:srcCompat="@drawable/ic_plus_24"
+
+        android:scaleX="0"
+        android:scaleY="0"
+        android:visibility="invisible"
+
         tools:ignore="RtlHardcoded" />
 
 

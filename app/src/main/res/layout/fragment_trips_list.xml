@@ -20,6 +20,11 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         app:srcCompat="@drawable/ic_plus_24"
+
+        android:scaleX="0"
+        android:scaleY="0"
+        android:visibility="invisible"
+
         tools:ignore="RtlHardcoded" />
 
 </FrameLayout>

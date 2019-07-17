@@ -72,11 +72,6 @@ public class MainPage extends BasePage {
                 Export.export(item, ExportFileTypes.CSV, pageTrip);
                 return true;
 
-            case R.id.refreshCostList:
-                printCostList();
-                return true;
-
-
             default:
                 return false;
         }*/
@@ -310,7 +305,8 @@ public class MainPage extends BasePage {
         }
         refreshClickTime = new Date().getTime();
 
-        CostListBackground costListBackground = new CostListBackground(getPageTrip());
+        ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
+        CostListBackground costListBackground = new CostListBackground(listViewCosts, getPageTrip(), null);
         costListBackground.execute();
 
     }
