@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
@@ -39,11 +40,18 @@ public class CostListFragment extends Fragment {
     private View fragmentView;
     private long scrollPosition = 0;
 
+
+    private TripBaseTableRow selectTrip;
+
+    public CostListFragment(TripBaseTableRow trip){
+        this.selectTrip = trip;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_operation_list, container, false);
-        MainActivity.INSTANCE.setTitle(t_trips.ActiveTrip.name);
+        MainActivity.INSTANCE.setTitle(this.selectTrip.name);
 
         FloatingActionButton mainPageSpeechRecognition = fragmentView.findViewById(R.id.mainPageSpeechRecognition);
         mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
@@ -129,7 +137,7 @@ public class CostListFragment extends Fragment {
             return false;
         });
 
-        final View buttonListToTop = MainActivity.INSTANCE.findViewById(R.id.mainPageListToTop);
+        final View buttonListToTop = fragmentView.findViewById(R.id.mainPageListToTop);
         listViewCosts.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -186,7 +194,7 @@ public class CostListFragment extends Fragment {
 
     private void printCostList() {
         ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
-        CostListBackground costListBackground = new CostListBackground(listViewCosts, t_trips.ActiveTrip, null);
+        CostListBackground costListBackground = new CostListBackground(listViewCosts, this.selectTrip, null);
         costListBackground.execute();
     }
 }

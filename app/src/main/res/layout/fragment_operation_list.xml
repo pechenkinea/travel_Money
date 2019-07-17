@@ -52,5 +52,14 @@
 
         tools:ignore="RtlHardcoded" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/mainPageListToTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_up_24"
+        tools:ignore="RtlHardcoded" />
+
 
 </FrameLayout>

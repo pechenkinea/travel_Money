@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.main.fragment.CostListFragment;
 import com.pechenkin.travelmoney.page.main.fragment.MembersListFragment;
@@ -29,7 +30,7 @@ public class MainPageNew extends BasePage {
     protected boolean fillFields() {
 
         FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.fragment, new CostListFragment()).commit();
+        manager.beginTransaction().replace(R.id.fragment, new CostListFragment(t_trips.ActiveTrip)).commit();
 
         return true;
     }
@@ -74,10 +75,10 @@ public class MainPageNew extends BasePage {
             Fragment currentFragment = null;
             switch (menuItem.getItemId()) {
                 case R.id.navigation_list:
-                    currentFragment = new CostListFragment();
+                    currentFragment = new CostListFragment(t_trips.ActiveTrip);
                     break;
                 case R.id.navigation_members:
-                    currentFragment = new MembersListFragment();
+                    currentFragment = new MembersListFragment(t_trips.ActiveTrip);
                     break;
                 case R.id.navigation_trips:
                     currentFragment = new TripsListFragment();
