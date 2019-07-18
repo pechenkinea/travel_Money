@@ -19,34 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/helpHintAddMembers"
-            android:layout_gravity="top|end"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="20dp"
-            android:text="@string/helpAddMembers"
-            style="@style/help"
-            />
-
-        <TextView
-            android:id="@+id/helpHintAddCost"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="30dp"
-            android:text="@string/helpAddCost"
-            style="@style/help"
-            />
-
-
-
-        <TextView
-            android:id="@+id/helpHintAddCostVoice"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="120dp"
-            android:text="@string/helpAddCostVoice"
-            style="@style/help"
-            />
-
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/mainPageSpeechRecognition"
             android:layout_width="wrap_content"
@@ -92,8 +64,5 @@
     </FrameLayout>
 
 
-
-
-    
 
 </RelativeLayout>

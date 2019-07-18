@@ -223,10 +223,7 @@ public class MasterWhom extends ListPage {
 
 
     }
-    @Override
-    protected void helps() {
 
-    }
 
     @Override
     protected int getListViewId() {

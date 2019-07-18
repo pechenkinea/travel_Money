@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.LongSparseArray;
-import android.view.View;
 import android.widget.ListView;
 
 import com.pechenkin.travelmoney.Help;
@@ -29,6 +28,7 @@ import java.util.List;
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
     private TripBaseTableRow trip;
+    @SuppressLint("StaticFieldLeak")
     private ListView listViewCosts;
     private AdapterCostList adapter = null;
     private ProgressDialog procDialog;

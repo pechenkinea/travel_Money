@@ -7,10 +7,10 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.list.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.ListPage;
@@ -73,10 +73,7 @@ public class MasterWho extends ListPage {
         return true;
     }
 
-    @Override
-    protected void helps() {
 
-    }
 
     @Override
     protected int getListViewId() {

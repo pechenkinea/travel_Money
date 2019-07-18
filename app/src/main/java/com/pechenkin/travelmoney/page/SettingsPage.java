@@ -96,8 +96,5 @@ public class SettingsPage extends BasePage {
         return 0;
     }
 
-    @Override
-    protected void helps() {
 
-    }
 }

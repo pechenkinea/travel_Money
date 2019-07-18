@@ -2,27 +2,23 @@ package com.pechenkin.travelmoney.page.member;
 
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_settings;
-import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.list.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.ListPage;
-import com.pechenkin.travelmoney.page.main.MainPageNew;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.main.MainPageNew;
 
 /**
  * Created by pechenkin on 19.04.2018.]
@@ -86,22 +82,6 @@ public class MembersListPage extends ListPage {
 
         }
         return true;
-    }
-
-    @Override
-    protected void helps() {
-        if (t_settings.INSTANCE.active(NamespaceSettings.MEMBERS_LIST_HELP))
-        {
-            TextView helpHintAddMember = MainActivity.INSTANCE.findViewById(R.id.helpHintAddMember);
-            helpHintAddMember.setVisibility(View.VISIBLE);
-
-            TextView helpHintCheckMember = MainActivity.INSTANCE.findViewById(R.id.helpHintCheckMember);
-            helpHintCheckMember.setVisibility(View.VISIBLE);
-
-            TextView helpHintCommitMemberList = MainActivity.INSTANCE.findViewById(R.id.helpHintCommitMemberList);
-            helpHintCommitMemberList.setVisibility(View.VISIBLE);
-        }
-
     }
 
 

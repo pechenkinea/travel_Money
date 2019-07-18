@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
@@ -16,11 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.page.BasePage;
@@ -170,27 +165,6 @@ public class MainPage extends BasePage {
     @Override
     protected int getFocusFieldId() {
         return 0;
-    }
-
-    @Override
-    protected void helps() {
-
-        if (hasParam() && getParam().getId() > -1) {
-            return;
-        }
-
-        if (t_settings.INSTANCE.active(NamespaceSettings.MAIN_PAGE_HELP_ADD_COST_BUTTON)) {
-            MainActivity.INSTANCE.findViewById(R.id.helpHintAddCost).setVisibility(View.VISIBLE);
-            MainActivity.INSTANCE.findViewById(R.id.helpHintAddCostVoice).setVisibility(View.VISIBLE);
-        }
-
-        if (t_settings.INSTANCE.active(NamespaceSettings.MAIN_PAGE_HELP_ADD_MEMBERS)) {
-            MembersQueryResult membersInCurrentTrip = t_members.getAllByTripId(getPageTrip().id);
-            if (!membersInCurrentTrip.hasRows() || membersInCurrentTrip.getAllRows().length < 2) {
-                TextView helpHintAddMembers = MainActivity.INSTANCE.findViewById(R.id.helpHintAddMembers);
-                helpHintAddMembers.setVisibility(View.VISIBLE);
-            }
-        }
     }
 
     private void printCostList() {

@@ -1,10 +1,8 @@
 package com.pechenkin.travelmoney.page.cost.add;
 
-import android.annotation.SuppressLint;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -225,7 +223,6 @@ public class AddCostsListPage extends BasePage {
 
             }
 
-
         };
 
         // attaching the touch helper to recycler view
@@ -242,16 +239,7 @@ public class AddCostsListPage extends BasePage {
         return 0;
     }
 
-    @Override
-    protected void helps() {
 
-        MainActivity.INSTANCE.findViewById(R.id.helpHintDeleteMember).setVisibility(View.VISIBLE);
-        MainActivity.INSTANCE.findViewById(R.id.helpHintAddCost).setVisibility(View.VISIBLE);
-        MainActivity.INSTANCE.findViewById(R.id.helpHintCancel).setVisibility(View.VISIBLE);
-        MainActivity.INSTANCE.findViewById(R.id.helpHintRefresh).setVisibility(View.VISIBLE);
-
-
-    }
 
 
 }

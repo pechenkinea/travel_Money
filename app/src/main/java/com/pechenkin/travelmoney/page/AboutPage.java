@@ -85,8 +85,5 @@ public class AboutPage extends BasePage {
         return 0;
     }
 
-    @Override
-    protected void helps() {
 
-    }
 }

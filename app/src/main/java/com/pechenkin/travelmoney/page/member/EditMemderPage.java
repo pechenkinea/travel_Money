@@ -161,8 +161,5 @@ public class EditMemderPage extends BasePage {
         return R.id.edit_member_Name;
     }
 
-    @Override
-    protected void helps() {
 
-    }
 }

@@ -51,44 +51,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <TextView
-            android:id="@+id/helpHintDeleteMember"
-            android:layout_gravity="center"
-            android:padding="30dp"
-            android:text="@string/helpAddVoiceCostsDeleteItem"
-            android:layout_marginBottom="50dp"
-
-            style="@style/help"
-            />
-
-
-        <TextView
-            android:id="@+id/helpHintAddCost"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="30dp"
-            android:text="@string/helpAdd"
-            style="@style/help"
-            />
-
-        <TextView
-            android:id="@+id/helpHintCancel"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="120dp"
-            android:text="@string/helpCancel"
-            style="@style/help"
-            />
-
-        <TextView
-            android:id="@+id/helpHintRefresh"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="210dp"
-            android:text="@string/helpRefresh"
-            style="@style/help"
-            />
-
-
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_costs_list_refresh_button"
             android:layout_width="wrap_content"

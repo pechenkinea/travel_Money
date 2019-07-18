@@ -72,13 +72,6 @@ public class SumResultListPage extends ListPage {
     }
 
     @Override
-    protected void helps() {
-
-
-    }
-
-
-    @Override
     protected int getListViewId() {
         return R.id.list_sum_result;
     }

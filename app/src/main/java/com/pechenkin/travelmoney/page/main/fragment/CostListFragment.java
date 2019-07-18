@@ -23,7 +23,6 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.GroupCost;
 import com.pechenkin.travelmoney.page.PageOpener;

@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
@@ -297,8 +296,5 @@ public class MasterCostInfo extends BasePage {
         return R.id.cost_comment;
     }
 
-    @Override
-    protected void helps() {
 
-    }
 }

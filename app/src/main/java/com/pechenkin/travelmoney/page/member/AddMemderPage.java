@@ -142,8 +142,5 @@ public class AddMemderPage extends BasePage {
         return  R.id.editName;
     }
 
-    @Override
-    protected void helps() {
 
-    }
 }

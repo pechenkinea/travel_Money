@@ -72,8 +72,5 @@ public class AddTripPage extends BasePage {
         return R.id.trip_name;
     }
 
-    @Override
-    protected void helps() {
 
-    }
 }

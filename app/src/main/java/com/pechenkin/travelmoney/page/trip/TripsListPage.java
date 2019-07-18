@@ -3,16 +3,13 @@ package com.pechenkin.travelmoney.page.trip;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.result.TripsQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterTripsList;
 import com.pechenkin.travelmoney.page.ListPage;
@@ -68,20 +65,7 @@ public class TripsListPage extends ListPage {
         return true;
     }
 
-    @Override
-    protected void helps() {
-        if (t_settings.INSTANCE.active(NamespaceSettings.TRIPS_LIST_HELP))
-        {
-            TextView helpView = MainActivity.INSTANCE.findViewById(R.id.helpHintCheckTrip);
-            helpView.setVisibility(View.VISIBLE);
 
-            TextView helpAddButton = MainActivity.INSTANCE.findViewById(R.id.helpHintAddTrip);
-            helpAddButton.setVisibility(View.VISIBLE);
-
-            TextView helpHintCommitMemberList = MainActivity.INSTANCE.findViewById(R.id.helpHintCommitTripList);
-            helpHintCommitMemberList.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Override
     protected int getListViewId() {

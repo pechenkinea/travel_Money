@@ -1,7 +1,6 @@
 package com.pechenkin.travelmoney.page.trip;
 
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -116,8 +115,5 @@ public class EditTripPage extends BasePage {
         return  R.id.edit_trip_ET_Name;
     }
 
-    @Override
-    protected void helps() {
 
-    }
 }

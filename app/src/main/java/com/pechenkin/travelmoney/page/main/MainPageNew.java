@@ -52,13 +52,6 @@ public class MainPageNew extends BasePage {
     }
 
     @Override
-    protected void helps() {
-
-
-    }
-
-
-    @Override
     public void clickBackButton() {
         BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
         if (navView.getSelectedItemId() == R.id.navigation_list) {
