@@ -10,19 +10,6 @@
     <string name="Color">Цвет</string>
     <string name="whom">За кого</string>
 
-    <string name="helpAddCost">Добавить трату →</string>
-    <string name="helpAdd">Добавить →</string>
-    <string name="helpAddCostVoice">Добавить голосом →</string>
-    <string name="helpAddMembers">Добавьте участников ↗</string>
-    <string name="helpAddMember">Добавить нового участника →</string>
-    <string name="helpCommitMemberList">Завершить работу со списком →</string>
-    <string name="helpChechMembers">Галочками отмечены участники текущей поездки</string>
-    <string name="helpTripList">Галочкой отмечена текущая поездка</string>
-    <string name="helpAddNewTrip">Добавить новую поездку →</string>
-    <string name="helpAddVoiceCostsDeleteItem">Вы можете удалить лишние строки сдвинув их в сторону</string>
-    <string name="helpRefresh">Обновить →</string>
-    <string name="helpCancel">Отменить →</string>
-
 
     <string name="Description">Описание</string>
     <string name="Title">Название</string>

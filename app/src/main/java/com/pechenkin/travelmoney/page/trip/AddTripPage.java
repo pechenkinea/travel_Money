@@ -10,6 +10,8 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
+import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.main.MainPageNew;
 import com.pechenkin.travelmoney.page.member.MembersListPage;
 
 /**
@@ -20,7 +22,7 @@ import com.pechenkin.travelmoney.page.member.MembersListPage;
 public class AddTripPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(TripsListPage.class);
+        PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_trips).getParam());
     }
 
     @Override

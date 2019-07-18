@@ -20,7 +20,7 @@ import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.trip.TripsListPage;
+import com.pechenkin.travelmoney.page.PageParam;
 
 import java.io.File;
 
@@ -37,7 +37,7 @@ public class MainPage extends BasePage {
     @Override
     public void clickBackButton() {
         if (hasParam() && getParam().getId() > -1) {
-            PageOpener.INSTANCE.open(TripsListPage.class);
+            PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_trips).getParam());
         } else
             PageOpener.INSTANCE.open(MainPageNew.class);
     }
