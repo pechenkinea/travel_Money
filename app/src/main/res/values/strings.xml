@@ -61,7 +61,7 @@
     <string name="readMode">просмотр</string>
     <string name="text">Текст</string>
     <string name="warning_member_name">*Для правильной работы голосового добавления трат рекомендуется использовать одно слово в имени</string>
-    <string name="sum_result">Статистика</string>
+    <string name="statistic">Статистика</string>
 
     <string name="fileError"><![CDATA[ Возможно у приложения нет разрешения на использоватние памяти. Посмотрите тут: Настройки -> Диспетчер приложений -> Travel Money -> Разрешения -> Включить хранилище]]></string>
 

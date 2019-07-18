@@ -1,5 +1,6 @@
 package com.pechenkin.travelmoney.page.cost.add;
 
+import android.annotation.SuppressLint;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -60,6 +61,9 @@ public class AddCostsListPage extends BasePage {
     @Override
     public void addEvents() {
 
+        FloatingActionButton add_costs_list_refresh_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button);
+        add_costs_list_refresh_button.setOnClickListener(view -> refreshForm());
+
         FloatingActionButton add_cost_list_commit = MainActivity.INSTANCE.findViewById(R.id.add_cost_list_commit);
         add_cost_list_commit.setOnClickListener(v -> {
 
@@ -99,14 +103,6 @@ public class AddCostsListPage extends BasePage {
         });
 
 
-        FloatingActionButton add_costs_list_revert_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_revert_button);
-        add_costs_list_revert_button.setOnClickListener(view -> clickBackButton());
-
-
-        FloatingActionButton add_costs_list_refresh_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button);
-        add_costs_list_refresh_button.setOnClickListener(view -> refreshForm());
-
-
         EditText add_costs_text = MainActivity.INSTANCE.findViewById(R.id.add_costs_text);
         add_costs_text.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -138,6 +134,8 @@ public class AddCostsListPage extends BasePage {
             PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
             PageOpener.INSTANCE.open(AddCostsListPage.class, param);
         }
+
+        MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button).setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -222,6 +220,8 @@ public class AddCostsListPage extends BasePage {
                 }
                 listViewCosts.setAdapter(null);
                 listViewCosts.setAdapter(adapter);
+
+                MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button).setVisibility(View.VISIBLE);
 
             }
 

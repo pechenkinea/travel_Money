@@ -19,33 +19,25 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
-import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.GroupCost;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
 import com.pechenkin.travelmoney.page.trip.TripsListPage;
-import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
 import java.io.File;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by pechenkin on 19.04.2018.
- * Главная страница со списком итогов и перечнем всех операций
+ * Раньше была главной страницей для отображения списка операций.
+ * Сейчас используется только для просмотра списка операций по старой поездке
  */
 
 public class MainPage extends BasePage {
 
     private static long scrollPosition = 0;
-    private static long changeCostStateTime = 0;
-    private static long refreshClickTime = 0;
-
 
     @Override
     public void clickBackButton() {
@@ -55,90 +47,14 @@ public class MainPage extends BasePage {
             PageOpener.INSTANCE.open(MainPageNew.class);
     }
 
-
-    //TODO не забыть про экспорт
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        return  false;
-
-        /*switch (item.getItemId()) {
-
-            case R.id.exportToJson:
-                Export.export(item, ExportFileTypes.JSON, pageTrip);
-                return true;
-
-            case R.id.exportToCSV:
-                Export.export(item, ExportFileTypes.CSV, pageTrip);
-                return true;
-
-            default:
-                return false;
-        }*/
-    }
-
-    private boolean revertStatus(Cost item) {
-        if (item != null && item.id() >= 0) {
-            if (item.active() == 1) {
-                t_costs.disable_cost(item.id());
-                item.setActive(0);
-            } else {
-                item.setActive(1);
-                t_costs.enable_cost(item.id());
-            }
-            //обновляем список
-            ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
-            listViewCosts.invalidateViews();
-            changeCostStateTime = new Date().getTime();
-            refreshClickTime = 0;
-            return true;
-        }
-        if (item instanceof GroupCost) {
-
-            List<Cost> groupCosts = ((GroupCost) item).getCosts();
-            if (groupCosts.size() > 0) {
-                long statusFirst = groupCosts.get(0).active();
-                if (statusFirst == 1) {
-                    for (Cost cost : groupCosts) {
-                        t_costs.disable_cost(cost.id());
-                        cost.setActive(0);
-                    }
-                } else {
-                    for (Cost cost : groupCosts) {
-                        cost.setActive(1);
-                        t_costs.enable_cost(cost.id());
-                    }
-                }
-
-                ((GroupCost) item).updateSum();
-
-                //обновляем список
-                ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
-                listViewCosts.invalidateViews();
-                changeCostStateTime = new Date().getTime();
-                refreshClickTime = 0;
-                return true;
-
-            }
-        }
-
         return false;
     }
 
+
     @Override
     public void addEvents() {
-
-        FloatingActionButton addCostButton = MainActivity.INSTANCE.findViewById(R.id.mainPageAddbutton);
-        if (addCostButton != null) {
-            addCostButton.setOnClickListener(v -> {
-                // Открываем мастер Добавления траты
-                PageOpener.INSTANCE.open(MasterWho.class);
-            });
-        }
-
-        FloatingActionButton mainPageSpeechRecognition = MainActivity.INSTANCE.findViewById(R.id.mainPageSpeechRecognition);
-
-        mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
 
 
         FloatingActionButton mainPageRevertButton = MainActivity.INSTANCE.findViewById(R.id.mainPageRevertButton);
@@ -149,51 +65,36 @@ public class MainPage extends BasePage {
 
         final ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
         listViewCosts.setOnItemClickListener((parent, view, index, id) -> {
-
-
             ListAdapter adapter = listViewCosts.getAdapter();
             Cost item = (Cost) adapter.getItem(index);
 
-            if (new Date().getTime() - changeCostStateTime < 2000) {
-                revertStatus(item);
-            } else {
-                if (item != null && item.image_dir() != null && item.image_dir().length() > 0) {
-
-                    String realPath = item.image_dir();
-
-                    if (item.image_dir().contains(".provider")){
-                        //костыль, т.к. раньше в БД хранилось значение уже после работы FileProvider
-                        String badPath = "content://" + MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider/external_files";
-                        realPath = item.image_dir().replaceFirst(badPath, Environment.getExternalStorageDirectory().getAbsolutePath());
-                    }
-
-
-                    File file = new File(realPath);
-                    if (!file.exists()){
-                        Help.alertError("Файл не найден. " + realPath);
-                        return;
-                    }
-
-                    Uri uri = FileProvider.getUriForFile(
-                            MainActivity.INSTANCE,
-                            MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", file);
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setDataAndType(uri, "image/*");
-                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    MainActivity.INSTANCE.startActivity(intent);
-
+            if (item != null && item.image_dir() != null && item.image_dir().length() > 0) {
+                String realPath = item.image_dir();
+                if (item.image_dir().contains(".provider")) {
+                    //костыль, т.к. раньше в БД хранилось значение уже после работы FileProvider
+                    String badPath = "content://" + MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider/external_files";
+                    realPath = item.image_dir().replaceFirst(badPath, Environment.getExternalStorageDirectory().getAbsolutePath());
                 }
+
+
+                File file = new File(realPath);
+                if (!file.exists()) {
+                    Help.alertError("Файл не найден. " + realPath);
+                    return;
+                }
+
+                Uri uri = FileProvider.getUriForFile(
+                        MainActivity.INSTANCE,
+                        MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", file);
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setDataAndType(uri, "image/*");
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                MainActivity.INSTANCE.startActivity(intent);
+
             }
 
-        });
 
-
-        listViewCosts.setOnItemLongClickListener((arg0, v, index, arg3) -> {
-
-            ListAdapter adapter = listViewCosts.getAdapter();
-            Cost item = (Cost) adapter.getItem(index);
-            return revertStatus(item);
         });
 
 
@@ -244,9 +145,6 @@ public class MainPage extends BasePage {
     @Override
     protected boolean fillFields() {
 
-        refreshClickTime = 0;
-        changeCostStateTime = 0;
-        String readerCaption = "";
         if (hasParam() && getParam().getId() > -1) {
 
             //Если режим просмотра поездки, не помеченной "по умолчанию"
@@ -259,11 +157,9 @@ public class MainPage extends BasePage {
 
             MainActivity.INSTANCE.findViewById(R.id.mainPageRevertButton).setVisibility(View.VISIBLE);
 
-            readerCaption = pageTrip.name + " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")";
 
-            MainActivity.INSTANCE.setTitle(readerCaption);
+            MainActivity.INSTANCE.setTitle(pageTrip.name + " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")");
         }
-
 
 
         printCostList();
@@ -298,13 +194,6 @@ public class MainPage extends BasePage {
     }
 
     private void printCostList() {
-        changeCostStateTime = 0;
-        //Что бы слишком часто не жали на кнопку обновления
-        if (new Date().getTime() - refreshClickTime < 5000) {
-            return;
-        }
-        refreshClickTime = new Date().getTime();
-
         ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
         CostListBackground costListBackground = new CostListBackground(listViewCosts, getPageTrip(), null);
         costListBackground.execute();

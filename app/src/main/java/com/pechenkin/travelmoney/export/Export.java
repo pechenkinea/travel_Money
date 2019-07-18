@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.widget.ShareActionProvider;
@@ -30,7 +31,7 @@ import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 
 public class Export {
 
-    public static void export(MenuItem item, ExportFileTypes type, TripBaseTableRow pageTrip) {
+    public static void export(TripBaseTableRow pageTrip, ExportFileTypes type) {
         if (pageTrip == null) {
             Help.alert("Не найдена текущая поездка");
             return;
@@ -44,7 +45,7 @@ public class Export {
 
         File exportFile = getFile(fileText, type);
         if (exportFile != null) {
-            sendFile(item, exportFile, type);
+            sendFile(exportFile, type);
         }
     }
 
@@ -91,17 +92,17 @@ public class Export {
     }
 
 
-    private static void sendFile(MenuItem item, File sdFile, ExportFileTypes type) {
-        ShareActionProvider myShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+    private static void sendFile(File sdFile, ExportFileTypes type) {
 
         Uri fileUri = FileProvider.getUriForFile(
                 MainActivity.INSTANCE,
                 MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", sdFile);
 
-        Intent sendIntent = new Intent(Intent.ACTION_SEND);
-        sendIntent.setType(type.getMimeTypeName());
-        sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-        myShareActionProvider.setShareIntent(sendIntent);
+
+        ShareCompat.IntentBuilder.from(MainActivity.INSTANCE)
+                .setType(type.getMimeTypeName())
+                .setStream(fileUri)
+                .startChooser();
 
     }
 }

@@ -24,6 +24,7 @@
         android:scaleX="0"
         android:scaleY="0"
         android:visibility="invisible"
+        android:alpha="0.85"
 
         tools:ignore="RtlHardcoded" />
 

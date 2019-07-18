@@ -286,6 +286,12 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         dialog.cancel();
         listView.setAdapter(null);
         listView.setAdapter(adapter);
+
+
+        View refresh_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button);
+        if (refresh_button != null) {
+            refresh_button.setVisibility(View.VISIBLE);
+        }
     }
 
 

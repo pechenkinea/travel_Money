@@ -105,7 +105,6 @@ public class Help {
     }
 
 
-
     public static double StringToDouble(String value) {
         if (value == null || value.length() == 0)
             return 0;
@@ -152,8 +151,7 @@ public class Help {
     }
 
 
-
-    public static int getBackgroundColor(View view){
+    public static int getBackgroundColor(View view) {
         Drawable background = view.getBackground();
         int color = 0;
         if (background instanceof ColorDrawable)
@@ -162,7 +160,7 @@ public class Help {
         return color;
     }
 
-    public static void showFabWithAnimation(final FloatingActionButton fab){
+    public static void showFabWithAnimation(final FloatingActionButton fab) {
         showFabWithAnimation(fab, 50);
     }
 
@@ -176,11 +174,12 @@ public class Help {
             @Override
             public boolean onPreDraw() {
                 fab.getViewTreeObserver().removeOnPreDrawListener(this);
-                fab.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        fab.show();
-                    }
+                fab.postDelayed(() -> {
+                    //fab.show();
+                    fab.setVisibility(View.VISIBLE);
+                    fab.setScaleX(1.0F);
+                    fab.setScaleY(1.0F);
+                    fab.setAlpha(0.85F);
                 }, delay);
                 return true;
             }
@@ -243,7 +242,6 @@ public class Help {
 
     }
     */
-
 
 
 }

@@ -19,7 +19,7 @@ import com.pechenkin.travelmoney.page.main.MainPageNew;
 public class AboutPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPageNew.class);
+        PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_more).getParam());
     }
 
     @Override

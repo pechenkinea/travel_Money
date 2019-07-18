@@ -29,8 +29,19 @@ public class MainPageNew extends BasePage {
     @Override
     protected boolean fillFields() {
 
+        BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
         FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.fragment, new CostListFragment(t_trips.ActiveTrip)).commit();
+
+        if (hasParam() && getParam().getId() == R.id.navigation_more){
+            navView.setSelectedItemId(R.id.navigation_more);
+            manager.beginTransaction().replace(R.id.fragment, new OtherFragment()).commit();
+        }
+        else {
+            manager.beginTransaction().replace(R.id.fragment, new CostListFragment(t_trips.ActiveTrip)).commit();
+            navView.setSelectedItemId(R.id.navigation_list);
+        }
+
+
 
         return true;
     }

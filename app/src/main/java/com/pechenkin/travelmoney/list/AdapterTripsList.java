@@ -93,7 +93,6 @@ public class AdapterTripsList extends BaseAdapter {
                 }
 
                 if (item != null) {
-                    //TODO сделать просмотр не активной поездки на новую страницу
                     PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
                 }
             });

@@ -12,6 +12,7 @@ import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.CostBaseTableRow;
 import com.pechenkin.travelmoney.list.AdapterSumResultList;
+import com.pechenkin.travelmoney.page.main.MainPageNew;
 import com.pechenkin.travelmoney.summry.Summary;
 import com.pechenkin.travelmoney.summry.Total;
 
@@ -24,13 +25,18 @@ public class SumResultListPage extends ListPage {
 
 
     @Override
+    public void clickBackButton() {
+        PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_more).getParam());
+    }
+
+    @Override
     protected int getPageId() {
         return R.layout.view_list_sum_result;
     }
 
     @Override
     protected String getTitleHeader() {
-        return MainActivity.INSTANCE.getString(R.string.sum_result) +  "(" + t_trips.ActiveTrip.name + ")";
+        return MainActivity.INSTANCE.getString(R.string.statistic) +  "(" + t_trips.ActiveTrip.name + ")";
     }
 
     @Override

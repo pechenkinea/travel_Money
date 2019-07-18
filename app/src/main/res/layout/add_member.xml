@@ -60,6 +60,7 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
             app:srcCompat="@drawable/ic_done_24"
+            android:alpha="0.85"
             tools:ignore="RtlHardcoded" />
 
         <!--
