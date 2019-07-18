@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.main.fragment.CostListFragment;
@@ -29,6 +31,8 @@ public class MainPageNew extends BasePage {
     @Override
     protected boolean fillFields() {
 
+        MainActivity.INSTANCE.setTitle(t_trips.ActiveTrip.name);
+
         BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
         FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
 
@@ -42,16 +46,20 @@ public class MainPageNew extends BasePage {
                 navView.setSelectedItemId(R.id.navigation_trips);
                 manager.beginTransaction().replace(R.id.fragment, new TripsListFragment()).commit();
             }
-
-
-
-
-
         }
 
         else {
-            manager.beginTransaction().replace(R.id.fragment, new CostListFragment(t_trips.ActiveTrip)).commit();
-            navView.setSelectedItemId(R.id.navigation_list);
+
+            MembersQueryResult membersByActiveTrip = t_members.getAllByTripId(t_trips.ActiveTrip.id);
+            //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
+            if (membersByActiveTrip.getAllRows().length < 2){
+                manager.beginTransaction().replace(R.id.fragment, new MembersListFragment()).commit();
+                navView.setSelectedItemId(R.id.navigation_members);
+            }
+            else {
+                manager.beginTransaction().replace(R.id.fragment, new CostListFragment(t_trips.ActiveTrip)).commit();
+                navView.setSelectedItemId(R.id.navigation_list);
+            }
         }
 
 

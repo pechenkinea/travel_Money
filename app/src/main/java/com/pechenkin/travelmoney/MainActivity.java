@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     static public MainActivity INSTANCE;
 
-
-
     public MainActivity() {
 
     }
@@ -44,88 +42,6 @@ public class MainActivity extends AppCompatActivity {
         t_members.updateMembersCache();
         PageOpener.INSTANCE.open(MainPageNew.class);
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
-            try {
-                @SuppressLint("PrivateApi")
-                Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
-                m.setAccessible(true);
-                m.invoke(menu, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return super.onCreateOptionsMenu(menu);
-    }*/
-
-    /*@Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (!PageOpener.INSTANCE.getCurrentPage().onOptionsItemSelected(item)) {
-            switch (item.getItemId()) {
-                case R.id.action_trip_add:
-                    PageOpener.INSTANCE.open(AddTripPage.class);
-                    return true;
-
-                case R.id.staff_peoples:
-                    PageOpener.INSTANCE.open(MembersListPage.class);
-                    return true;
-
-                case R.id.staff_trips:
-                    PageOpener.INSTANCE.open(TripsListPage.class);
-                    return true;
-
-                case R.id.settings:
-                    PageOpener.INSTANCE.open(SettingsPage.class);
-                    return true;
-
-                case R.id.menu_about:
-                    PageOpener.INSTANCE.open(AboutPage.class);
-                    return true;
-
-                case R.id.trip_summary:
-                    PageOpener.INSTANCE.open(SumResultListPage.class);
-                    return true;
-
-
-                *//*
-                //тест голосового ввода
-                case R.id.test:
-                    String text = "Я себе 25030 с половиной";
-                    CostCreator cc = new CostCreator(text);
-                    PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
-                    PageOpener.INSTANCE.open(AddCostsListPage.class, param);
-                    return true;
-
-                //тестирование скорости работы на большом кол-ве операций
-                case R.id.testBigCostList:
-                    Help.createBigCostList();
-                    return true;
-
-                *//*
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
-        }
-        return true;
-
-    }
-*/
-
-
-    /*@Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-
-        ImageButton ImageButton = findViewById(R.id.toolBarBackButton);
-        if (ImageButton != null) {
-            ImageButton.setOnClickListener(v -> onBackPressed());
-        }
-    }*/
 
     @Override
     public void onBackPressed() {

@@ -14,7 +14,6 @@ import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPageNew;
-import com.pechenkin.travelmoney.page.member.MembersListPage;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -60,7 +59,7 @@ public class EditTripPage extends BasePage {
                     t_trips.set_active(getParam().getId());
 
                 Help.message("Сохранено");
-                PageOpener.INSTANCE.open(MembersListPage.class);
+                PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
             }
             else
             {
