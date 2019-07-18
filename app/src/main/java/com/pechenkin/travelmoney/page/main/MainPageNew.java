@@ -32,10 +32,23 @@ public class MainPageNew extends BasePage {
         BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
         FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
 
-        if (hasParam() && getParam().getId() == R.id.navigation_more){
-            navView.setSelectedItemId(R.id.navigation_more);
-            manager.beginTransaction().replace(R.id.fragment, new OtherFragment()).commit();
+        if (hasParam()){
+
+            if (getParam().getId() == R.id.navigation_more){
+                navView.setSelectedItemId(R.id.navigation_more);
+                manager.beginTransaction().replace(R.id.fragment, new OtherFragment()).commit();
+            }
+            else if (getParam().getId() == R.id.navigation_trips){
+                navView.setSelectedItemId(R.id.navigation_trips);
+                manager.beginTransaction().replace(R.id.fragment, new TripsListFragment()).commit();
+            }
+
+
+
+
+
         }
+
         else {
             manager.beginTransaction().replace(R.id.fragment, new CostListFragment(t_trips.ActiveTrip)).commit();
             navView.setSelectedItemId(R.id.navigation_list);
@@ -82,7 +95,7 @@ public class MainPageNew extends BasePage {
                     currentFragment = new CostListFragment(t_trips.ActiveTrip);
                     break;
                 case R.id.navigation_members:
-                    currentFragment = new MembersListFragment(t_trips.ActiveTrip);
+                    currentFragment = new MembersListFragment();
                     break;
                 case R.id.navigation_trips:
                     currentFragment = new TripsListFragment();

@@ -17,7 +17,6 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
@@ -31,10 +30,7 @@ public class MembersListFragment extends Fragment {
 
     private View fragmentView;
 
-    private TripBaseTableRow selectTrip;
-
-    public MembersListFragment(TripBaseTableRow trip){
-        this.selectTrip = trip;
+    public MembersListFragment(){
     }
 
 
@@ -66,7 +62,7 @@ public class MembersListFragment extends Fragment {
 
                 for (int i = 0; i < adapter.getCount(); i++) {
                     long m_id = adapter.getItem(i).getMemberRow().id;
-                    if (t_trips.isMemberInTrip(this.selectTrip.id, m_id)) {
+                    if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, m_id)) {
                         list.setItemChecked(i, true);
                     }
                 }
@@ -78,11 +74,11 @@ public class MembersListFragment extends Fragment {
                         AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
                         BaseTableRow item = adapter.getItem(position).getMemberRow();
 
-                        if (t_trips.isMemberInTrip(this.selectTrip.id, item.id)) {
-                            t_trips.removeMemberInTrip(this.selectTrip.id, item.id);
+                        if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, item.id)) {
+                            t_trips.removeMemberInTrip(t_trips.ActiveTrip.id, item.id);
                             list.setItemChecked(position, false);
                         } else {
-                            t_trips.addMemberInTrip(this.selectTrip.id, item.id);
+                            t_trips.addMemberInTrip(t_trips.ActiveTrip.id, item.id);
                             list.setItemChecked(position, true);
                         }
                         list.invalidateViews();
