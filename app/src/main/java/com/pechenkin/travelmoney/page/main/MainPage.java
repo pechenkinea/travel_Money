@@ -43,6 +43,9 @@ public class MainPage extends BasePage {
             } else if (getParam().getId() == R.id.navigation_trips) {
                 navView.setSelectedItemId(R.id.navigation_trips);
                 renderFragment(new TripsListFragment());
+            } else if (getParam().getId() == R.id.navigation_members) {
+                navView.setSelectedItemId(R.id.navigation_members);
+                renderFragment(new MembersListFragment());
             }
         } else {
             MembersQueryResult membersByActiveTrip = t_members.getAllByTripId(t_trips.ActiveTrip.id);
