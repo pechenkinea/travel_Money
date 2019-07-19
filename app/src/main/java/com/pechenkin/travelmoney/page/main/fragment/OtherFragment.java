@@ -18,6 +18,7 @@ import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.export.Export;
 import com.pechenkin.travelmoney.export.ExportFileTypes;
 import com.pechenkin.travelmoney.page.AboutPage;
+import com.pechenkin.travelmoney.page.FaqPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.SettingsPage;
 import com.pechenkin.travelmoney.page.SumResultListPage;
@@ -61,7 +62,7 @@ public class OtherFragment extends Fragment {
         });
 
         Button faqButton = fragmentView.findViewById(R.id.faq_button);
-        faqButton.setOnClickListener(v -> Help.alert("Еще не работает"));
+        faqButton.setOnClickListener(v -> PageOpener.INSTANCE.open(FaqPage.class));
 
         return fragmentView;
     }

@@ -51,13 +51,6 @@ public class MainPage extends BasePage {
     @Override
     public void addEvents() {
 
-
-        FloatingActionButton mainPageRevertButton = MainActivity.INSTANCE.findViewById(R.id.mainPageRevertButton);
-        if (mainPageRevertButton != null) {
-            mainPageRevertButton.setOnClickListener(v -> clickBackButton());
-        }
-
-
         final ListView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.main_list);
         listViewCosts.setOnItemClickListener((parent, view, index, id) -> {
             ListAdapter adapter = listViewCosts.getAdapter();
@@ -141,21 +134,14 @@ public class MainPage extends BasePage {
     protected boolean fillFields() {
 
         if (hasParam() && getParam().getId() > -1) {
-
             //Если режим просмотра поездки, не помеченной "по умолчанию"
             pageTrip = t_trips.getTripById(getParam().getId());
-            if (getPageTrip() == null)
-                return false;
-
-            MainActivity.INSTANCE.findViewById(R.id.mainPageAddbutton).setVisibility(View.INVISIBLE);
-            MainActivity.INSTANCE.findViewById(R.id.mainPageSpeechRecognition).setVisibility(View.INVISIBLE);
-
-            MainActivity.INSTANCE.findViewById(R.id.mainPageRevertButton).setVisibility(View.VISIBLE);
-
-
-            MainActivity.INSTANCE.setTitle(pageTrip.name + " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")");
         }
 
+        if (pageTrip == null)
+            return false;
+
+        MainActivity.INSTANCE.setTitle(pageTrip.name + " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")");
 
         printCostList();
 
