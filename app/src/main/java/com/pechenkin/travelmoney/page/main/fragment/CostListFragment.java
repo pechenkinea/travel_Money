@@ -2,19 +2,13 @@ package com.pechenkin.travelmoney.page.main.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,6 +17,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.GroupCost;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -34,23 +29,29 @@ import java.io.File;
 import java.util.List;
 
 
-public class CostListFragment extends Fragment {
+public class CostListFragment extends BaseMainPageFragment {
 
-    private View fragmentView;
     private long scrollPosition = 0;
 
-
     private TripBaseTableRow selectTrip;
+    private boolean readMode = false;
 
-    public CostListFragment(TripBaseTableRow trip){
+    public CostListFragment(TripBaseTableRow trip) {
         this.selectTrip = trip;
+        readMode = true;
     }
 
-    @Nullable
+    public CostListFragment() {
+        this.selectTrip = t_trips.ActiveTrip;
+    }
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        fragmentView = inflater.inflate(R.layout.fragment_operation_list, container, false);
-        MainActivity.INSTANCE.setTitle(this.selectTrip.name);
+    int getViewId() {
+        return R.layout.fragment_operation_list;
+    }
+
+    @Override
+    void setListeners() {
 
         FloatingActionButton mainPageSpeechRecognition = fragmentView.findViewById(R.id.mainPageSpeechRecognition);
         mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
@@ -93,48 +94,59 @@ public class CostListFragment extends Fragment {
 
         });
 
-        listViewCosts.setOnItemLongClickListener((arg0, v, index, arg3) -> {
 
-            ListAdapter adapter = listViewCosts.getAdapter();
-            Cost item = (Cost) adapter.getItem(index);
+        if (!readMode) {
+            listViewCosts.setOnItemLongClickListener((arg0, v, index, arg3) -> {
 
-            if (item != null && item.id() >= 0) {
-                if (item.active() == 1) {
-                    t_costs.disable_cost(item.id());
-                    item.setActive(0);
-                } else {
-                    item.setActive(1);
-                    t_costs.enable_cost(item.id());
-                }
-                //обновляем список
-                listViewCosts.invalidateViews();
-                return true;
-            }
-            if (item instanceof GroupCost) {
+                ListAdapter adapter = listViewCosts.getAdapter();
+                Cost item = (Cost) adapter.getItem(index);
 
-                List<Cost> groupCosts = ((GroupCost) item).getCosts();
-                if (groupCosts.size() > 0) {
-                    long statusFirst = groupCosts.get(0).active();
-                    if (statusFirst == 1) {
-                        for (Cost cost : groupCosts) {
-                            t_costs.disable_cost(cost.id());
-                            cost.setActive(0);
-                        }
+                if (item != null && item.id() >= 0) {
+                    if (item.active() == 1) {
+                        t_costs.disable_cost(item.id());
+                        item.setActive(0);
                     } else {
-                        for (Cost cost : groupCosts) {
-                            cost.setActive(1);
-                            t_costs.enable_cost(cost.id());
-                        }
+                        item.setActive(1);
+                        t_costs.enable_cost(item.id());
                     }
-                    ((GroupCost) item).updateSum();
                     //обновляем список
                     listViewCosts.invalidateViews();
                     return true;
                 }
-            }
+                if (item instanceof GroupCost) {
 
-            return false;
-        });
+                    List<Cost> groupCosts = ((GroupCost) item).getCosts();
+                    if (groupCosts.size() > 0) {
+                        long statusFirst = groupCosts.get(0).active();
+                        if (statusFirst == 1) {
+                            for (Cost cost : groupCosts) {
+                                t_costs.disable_cost(cost.id());
+                                cost.setActive(0);
+                            }
+                        } else {
+                            for (Cost cost : groupCosts) {
+                                cost.setActive(1);
+                                t_costs.enable_cost(cost.id());
+                            }
+                        }
+                        ((GroupCost) item).updateSum();
+                        //обновляем список
+                        listViewCosts.invalidateViews();
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+
+            FloatingActionButton addCostButton = fragmentView.findViewById(R.id.mainPageAddbutton);
+            if (addCostButton != null) {
+                addCostButton.setOnClickListener(v -> {
+                    // Открываем мастер Добавления траты
+                    PageOpener.INSTANCE.open(MasterWho.class);
+                });
+            }
+        }
 
         final View buttonListToTop = fragmentView.findViewById(R.id.mainPageListToTop);
         listViewCosts.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -162,21 +174,6 @@ public class CostListFragment extends Fragment {
             listViewCosts.smoothScrollToPosition(0);
         });
 
-        printCostList();
-        return fragmentView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        FloatingActionButton addCostButton = fragmentView.findViewById(R.id.mainPageAddbutton);
-        if (addCostButton != null) {
-            addCostButton.setOnClickListener(v -> {
-                // Открываем мастер Добавления траты
-                PageOpener.INSTANCE.open(MasterWho.class);
-            });
-        }
 
         //обновление списка потянув вниз
         SwipeRefreshLayout main_list_layout_refresh = fragmentView.findViewById(R.id.main_list_layout_refresh);
@@ -184,16 +181,28 @@ public class CostListFragment extends Fragment {
             printCostList();
             main_list_layout_refresh.setRefreshing(false);
         });
+    }
 
-        Help.showFabWithAnimation(fragmentView.findViewById(R.id.mainPageAddbutton));
-        Help.showFabWithAnimation(fragmentView.findViewById(R.id.mainPageSpeechRecognition));
-
+    @Override
+    public void doAfterRender() {
         printCostList();
+    }
+
+    @Override
+    int[] getButtons() {
+        if (!readMode) {
+            return new int[]{
+                    R.id.mainPageAddbutton,
+                    R.id.mainPageSpeechRecognition
+            };
+        } else {
+            return new int[0];
+        }
     }
 
     private void printCostList() {
         ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
-        CostListBackground costListBackground = new CostListBackground(listViewCosts, this.selectTrip, null);
+        CostListBackground costListBackground = new CostListBackground(listViewCosts, this.selectTrip);
         costListBackground.execute();
     }
 }

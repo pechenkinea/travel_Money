@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney.page.main;
 
 import android.view.MenuItem;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -11,7 +10,9 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.metering.TimeMeter;
 import com.pechenkin.travelmoney.page.BasePage;
+import com.pechenkin.travelmoney.page.main.fragment.BaseMainPageFragment;
 import com.pechenkin.travelmoney.page.main.fragment.CostListFragment;
 import com.pechenkin.travelmoney.page.main.fragment.MembersListFragment;
 import com.pechenkin.travelmoney.page.main.fragment.OtherFragment;
@@ -34,34 +35,27 @@ public class MainPageNew extends BasePage {
         MainActivity.INSTANCE.setTitle(t_trips.ActiveTrip.name);
 
         BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
-        FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
 
-        if (hasParam()){
+        if (hasParam()) {
 
-            if (getParam().getId() == R.id.navigation_more){
+            if (getParam().getId() == R.id.navigation_more) {
                 navView.setSelectedItemId(R.id.navigation_more);
-                manager.beginTransaction().replace(R.id.fragment, new OtherFragment()).commit();
-            }
-            else if (getParam().getId() == R.id.navigation_trips){
+                renderFragment(new OtherFragment());
+            } else if (getParam().getId() == R.id.navigation_trips) {
                 navView.setSelectedItemId(R.id.navigation_trips);
-                manager.beginTransaction().replace(R.id.fragment, new TripsListFragment()).commit();
+                renderFragment(new TripsListFragment());
             }
-        }
-
-        else {
-
+        } else {
             MembersQueryResult membersByActiveTrip = t_members.getAllByTripId(t_trips.ActiveTrip.id);
             //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
-            if (membersByActiveTrip.getAllRows().length < 2){
-                manager.beginTransaction().replace(R.id.fragment, new MembersListFragment()).commit();
+            if (membersByActiveTrip.getAllRows().length < 2) {
                 navView.setSelectedItemId(R.id.navigation_members);
-            }
-            else {
-                manager.beginTransaction().replace(R.id.fragment, new CostListFragment(t_trips.ActiveTrip)).commit();
+                renderFragment(new MembersListFragment());
+            } else {
                 navView.setSelectedItemId(R.id.navigation_list);
+                renderFragment(new CostListFragment());
             }
         }
-
 
 
         return true;
@@ -96,11 +90,10 @@ public class MainPageNew extends BasePage {
                 return false;
             }
 
-            FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
-            Fragment currentFragment = null;
+            BaseMainPageFragment currentFragment = null;
             switch (menuItem.getItemId()) {
                 case R.id.navigation_list:
-                    currentFragment = new CostListFragment(t_trips.ActiveTrip);
+                    currentFragment = new CostListFragment();
                     break;
                 case R.id.navigation_members:
                     currentFragment = new MembersListFragment();
@@ -114,11 +107,43 @@ public class MainPageNew extends BasePage {
             }
 
             if (currentFragment != null) {
-                manager.beginTransaction().replace(R.id.fragment, currentFragment).commit();
+                renderFragment(currentFragment);
                 return true;
             }
             return false;
 
         });
+
+    }
+
+    /**
+     * Запускает отрисовку фрагмента в отдельном потоке, что бы не лагали кнопки меню ели долго отрисовывается фрагмент
+     */
+    private void renderFragment(BaseMainPageFragment fragment){
+        Runnable runnable = new FragmentLoader(fragment);
+        new Thread(runnable).start();
+    }
+
+    static class FragmentLoader implements Runnable {
+
+        private BaseMainPageFragment currentFragment;
+
+        FragmentLoader(BaseMainPageFragment currentFragment) {
+            this.currentFragment = currentFragment;
+        }
+
+        @Override
+        public void run() {
+            try {
+                // костыль
+                // хоть и в отдельном потоке, но ui ве равно лагает, видимо андроид не может одновременно из разных потоков рендерить формы
+                //для этого ждем, что бы кнопка меню упела показать всю анимацию
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.fragment, currentFragment).commit();
+        }
     }
 }

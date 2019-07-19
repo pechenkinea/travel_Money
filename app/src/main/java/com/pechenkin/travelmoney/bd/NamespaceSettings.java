@@ -8,7 +8,8 @@ package com.pechenkin.travelmoney.bd;
 public interface NamespaceSettings {
 
     //Скрыть все подсказки
-    String HIDE_ALL_HELP = "HIDE_ALL_HELP";
+
+    //String HIDE_ALL_HELP = "HIDE_ALL_HELP"; // БОЛЬШЕ НЕ ИСПОЛЗУЕТСЯ
     String MAIN_PAGE_HELP_ADD_COST_BUTTON = "MAIN_PAGE_HELP_ADD_COST_BUTTON";
     String MAIN_PAGE_HELP_ADD_MEMBERS = "MAIN_PAGE_HELP_ADD_MEMBERS";
     String MEMBERS_LIST_HELP = "MEMBERS_LIST_HELP";
@@ -22,7 +23,7 @@ public interface NamespaceSettings {
 
     //Нужно ли группировать проводки в общем списке
     String GROUP_COST = "GROUP_COST";
-    String GROUP_COST_NEED_MESSAGE = "GROUP_COST_NEED_MESSAGE";
+    //String GROUP_COST_NEED_MESSAGE = "GROUP_COST_NEED_MESSAGE"; // БОЛЬШЕ НЕ ИСПОЛЗУЕТСЯ
 
     String TO_MEMBER_TEXT_LENGTH = "TO_MEMBER_TEXT_LENGTH";
 

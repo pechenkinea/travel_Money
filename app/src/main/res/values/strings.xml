@@ -30,8 +30,7 @@
     <string name="editTrip">Редактирование поездки</string>
     <string name="wait">Подождите…</string>
     <string name="membersList">Участники</string>
-    <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов.  Повторное долгое нажатие вернет операцию в исходное состояние  После отмены или возврата, для актуализации итогов, обновите страницу</string>
-    <string name="groupCostMessage">Появилась возможность группировать операции. Включить/выключить опции можно на странице настроек</string>
+    <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов. Повторное долгое нажатие вернет операцию в исходное состояние. После отмены или возврата, для актуализации итогов, обновите страницу</string>
     <string name="errorNoActiveTask">Нет активных поездок</string>
     <string name="errorNoData">Нет данных</string>
     <string name="costInfo">Информация о трате</string>
@@ -58,6 +57,8 @@
 
     <string name="group_cost_on_off">Группировка в общем списке операций</string>
     <string name="to_member_text_length_label">Разрешенное количество символов для участников в поле \'кому\' при включенной группировке общего списка операций</string>
+    <string name="list">Список</string>
+    <string name="other">Еще</string>
 
     <string-array name="member_colors">
         <item>#3db432</item>

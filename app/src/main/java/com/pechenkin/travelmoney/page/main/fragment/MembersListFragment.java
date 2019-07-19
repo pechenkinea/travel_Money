@@ -1,14 +1,6 @@
 package com.pechenkin.travelmoney.page.main.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
@@ -26,28 +18,46 @@ import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.member.AddMemderPage;
 import com.pechenkin.travelmoney.page.member.EditMemderPage;
 
-public class MembersListFragment extends Fragment {
+public class MembersListFragment extends BaseMainPageFragment{
 
-    private View fragmentView;
-
-    public MembersListFragment(){
+    @Override
+    int getViewId() {
+        return R.layout.fragment_members_list;
     }
 
-
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        fragmentView = inflater.inflate(R.layout.fragment_members_list, container, false);
-
-        if (t_trips.ActiveTrip == null) {
-            Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
-            return fragmentView;
-        }
+    void setListeners() {
 
         FloatingActionButton addMemberButton = fragmentView.findViewById(R.id.member_add_button);
         addMemberButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AddMemderPage.class));
+
+        ListView list = fragmentView.findViewById(R.id.list_members);
+        list.setOnItemClickListener((parent, view, position, id) -> {
+
+                    AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
+                    BaseTableRow item = adapter.getItem(position).getMemberRow();
+
+                    if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, item.id)) {
+                        t_trips.removeMemberInTrip(t_trips.ActiveTrip.id, item.id);
+                        list.setItemChecked(position, false);
+                    } else {
+                        t_trips.addMemberInTrip(t_trips.ActiveTrip.id, item.id);
+                        list.setItemChecked(position, true);
+                    }
+                    list.invalidateViews();
+                });
+        list.setOnItemLongClickListener((parent, view, position, id) -> {
+            AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
+            MemberBaseTableRow item = adapter.getItem(position).getMemberRow();
+
+            PageOpener.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
+
+            return true;
+        });
+    }
+
+    @Override
+    public void doAfterRender() {
 
         MembersQueryResult allMembers = t_members.getAll();
         ListView list = fragmentView.findViewById(R.id.list_members);
@@ -67,44 +77,14 @@ public class MembersListFragment extends Fragment {
                     }
                 }
             }
-
-
-            list.setOnItemClickListener((parent, view, position, id) -> {
-
-                        AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-                        BaseTableRow item = adapter.getItem(position).getMemberRow();
-
-                        if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, item.id)) {
-                            t_trips.removeMemberInTrip(t_trips.ActiveTrip.id, item.id);
-                            list.setItemChecked(position, false);
-                        } else {
-                            t_trips.addMemberInTrip(t_trips.ActiveTrip.id, item.id);
-                            list.setItemChecked(position, true);
-                        }
-                        list.invalidateViews();
-                    }
-
-            );
-
-            list.setOnItemLongClickListener((parent, view, position, id) -> {
-                AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-                MemberBaseTableRow item = adapter.getItem(position).getMemberRow();
-
-                PageOpener.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
-
-                return true;
-            });
-
         }
-
-
-        return fragmentView;
 
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Help.showFabWithAnimation(fragmentView.findViewById(R.id.member_add_button));
+    int[] getButtons() {
+        return new int[]{
+                R.id.member_add_button
+        };
     }
 }

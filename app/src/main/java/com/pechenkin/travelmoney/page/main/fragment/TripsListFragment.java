@@ -1,14 +1,6 @@
 package com.pechenkin.travelmoney.page.main.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
@@ -23,18 +15,42 @@ import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.trip.AddTripPage;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
 
-public class TripsListFragment extends Fragment {
+public class TripsListFragment extends BaseMainPageFragment {
 
-    private View fragmentView;
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    int getViewId() {
+        return R.layout.fragment_trips_list;
+    }
 
-        fragmentView = inflater.inflate(R.layout.fragment_trips_list, container, false);
-
+    @Override
+    void setListeners() {
 
         FloatingActionButton addTripButton = fragmentView.findViewById(R.id.trips_list_add_button);
         addTripButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AddTripPage.class));
+
+        ListView list = fragmentView.findViewById(R.id.catalog_trips_list);
+        list.setOnItemClickListener((parent, view, position, id) -> {
+
+                    AdapterTripsList adapter = (AdapterTripsList) list.getAdapter();
+                    BaseTableRow item = adapter.getItem(position);
+                    t_trips.set_active(item.id);
+
+                    MainActivity.INSTANCE.setTitle(item.name);
+
+                    list.setItemChecked(position, true);
+                    list.invalidateViews();
+                });
+        list.setOnItemLongClickListener((parent, view, position, id) -> {
+            AdapterTripsList tripAdapter = (AdapterTripsList) list.getAdapter();
+            BaseTableRow trip = tripAdapter.getItem(position);
+            PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(trip.id).getParam());
+            return true;
+        });
+
+    }
+
+    @Override
+    public void doAfterRender() {
 
         TripsQueryResult allTrips = t_trips.getAll();
         ListView list = fragmentView.findViewById(R.id.catalog_trips_list);
@@ -46,36 +62,12 @@ public class TripsListFragment extends Fragment {
             AdapterTripsList tripAdapter = new AdapterTripsList(MainActivity.INSTANCE, allTrips.getAllRows(), true);
             list.setAdapter(tripAdapter);
         }
-
-        list.setOnItemClickListener((parent, view, position, id) -> {
-
-                    AdapterTripsList adapter = (AdapterTripsList) list.getAdapter();
-                    BaseTableRow item = adapter.getItem(position);
-                    t_trips.set_active(item.id);
-
-                    MainActivity.INSTANCE.setTitle(item.name);
-
-                    list.setItemChecked(position, true);
-                    list.invalidateViews();
-                }
-
-        );
-
-        list.setOnItemLongClickListener((parent, view, position, id) -> {
-            AdapterTripsList tripAdapter = (AdapterTripsList) list.getAdapter();
-            BaseTableRow trip = tripAdapter.getItem(position);
-            PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(trip.id).getParam());
-            return true;
-        });
-
-
-        return fragmentView;
-
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Help.showFabWithAnimation(fragmentView.findViewById(R.id.trips_list_add_button));
+    int[] getButtons() {
+        return new int[]{
+                R.id.trips_list_add_button
+        };
     }
 }

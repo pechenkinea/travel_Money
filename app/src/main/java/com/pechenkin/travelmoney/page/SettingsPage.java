@@ -31,9 +31,6 @@ public class SettingsPage extends BasePage {
     @Override
     public void addEvents() {
 
-        CheckBox hide_show_helps = MainActivity.INSTANCE.findViewById(R.id.checkBox_hide_show_helps);
-        hide_show_helps.setOnCheckedChangeListener((buttonView, isChecked) -> t_settings.INSTANCE.setActive(NamespaceSettings.HIDE_ALL_HELP, !isChecked));
-
         CheckBox group_cost = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_cost);
         group_cost.setOnCheckedChangeListener((buttonView, isChecked) -> t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_COST, isChecked));
 
@@ -76,8 +73,6 @@ public class SettingsPage extends BasePage {
 
     @Override
     protected boolean fillFields() {
-        CheckBox hide_show_helps = MainActivity.INSTANCE.findViewById(R.id.checkBox_hide_show_helps);
-        hide_show_helps.setChecked(!t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP));
 
         CheckBox group_cost = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_cost);
         group_cost.setChecked(t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST));

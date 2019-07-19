@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <ScrollView
@@ -17,32 +18,31 @@
 
             <TextView
                 android:id="@+id/whyCalc_q"
-                style="@style/normal"
+                style="@style/faq_question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/whyCalc_q" />
 
             <TextView
                 android:id="@+id/whyCalc_a"
-                style="@style/litle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 android:text="@string/whyCalc_a" />
 
 
             <TextView
                 android:id="@+id/whyVoteAdd_q"
                 android:layout_marginTop="16dp"
-                style="@style/normal"
+                style="@style/faq_question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/whyVoteAdd_q" />
 
             <TextView
                 android:id="@+id/whyVoteAdd_a"
-                style="@style/litle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -53,19 +53,35 @@
             <TextView
                 android:id="@+id/faq_color_q"
                 android:layout_marginTop="16dp"
-                style="@style/normal"
+                style="@style/faq_question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/faq_color_q" />
 
             <TextView
                 android:id="@+id/faq_color_a"
-                style="@style/litle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:visibility="gone"
                 android:text="@string/faq_color_a" />
+
+
+            <TextView
+                android:id="@+id/faq_other_phone_q"
+                android:layout_marginTop="16dp"
+                style="@style/faq_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/faq_other_phone_q" />
+
+            <TextView
+                android:id="@+id/faq_other_phone_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"
+                android:text="@string/faq_other_phone_a" />
 
 
 

@@ -1,5 +1,6 @@
 package com.pechenkin.travelmoney.page;
 
+import android.annotation.SuppressLint;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
@@ -11,6 +12,9 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.SafeURLSpan;
 import com.pechenkin.travelmoney.page.main.MainPageNew;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by pechenkin on 11.05.2018.
@@ -46,38 +50,30 @@ public class FaqPage extends BasePage {
     @Override
     protected boolean fillFields() {
 
-        TextView whyCalc_q = MainActivity.INSTANCE.findViewById(R.id.whyCalc_q);
-        whyCalc_q.setOnClickListener(view -> {
-            TextView whyCalc_a = MainActivity.INSTANCE.findViewById(R.id.whyCalc_a);
-            if (whyCalc_a.getVisibility() == View.GONE){
-                whyCalc_a.setVisibility(View.VISIBLE);
-            }
-            else {
-                whyCalc_a.setVisibility(View.GONE);
-            }
-        });
+        @SuppressLint("UseSparseArrays")
+        HashMap<Integer, Integer> textFields = new HashMap<>();
 
-        TextView whyVoteAdd_q = MainActivity.INSTANCE.findViewById(R.id.whyVoteAdd_q);
-        whyVoteAdd_q.setOnClickListener(view -> {
-            TextView whyVoteAdd_a = MainActivity.INSTANCE.findViewById(R.id.whyVoteAdd_a);
-            if (whyVoteAdd_a.getVisibility() == View.GONE){
-                whyVoteAdd_a.setVisibility(View.VISIBLE);
-            }
-            else {
-                whyVoteAdd_a.setVisibility(View.GONE);
-            }
-        });
+        textFields.put(R.id.whyCalc_q, R.id.whyCalc_a);
+        textFields.put(R.id.whyVoteAdd_q, R.id.whyVoteAdd_a);
+        textFields.put(R.id.faq_color_q, R.id.faq_color_a);
+        textFields.put(R.id.faq_other_phone_q, R.id.faq_other_phone_a);
 
-        TextView faq_color_q = MainActivity.INSTANCE.findViewById(R.id.faq_color_q);
-        faq_color_q.setOnClickListener(view -> {
-            TextView faq_color_a = MainActivity.INSTANCE.findViewById(R.id.faq_color_a);
-            if (faq_color_a.getVisibility() == View.GONE){
-                faq_color_a.setVisibility(View.VISIBLE);
-            }
-            else {
-                faq_color_a.setVisibility(View.GONE);
-            }
-        });
+        for(Map.Entry<Integer, Integer> entry : textFields.entrySet()) {
+            Integer q = entry.getKey();
+            Integer a = entry.getValue();
+
+            TextView questionField = MainActivity.INSTANCE.findViewById(q);
+            questionField.setOnClickListener(view -> {
+                TextView answerField = MainActivity.INSTANCE.findViewById(a);
+                if (answerField.getVisibility() == View.GONE){
+                    answerField.setVisibility(View.VISIBLE);
+                }
+                else {
+                    answerField.setVisibility(View.GONE);
+                }
+            });
+
+        }
 
         return true;
     }

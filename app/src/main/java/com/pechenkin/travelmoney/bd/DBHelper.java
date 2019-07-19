@@ -52,7 +52,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.DELETE_COST_SHOWED_HELP + "', '0');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_BY_COLOR + "', '0');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '1');");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '0');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
 
         createTableColors(db);
@@ -82,7 +81,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Namespace.FIELD_VALUE + " text not null"
                 + ");");
 
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.HIDE_ALL_HELP + "', '0');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MAIN_PAGE_HELP_ADD_COST_BUTTON + "', '1');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MAIN_PAGE_HELP_ADD_MEMBERS + "', '1');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MEMBERS_LIST_HELP + "', '1');");
@@ -141,7 +139,6 @@ public class DBHelper extends SQLiteOpenHelper {
         //Добавлена настройка для группировки транзакций
         if (oldVersion < 7) {
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '1');");
-            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST_NEED_MESSAGE + "', '1');");
         }
 
         // Вынесено в настройки кол-во символов учатников в графе "Кому" при включенной группировке

@@ -34,14 +34,10 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
     private ProgressDialog procDialog;
     private Cost[] finalList = {};
 
-    private PostRunner postRunner;
-
-    public CostListBackground(ListView listViewCosts, TripBaseTableRow trip, PostRunner postRunner){
+    public CostListBackground(ListView listViewCosts, TripBaseTableRow trip) {
         this.trip = trip;
         this.listViewCosts = listViewCosts;
-        this.postRunner = postRunner;
     }
-
 
 
     @Override
@@ -174,30 +170,12 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
         listViewCosts.setAdapter(adapter);
 
-        if (adapter.getCount() > 5
-                && !t_settings.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)
-                && !t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP)) {
+        if (adapter.getCount() > 5 && !t_settings.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)) {
             Help.alertHelp(MainActivity.INSTANCE.getString(R.string.deleteCostHelp));
 
             t_settings.INSTANCE.setActive(NamespaceSettings.DELETE_COST_SHOWED_HELP, true);
         }
 
-        //Если 10 операций уже внесено то пусть подсказки больше не показываются
-        if (adapter.getCount() > 10 && !t_settings.INSTANCE.active(NamespaceSettings.HIDE_ALL_HELP)) {
-            t_settings.INSTANCE.setActive(NamespaceSettings.HIDE_ALL_HELP, true);
-        }
-
-        if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST_NEED_MESSAGE)) {
-            Help.alertHelp(MainActivity.INSTANCE.getString(R.string.groupCostMessage));
-            t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_COST_NEED_MESSAGE, false);
-        }
-
-        if (postRunner != null){
-            postRunner.run();
-        }
     }
 
-    public interface PostRunner{
-        void run();
-    }
 }

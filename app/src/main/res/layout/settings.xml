@@ -17,12 +17,6 @@
             android:orientation="vertical">
 
             <CheckBox
-                android:id="@+id/checkBox_hide_show_helps"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/helps_on_off" />
-
-            <CheckBox
                 android:id="@+id/checkBox_group_cost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

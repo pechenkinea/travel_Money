@@ -1,17 +1,8 @@
 package com.pechenkin.travelmoney.page.main.fragment;
 
 import android.app.AlertDialog;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_trips;
@@ -23,13 +14,15 @@ import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.SettingsPage;
 import com.pechenkin.travelmoney.page.SumResultListPage;
 
-public class OtherFragment extends Fragment {
+public class OtherFragment extends BaseMainPageFragment {
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_other, container, false);
+    int getViewId() {
+        return R.layout.fragment_other;
+    }
 
+    @Override
+    void setListeners() {
         Button addMemberButton = fragmentView.findViewById(R.id.settings_button);
         addMemberButton.setOnClickListener(v -> PageOpener.INSTANCE.open(SettingsPage.class));
 
@@ -64,7 +57,16 @@ public class OtherFragment extends Fragment {
         Button faqButton = fragmentView.findViewById(R.id.faq_button);
         faqButton.setOnClickListener(v -> PageOpener.INSTANCE.open(FaqPage.class));
 
-        return fragmentView;
+    }
+
+    @Override
+    public void doAfterRender() {
+
+    }
+
+    @Override
+    int[] getButtons() {
+        return new int[0];
     }
 
 
