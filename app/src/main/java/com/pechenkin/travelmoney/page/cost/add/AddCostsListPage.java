@@ -21,7 +21,7 @@ import com.pechenkin.travelmoney.list.RecyclerAdapterCostList;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.main.MainPageNew;
+import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class AddCostsListPage extends BasePage {
 
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPageNew.class);
+        PageOpener.INSTANCE.open(MainPage.class);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class AddCostsListPage extends BasePage {
                 Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
             }
 
-            PageOpener.INSTANCE.open(MainPageNew.class);
+            PageOpener.INSTANCE.open(MainPage.class);
         });
 
 

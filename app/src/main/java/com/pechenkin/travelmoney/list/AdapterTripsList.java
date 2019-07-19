@@ -16,7 +16,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.page.ViewTripPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
@@ -93,7 +93,7 @@ public class AdapterTripsList extends BaseAdapter {
                 }
 
                 if (item != null) {
-                    PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
+                    PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
                 }
             });
 

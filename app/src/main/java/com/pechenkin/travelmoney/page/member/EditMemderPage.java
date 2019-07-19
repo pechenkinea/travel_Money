@@ -18,7 +18,7 @@ import com.pechenkin.travelmoney.dialog.ColorDialog;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.main.MainPageNew;
+import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -29,7 +29,7 @@ import com.pechenkin.travelmoney.page.main.MainPageNew;
 public class EditMemderPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
     }
 
     @Override
@@ -62,7 +62,7 @@ public class EditMemderPage extends BasePage {
         t_members.edit(getParam().getId(), name, color);
         Help.message("Успешно");
 
-        PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
     }
 
     @Override

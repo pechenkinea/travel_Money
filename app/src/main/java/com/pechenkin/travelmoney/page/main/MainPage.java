@@ -4,40 +4,23 @@ import android.view.MenuItem;
 
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
-import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.main.fragment.BaseMainPageFragment;
 import com.pechenkin.travelmoney.page.main.fragment.CostListFragment;
+import com.pechenkin.travelmoney.page.main.fragment.MembersListFragment;
+import com.pechenkin.travelmoney.page.main.fragment.OtherFragment;
+import com.pechenkin.travelmoney.page.main.fragment.TripsListFragment;
 
-/**
- * Created by pechenkin on 19.04.2018.
- * Используется только для просмотра списка операций по старой поездке
- */
 public class MainPage extends BasePage {
-
-    @Override
-    public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_trips).getParam());
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
-
-
-    @Override
-    public void addEvents() {
-
-    }
-
     @Override
     protected int getPageId() {
-        return R.layout.main_start_page;
+        return R.layout.new_activity_main;
     }
 
     @Override
@@ -45,27 +28,34 @@ public class MainPage extends BasePage {
         return "";
     }
 
-    private TripBaseTableRow getPageTrip() {
-        return pageTrip;
-    }
-
-    private TripBaseTableRow pageTrip = t_trips.ActiveTrip;
-
     @Override
     protected boolean fillFields() {
 
-        if (hasParam() && getParam().getId() > -1) {
-            //Если режим просмотра поездки, не помеченной "по умолчанию"
-            pageTrip = t_trips.getTripById(getParam().getId());
+        MainActivity.INSTANCE.setTitle(t_trips.ActiveTrip.name);
+
+        BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
+
+        if (hasParam()) {
+
+            if (getParam().getId() == R.id.navigation_more) {
+                navView.setSelectedItemId(R.id.navigation_more);
+                renderFragment(new OtherFragment());
+            } else if (getParam().getId() == R.id.navigation_trips) {
+                navView.setSelectedItemId(R.id.navigation_trips);
+                renderFragment(new TripsListFragment());
+            }
+        } else {
+            MembersQueryResult membersByActiveTrip = t_members.getAllByTripId(t_trips.ActiveTrip.id);
+            //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
+            if (membersByActiveTrip.getAllRows().length < 2) {
+                navView.setSelectedItemId(R.id.navigation_members);
+                renderFragment(new MembersListFragment());
+            } else {
+                navView.setSelectedItemId(R.id.navigation_list);
+                renderFragment(new CostListFragment());
+            }
         }
 
-        if (pageTrip == null)
-            return false;
-
-        MainActivity.INSTANCE.setTitle(getPageTrip().name + " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")");
-
-        FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.fragment, new CostListFragment(pageTrip)).commit();
 
         return true;
     }
@@ -73,5 +63,86 @@ public class MainPage extends BasePage {
     @Override
     protected int getFocusFieldId() {
         return 0;
+    }
+
+    @Override
+    public void clickBackButton() {
+        BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
+        if (navView.getSelectedItemId() == R.id.navigation_list) {
+            MainActivity.INSTANCE.finish();
+        } else {
+            navView.setSelectedItemId(R.id.navigation_list);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void addEvents() {
+        BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
+        navView.setOnNavigationItemSelectedListener(menuItem -> {
+
+            if (navView.getSelectedItemId() == menuItem.getItemId()) {
+                return false;
+            }
+
+            BaseMainPageFragment currentFragment = null;
+            switch (menuItem.getItemId()) {
+                case R.id.navigation_list:
+                    currentFragment = new CostListFragment();
+                    break;
+                case R.id.navigation_members:
+                    currentFragment = new MembersListFragment();
+                    break;
+                case R.id.navigation_trips:
+                    currentFragment = new TripsListFragment();
+                    break;
+                case R.id.navigation_more:
+                    currentFragment = new OtherFragment();
+                    break;
+            }
+
+            if (currentFragment != null) {
+                renderFragment(currentFragment);
+                return true;
+            }
+            return false;
+
+        });
+
+    }
+
+    /**
+     * Запускает отрисовку фрагмента в отдельном потоке, что бы не лагали кнопки меню ели долго отрисовывается фрагмент
+     */
+    private void renderFragment(BaseMainPageFragment fragment){
+        Runnable runnable = new FragmentLoader(fragment);
+        new Thread(runnable).start();
+    }
+
+    static class FragmentLoader implements Runnable {
+
+        private BaseMainPageFragment currentFragment;
+
+        FragmentLoader(BaseMainPageFragment currentFragment) {
+            this.currentFragment = currentFragment;
+        }
+
+        @Override
+        public void run() {
+            try {
+                // костыль
+                // хоть и в отдельном потоке, но ui ве равно лагает, видимо андроид не может одновременно из разных потоков рендерить формы
+                //для этого ждем, что бы кнопка меню упела показать всю анимацию
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.fragment, currentFragment).commit();
+        }
     }
 }

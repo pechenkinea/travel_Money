@@ -11,7 +11,7 @@ import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.main.MainPageNew;
+import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -21,7 +21,7 @@ import com.pechenkin.travelmoney.page.main.MainPageNew;
 public class AddTripPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_trips).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_trips).getParam());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class AddTripPage extends BasePage {
 
                     long t_id = t_trips.add(strName, trComment.getText().toString());
                     t_trips.set_active(t_id);
-                    PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
+                    PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
                 } else {
                     Help.message("Поездка с таким названием уже существует");
                     Help.setActiveEditText(R.id.trip_name);

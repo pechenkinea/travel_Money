@@ -19,7 +19,7 @@ import com.pechenkin.travelmoney.list.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.main.MainPageNew;
+import com.pechenkin.travelmoney.page.main.MainPage;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -186,7 +186,7 @@ public class MasterWhom extends ListPage {
                 }
             */
             Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
-            PageOpener.INSTANCE.open(MainPageNew.class);
+            PageOpener.INSTANCE.open(MainPage.class);
 
         });
 

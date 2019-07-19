@@ -6,7 +6,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.page.main.MainPageNew;
+import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
  * Created by pechenkin on 19.04.2018.
@@ -16,7 +16,7 @@ import com.pechenkin.travelmoney.page.main.MainPageNew;
 public abstract class ListPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPageNew.class);
+        PageOpener.INSTANCE.open(MainPage.class);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

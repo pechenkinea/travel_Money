@@ -14,7 +14,7 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.AddCostsListPage;
-import com.pechenkin.travelmoney.page.main.MainPageNew;
+import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getApplicationContext());
         t_members.updateMembersCache();
-        PageOpener.INSTANCE.open(MainPageNew.class);
+        PageOpener.INSTANCE.open(MainPage.class);
     }
 
     @Override

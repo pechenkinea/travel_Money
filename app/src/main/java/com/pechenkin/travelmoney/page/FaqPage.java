@@ -1,17 +1,13 @@
 package com.pechenkin.travelmoney.page;
 
 import android.annotation.SuppressLint;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.pechenkin.travelmoney.BuildConfig;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.SafeURLSpan;
-import com.pechenkin.travelmoney.page.main.MainPageNew;
+import com.pechenkin.travelmoney.page.main.MainPage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +20,7 @@ import java.util.Map;
 public class FaqPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPageNew.class, new PageParam.BuildingPageParam().setId(R.id.navigation_more).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_more).getParam());
     }
 
     @Override
