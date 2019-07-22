@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -160,30 +161,15 @@ public class Help {
         return color;
     }
 
-    public static void showFabWithAnimation(final FloatingActionButton fab) {
-        showFabWithAnimation(fab, 50);
-    }
 
     @SuppressLint("RestrictedApi")
-    private static void showFabWithAnimation(final FloatingActionButton fab, final int delay) {
-        fab.setVisibility(View.INVISIBLE);
-        fab.setScaleX(0.0F);
-        fab.setScaleY(0.0F);
-        fab.setAlpha(0.0F);
-        fab.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                fab.getViewTreeObserver().removeOnPreDrawListener(this);
-                fab.postDelayed(() -> {
-                    //fab.show();
-                    fab.setVisibility(View.VISIBLE);
-                    fab.setScaleX(1.0F);
-                    fab.setScaleY(1.0F);
-                    fab.setAlpha(0.85F);
-                }, delay);
-                return true;
-            }
-        });
+    public static void showFabWithAnimation(FloatingActionButton fab) {
+
+        AlphaAnimation animation1 = new AlphaAnimation(0, 0.85F);
+        animation1.setDuration(700);
+        animation1.setFillAfter(true);
+        fab.setAnimation(animation1);
+        fab.setVisibility(View.VISIBLE);
     }
 
 

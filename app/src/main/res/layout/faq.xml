@@ -7,7 +7,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -16,12 +17,19 @@
             android:padding="16dp">
 
 
-            <TextView
+            <Button
                 android:id="@+id/whyCalc_q"
-                style="@style/faq_question"
+                android:textStyle="normal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/whyCalc_q" />
+                android:gravity="left|center_vertical"
+                android:text="@string/whyCalc_q"
+                android:drawableEnd="@drawable/ic_down_24"
+                tools:drawableEnd="@drawable/ic_up_24"
+                android:padding="8dp"
+                android:background="@drawable/background_about_fragment_button"
+                android:textAllCaps="false"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/whyCalc_a"
@@ -33,13 +41,19 @@
                 android:text="@string/whyCalc_a" />
 
 
-            <TextView
+            <Button
                 android:id="@+id/whyVoteAdd_q"
                 android:layout_marginTop="16dp"
-                style="@style/faq_question"
+                android:textStyle="normal"
+                android:gravity="left|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/whyVoteAdd_q" />
+                android:text="@string/whyVoteAdd_q"
+                android:drawableEnd="@drawable/ic_down_24"
+                android:padding="8dp"
+                android:background="@drawable/background_about_fragment_button"
+                android:textAllCaps="false"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/whyVoteAdd_a"
@@ -50,13 +64,19 @@
                 android:text="@string/whyVoteAdd_a" />
 
 
-            <TextView
+            <Button
                 android:id="@+id/faq_color_q"
                 android:layout_marginTop="16dp"
-                style="@style/faq_question"
+                android:textStyle="normal"
+                android:gravity="left|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/faq_color_q" />
+                android:text="@string/faq_color_q"
+                android:drawableEnd="@drawable/ic_down_24"
+                android:padding="8dp"
+                android:background="@drawable/background_about_fragment_button"
+                android:textAllCaps="false"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/faq_color_a"
@@ -66,14 +86,19 @@
                 android:visibility="gone"
                 android:text="@string/faq_color_a" />
 
-
-            <TextView
+            <Button
                 android:id="@+id/faq_other_phone_q"
                 android:layout_marginTop="16dp"
-                style="@style/faq_question"
+                android:textStyle="normal"
+                android:gravity="left|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/faq_other_phone_q" />
+                android:text="@string/faq_other_phone_q"
+                android:drawableEnd="@drawable/ic_down_24"
+                android:padding="8dp"
+                android:background="@drawable/background_about_fragment_button"
+                android:textAllCaps="false"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/faq_other_phone_a"

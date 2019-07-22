@@ -51,7 +51,6 @@
 
     <string name="fileError"><![CDATA[ Возможно у приложения нет разрешения на использоватние памяти. Посмотрите тут: Настройки -> Диспетчер приложений -> Travel Money -> Разрешения -> Включить хранилище]]></string>
 
-    <string name="helps_on_off">Подсказки</string>
     <string name="group_by_color_on_off">Группировка итогов по цветам</string>
     <string name="group_by_color_description">При включенной опции участники одного цвета будут иметь общий бюджет при подсчете итогов</string>
 

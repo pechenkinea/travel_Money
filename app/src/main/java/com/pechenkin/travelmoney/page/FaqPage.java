@@ -63,9 +63,11 @@ public class FaqPage extends BasePage {
                 TextView answerField = MainActivity.INSTANCE.findViewById(a);
                 if (answerField.getVisibility() == View.GONE){
                     answerField.setVisibility(View.VISIBLE);
+                    questionField.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_up_24, 0);
                 }
                 else {
                     answerField.setVisibility(View.GONE);
+                    questionField.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_down_24, 0);
                 }
             });
 

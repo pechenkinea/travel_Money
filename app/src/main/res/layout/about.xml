@@ -46,22 +46,26 @@
                 android:id="@+id/developerName"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
+                android:textColorLink="@color/link"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/developerEmail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColorLink="@color/link"/>
 
             <TextView
                 android:layout_marginTop="10dp"
                 android:id="@+id/linkToPlayMarket"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColorLink="@color/link"/>
             <TextView
                 android:layout_marginTop="10dp"
                 android:id="@+id/linkToGitHub"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColorLink="@color/link"/>
 
             <TextView
                 android:layout_marginTop="20dp"

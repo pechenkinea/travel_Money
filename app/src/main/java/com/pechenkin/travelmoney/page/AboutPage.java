@@ -44,6 +44,7 @@ public class AboutPage extends BasePage {
 
     @Override
     protected boolean fillFields() {
+
         TextView versionView = MainActivity.INSTANCE.findViewById(R.id.about_version);
         versionView.setText(String.format("%s %s", versionView.getText(), BuildConfig.VERSION_NAME));
 
@@ -51,7 +52,7 @@ public class AboutPage extends BasePage {
         versionCodeView.setText(String.format("%s %s", versionCodeView.getText(), BuildConfig.VERSION_CODE));
 
         TextView developerName = MainActivity.INSTANCE.findViewById(R.id.developerName);
-        developerName.setText(SafeURLSpan.parseSafeHtml("Разработчик: <a href=\"https://vk.com/id2871931\">Печёнкин Евгений</a>"));
+        developerName.setText(SafeURLSpan.parseSafeHtml("Разработчик: <a style='color=#005f98' href=\"https://vk.com/id2871931\">Печёнкин Евгений</a>"));
         developerName.setMovementMethod(LinkMovementMethod.getInstance());
 
         TextView developerEmail = MainActivity.INSTANCE.findViewById(R.id.developerEmail);
