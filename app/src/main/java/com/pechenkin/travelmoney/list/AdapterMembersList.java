@@ -31,38 +31,37 @@ public class AdapterMembersList extends BaseAdapter {
 
     private CostMemberBaseTableRow[] data;
     private static LayoutInflater inflater = null;
-    private  boolean showEditButton = false;
-    private  double sum = 0f;
-    private  boolean showSum = false;
+    private boolean showEditButton = false;
+    private double sum = 0f;
+    private boolean showSum = false;
+    private boolean showCheckBox = true;
 
+    public void setShowCheckBox(boolean showCheckBox) {
+        this.showCheckBox = showCheckBox;
+    }
 
-    public AdapterMembersList(Activity a, CostMemberBaseTableRow[] dataList, boolean showEditButton)
-    {
-        data=dataList;
+    public AdapterMembersList(Activity a, CostMemberBaseTableRow[] dataList, boolean showEditButton) {
+        data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showEditButton = showEditButton;
     }
 
-    public AdapterMembersList(Activity a, CostMemberBaseTableRow[] dataList, double sum)
-    {
-        data=dataList;
+    public AdapterMembersList(Activity a, CostMemberBaseTableRow[] dataList, double sum) {
+        data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.sum = sum;
         showSum = true;
     }
- 
+
     public int getCount() {
         return data.length;
     }
- 
 
- 
+
     public CostMemberBaseTableRow getItem(int position) {
         try {
             return data[position];
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             return null;
         }
     }
@@ -70,74 +69,49 @@ public class AdapterMembersList extends BaseAdapter {
     public long getItemId(int position) {
         try {
             return data[position].getMemberRow().id;
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             return -1;
         }
     }
-    
-    
+
+
     @SuppressLint("InflateParams")
     public View getView(int position, View convertView, ViewGroup parent) {
-        
-        ViewHolder holder;
-        if(convertView == null)
-        {
-        	convertView = inflater.inflate(R.layout.list_item, null);
-            holder = new ViewHolder();
-            holder.name = convertView.findViewById(R.id.lm_name);
-            holder.check = convertView.findViewById(R.id.lm_check);
-            holder.editButton =  convertView.findViewById(R.id.listEditButton);
 
+        CostMemberBaseTableRow item = data[position];
+        MemberBaseTableRow row = item.getMemberRow();
+
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.list_item, null);
+            holder = new ViewHolder(convertView);
 
             if (showEditButton) {
                 holder.editButton.setOnClickListener(v -> {
+                    PageOpener.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
+                });
+            }
 
-                    MemberBaseTableRow item;
+            if (showSum) {
+                View.OnClickListener editClickListener = v -> {
+                    final ListView listView;
                     try {
-                        View parentRow = (View) v.getParent();
-                        ListView listView = (ListView) parentRow.getParent();
-                        int position12 = listView.getPositionForView(parentRow);
-                        item = getItem(position12).getMemberRow();
+                        listView = (ListView) v.getParent().getParent().getParent();
                     } catch (Exception ex) {
                         Help.alert(ex.getMessage());
                         return;
                     }
 
-                    if (item != null) {
-                        PageOpener.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
-                    }
-                });
-            }
-            holder.memberSumText = convertView.findViewById(R.id.memberSumText);
-
-            holder.memberSumText.setOnClickListener(v -> {
-                final  CostMemberBaseTableRow item;
-                final ListView listView;
-                try {
-                    View parentRow = (View) v.getParent();
-                    listView = (ListView) parentRow.getParent();
-                    int position1 = listView.getPositionForView(parentRow);
-                    item = getItem(position1);
-                } catch (Exception ex) {
-                    Help.alert(ex.getMessage());
-                    return;
-                }
-
-
-                if (item != null) {
-
                     final EditText input = new EditText(MainActivity.INSTANCE);
                     input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                    input.setText(((TextView)v).getText());
+                    input.setText(Help.DoubleToString(item.getSum()));
 
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT );
+                            LinearLayout.LayoutParams.MATCH_PARENT);
                     input.setLayoutParams(lp);
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
-                    builder	.setTitle("")
+                    builder.setTitle("")
                             .setCancelable(false)
                             .setPositiveButton("Ок", (dialog, which) -> {
                                 //((TextView) v).setText(input.getText());
@@ -153,7 +127,6 @@ public class AdapterMembersList extends BaseAdapter {
                                 dialog.cancel();
                                 listView.invalidateViews();
                             });
-
 
 
                     final AlertDialog alert = builder.create();
@@ -175,92 +148,92 @@ public class AdapterMembersList extends BaseAdapter {
                     alert.show();
 
                     Help.setActiveEditText(input, true);
-                }
-            });
+
+                };
+
+                holder.memberSumText.setOnClickListener(editClickListener);
+                holder.editButton.setOnClickListener(editClickListener);
+            }
 
             convertView.setTag(holder);
-        }
-        else
-        {
-        	holder = (ViewHolder) convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        if (showEditButton)
-        {
+        if (showEditButton) {
             holder.editButton.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             holder.editButton.setVisibility(View.INVISIBLE);
         }
 
+        if (!showCheckBox) {
+            holder.check.setVisibility(View.INVISIBLE);
+        }
 
-        MemberBaseTableRow row = data[position].getMemberRow();
+
         if (row != null) {
             holder.name.setText(row.name);
             holder.name.setTextColor(row.color);
-
 
             final ListView lv = (ListView) parent;
             SparseBooleanArray sbArray = lv.getCheckedItemPositions();
             boolean checked = sbArray.get(position, false);
             holder.memberSumText.setVisibility(View.INVISIBLE);
-            if(checked)
-            {
-                holder.check.setVisibility(View.VISIBLE);
+            if (checked) {
+                holder.check.setImageResource(R.drawable.ic_check_on_24);
 
-                if (showSum)
-                {
-                    if (data[position].isChange())
-                    {
+                if (showSum) {
+                    if (data[position].isChange()) {
                         holder.memberSumText.setText(Html.fromHtml("<b>" + Help.DoubleToString(data[position].getSum()) + "</b> "));
                         holder.memberSumText.setVisibility(View.VISIBLE);
-                    }
-                    else {
+                        holder.editButton.setVisibility(View.VISIBLE);
+                    } else {
                         int selectedCount = 0;
                         double distributionSum = sum;
                         for (int i = 0; i < sbArray.size(); i++) {
                             int key = sbArray.keyAt(i);
 
                             if (sbArray.get(key)) {
-                                if (data[key].isChange())
-                                {
+                                if (data[key].isChange()) {
                                     distributionSum = distributionSum - data[key].getSum();
-                                }
-                                else {
+                                } else {
                                     selectedCount++;
                                 }
                             }
                         }
                         if (selectedCount > 0) {
                             double sumOne = distributionSum / selectedCount;
-                            holder.memberSumText.setText(Help.DoubleToString((sumOne > 0)? sumOne : 0));
-                            data[position].setSum((sumOne > 0)? sumOne : 0);
+                            holder.memberSumText.setText(Help.DoubleToString((sumOne > 0) ? sumOne : 0));
+                            data[position].setSum((sumOne > 0) ? sumOne : 0);
 
                             holder.memberSumText.setVisibility(View.VISIBLE);
+                            holder.editButton.setVisibility(View.VISIBLE);
 
                         }
                     }
                 }
 
-            }
-            else
-            {
-                holder.check.setVisibility(View.INVISIBLE);
+            } else {
+                holder.check.setImageResource(R.drawable.ic_check_off_24);
             }
 
         }
 
 
-
         return convertView;
     }
-    
-    static class ViewHolder 
-    {
+
+    static class ViewHolder {
         TextView name;
         ImageButton check;
         ImageButton editButton;
         TextView memberSumText;
+
+        ViewHolder(View convertView) {
+            this.name = convertView.findViewById(R.id.lm_name);
+            this.check = convertView.findViewById(R.id.lm_check);
+            this.editButton = convertView.findViewById(R.id.listEditButton);
+            this.memberSumText = convertView.findViewById(R.id.memberSumText);
+        }
     }
 }

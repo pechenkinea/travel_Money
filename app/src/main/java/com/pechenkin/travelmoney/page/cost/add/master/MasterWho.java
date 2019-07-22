@@ -57,6 +57,8 @@ public class MasterWho extends ListPage {
         else
         {
             AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMemberBaseTableRow.createCostMemberBaseTableRow(tripMembers.getAllRows(), 0), false);
+            adapter.setShowCheckBox(false);
+
             list1.setAdapter(adapter);
 
             if (hasParam() && getParam().getId() > -1)

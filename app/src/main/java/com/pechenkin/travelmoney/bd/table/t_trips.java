@@ -69,7 +69,7 @@ public class t_trips {
     }
 
     static public TripsQueryResult getAll() {
-        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS;
+        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " ORDER BY " + Namespace.FIELD_ID + " DESC";
         return QueryResultFactory.createQueryResult(sql, TripsQueryResult.class);
     }
 
