@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
 
     android:descendantFocusability="blocksDescendants"
-     android:layout_height="wrap_content"
-     android:layout_width="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="12dp">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/sum_result_member"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/h3"
+            tools:text="MemberName"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:orientation="vertical">
 
 
@@ -43,9 +48,10 @@
                     android:id="@+id/sum_result_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
                     android:textColor="@color/red"
                     style="@style/normal"
+                    tools:text="1234.56"
                     />
 
             </LinearLayout>
@@ -69,8 +75,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/green"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
                     style="@style/normal"
+                    tools:text="1234.56"
                     />
 
             </LinearLayout>
@@ -91,8 +98,9 @@
                     android:id="@+id/sum_result_sum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
                     style="@style/normal"
+                    tools:text="1234.56"
                     />
 
             </LinearLayout>
@@ -100,16 +108,13 @@
 
         </LinearLayout>
 
+
         <View
-            android:layout_marginTop="5dp"
-            android:id="@+id/costSeparator"
-            android:background="#cccbcb"
-            android:layout_width = "fill_parent"
+            android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:layout_gravity="end"/>
-
-
-
+            android:layout_gravity="end"
+            android:layout_marginTop="12dp"
+            android:background="#cccbcb" />
 
     </LinearLayout>
 

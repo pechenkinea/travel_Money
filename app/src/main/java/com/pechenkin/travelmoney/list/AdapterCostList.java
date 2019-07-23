@@ -110,6 +110,12 @@ public class AdapterCostList extends BaseAdapter {
         String comment = dateText + "  " + song.comment();
         holder.sum_comment.setText(comment);
 
+        //Если нет комментария значит нет итоговой сымы т.к. комментарий обязателен
+        //а если ничего этого нет то и вьюху надо скрыть, что бы не создавала дополнительные отступы
+        if (song.comment().length() == 0){
+            holder.commentLayout.setVisibility(View.GONE);
+        }
+
 
         holder.photoImage(song.image_dir());
 
@@ -189,17 +195,19 @@ public class AdapterCostList extends BaseAdapter {
             holder.sum_sum.setText((song.sum() != 0) ? summ : "");
             holder.sum_group_sum.setText("");
 
+
             MemberBaseTableRow member = t_members.getMemberById(song.member());
             if (member != null) {
                 holder.title.setText(member.name);
                 holder.title.setTextColor(member.color);
             } else {
                 holder.labelHeader.setVisibility(View.VISIBLE);
+                holder.mainLayout.setVisibility(View.GONE);
+
                 holder.labelHeader.setText(song.comment());
                 holder.sum_line.setText("");
                 holder.title.setText("");
                 holder.sum_comment.setText("");
-                holder.costSeparator.setVisibility(View.INVISIBLE);
             }
 
             MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
@@ -214,7 +222,6 @@ public class AdapterCostList extends BaseAdapter {
                 holder.sum_sum.setTextColor(colorDisableColor);
                 holder.to_member.setTextColor(colorDisableColor);
             }
-
         }
 
         return convertView;
@@ -229,8 +236,9 @@ public class AdapterCostList extends BaseAdapter {
         TextView sum_comment;
         ImageView have_foto;
         TextView labelHeader;
-        View costSeparator;
         View sumSeparator;
+        View mainLayout;
+        View commentLayout;
 
         ViewHolder(View convertView) {
             this.title = convertView.findViewById(R.id.sum_title);
@@ -241,8 +249,9 @@ public class AdapterCostList extends BaseAdapter {
             this.sum_comment = convertView.findViewById(R.id.sum_comment);
             this.have_foto = convertView.findViewById(R.id.sum_havefoto);
             this.labelHeader = convertView.findViewById(R.id.labelHeader);
-            this.costSeparator = convertView.findViewById(R.id.costSeparator);
             this.sumSeparator = convertView.findViewById(R.id.sumSeparator);
+            this.mainLayout = convertView.findViewById(R.id.mainLayout);
+            this.commentLayout = convertView.findViewById(R.id.commentLayout);
         }
 
         /**
@@ -260,10 +269,12 @@ public class AdapterCostList extends BaseAdapter {
             this.to_member.setTextColor(Color.BLACK);
             this.sum_sum.setTextColor(Color.BLACK);
 
-            this.labelHeader.setVisibility(View.INVISIBLE);
-            this.sumSeparator.setVisibility(View.INVISIBLE);
+            this.labelHeader.setVisibility(View.GONE);
+            this.sumSeparator.setVisibility(View.GONE);
 
-            this.costSeparator.setVisibility(View.VISIBLE);
+            this.mainLayout.setVisibility(View.VISIBLE);
+            this.commentLayout.setVisibility(View.VISIBLE);
+
         }
 
         /**
@@ -273,7 +284,7 @@ public class AdapterCostList extends BaseAdapter {
             if (dir.length() > 0) {
                 this.have_foto.setVisibility(View.VISIBLE);
             } else {
-                this.have_foto.setVisibility(View.INVISIBLE);
+                this.have_foto.setVisibility(View.GONE);
             }
         }
 

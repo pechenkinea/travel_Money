@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -180,14 +179,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
                 holder.sum_sum.setPaintFlags(holder.sum_sum.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 holder.sum_sum.setText(String.format(" %s ", holder.sum_sum.getText()));
             }
-
-            String dir = song.image_dir();
-            if (dir.length() > 0)
-                holder.have_foto.setVisibility(View.VISIBLE);
-            else
-                holder.have_foto.setVisibility(View.INVISIBLE);
-        } else {
-            holder.have_foto.setVisibility(View.INVISIBLE);
         }
 
 
@@ -214,7 +205,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         TextView sum_sum;
         TextView sum_line;
         TextView sum_comment;
-        ImageView have_foto;
 
         ViewHolder(View convertView) {
             super(convertView);
@@ -223,7 +213,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             sum_sum = convertView.findViewById(R.id.sum_sum);
             sum_line = convertView.findViewById(R.id.sum_line);
             sum_comment = convertView.findViewById(R.id.sum_comment);
-            have_foto = convertView.findViewById(R.id.sum_havefoto);
         }
     }
 

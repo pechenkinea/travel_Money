@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/list_item_layout_one_line">
+    style="@style/list_item_layout_one_line"
+    android:orientation="vertical">
 
         <TextView
             android:id="@+id/colorTextView"
@@ -10,4 +11,11 @@
             android:layout_gravity="center_vertical"
             tools:text="TextView" />
 
-</FrameLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_gravity="end"
+            android:layout_marginTop="12dp"
+            android:background="#cccbcb" />
+
+</LinearLayout>

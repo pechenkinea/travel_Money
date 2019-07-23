@@ -58,6 +58,7 @@
     <string name="to_member_text_length_label">Разрешенное количество символов для участников в поле \'кому\' при включенной группировке общего списка операций</string>
     <string name="list">Список</string>
     <string name="other">Еще</string>
+    <string name="photo">Фото</string>
 
     <string-array name="member_colors">
         <item>#3db432</item>

@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
     <item android:state_pressed="true">
         <shape android:shape="oval">
-            <size
-                android:height="40dp"
-                android:width="40dp" />
-            <solid android:color="@color/button_material_light"/>
+            <solid android:color="@color/button_material_light" tools:ignore="PrivateResource" />
         </shape>
     </item>
 
-    <item android:drawable="@android:color/transparent"/>
+    <item android:drawable="@android:color/transparent" />
 </selector>
