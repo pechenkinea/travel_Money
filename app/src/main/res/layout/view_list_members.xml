@@ -18,40 +18,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/member_list_commit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:alpha="0.85"
-            app:srcCompat="@drawable/ic_done_24"
-            tools:ignore="RtlHardcoded" />
+            style="@style/firstFab"
+            app:srcCompat="@drawable/ic_done_24" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/member_add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:alpha="0.85"
-            app:srcCompat="@drawable/ic_plus_24"
-            tools:ignore="RtlHardcoded" />
+            style="@style/firstFab"
+            app:srcCompat="@drawable/ic_plus_24" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/member_checkAll_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="88dp"
-            android:alpha="0.85"
-            android:visibility="invisible"
+            style="@style/secondFab"
             app:srcCompat="@drawable/ic_list_24dp"
-            tools:ignore="RtlHardcoded" />
+            android:visibility="invisible"
+            tools:visibility="visible" />
 
 
     </FrameLayout>

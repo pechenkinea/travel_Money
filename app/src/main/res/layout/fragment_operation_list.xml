@@ -21,44 +21,22 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/mainPageSpeechRecognition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="88dp"
-        app:srcCompat="@drawable/ic_mic_24"
-
-        android:visibility="invisible"
-        android:alpha="0.85"
-
-        tools:ignore="RtlHardcoded" />
+        style="@style/secondFab"
+        app:srcCompat="@drawable/ic_mic_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/mainPageAddbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_plus_24"
-
-        android:alpha="0.85"
-        android:visibility="invisible"
-
-        tools:ignore="RtlHardcoded" />
+        style="@style/firstFab"
+        app:srcCompat="@drawable/ic_plus_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/mainPageListToTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="16dp"
+        style="@style/leftFirstFab"
         app:srcCompat="@drawable/ic_up_24"
-        android:alpha="0.85"
-        tools:ignore="RtlHardcoded" />
+        android:visibility="invisible"
+        tools:visibility="visible"/>
 
 
 </FrameLayout>

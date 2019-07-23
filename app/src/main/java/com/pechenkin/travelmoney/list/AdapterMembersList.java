@@ -96,7 +96,7 @@ public class AdapterMembersList extends BaseAdapter {
                 View.OnClickListener editClickListener = v -> {
                     final ListView listView;
                     try {
-                        listView = (ListView) v.getParent().getParent().getParent();
+                        listView = (ListView) v.getParent().getParent();
                     } catch (Exception ex) {
                         Help.alert(ex.getMessage());
                         return;

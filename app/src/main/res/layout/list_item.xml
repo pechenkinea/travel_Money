@@ -1,67 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/list_item_layout_one_line"
     android:descendantFocusability="blocksDescendants">
 
-    <RelativeLayout style="@style/list_item_layout">
 
-        <ImageButton
-            android:id="@+id/lm_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:contentDescription="@string/check"
-            android:gravity="center_vertical"
-            app:srcCompat="@drawable/ic_check_on_24" />
+    <ImageButton
+        android:id="@+id/lm_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:background="@null"
+        android:contentDescription="@string/check"
+        android:gravity="center_vertical"
+        app:srcCompat="@drawable/ic_check_on_24"
+        tools:ignore="RtlHardcoded" />
 
-        <TextView
-            android:id="@+id/lm_name"
-            style="@style/normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:gravity="center_vertical"
-            tools:text="Text"/>
+    <TextView
+        android:id="@+id/lm_name"
+        style="@style/normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginStart="35dp"
+        android:gravity="center_vertical"
+        tools:ignore="RtlHardcoded"
+        tools:text="Text" />
 
-        <ImageButton
-            android:id="@+id/listViewButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="40dp"
-            android:background="@drawable/edit_button_background"
-            android:contentDescription="@string/edit"
-            app:srcCompat="@drawable/ic_view_24"
-            android:visibility="invisible" />
+    <ImageButton
+        android:id="@+id/listViewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edit_button_background"
+        android:contentDescription="@string/edit"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_view_24"
+        tools:ignore="RtlHardcoded" />
 
-        <TextView
-            android:id="@+id/memberSumText"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="40dp"
-            android:gravity="center_vertical"
-            android:visibility="invisible"
-            tools:visibility="visible"
-            tools:text="1234.54"/>
+    <TextView
+        android:id="@+id/memberSumText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginEnd="40dp"
+        android:gravity="center_vertical"
+        android:visibility="invisible"
+        tools:ignore="RtlHardcoded"
+        tools:text="1234.54"
+        tools:visibility="visible" />
 
 
-        <ImageButton
-            android:id="@+id/listEditButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:gravity="center_vertical"
-            android:background="@drawable/edit_button_background"
-            android:contentDescription="@string/edit"
-            app:srcCompat="@drawable/ic_edit_24"
-            android:visibility="invisible"
-            tools:visibility="visible"/>
+    <ImageButton
+        android:id="@+id/listEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:background="@drawable/edit_button_background"
+        android:contentDescription="@string/edit"
+        android:gravity="center_vertical"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_edit_24"
+        tools:ignore="RtlHardcoded"
+        tools:visibility="visible" />
 
-    </RelativeLayout>
 
-</RelativeLayout>
+</FrameLayout>

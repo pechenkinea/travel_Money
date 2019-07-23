@@ -52,26 +52,16 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_costs_list_refresh_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="88dp"
+            style="@style/secondFab"
             app:srcCompat="@drawable/ic_refresh_24"
-            android:alpha="0.85"
             android:visibility="invisible"
-            tools:ignore="RtlHardcoded" />
+            tools:visibility="visible" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_cost_list_commit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            app:srcCompat="@drawable/ic_done_24"
-            android:alpha="0.85"
-            tools:ignore="RtlHardcoded" />
+            style="@style/firstFab"
+            app:srcCompat="@drawable/ic_done_24" />
 
 
     </FrameLayout>

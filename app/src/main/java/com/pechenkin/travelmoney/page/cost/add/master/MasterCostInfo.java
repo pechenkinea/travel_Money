@@ -154,7 +154,7 @@ public class MasterCostInfo extends BasePage {
 
 
         //Кнопка для фотографии
-        FloatingActionButton photoButton = MainActivity.INSTANCE.findViewById(R.id.buttonFoto);
+        FloatingActionButton photoButton = MainActivity.INSTANCE.findViewById(R.id.buttonPhoto);
         photoButton.setOnClickListener(v -> {
             Help.hideKeyboard();
 

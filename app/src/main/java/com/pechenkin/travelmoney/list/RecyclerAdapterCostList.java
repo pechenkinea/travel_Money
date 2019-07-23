@@ -151,7 +151,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         ViewHolder holder = (ViewHolder) h;
 
 
-        holder.labelHeader.setVisibility(View.INVISIBLE);
         holder.sum_sum.setPaintFlags(holder.sum_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
 
@@ -196,13 +195,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         if (member != null) {
             holder.title.setText(member.name);
             holder.title.setTextColor(member.color);
-        } else {
-            holder.labelHeader.setVisibility(View.VISIBLE);
-            holder.labelHeader.setText(song.comment());
-            holder.sum_line.setText("");
-            holder.title.setText("");
-            holder.sum_comment.setText("");
-            holder.costSeparator.setVisibility(View.INVISIBLE);
         }
 
         MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
@@ -223,8 +215,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         TextView sum_line;
         TextView sum_comment;
         ImageView have_foto;
-        TextView labelHeader;
-        View costSeparator;
 
         ViewHolder(View convertView) {
             super(convertView);
@@ -234,8 +224,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             sum_line = convertView.findViewById(R.id.sum_line);
             sum_comment = convertView.findViewById(R.id.sum_comment);
             have_foto = convertView.findViewById(R.id.sum_havefoto);
-            labelHeader = convertView.findViewById(R.id.labelHeader);
-            costSeparator = convertView.findViewById(R.id.costSeparator);
         }
     }
 
