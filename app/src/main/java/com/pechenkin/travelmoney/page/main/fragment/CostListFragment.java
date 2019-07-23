@@ -53,9 +53,6 @@ public class CostListFragment extends BaseMainPageFragment {
     @Override
     void setListeners() {
 
-        FloatingActionButton mainPageSpeechRecognition = fragmentView.findViewById(R.id.mainPageSpeechRecognition);
-        mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
-
 
         final ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
         listViewCosts.setOnItemClickListener((parent, view, index, id) -> {
@@ -95,7 +92,14 @@ public class CostListFragment extends BaseMainPageFragment {
         });
 
 
-        if (!readMode) {
+        if (readMode) {
+            fragmentView.findViewById(R.id.mainPageAddbutton).setVisibility(View.GONE);
+            fragmentView.findViewById(R.id.mainPageSpeechRecognition).setVisibility(View.GONE);
+        }
+        else {
+            FloatingActionButton mainPageSpeechRecognition = fragmentView.findViewById(R.id.mainPageSpeechRecognition);
+            mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
+
             listViewCosts.setOnItemLongClickListener((arg0, v, index, arg3) -> {
 
                 ListAdapter adapter = listViewCosts.getAdapter();
@@ -147,6 +151,7 @@ public class CostListFragment extends BaseMainPageFragment {
                 });
             }
         }
+
 
         final View buttonListToTop = fragmentView.findViewById(R.id.mainPageListToTop);
         listViewCosts.setOnScrollListener(new AbsListView.OnScrollListener() {

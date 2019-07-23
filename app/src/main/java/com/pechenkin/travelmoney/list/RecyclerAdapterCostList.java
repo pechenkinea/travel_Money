@@ -11,9 +11,12 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -75,14 +78,15 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         View v = inflater.inflate(R.layout.list_item_summary, null);
 
 
-        /*
-          При клике на строку открывает диалог для изменения суммы
-         */
-        v.setOnClickListener(v1 -> {
+        ViewHolder holder = new ViewHolder(v);
 
+        holder.editButton.setOnClickListener(v1 -> {
             final RecyclerView listView;
+
+            View listItem = (View) v1.getParent().getParent().getParent();
+
             try {
-                listView = (RecyclerView) v1.getParent();
+                listView = (RecyclerView) listItem.getParent();
             } catch (Exception ex) {
                 Help.alertError(ex.getMessage());
                 return;
@@ -93,14 +97,14 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
                 Help.alertError("adapter is null");
                 return;
             }
-            final ShortCost item = adapter.getItem(listView.getChildLayoutPosition(v1));
+            final ShortCost item = adapter.getItem(listView.getChildLayoutPosition(listItem));
 
             if (item != null && item.member() > -1) {
 
                 final EditText input = new EditText(MainActivity.INSTANCE);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-                input.setText(((TextView) v1.findViewById(R.id.sum_sum)).getText());
+                input.setText(((TextView) listItem.findViewById(R.id.sum_sum)).getText());
 
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -134,8 +138,9 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
 
             }
 
-
         });
+
+
         return new ViewHolder(v);
     }
 
@@ -150,6 +155,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         ViewHolder holder = (ViewHolder) h;
 
 
+        holder.labelHeader.setVisibility(View.INVISIBLE);
         holder.sum_sum.setPaintFlags(holder.sum_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
 
@@ -179,6 +185,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
                 holder.sum_sum.setPaintFlags(holder.sum_sum.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 holder.sum_sum.setText(String.format(" %s ", holder.sum_sum.getText()));
             }
+
         }
 
 
@@ -186,6 +193,14 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         if (member != null) {
             holder.title.setText(member.name);
             holder.title.setTextColor(member.color);
+        } else {
+            holder.labelHeader.setVisibility(View.VISIBLE);
+            holder.labelHeader.setText(song.comment());
+            holder.sum_line.setText("");
+            holder.title.setText("");
+            holder.sum_comment.setText("");
+            holder.costSeparator.setVisibility(View.INVISIBLE);
+            holder.editButton.setVisibility(View.INVISIBLE);
         }
 
         MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
@@ -205,14 +220,21 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         TextView sum_sum;
         TextView sum_line;
         TextView sum_comment;
+        TextView labelHeader;
+        View costSeparator;
+        ImageButton editButton;
+
 
         ViewHolder(View convertView) {
             super(convertView);
-            title = convertView.findViewById(R.id.sum_title); // title
-            to_member = convertView.findViewById(R.id.to_member);
-            sum_sum = convertView.findViewById(R.id.sum_sum);
-            sum_line = convertView.findViewById(R.id.sum_line);
-            sum_comment = convertView.findViewById(R.id.sum_comment);
+            this.title = convertView.findViewById(R.id.sum_title); // title
+            this.to_member = convertView.findViewById(R.id.to_member);
+            this.sum_sum = convertView.findViewById(R.id.sum_sum);
+            this.sum_line = convertView.findViewById(R.id.sum_line);
+            this.sum_comment = convertView.findViewById(R.id.sum_comment);
+            this.labelHeader = convertView.findViewById(R.id.labelHeader);
+            this.costSeparator = convertView.findViewById(R.id.costSeparator);
+            this.editButton = convertView.findViewById(R.id.listEditButton);
         }
     }
 

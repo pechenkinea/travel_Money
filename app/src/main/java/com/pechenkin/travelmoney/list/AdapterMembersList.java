@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;

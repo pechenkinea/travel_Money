@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="@style/list_item_layout_one_line">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
 
             <TextView
                 android:id="@+id/sum_title"
@@ -16,7 +27,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_weight="3"
                 android:gravity="top"
-                tools:text="Member" />
+                android:text="Member" />
 
             <TextView
                 android:id="@+id/sum_line"
@@ -24,7 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                tools:text="-->" />
+                android:text="-->" />
 
             <TextView
                 android:id="@+id/to_member"
@@ -32,7 +43,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                tools:text="To_member" />
+                android:text="To_member" />
 
             <TextView
                 android:id="@+id/sum_sum"
@@ -40,10 +51,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                tools:text="1234.56" />
+                android:text="Sum" />
 
-        <!-- Rightend Duration -->
-
+            <ImageButton
+                android:id="@+id/listEditButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_edit_24"
+                android:background="@null"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/edit" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/sum_comment"
@@ -52,6 +70,30 @@
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
+        <View
+            android:id="@+id/costSeparator"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_gravity="end"
+            android:layout_marginTop="12dp"
+            android:background="#cccbcb" />
+
     </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/labelHeader"
+            style="@style/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start" />
+
+
+    </FrameLayout>
+
 
 </RelativeLayout>

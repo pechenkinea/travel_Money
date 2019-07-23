@@ -1,6 +1,4 @@
-package com.pechenkin.travelmoney.list;
-
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+package com.pechenkin.travelmoney.bd.table.row;
 
 /**
  * Created by pechenkin on 04.06.2018.
@@ -25,7 +23,7 @@ public class CostMemberBaseTableRow {
 
     }
 
-    boolean isChange() {
+    public boolean isChange() {
         return isChange;
     }
 
