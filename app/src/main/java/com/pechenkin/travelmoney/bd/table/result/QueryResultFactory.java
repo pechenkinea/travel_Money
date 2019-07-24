@@ -37,6 +37,9 @@ public class QueryResultFactory {
                }
                while (sqlResult.moveToNext());
            }
+           else {
+               result.initializeCountRows(0);
+           }
 
        } catch (Exception ex) {
            ex.printStackTrace();

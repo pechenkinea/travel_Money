@@ -50,7 +50,7 @@ public class MainPage extends BasePage {
         } else {
             MembersQueryResult membersByActiveTrip = t_members.getAllByTripId(t_trips.ActiveTrip.id);
             //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
-            if (membersByActiveTrip.getAllRows().length < 2) {
+            if (!membersByActiveTrip.hasRows() || membersByActiveTrip.getAllRows().length < 2) {
                 navView.setSelectedItemId(R.id.navigation_members);
                 renderFragment(new MembersListFragment());
             } else {
