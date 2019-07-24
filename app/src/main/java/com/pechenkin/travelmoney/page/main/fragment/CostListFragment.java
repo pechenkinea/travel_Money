@@ -1,5 +1,6 @@
 package com.pechenkin.travelmoney.page.main.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -153,26 +154,29 @@ public class CostListFragment extends BaseMainPageFragment {
         }
 
 
-        final View buttonListToTop = fragmentView.findViewById(R.id.mainPageListToTop);
+        final FloatingActionButton buttonListToTop = fragmentView.findViewById(R.id.mainPageListToTop);
         listViewCosts.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
 
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 scrollPosition = firstVisibleItem;
                 if (firstVisibleItem > 1) {
-                    buttonListToTop.setVisibility(View.VISIBLE);
+                    if (buttonListToTop.getVisibility() == View.INVISIBLE) {
+                        Help.showFabWithAnimation(buttonListToTop);
+                    }
                 } else {
+                    buttonListToTop.setAnimation(null);
                     buttonListToTop.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
         buttonListToTop.setOnClickListener(v -> {
-
             if (scrollPosition > 10) {
                 listViewCosts.setSelection(10);
             }

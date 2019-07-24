@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.Html;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +33,15 @@ import com.pechenkin.travelmoney.cost.ShortCost;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RecyclerAdapterCostList extends RecyclerView.Adapter {
 
 
     private List<ShortCost> data;
+    private boolean isCanEditAllSum = false;
 
     public void remove(int position) {
         data.remove(position);
@@ -67,7 +71,26 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
     private static LayoutInflater inflater = null;
 
     public RecyclerAdapterCostList(Context a, List<ShortCost> data) {
+
         this.data = data;
+
+        double sum = 0f;
+        Set<Integer> groups = new HashSet<>();
+
+        for (ShortCost c : data) {
+            sum += c.sum;
+            if (c.getGroupId() > 0) {
+                groups.add(c.getGroupId());
+            }
+        }
+        this.data.add(new ShortCost(-1, -1, sum, ""));
+
+        // если после распознавания фразы пришла только одна группа трат. т.е. это на фраза вроде "Я за Грина и Свету 140 а за Влада 30" или "Я за всех 350 магазин и за Грина 140"
+        // тогда можно будет редактировать общую сумму и она будет распределяться по всем
+        if (groups.size() == 1) {
+            isCanEditAllSum = true;
+        }
+
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -99,7 +122,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             }
             final ShortCost item = adapter.getItem(listView.getChildLayoutPosition(listItem));
 
-            if (item != null && item.member() > -1) {
+            if (item != null && (item.member() > -1 || (isCanEditAllSum && item.sum > 0))) {
 
                 final EditText input = new EditText(MainActivity.INSTANCE);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -114,8 +137,11 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
                 builder.setTitle("")
                         .setCancelable(false)
                         .setPositiveButton("Ок", (dialog, which) -> commitEditSum(input, item, adapter, dialog, listView, false))
-                        .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel())
-                        .setNeutralButton("По умолчанию", (dialog, which) -> commitEditSum(input, item, adapter, dialog, listView, true));
+                        .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel());
+
+                if (item.member() > -1) {
+                    builder.setNeutralButton("По умолчанию", (dialog, which) -> commitEditSum(input, item, adapter, dialog, listView, true));
+                }
 
 
                 final AlertDialog alert = builder.create();
@@ -200,8 +226,12 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             holder.title.setText("");
             holder.sum_comment.setText("");
             holder.costSeparator.setVisibility(View.INVISIBLE);
-            holder.editButton.setVisibility(View.INVISIBLE);
+
+            if (!isCanEditAllSum || song.sum == 0) {
+                holder.editButton.setVisibility(View.INVISIBLE);
+            }
         }
+
 
         MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
         holder.to_member.setText((to_member != null) ? to_member.name : "");
@@ -242,35 +272,50 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
      * Обработка редактирования суммы одной строки
      */
     private static void commitEditSum(final EditText input, final ShortCost item, final RecyclerAdapterCostList adapter, DialogInterface dialog, final RecyclerView listView, boolean toDefault) {
-        double editSum = Help.StringToDouble(String.valueOf(input.getText()));
 
+        double editSum = Help.StringToDouble(String.valueOf(input.getText()));
         double sumGroup = 0;
 
         List<ShortCost> costGroup = new ArrayList<>();
-
-        if (toDefault) {
-            item.setChange(false);
-            costGroup.add(item);
-        } else {
-            sumGroup = item.sum();
-            item.sum = editSum;
-            item.setChange(true);
-            sumGroup = sumGroup - editSum;
-        }
-
-        int groupId = item.getGroupId();
-
+        int groupId = 1;
         List<ShortCost> costs = adapter.getData();
 
 
-        for (ShortCost c : costs) {
-            if (c.isChange())
-                continue;
+        if (item.member < 0) {
+            sumGroup = editSum;
 
-            if (c.getGroupId() == groupId) {
-                if (!c.equals(item))
+            for (ShortCost c : costs) {
+                if (c.isChange()) {
+                    sumGroup = sumGroup - c.sum;
+                    continue;
+                }
+
+                if (c.getGroupId() == groupId) {
                     costGroup.add(c);
-                sumGroup += c.sum();
+                }
+            }
+
+        } else {
+            if (toDefault) {
+                item.setChange(false);
+                costGroup.add(item);
+            } else {
+                sumGroup = item.sum();
+                item.sum = editSum;
+                item.setChange(true);
+                sumGroup = sumGroup - editSum;
+            }
+            groupId = item.getGroupId();
+
+            for (ShortCost c : costs) {
+                if (c.isChange())
+                    continue;
+
+                if (c.getGroupId() == groupId) {
+                    if (!c.equals(item))
+                        costGroup.add(c);
+                    sumGroup += c.sum();
+                }
             }
         }
 
@@ -281,6 +326,17 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         for (ShortCost c : costGroup) {
             c.sum = sumGroup / costGroup.size();
         }
+
+
+        double allSum = 0;
+        for (ShortCost c : costs) {
+            if (c.member > -1) {
+                allSum += c.sum();
+            }
+        }
+
+        costs.get(costs.size() - 1).sum = allSum;
+
 
         dialog.cancel();
         listView.setAdapter(null);

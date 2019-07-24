@@ -77,7 +77,7 @@ public class AddCostsListPage extends BasePage {
                 return;
             }
 
-            if (adapter == null){
+            if (adapter == null) {
                 Help.alert("adapter is null");
                 return;
             }
@@ -153,7 +153,11 @@ public class AddCostsListPage extends BasePage {
         List<ShortCost> finalList = new ArrayList<>();
         if (getParam().getCostCreator().hasCosts()) {
             finalList.add(new ShortCost(-1, -1, 0f, "↓ Проверьте кто кому сколько дал ↓"));
-            finalList.addAll(Arrays.asList(getParam().getCostCreator().getCosts()));
+
+            ShortCost[] costs = getParam().getCostCreator().getCosts();
+            finalList.addAll(Arrays.asList(costs));
+
+
         } else {
             finalList.add(new ShortCost(-1, -1, 0f, "Не удалось разобрать"));
         }
@@ -180,6 +184,14 @@ public class AddCostsListPage extends BasePage {
                 return false;
             }
 
+            @Override
+            public int getSwipeDirs(@NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                ShortCost item = adapter.getItem(viewHolder.getAdapterPosition());
+                if (item.member < 0) return 0;
+
+                return super.getSwipeDirs(recyclerView, viewHolder);
+            }
+
             /**
              * При сдвиге траты в сторону
              * Не просто удаляет трату из списка а перераспределяет сумму на другие траты, сумма которых не редактировалась руками
@@ -194,6 +206,7 @@ public class AddCostsListPage extends BasePage {
                 int groupId = item.getGroupId();
 
                 double sumGroup = 0;
+
 
                 if (item.isChange()) {
                     sumGroup = item.sum();
@@ -216,6 +229,16 @@ public class AddCostsListPage extends BasePage {
                 for (ShortCost c : costGroup) {
                     c.sum = sumGroup / costGroup.size();
                 }
+
+
+                double allSum = 0;
+                for (ShortCost c : costs) {
+                    if (c.member > -1) {
+                        allSum += c.sum();
+                    }
+                }
+                costs.get(costs.size() - 1).sum = allSum;
+
                 listViewCosts.setAdapter(null);
                 listViewCosts.setAdapter(adapter);
 
@@ -238,8 +261,6 @@ public class AddCostsListPage extends BasePage {
     protected int getFocusFieldId() {
         return 0;
     }
-
-
 
 
 }

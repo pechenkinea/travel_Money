@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:imeOptions="actionDone"
+            android:enabled="false"
             android:hint="@string/text"
             tools:ignore="LabelFor,TextFields" />
 

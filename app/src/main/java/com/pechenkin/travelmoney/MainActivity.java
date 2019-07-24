@@ -42,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
         t_members.updateMembersCache();
         PageOpener.INSTANCE.open(MainPage.class);
 
-
         /*
             CostCreator c = new CostCreator("Я за всех 350 магазин");
             PageParam param = new PageParam.BuildingPageParam().setCostCreator(c).getParam();
             PageOpener.INSTANCE.open(AddCostsListPage.class, param);
         */
+
     }
 
     @Override
