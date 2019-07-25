@@ -3,17 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/background_main_layout_list_view"
         android:minHeight="48dp"
         android:orientation="vertical"
+        android:paddingLeft="16dp"
         android:paddingTop="12dp"
+        android:paddingRight="16dp"
         tools:visibility="visible">
 
         <LinearLayout
@@ -28,34 +29,92 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:gravity="top"
-                tools:text="Member" />
+                tools:text="Евгений" />
 
             <TextView
                 android:id="@+id/sum_line"
                 style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:gravity="center"
                 tools:text="-->" />
+
+            <LinearLayout
+                android:id="@+id/member_icons_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+
+                android:orientation="horizontal"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-8dp"
+                    android:layout_marginEnd="-8dp"
+                    app:srcCompat="@drawable/ic_human_male_24"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/to_member_one"
+                style="@style/normal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:visibility="gone"
+
+                tools:text="Вася"
+                tools:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/sum_group_sum"
+                style="@style/normal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                tools:text="1234.56 ₽" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/more_information_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:ignore="RtlSymmetry"
+            tools:visibility="visible">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7" />
 
             <TextView
                 android:id="@+id/to_member"
                 style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                tools:text="To_member" />
+                android:layout_weight="5"
+
+                tools:text="Вася" />
 
             <TextView
                 android:id="@+id/sum_sum"
                 style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                tools:text="Sum" />
+                android:layout_weight="4"
+                tools:text="1234.56" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -70,31 +129,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="7"
-                tools:text="sum_comment" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <View
-                    android:id="@+id/sumSeparator"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dip"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="1dp"
-                    android:background="#cccbcb" />
-
-                <TextView
-                    android:id="@+id/sum_group_sum"
-                    style="@style/normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="group_sum" />
-
-            </LinearLayout>
-
+                tools:text="24.07.2019 18:16  Магазин" />
 
         </LinearLayout>
 
@@ -114,23 +149,24 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp">
+        android:minHeight="48dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/labelHeader"
             style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            tools:text="1234567890"
-            tools:visibility="visible" />
+            android:layout_gravity="start|center_vertical" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sum_havefoto"
             style="@style/listImageButton"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:srcCompat="@drawable/ic_camera_24"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
 
 
     </FrameLayout>

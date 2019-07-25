@@ -10,9 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.ListAnimation;
+import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
@@ -24,6 +29,8 @@ import com.pechenkin.travelmoney.cost.GroupCost;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+
+//TODO переписать это все
 public class AdapterCostList extends BaseAdapter {
 
     private Cost[] data;
@@ -80,8 +87,10 @@ public class AdapterCostList extends BaseAdapter {
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yy HH:mm");
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "InflateParams"})
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        Cost cost = data[position];
 
         ViewHolder holder;
         if (convertView == null) {
@@ -94,46 +103,49 @@ public class AdapterCostList extends BaseAdapter {
 
         holder.toDefaultView();
 
-        Cost song = data[position];
 
-        if (song == null) {
+        if (cost == null) {
             return convertView;
         }
 
-        String summ = Help.DoubleToString(song.sum());
-        holder.sum_group_sum.setText((song.sum() != 0) ? summ : "");
+        String summ = Help.DoubleToString(cost.sum());
+        holder.sum_group_sum.setText((cost.sum() != 0) ? summ : "");
 
         String dateText = "";
-        if (song.date() != null) {
-            dateText = df2.format(song.date());
+        if (cost.date() != null) {
+            dateText = df2.format(cost.date());
         }
-        String comment = dateText + "  " + song.comment();
+        String comment = dateText + "  " + cost.comment();
         holder.sum_comment.setText(comment);
 
         //Если нет комментария значит нет итоговой сымы т.к. комментарий обязателен
         //а если ничего этого нет то и вьюху надо скрыть, что бы не создавала дополнительные отступы
-        if (song.comment().length() == 0){
+        if (cost.comment().length() == 0) {
             holder.commentLayout.setVisibility(View.GONE);
         }
 
 
-        holder.photoImage(song.image_dir());
+        holder.photoImage(cost.image_dir());
 
 
         String colorDisable = "#CCCCCC";
         int colorDisableColor = Color.parseColor(colorDisable);
 
-        if (song instanceof GroupCost) {
-            List<Cost> costs = ((GroupCost) song).getCosts();
+        if (cost instanceof GroupCost) {
+
+            List<Cost> costs = ((GroupCost) cost).getCosts();
 
             if (costs.size() > 0) {
 
                 MemberBaseTableRow member = t_members.getMemberById(costs.get(0).member());
 
-                if (song.sum() == 0) {
+                if (cost.sum() == 0) {
                     holder.title.setTextColor(colorDisableColor);
                     holder.sum_line.setTextColor(colorDisableColor);
                     holder.sum_comment.setTextColor(colorDisableColor);
+
+                    holder.sum_group_sum.setText("0");
+                    holder.sum_group_sum.setTextColor(colorDisableColor);
                 } else {
                     holder.title.setTextColor(member.color);
                 }
@@ -142,19 +154,20 @@ public class AdapterCostList extends BaseAdapter {
                 StringBuilder to_memberText = new StringBuilder();
                 StringBuilder sumText = new StringBuilder();
 
+                holder.member_icons_layout.removeAllViews(); //очищаем все иконки и отрисовываем по новой. на случай когда отменили трату
                 for (int i = 0; i < costs.size(); i++) {
 
-                    Cost cost = costs.get(i);
-                    MemberBaseTableRow to_member = t_members.getMemberById(cost.to_member());
+                    Cost costInGroup = costs.get(i);
+                    MemberBaseTableRow to_member = t_members.getMemberById(costInGroup.to_member());
 
-                    String strColor = String.format("#%06X", 0xFFFFFF & to_member.color);
+                    int to_memberColor = to_member.color;
 
-                    String s = Help.DoubleToString(cost.sum());
-                    if (cost.active() != 0) {
+                    String s = Help.DoubleToString(costInGroup.sum());
+                    if (costInGroup.active() != 0) {
                         sumText.append(s);
                     } else {
                         sumText.append("<font color='").append(colorDisable).append("'>").append(s).append("</font>");
-                        strColor = colorDisable;
+                        to_memberColor = colorDisableColor;
                     }
 
                     String to_memberName = to_member.name;
@@ -162,6 +175,7 @@ public class AdapterCostList extends BaseAdapter {
                         to_memberName = to_memberName.substring(0, to_member_text_length - 3).trim() + "...";
                     }
 
+                    String strColor = String.format("#%06X", 0xFFFFFF & to_memberColor);
                     String to_memberLine = "<font color='" + strColor + "'>" + to_memberName + "</font>";
 
                     to_memberText.append(to_memberLine);
@@ -170,6 +184,27 @@ public class AdapterCostList extends BaseAdapter {
                         to_memberText.append("<br>");
                         sumText.append("<br>");
                     }
+
+                    // Иконки человечков
+                    ImageView memberIcon = new ImageView(MainActivity.INSTANCE);
+                    memberIcon.setImageResource(R.drawable.ic_human_male_24);
+                    memberIcon.setColorFilter(to_memberColor);
+
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    lp.setMargins(-10, 0, -10, 0); //компенсация отступов
+                    memberIcon.setLayoutParams(lp);
+
+                    holder.member_icons_layout.addView(memberIcon);
+
+                    // На случай, если только один участник в блоке "Кому"
+                    holder.to_member_one.setText(to_memberName);
+                    holder.to_member_one.setTextColor(to_memberColor);
+                }
+
+                if (costs.size() == 1) {
+                    holder.disableAdditionalInfo();
+                    holder.to_member_one.setVisibility(View.VISIBLE);
+                    holder.member_icons_layout.setVisibility(View.GONE);
                 }
 
 
@@ -180,23 +215,15 @@ public class AdapterCostList extends BaseAdapter {
                     holder.to_member.setText(Html.fromHtml(to_memberText.toString()), TextView.BufferType.SPANNABLE);
                     holder.sum_sum.setText(Html.fromHtml(sumText.toString()), TextView.BufferType.SPANNABLE);
                 }
-
-            }
-
-            if (costs.size() == 1) {
-                holder.sum_group_sum.setText("");
-            } else {
-                holder.sumSeparator.setVisibility(View.VISIBLE);
             }
 
         } else {
 
+            holder.disableAdditionalInfo();
+            holder.to_member_one.setVisibility(View.VISIBLE);
+            holder.member_icons_layout.setVisibility(View.GONE);
 
-            holder.sum_sum.setText((song.sum() != 0) ? summ : "");
-            holder.sum_group_sum.setText("");
-
-
-            MemberBaseTableRow member = t_members.getMemberById(song.member());
+            MemberBaseTableRow member = t_members.getMemberById(cost.member());
             if (member != null) {
                 holder.title.setText(member.name);
                 holder.title.setTextColor(member.color);
@@ -204,23 +231,23 @@ public class AdapterCostList extends BaseAdapter {
                 holder.labelHeader.setVisibility(View.VISIBLE);
                 holder.mainLayout.setVisibility(View.GONE);
 
-                holder.labelHeader.setText(song.comment());
+                holder.labelHeader.setText(cost.comment());
                 holder.sum_line.setText("");
                 holder.title.setText("");
                 holder.sum_comment.setText("");
             }
 
-            MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
-            holder.to_member.setText((to_member != null) ? to_member.name : "");
-            holder.to_member.setTextColor((to_member != null) ? to_member.color : Color.BLACK);
+            MemberBaseTableRow to_member = t_members.getMemberById(cost.to_member());
+            holder.to_member_one.setText((to_member != null) ? to_member.name : "");
+            holder.to_member_one.setTextColor((to_member != null) ? to_member.color : Color.BLACK);
 
 
-            if (song.active() == 0) {
+            if (cost.active() == 0) {
                 holder.title.setTextColor(colorDisableColor);
                 holder.sum_line.setTextColor(colorDisableColor);
                 holder.sum_comment.setTextColor(colorDisableColor);
-                holder.sum_sum.setTextColor(colorDisableColor);
-                holder.to_member.setTextColor(colorDisableColor);
+                holder.sum_group_sum.setTextColor(colorDisableColor);
+                holder.to_member_one.setTextColor(colorDisableColor);
             }
         }
 
@@ -228,30 +255,62 @@ public class AdapterCostList extends BaseAdapter {
     }
 
     static class ViewHolder {
+
         TextView title;
         TextView to_member;
+        TextView to_member_one;
         TextView sum_group_sum;
         TextView sum_sum;
         TextView sum_line;
         TextView sum_comment;
-        ImageView have_foto;
+        AppCompatImageView have_photo;
         TextView labelHeader;
-        View sumSeparator;
         View mainLayout;
         View commentLayout;
+        LinearLayout member_icons_layout;
+        View more_information_layout;
+
+        boolean activeAdditionalInfo = true;
 
         ViewHolder(View convertView) {
             this.title = convertView.findViewById(R.id.sum_title);
             this.to_member = convertView.findViewById(R.id.to_member);
+            this.to_member_one = convertView.findViewById(R.id.to_member_one);
             this.sum_group_sum = convertView.findViewById(R.id.sum_group_sum);
             this.sum_sum = convertView.findViewById(R.id.sum_sum);
             this.sum_line = convertView.findViewById(R.id.sum_line);
             this.sum_comment = convertView.findViewById(R.id.sum_comment);
-            this.have_foto = convertView.findViewById(R.id.sum_havefoto);
+            this.have_photo = convertView.findViewById(R.id.sum_havefoto);
             this.labelHeader = convertView.findViewById(R.id.labelHeader);
-            this.sumSeparator = convertView.findViewById(R.id.sumSeparator);
             this.mainLayout = convertView.findViewById(R.id.mainLayout);
             this.commentLayout = convertView.findViewById(R.id.commentLayout);
+            this.member_icons_layout = convertView.findViewById(R.id.member_icons_layout);
+            this.more_information_layout = convertView.findViewById(R.id.more_information_layout);
+            setListener();
+        }
+
+
+        void disableAdditionalInfo() {
+            this.mainLayout.setBackground(null);  //убираем анимацию клика
+            this.activeAdditionalInfo = false;    //отключаем клик
+        }
+
+        private void setListener() {
+            /*
+             * Обработчик на нажатие кнопки открытия дополнительной информации
+             */
+            this.mainLayout.setOnClickListener(view -> {
+                if (activeAdditionalInfo) {
+                    if (this.more_information_layout.getVisibility() == View.GONE) {
+                        ListAnimation.expand(more_information_layout);
+                    } else {
+                        ListAnimation.collapse(more_information_layout);
+                    }
+                }
+            });
+
+
+            this.mainLayout.setOnLongClickListener(view -> false);
         }
 
         /**
@@ -270,10 +329,16 @@ public class AdapterCostList extends BaseAdapter {
             this.sum_sum.setTextColor(Color.BLACK);
 
             this.labelHeader.setVisibility(View.GONE);
-            this.sumSeparator.setVisibility(View.GONE);
-
             this.mainLayout.setVisibility(View.VISIBLE);
             this.commentLayout.setVisibility(View.VISIBLE);
+
+            this.more_information_layout.setVisibility(View.GONE);
+
+            this.to_member_one.setVisibility(View.GONE);
+            this.member_icons_layout.setVisibility(View.VISIBLE);
+
+            this.activeAdditionalInfo = true;
+            this.mainLayout.setBackgroundResource(R.drawable.background_main_layout_list_view);  //добавляем анимацию клика
 
         }
 
@@ -282,9 +347,9 @@ public class AdapterCostList extends BaseAdapter {
          */
         void photoImage(String dir) {
             if (dir.length() > 0) {
-                this.have_foto.setVisibility(View.VISIBLE);
+                this.have_photo.setVisibility(View.VISIBLE);
             } else {
-                this.have_foto.setVisibility(View.GONE);
+                this.have_photo.setVisibility(View.GONE);
             }
         }
 

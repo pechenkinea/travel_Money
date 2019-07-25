@@ -56,6 +56,7 @@ public class CostListFragment extends BaseMainPageFragment {
 
 
         final ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
+        //TODO теперь это не работает. нужно перенести в адаптер
         listViewCosts.setOnItemClickListener((parent, view, index, id) -> {
 
             ListAdapter adapter = listViewCosts.getAdapter();
@@ -101,6 +102,7 @@ public class CostListFragment extends BaseMainPageFragment {
             FloatingActionButton mainPageSpeechRecognition = fragmentView.findViewById(R.id.mainPageSpeechRecognition);
             mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
 
+            //TODO теперь это не работает. нужно перенести в адаптер
             listViewCosts.setOnItemLongClickListener((arg0, v, index, arg3) -> {
 
                 ListAdapter adapter = listViewCosts.getAdapter();
