@@ -2,7 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/list_item_layout_one_line"
+    android:layout_height="48dp"
+    android:layout_width="match_parent"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
     android:descendantFocusability="blocksDescendants">
 
     <ImageButton
@@ -14,6 +17,8 @@
         android:contentDescription="@string/check"
         android:gravity="center_vertical"
         app:srcCompat="@drawable/ic_check_on_24"
+        android:padding="12dp"
+        android:clickable="false"
         tools:ignore="RtlHardcoded" />
 
     <TextView
@@ -22,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left|center_vertical"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="40dp"
         android:gravity="center_vertical"
         tools:ignore="RtlHardcoded"
         tools:text="Text" />
@@ -30,6 +35,7 @@
     <ImageButton
         android:id="@+id/listViewButton"
         style="@style/listImageButton"
+        android:padding="12dp"
         android:layout_marginEnd="40dp"
         android:contentDescription="@string/edit"
         android:visibility="invisible"
@@ -55,6 +61,7 @@
         android:contentDescription="@string/edit"
         android:visibility="invisible"
         app:srcCompat="@drawable/ic_edit_24"
+        android:padding="12dp"
         tools:visibility="visible" />
 
 

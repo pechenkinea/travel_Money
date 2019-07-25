@@ -236,5 +236,8 @@ public class AdapterMembersList extends BaseAdapter {
             this.editButton = convertView.findViewById(R.id.listEditButton);
             this.memberSumText = convertView.findViewById(R.id.memberSumText);
         }
+
+
+
     }
 }
