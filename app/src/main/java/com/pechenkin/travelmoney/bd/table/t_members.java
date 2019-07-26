@@ -24,9 +24,11 @@ public class t_members {
         return result != null && result.hasRows();
     }
 
-    static public long add(String name, int color) {
+    static public long add(String name, int color, int icon) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);
+        cv.put(Namespace.FIELD_ICON, icon);
+
         if (color != 0) {
             cv.put(Namespace.FIELD_COLOR, color);
         } else {
@@ -43,9 +45,10 @@ public class t_members {
         return rowID;
     }
 
-    static public void edit(long id, String name, int color) {
+    static public void edit(long id, String name, int color, int icon) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);
+        cv.put(Namespace.FIELD_ICON, icon);
 
         if (color != 0) {
             cv.put(Namespace.FIELD_COLOR, color);

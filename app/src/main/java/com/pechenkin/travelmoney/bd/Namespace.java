@@ -20,6 +20,7 @@ public interface Namespace {
     String FIELD_ID = "_id";
     String FIELD_NAME = "name";
     String FIELD_COLOR = "color";
+    String FIELD_ICON = "icon";
     String FIELD_COMMENT = "comment";
     String FIELD_PROCESSED = "processed";
     String FIELD_TRIP = "trip";

@@ -1,24 +1,37 @@
 package com.pechenkin.travelmoney.page.member;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.dialog.ColorDialog;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -26,7 +39,7 @@ import com.pechenkin.travelmoney.page.main.MainPage;
  * Нужно обязательно передать в параметры id сотрудника
  */
 
-public class EditMemderPage extends BasePage {
+abstract class BaseMemberPage extends BasePage {
     @Override
     public void clickBackButton() {
         PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
@@ -38,40 +51,13 @@ public class EditMemderPage extends BasePage {
     }
 
 
-    private void formCommit() {
-        EditText etName = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
-        String name = etName.getText().toString();
+    abstract void formCommit();
 
-        if (name.length() < 1) {
-            Help.message("Введите имя");
-            Help.setActiveEditText(getFocusFieldId());
-            return;
-        }
-
-        long findId = t_members.getIdByName(etName.getText().toString());
-        if (findId >= 0 && findId != getParam().getId()) {
-            Help.message("Имя занято другим участником");
-            Help.setActiveEditText(getFocusFieldId());
-            return;
-        }
-
-
-        Button buttonColor = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-        int color = Help.getBackgroundColor(buttonColor);
-
-        t_members.edit(getParam().getId(), name, color);
-        Help.message("Успешно");
-
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
-    }
-
+    @SuppressLint("DefaultLocale")
     @Override
     public void addEvents() {
         FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.edit_member_commit_button);
         commitButton.setOnClickListener(v -> formCommit());
-
-
-
 
         final EditText nameField = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
         nameField.setOnEditorActionListener((v, actionId, event) -> {
@@ -96,7 +82,7 @@ public class EditMemderPage extends BasePage {
                 if (sum.contains(" "))
                     MainActivity.INSTANCE.findViewById(R.id.memberNameWarning).setVisibility(View.VISIBLE);
                 else
-                    MainActivity.INSTANCE.findViewById(R.id.memberNameWarning).setVisibility(View.INVISIBLE);
+                    MainActivity.INSTANCE.findViewById(R.id.memberNameWarning).setVisibility(View.GONE);
             }
 
             @Override
@@ -109,17 +95,71 @@ public class EditMemderPage extends BasePage {
         //Выбор цвета
         Button selectColorButton = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
         selectColorButton.setOnClickListener(v -> {
-
             String text = nameField.getText().toString();
-            if (text.length() == 0){
+            if (text.length() == 0) {
                 text = "Имя не задано";
             }
 
             ColorDialog.selectColor(MainActivity.INSTANCE, text, selectColorButton::setBackgroundColor);
-
-
-
         });
+
+
+        int activeIcon = 0;
+        if (hasParam()) {
+            MemberBaseTableRow member = t_members.getMemberById(getParam().getId());
+            if (member != null) {
+                activeIcon = member.icon;
+            }
+
+        }
+
+        LinearLayout membersIconsLayout = MainActivity.INSTANCE.findViewById(R.id.membersIconsLayout);
+        TextView iconId = MainActivity.INSTANCE.findViewById(R.id.iconId);
+
+        Map<AppCompatImageButton, MemberIcons> buttons = new HashMap<>();
+
+        for (int i = 0; i < MemberIcons.values().length; i++) {
+            MemberIcons icon = MemberIcons.values()[i];
+
+            AppCompatImageButton iconButton = new AppCompatImageButton(MainActivity.INSTANCE);
+            iconButton.setImageResource(icon.getIcon());
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(8, 0, 0, 0);
+            iconButton.setLayoutParams(lp);
+
+
+            int dpValue = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    12,
+                    MainActivity.INSTANCE.getResources().getDisplayMetrics());
+
+            iconButton.setPadding(dpValue, dpValue, dpValue, dpValue);
+
+            if (activeIcon == icon.getId()){
+                iconButton.setBackgroundColor(Color.parseColor("#878787"));
+                iconId.setText(String.format("%d", activeIcon));
+            }
+            else {
+                iconButton.setBackgroundResource(R.drawable.background_about_fragment_button);
+            }
+
+
+            buttons.put(iconButton, icon);
+            membersIconsLayout.addView(iconButton);
+
+            iconButton.setOnClickListener(view -> {
+                for (AppCompatImageButton b : buttons.keySet()) {
+                    b.setBackgroundResource(R.drawable.background_about_fragment_button);
+                }
+                view.setBackgroundColor(Color.parseColor("#878787"));
+
+                if (buttons.containsKey(view)) {
+                    iconId.setText(String.format("%d", buttons.get(view).getId()));
+                }
+            });
+        }
+
     }
 
     @Override
@@ -127,36 +167,18 @@ public class EditMemderPage extends BasePage {
         return R.layout.edit_member;
     }
 
-    @Override
-    protected String getTitleHeader() {
-        return MainActivity.INSTANCE.getString(R.string.memberEdit);
-    }
 
     @Override
     protected boolean fillFields() {
-        if (!hasParam()) {
-            Help.message("Ошибка. Нет участника для редактирования");
-            return false;
+
+        if (!t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)) {
+            MainActivity.INSTANCE.findViewById(R.id.colorHelpMessage).setVisibility(View.VISIBLE);
         }
 
-        MemberBaseTableRow member = t_members.getMemberById(getParam().getId());
-        if (member == null) {
-            Help.message("Ошибка. Не найден учатсяник с id " + getParam().getId());
-            return false;
-        }
-
-        EditText edit_name = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
-        edit_name.setText(member.name);
-        if (member.name.contains(" ")) {
-            MainActivity.INSTANCE.findViewById(R.id.memberNameWarning).setVisibility(View.VISIBLE);
-        }
-
-        Button buttonColor = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-        buttonColor.setBackgroundColor(member.color);
-
-
-        return true;
+        return fillFieldsMemberPage();
     }
+
+    abstract boolean fillFieldsMemberPage();
 
     @Override
     protected int getFocusFieldId() {

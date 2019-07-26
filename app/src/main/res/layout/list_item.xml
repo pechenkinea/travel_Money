@@ -21,17 +21,36 @@
         android:clickable="false"
         tools:ignore="RtlHardcoded"/>
 
-    <TextView
-        android:id="@+id/lm_name"
-        style="@style/normal"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left|center_vertical"
         android:layout_marginStart="56dp"
-        android:gravity="center_vertical"
-        tools:ignore="RtlHardcoded"
-        tools:text="Text"
-        />
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:srcCompat="@drawable/ic_human_male_20x7"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/lm_name"
+            style="@style/normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+
+            android:gravity="center_vertical"
+            tools:ignore="RtlHardcoded"
+            tools:text="Text"
+            />
+
+    </LinearLayout>
+
+
 
     <ImageButton
         android:id="@+id/listViewButton"

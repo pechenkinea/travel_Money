@@ -46,7 +46,7 @@
     <string name="errorBigSum">Сумма свыше %s не поддерживается</string>
     <string name="readMode">просмотр</string>
     <string name="text">Текст</string>
-    <string name="warning_member_name">*Для правильной работы голосового добавления трат рекомендуется использовать одно слово в имени</string>
+    <string name="warning_member_name">Для правильной работы голосового добавления трат рекомендуется использовать одно слово в имени</string>
     <string name="statistic">Статистика</string>
 
     <string name="fileError"><![CDATA[ Возможно у приложения нет разрешения на использоватние памяти. Посмотрите тут: Настройки -> Диспетчер приложений -> Travel Money -> Разрешения -> Включить хранилище]]></string>
@@ -58,16 +58,17 @@
     <string name="to_member_text_length_label">Разрешенное количество символов для участников в поле \'кому\' при включенной группировке общего списка операций</string>
     <string name="list">Список</string>
     <string name="other">Еще</string>
+    <string name="colorHelpMessage">Что бы участники одного цвета имели общий бюджет включите опцию \'Группировка итогов по цветам\'</string>
 
     <string-array name="member_colors">
         <item>#3db432</item>
         <item>#ff1e1c</item>
-        <item>#f9e701</item>
         <item>#0172b6</item>
         <item>#fe8f00</item>
         <item>#008f59</item>
         <item>#7b358e</item>
         <item>#ff00ff</item>
+        <item>#995C01</item>
     </string-array>
 
 </resources>

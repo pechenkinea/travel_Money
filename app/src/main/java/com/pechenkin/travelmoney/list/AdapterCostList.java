@@ -18,6 +18,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.ListAnimation;
 import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
@@ -153,8 +154,6 @@ public class AdapterCostList extends BaseAdapter {
                 StringBuilder sumText = new StringBuilder();
 
 
-
-
                 for (int i = 0; i < costs.size(); i++) {
 
                     Cost costInGroup = costs.get(i);
@@ -189,11 +188,12 @@ public class AdapterCostList extends BaseAdapter {
                     // Иконки человечков
                     if (i < 5) {
                         ImageView memberIcon = new ImageView(MainActivity.INSTANCE);
-                        memberIcon.setImageResource(R.drawable.ic_human_male_24);
+
+                        memberIcon.setImageResource(MemberIcons.getIconById(to_member.icon));
                         memberIcon.setColorFilter(to_memberColor);
 
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        lp.setMargins(-10, 0, -10, 0); //компенсация отступов
+                        lp.setMargins(0, 0, 4, 0); //компенсация отступов
                         memberIcon.setLayoutParams(lp);
 
                         holder.member_icons_layout.addView(memberIcon);

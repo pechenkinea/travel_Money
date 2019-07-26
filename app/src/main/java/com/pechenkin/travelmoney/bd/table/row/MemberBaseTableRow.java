@@ -15,6 +15,7 @@ public class MemberBaseTableRow extends BaseTableRow {
 
 
     public final int color;
+    public final int icon;
 
     public MemberBaseTableRow(Cursor c) {
         super(c);
@@ -26,5 +27,6 @@ public class MemberBaseTableRow extends BaseTableRow {
         }
         this.color = col;
 
+        this.icon  = getIntColumnValue(Namespace.FIELD_ICON, c);
     }
 }

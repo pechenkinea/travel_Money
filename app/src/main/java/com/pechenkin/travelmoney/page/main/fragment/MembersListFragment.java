@@ -16,7 +16,7 @@ import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.member.AddMemderPage;
-import com.pechenkin.travelmoney.page.member.EditMemderPage;
+import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
 public class MembersListFragment extends BaseMainPageFragment{
 
@@ -50,7 +50,7 @@ public class MembersListFragment extends BaseMainPageFragment{
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
             MemberBaseTableRow item = adapter.getItem(position).getMemberRow();
 
-            PageOpener.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
+            PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
 
             return true;
         });

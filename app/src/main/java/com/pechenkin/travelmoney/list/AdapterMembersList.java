@@ -19,14 +19,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.member.EditMemderPage;
+import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
 public class AdapterMembersList extends BaseAdapter {
 
@@ -95,7 +98,7 @@ public class AdapterMembersList extends BaseAdapter {
 
         if (showEditButton) {
             holder.editButton.setOnClickListener(v -> {
-                PageOpener.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
+                PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
             });
         }
 
@@ -176,7 +179,12 @@ public class AdapterMembersList extends BaseAdapter {
 
         if (row != null) {
             holder.name.setText(row.name);
+
             holder.name.setTextColor(row.color);
+
+            holder.icon.setVisibility(View.VISIBLE);
+            holder.icon.setImageResource(MemberIcons.getIconById(row.icon));
+            holder.icon.setColorFilter(row.color);
 
             final ListView lv = (ListView) parent;
             SparseBooleanArray sbArray = lv.getCheckedItemPositions();
@@ -231,12 +239,14 @@ public class AdapterMembersList extends BaseAdapter {
         ImageButton check;
         ImageButton editButton;
         TextView memberSumText;
+        AppCompatImageView icon;
 
         ViewHolder(View convertView) {
             this.name = convertView.findViewById(R.id.lm_name);
             this.check = convertView.findViewById(R.id.lm_check);
             this.editButton = convertView.findViewById(R.id.listEditButton);
             this.memberSumText = convertView.findViewById(R.id.memberSumText);
+            this.icon = convertView.findViewById(R.id.icon);
         }
 
 

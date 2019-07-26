@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
@@ -23,25 +25,53 @@
             <requestFocus />
         </EditText>
 
+
         <TextView
             android:id="@+id/memberNameWarning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/warning_member_name"
-            android:visibility="invisible" />
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+
+        <TextView
+            android:id="@+id/iconId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/membersIconsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- сюда программно добавляются элементы -->
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/buttonSelectColor"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:background="#000000"
+            android:layout_height="38dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/color_button_background"
             android:text="@string/Color"
             android:textColor="#ffffff"
+            tools:ignore="RtlHardcoded" />
 
-            />
+
+        <TextView
+            android:id="@+id/colorHelpMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/colorHelpMessage"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
 
     </LinearLayout>

@@ -12,7 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 12);
+        super(context, Namespace.DB_NAME, null, 14);
     }
 
     @Override
@@ -22,11 +22,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Namespace.FIELD_ID + " integer primary key autoincrement,"
                 + Namespace.FIELD_NAME + " text,"
                 + Namespace.FIELD_COLOR + " integer,"
+                + Namespace.FIELD_ICON + " integer,"
                 + Namespace.FIELD_ACTIVE + " integer"
                 + ");");
 
 
-        db.execSQL("INSERT INTO " + Namespace.TABLE_MEMBERS + " VALUES (1, 'Я', 0, 1);");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_MEMBERS + " VALUES (1, 'Я', 0, 1, 1);");
 
 
         db.execSQL("create table " + Namespace.TABLE_TRIPS + " ("
@@ -95,13 +96,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Namespace.FIELD_ID + " integer primary key not null"
                 + ");");
 
+        updateColors(db);
+
+    }
+
+    private void updateColors(SQLiteDatabase db){
+
+        db.execSQL("DELETE FROM " + Namespace.TABLE_COLORS + ";");
+
         db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.BLACK + ");");
 
         String[] colors = MainActivity.INSTANCE.getResources().getStringArray(R.array.member_colors);
         for (String color : colors) {
             db.execSQL("INSERT INTO " + Namespace.TABLE_COLORS + " VALUES (" + Color.parseColor(color) + ");");
         }
-
     }
 
     @Override
@@ -149,6 +157,17 @@ public class DBHelper extends SQLiteOpenHelper {
         // Добалена таблица для хранения цветов
         if (oldVersion < 12) {
             createTableColors(db);
+        }
+
+        // Добавлены миниатюры для участников
+        if (oldVersion < 13) {
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_MEMBERS + " ADD COLUMN " + Namespace.FIELD_ICON + " integer default 0;");
+
+        }
+        // новые цвета
+        if (oldVersion < 14) {
+            updateColors(db);
+
         }
 
     }
