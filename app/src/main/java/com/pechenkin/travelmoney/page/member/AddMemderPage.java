@@ -41,7 +41,7 @@ public class AddMemderPage extends BasePage {
 
     private void formCommit()
     {
-        EditText etName =  MainActivity.INSTANCE.findViewById(R.id.editName);
+        EditText etName =  MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
 
         String name =  etName.getText().toString();
         if ( t_members.isAdded(name) )
@@ -75,10 +75,10 @@ public class AddMemderPage extends BasePage {
     @Override
     public void addEvents() {
 
-        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.add_member_commit);
+        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.edit_member_commit_button);
         commitButton.setOnClickListener(v -> formCommit());
 
-        final EditText nameField = MainActivity.INSTANCE.findViewById(R.id.editName);
+        final EditText nameField = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
         nameField.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 formCommit();
@@ -126,7 +126,7 @@ public class AddMemderPage extends BasePage {
 
     @Override
     protected int getPageId() {
-        return R.layout.add_member;
+        return R.layout.edit_member;
     }
 
     @Override
@@ -141,7 +141,7 @@ public class AddMemderPage extends BasePage {
 
     @Override
     protected int getFocusFieldId() {
-        return  R.id.editName;
+        return  R.id.edit_member_Name;
     }
 
 

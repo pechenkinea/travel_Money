@@ -116,12 +116,10 @@ public class AdapterCostList extends BaseAdapter {
             dateText = df2.format(cost.date());
         }
         String comment = dateText + "  " + cost.comment();
-        holder.sum_comment.setText(comment);
+        holder.comment.setText(comment);
 
-        //Если нет комментария значит нет итоговой сымы т.к. комментарий обязателен
-        //а если ничего этого нет то и вьюху надо скрыть, что бы не создавала дополнительные отступы
         if (cost.comment().length() == 0) {
-            holder.commentLayout.setVisibility(View.GONE);
+            holder.comment.setVisibility(View.GONE);
         }
 
 
@@ -142,7 +140,7 @@ public class AdapterCostList extends BaseAdapter {
                 if (cost.sum() == 0) {
                     holder.title.setTextColor(colorDisableColor);
                     holder.sum_line.setTextColor(colorDisableColor);
-                    holder.sum_comment.setTextColor(colorDisableColor);
+                    holder.comment.setTextColor(colorDisableColor);
 
                     holder.sum_group_sum.setText("0");
                     holder.sum_group_sum.setTextColor(colorDisableColor);
@@ -154,7 +152,9 @@ public class AdapterCostList extends BaseAdapter {
                 StringBuilder to_memberText = new StringBuilder();
                 StringBuilder sumText = new StringBuilder();
 
-                holder.member_icons_layout.removeAllViews(); //очищаем все иконки и отрисовываем по новой. на случай когда отменили трату
+
+
+
                 for (int i = 0; i < costs.size(); i++) {
 
                     Cost costInGroup = costs.get(i);
@@ -185,21 +185,30 @@ public class AdapterCostList extends BaseAdapter {
                         sumText.append("<br>");
                     }
 
+
                     // Иконки человечков
-                    ImageView memberIcon = new ImageView(MainActivity.INSTANCE);
-                    memberIcon.setImageResource(R.drawable.ic_human_male_24);
-                    memberIcon.setColorFilter(to_memberColor);
+                    if (i < 5) {
+                        ImageView memberIcon = new ImageView(MainActivity.INSTANCE);
+                        memberIcon.setImageResource(R.drawable.ic_human_male_24);
+                        memberIcon.setColorFilter(to_memberColor);
 
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    lp.setMargins(-10, 0, -10, 0); //компенсация отступов
-                    memberIcon.setLayoutParams(lp);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        lp.setMargins(-10, 0, -10, 0); //компенсация отступов
+                        memberIcon.setLayoutParams(lp);
 
-                    holder.member_icons_layout.addView(memberIcon);
+                        holder.member_icons_layout.addView(memberIcon);
+
+                    } else if (i == 5) { //Если в поле "кому" много участников всех не надо показывать. просто добавляем цифру сколько не влезло
+                        TextView moreMembers = new TextView(MainActivity.INSTANCE);
+                        moreMembers.setText(String.format("+%d", costs.size() - i));
+                        holder.member_icons_layout.addView(moreMembers);
+                    }
 
                     // На случай, если только один участник в блоке "Кому"
                     holder.to_member_one.setText(to_memberName);
                     holder.to_member_one.setTextColor(to_memberColor);
                 }
+
 
                 if (costs.size() == 1) {
                     holder.disableAdditionalInfo();
@@ -234,7 +243,7 @@ public class AdapterCostList extends BaseAdapter {
                 holder.labelHeader.setText(cost.comment());
                 holder.sum_line.setText("");
                 holder.title.setText("");
-                holder.sum_comment.setText("");
+                holder.comment.setText("");
             }
 
             MemberBaseTableRow to_member = t_members.getMemberById(cost.to_member());
@@ -245,7 +254,7 @@ public class AdapterCostList extends BaseAdapter {
             if (cost.active() == 0) {
                 holder.title.setTextColor(colorDisableColor);
                 holder.sum_line.setTextColor(colorDisableColor);
-                holder.sum_comment.setTextColor(colorDisableColor);
+                holder.comment.setTextColor(colorDisableColor);
                 holder.sum_group_sum.setTextColor(colorDisableColor);
                 holder.to_member_one.setTextColor(colorDisableColor);
             }
@@ -262,11 +271,10 @@ public class AdapterCostList extends BaseAdapter {
         TextView sum_group_sum;
         TextView sum_sum;
         TextView sum_line;
-        TextView sum_comment;
+        TextView comment;
         AppCompatImageView have_photo;
         TextView labelHeader;
         View mainLayout;
-        View commentLayout;
         LinearLayout member_icons_layout;
         View more_information_layout;
 
@@ -279,11 +287,10 @@ public class AdapterCostList extends BaseAdapter {
             this.sum_group_sum = convertView.findViewById(R.id.sum_group_sum);
             this.sum_sum = convertView.findViewById(R.id.sum_sum);
             this.sum_line = convertView.findViewById(R.id.sum_line);
-            this.sum_comment = convertView.findViewById(R.id.sum_comment);
+            this.comment = convertView.findViewById(R.id.comment);
             this.have_photo = convertView.findViewById(R.id.sum_havefoto);
             this.labelHeader = convertView.findViewById(R.id.labelHeader);
             this.mainLayout = convertView.findViewById(R.id.mainLayout);
-            this.commentLayout = convertView.findViewById(R.id.commentLayout);
             this.member_icons_layout = convertView.findViewById(R.id.member_icons_layout);
             this.more_information_layout = convertView.findViewById(R.id.more_information_layout);
             setListener();
@@ -324,17 +331,19 @@ public class AdapterCostList extends BaseAdapter {
 
             this.title.setTextColor(Color.BLACK);
             this.sum_line.setTextColor(Color.BLACK);
-            this.sum_comment.setTextColor(Color.BLACK);
+            this.comment.setTextColor(Color.BLACK);
             this.to_member.setTextColor(Color.BLACK);
             this.sum_sum.setTextColor(Color.BLACK);
 
             this.labelHeader.setVisibility(View.GONE);
             this.mainLayout.setVisibility(View.VISIBLE);
-            this.commentLayout.setVisibility(View.VISIBLE);
+            this.comment.setVisibility(View.VISIBLE);
 
             this.more_information_layout.setVisibility(View.GONE);
 
+
             this.to_member_one.setVisibility(View.GONE);
+            this.member_icons_layout.removeAllViews(); //очищаем все иконки и отрисовываем по новой. на случай когда отменили трату
             this.member_icons_layout.setVisibility(View.VISIBLE);
 
             this.activeAdditionalInfo = true;

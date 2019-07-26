@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:layout_weight="5"
+
                 android:gravity="top"
                 tools:text="Евгений" />
 
@@ -79,7 +80,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                tools:text="1234.56 ₽" />
+                tools:text="1234.56" />
 
 
         </LinearLayout>
@@ -91,11 +92,11 @@
             android:orientation="horizontal"
             android:visibility="gone"
             tools:ignore="RtlSymmetry"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="7" />
 
             <TextView
@@ -117,21 +118,13 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/commentLayout"
+
+        <TextView
+            android:id="@+id/comment"
+            style="@style/litle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/sum_comment"
-                style="@style/litle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="7"
-                tools:text="24.07.2019 18:16  Магазин" />
-
-        </LinearLayout>
+            tools:text="24.07.2019 18:16  Магазин" />
 
 
         <View

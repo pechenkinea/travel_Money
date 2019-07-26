@@ -87,79 +87,81 @@ public class AdapterMembersList extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_item, null);
             holder = new ViewHolder(convertView);
 
-            if (showEditButton) {
-                holder.editButton.setOnClickListener(v -> {
-                    PageOpener.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
-                });
-            }
-
-            if (showSum) {
-                View.OnClickListener editClickListener = v -> {
-                    final ListView listView;
-                    try {
-                        listView = (ListView) v.getParent().getParent();
-                    } catch (Exception ex) {
-                        Help.alert(ex.getMessage());
-                        return;
-                    }
-
-                    final EditText input = new EditText(MainActivity.INSTANCE);
-                    input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                    input.setText(Help.DoubleToString(item.getSum()));
-
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT);
-                    input.setLayoutParams(lp);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
-                    builder.setTitle("")
-                            .setCancelable(false)
-                            .setPositiveButton("Ок", (dialog, which) -> {
-                                //((TextView) v).setText(input.getText());
-                                item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
-                                item.setChange(true);
-                                dialog.cancel();
-                                listView.invalidateViews();
-                            })
-                            .setNegativeButton("Отмена",
-                                    (dialog, id) -> dialog.cancel())
-                            .setNeutralButton("По умолчанию", (dialog, which) -> {
-                                item.setChange(false);
-                                dialog.cancel();
-                                listView.invalidateViews();
-                            });
-
-
-                    final AlertDialog alert = builder.create();
-                    alert.setView(input);
-                    if (alert.getWindow() != null)
-                        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-                    input.setOnEditorActionListener((v1, actionId, event) -> {
-                        if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
-                            item.setChange(true);
-                            alert.cancel();
-                            listView.invalidateViews();
-                            return true;
-                        }
-                        return false;
-                    });
-
-                    alert.show();
-
-                    Help.setActiveEditText(input, true);
-
-                };
-
-                holder.memberSumText.setOnClickListener(editClickListener);
-                holder.editButton.setOnClickListener(editClickListener);
-            }
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+
+        if (showEditButton) {
+            holder.editButton.setOnClickListener(v -> {
+                PageOpener.INSTANCE.open(EditMemderPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
+            });
+        }
+
+        if (showSum) {
+            View.OnClickListener editClickListener = v -> {
+                final ListView listView;
+                try {
+                    listView = (ListView) v.getParent().getParent();
+                } catch (Exception ex) {
+                    Help.alert(ex.getMessage());
+                    return;
+                }
+
+                final EditText input = new EditText(MainActivity.INSTANCE);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                input.setText(Help.DoubleToString(item.getSum()));
+
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
+                builder.setTitle("")
+                        .setCancelable(false)
+                        .setPositiveButton("Ок", (dialog, which) -> {
+                            //((TextView) v).setText(input.getText());
+                            item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
+                            item.setChange(true);
+                            dialog.cancel();
+                            listView.invalidateViews();
+                        })
+                        .setNegativeButton("Отмена",
+                                (dialog, id) -> dialog.cancel())
+                        .setNeutralButton("По умолчанию", (dialog, which) -> {
+                            item.setChange(false);
+                            dialog.cancel();
+                            listView.invalidateViews();
+                        });
+
+
+                final AlertDialog alert = builder.create();
+                alert.setView(input);
+                if (alert.getWindow() != null)
+                    alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+                input.setOnEditorActionListener((v1, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
+                        item.setChange(true);
+                        alert.cancel();
+                        listView.invalidateViews();
+                        return true;
+                    }
+                    return false;
+                });
+
+                alert.show();
+
+                Help.setActiveEditText(input, true);
+
+            };
+
+            holder.memberSumText.setOnClickListener(editClickListener);
+            holder.editButton.setOnClickListener(editClickListener);
+        }
+
 
         if (showEditButton) {
             holder.editButton.setVisibility(View.VISIBLE);

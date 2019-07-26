@@ -55,17 +55,6 @@ public class AdapterTripsList extends BaseAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item, null);
             holder = new ViewHolder(convertView);
-
-            if (showEditButton) {
-                holder.editButton.setOnClickListener(v -> {
-                    PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
-                });
-            }
-
-            holder.viewButton.setOnClickListener(v -> {
-                PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
-            });
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -74,9 +63,19 @@ public class AdapterTripsList extends BaseAdapter {
 
         if (showEditButton) {
             holder.editButton.setVisibility(View.VISIBLE);
+
+            holder.editButton.setOnClickListener(v -> {
+                PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
+            });
+
         } else {
             holder.editButton.setVisibility(View.INVISIBLE);
         }
+
+
+        holder.viewButton.setOnClickListener(v -> {
+            PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
+        });
 
 
         if (row != null && t_trips.ActiveTrip != null && row.id == t_trips.ActiveTrip.id) {

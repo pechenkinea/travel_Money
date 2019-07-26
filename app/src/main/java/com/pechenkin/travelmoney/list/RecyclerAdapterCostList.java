@@ -8,16 +8,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.Html;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -261,7 +258,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             this.to_member = convertView.findViewById(R.id.to_member);
             this.sum_sum = convertView.findViewById(R.id.sum_sum);
             this.sum_line = convertView.findViewById(R.id.sum_line);
-            this.sum_comment = convertView.findViewById(R.id.sum_comment);
+            this.sum_comment = convertView.findViewById(R.id.comment);
             this.labelHeader = convertView.findViewById(R.id.labelHeader);
             this.costSeparator = convertView.findViewById(R.id.costSeparator);
             this.editButton = convertView.findViewById(R.id.listEditButton);
