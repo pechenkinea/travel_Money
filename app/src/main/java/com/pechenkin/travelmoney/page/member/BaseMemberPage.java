@@ -125,7 +125,7 @@ abstract class BaseMemberPage extends BasePage {
                     MainActivity.INSTANCE.getResources().getDisplayMetrics());
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dpValueWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(8, 0, 0, 0);
+            lp.setMargins(0, 0, 8, 0);
             iconButton.setLayoutParams(lp);
 
             iconButton.setScaleType(AppCompatImageButton.ScaleType.CENTER);
