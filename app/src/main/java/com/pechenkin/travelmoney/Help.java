@@ -3,12 +3,14 @@ package com.pechenkin.travelmoney;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Help {
 
@@ -173,61 +176,24 @@ public class Help {
     }
 
 
-    /*
-     * Добавляет в текущую поездку 4000 операций разом.
-     * каждые 4 имеют общую дату и комментарий для возможности группировки
-     */
-    /*
-    static void createBigCostList() {
+    public static ProgressDialog createProgressDialog(Context context) {
+        ProgressDialog dialog = new ProgressDialog(context);
+        try {
+            dialog.show();
+        } catch (WindowManager.BadTokenException ignored) {
 
-        final ProgressDialog progressDialog = ProgressDialog.show(MainActivity.INSTANCE,
-                "",
-                MainActivity.INSTANCE.getString(R.string.wait), true);
-
-        Thread printCostThready = new Thread(() -> {
-
-            MembersQueryResult currentTripMembers = t_members.getAllByTripId(t_trips.ActiveTrip.id);
-            BaseTableRow[] members = currentTripMembers.getAllRows();
-
-            try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
-
-
-                long date = new Date().getTime();
-
-                Random memberRandom = new Random();
-
-                for (int i = 0; i < 1000; i++) {
-
-                    BaseTableRow member = members[memberRandom.nextInt(members.length)];
-                    String comment = "comment " + i;
-
-                    String dateStr = String.valueOf(date + i);
-
-                    for (int g = 0; g < 4; g++) {
-
-                        ContentValues cv = new ContentValues();
-                        cv.put(Namespace.FIELD_MEMBER, member.id);
-                        cv.put(Namespace.FIELD_TO_MEMBER, members[memberRandom.nextInt(members.length)].id);
-                        cv.put(Namespace.FIELD_COMMENT, comment);
-                        cv.put(Namespace.FIELD_SUM, String.valueOf(new Random().nextInt(300)));
-                        cv.put(Namespace.FIELD_IMAGE_DIR, "");
-                        cv.put(Namespace.FIELD_ACTIVE, 1);
-                        cv.put(Namespace.FIELD_TRIP, t_trips.ActiveTrip.id);
-                        cv.put(Namespace.FIELD_DATE, dateStr);
-
-                        db.insert(Namespace.TABLE_COSTS, null, cv);
-                    }
-
-                }
-            }
-            progressDialog.dismiss();
-        });
-
-        printCostThready.start();
-
-
+        }
+        dialog.setCancelable(false);
+        Objects.requireNonNull(dialog.getWindow())
+                .setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.progress_dialog);
+        // dialog.setMessage(Message);
+        return dialog;
     }
-    */
+
+
+
+
 
 
 }

@@ -18,7 +18,9 @@ import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.member.AddMemderPage;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
-public class MembersListFragment extends BaseMainPageFragment{
+import java.util.Arrays;
+
+public class MembersListFragment extends BaseMainPageFragment {
 
     @Override
     int getViewId() {
@@ -34,18 +36,18 @@ public class MembersListFragment extends BaseMainPageFragment{
         ListView list = fragmentView.findViewById(R.id.list_members);
         list.setOnItemClickListener((parent, view, position, id) -> {
 
-                    AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-                    BaseTableRow item = adapter.getItem(position).getMemberRow();
+            AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
+            BaseTableRow item = adapter.getItem(position).getMemberRow();
 
-                    if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, item.id)) {
-                        t_trips.removeMemberInTrip(t_trips.ActiveTrip.id, item.id);
-                        list.setItemChecked(position, false);
-                    } else {
-                        t_trips.addMemberInTrip(t_trips.ActiveTrip.id, item.id);
-                        list.setItemChecked(position, true);
-                    }
-                    list.invalidateViews();
-                });
+            if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, item.id)) {
+                t_trips.removeMemberInTrip(t_trips.ActiveTrip.id, item.id);
+                list.setItemChecked(position, false);
+            } else {
+                t_trips.addMemberInTrip(t_trips.ActiveTrip.id, item.id);
+                list.setItemChecked(position, true);
+            }
+            list.invalidateViews();
+        });
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
             MemberBaseTableRow item = adapter.getItem(position).getMemberRow();
@@ -67,6 +69,23 @@ public class MembersListFragment extends BaseMainPageFragment{
                 list.setAdapter(null);
             } else {
                 MemberBaseTableRow[] members = allMembers.getAllRows();
+
+                // сортируем так, что бы те, кто в текущей поездке отображались сверху
+                Arrays.sort(members, (m1, m2) -> {
+
+                    boolean m1InTRip = m1.inTrip(t_trips.ActiveTrip.id);
+                    boolean m2InTRip = m2.inTrip(t_trips.ActiveTrip.id);
+
+                    if (m1InTRip && !m2InTRip){
+                        return -1;
+                    }
+                    else if (!m1InTRip && m2InTRip){
+                        return 1;
+                    }
+
+                    return Long.compare(m1.id, m2.id);
+                });
+
                 AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMemberBaseTableRow.createCostMemberBaseTableRow(members, 0), true);
                 list.setAdapter(adapter);
 

@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 
 import com.pechenkin.travelmoney.bd.Namespace;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 
 
 /**
@@ -28,5 +29,9 @@ public class MemberBaseTableRow extends BaseTableRow {
         this.color = col;
 
         this.icon  = getIntColumnValue(Namespace.FIELD_ICON, c);
+    }
+
+    public boolean inTrip(long tripId){
+        return t_trips.isMemberInTrip(tripId, this.id);
     }
 }

@@ -56,8 +56,8 @@
 
     <string name="group_cost_on_off">Группировка в общем списке операций</string>
     <string name="to_member_text_length_label">Разрешенное количество символов для участников в поле \'кому\' при включенной группировке общего списка операций</string>
-    <string name="list">Список</string>
-    <string name="other">Еще</string>
+    <string name="list">Траты</string>
+    <string name="other">Ещё</string>
     <string name="colorHelpMessage">Что бы участники одного цвета имели общий бюджет включите опцию \'Группировка итогов по цветам\'</string>
 
     <string-array name="member_colors">

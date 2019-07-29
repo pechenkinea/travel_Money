@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -124,17 +125,18 @@ abstract class BaseMemberPage extends BasePage {
             AppCompatImageButton iconButton = new AppCompatImageButton(MainActivity.INSTANCE);
             iconButton.setImageResource(icon.getIcon());
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            int dpValueWidth = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    40,
+                    MainActivity.INSTANCE.getResources().getDisplayMetrics());
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dpValueWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(8, 0, 0, 0);
             iconButton.setLayoutParams(lp);
 
+            iconButton.setScaleType(AppCompatImageButton.ScaleType.CENTER);
 
-            int dpValue = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    12,
-                    MainActivity.INSTANCE.getResources().getDisplayMetrics());
 
-            iconButton.setPadding(dpValue, dpValue, dpValue, dpValue);
 
             if (activeIcon == icon.getId()){
                 iconButton.setBackgroundColor(Color.parseColor("#878787"));

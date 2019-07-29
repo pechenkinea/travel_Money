@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.LongSparseArray;
 import android.widget.ListView;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -43,9 +45,9 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        procDialog = ProgressDialog.show(MainActivity.INSTANCE,
-                "",
-                MainActivity.INSTANCE.getString(R.string.wait), true);
+        procDialog = Help.createProgressDialog(MainActivity.INSTANCE);
+        procDialog.show();
+
     }
 
     @Override
@@ -167,6 +169,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
         procDialog.dismiss();
+
 
         listViewCosts.setAdapter(adapter);
 

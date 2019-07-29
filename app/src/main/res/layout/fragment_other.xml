@@ -87,6 +87,25 @@
 
         </LinearLayout>
 
+
+
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/add_many"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_about_fragment_button"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                android:text="ткст. Добавить 4000" />
+
+        </LinearLayout>-->
+
     </LinearLayout>
 
 
