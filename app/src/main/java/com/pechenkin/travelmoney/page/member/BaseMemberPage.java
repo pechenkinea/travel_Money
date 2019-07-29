@@ -34,12 +34,6 @@ import com.pechenkin.travelmoney.page.main.MainPage;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by pechenkin on 20.04.2018.
- * Страница редактирования участника
- * Нужно обязательно передать в параметры id сотрудника
- */
-
 abstract class BaseMemberPage extends BasePage {
     @Override
     public void clickBackButton() {

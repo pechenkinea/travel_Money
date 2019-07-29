@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp">
 
 
     <LinearLayout
@@ -12,12 +13,12 @@
         android:orientation="vertical">
 
 
-
         <EditText
-            android:id="@+id/edit_trip_ET_Name"
+            android:id="@+id/trip_name"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
+            android:hint="@string/Title"
             android:imeOptions="actionNext"
             android:inputType="textPersonName|textCapSentences"
             android:singleLine="true">
@@ -26,24 +27,26 @@
         </EditText>
 
         <EditText
-            android:id="@+id/edit_trip_ET_Comment"
+            android:id="@+id/trip_comment"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="15dp"
-            android:inputType="textMultiLine|textCapSentences">
-        </EditText>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/Description"
+            android:inputType="textMultiLine|textCapSentences" />
 
         <CheckBox
             android:id="@+id/edit_trip_checkAction"
+            style="@style/normal"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:checked="false"
-            android:gravity="center_vertical|start"
             android:text="@string/Current"
-            style="@style/normal" />
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
 
     </LinearLayout>
-
 
 
     <FrameLayout
@@ -51,9 +54,8 @@
         android:layout_height="match_parent">
 
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/edit_trip_commit_button"
+            android:id="@+id/trip_commit_button"
             style="@style/firstFab"
             app:srcCompat="@drawable/ic_done_24" />
 

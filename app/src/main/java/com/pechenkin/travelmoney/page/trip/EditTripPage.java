@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.page.trip;
 
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -10,7 +10,6 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
@@ -20,34 +19,23 @@ import com.pechenkin.travelmoney.page.main.MainPage;
  * Стрвница редактирования поездки
  */
 
-public class EditTripPage extends BasePage {
-    @Override
-    public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_trips).getParam());
-    }
+public class EditTripPage extends BaseTripPage {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
 
     @Override
     public void addEvents() {
-        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.edit_trip_commit_button);
+        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.trip_commit_button);
         commitButton.setOnClickListener(v -> {
 
-            EditText trName =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Name);
-            EditText trComment =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Comment);
+            EditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
+            EditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
 
             String strName = trName.getText().toString();
-            if (strName.length() > 0)
-            {
-                if (t_trips.isAdded(strName))
-                {
-                    if (getParam().getId() != t_trips.getIdByName(strName))
-                    {
+            if (strName.length() > 0) {
+                if (t_trips.isAdded(strName)) {
+                    if (getParam().getId() != t_trips.getIdByName(strName)) {
                         Help.message("Название занято");
-                        Help.setActiveEditText(R.id.edit_trip_ET_Name);
+                        Help.setActiveEditText(R.id.trip_name);
                         return;
                     }
                 }
@@ -60,19 +48,12 @@ public class EditTripPage extends BasePage {
 
                 Help.message("Сохранено");
                 PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
-            }
-            else
-            {
+            } else {
                 Help.message("Введите название");
-                Help.setActiveEditText(R.id.edit_trip_ET_Name);
+                Help.setActiveEditText(R.id.trip_name);
             }
 
         });
-    }
-
-    @Override
-    protected int getPageId() {
-        return R.layout.edit_trip;
     }
 
     @Override
@@ -82,24 +63,24 @@ public class EditTripPage extends BasePage {
 
     @Override
     protected boolean fillFields() {
-        if (!hasParam())
-        {
+        if (!hasParam()) {
             Help.message("Ошибка. Нет поездки для редактирования");
             return false;
         }
 
         TripBaseTableRow trip = t_trips.getTripById(getParam().getId());
-        if (trip == null)
-        {
+        if (trip == null) {
             Help.message("Ошибка. Не найдена поездка с id " + getParam().getId());
             return false;
         }
 
-        EditText t_name =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Name);
+        EditText t_name = MainActivity.INSTANCE.findViewById(R.id.trip_name);
         t_name.setText(trip.name);
 
-        EditText t_comment =  MainActivity.INSTANCE.findViewById(R.id.edit_trip_ET_Comment);
+        EditText t_comment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
         t_comment.setText(trip.comment);
+
+        MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction).setVisibility(View.VISIBLE);
 
         CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
         if (t_trips.isActive(trip.id))
@@ -109,11 +90,6 @@ public class EditTripPage extends BasePage {
 
 
         return true;
-    }
-
-    @Override
-    protected int getFocusFieldId() {
-        return  R.id.edit_trip_ET_Name;
     }
 
 

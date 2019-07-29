@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.page.trip;
 
-import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -8,7 +7,6 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
@@ -18,20 +16,12 @@ import com.pechenkin.travelmoney.page.main.MainPage;
  * Страница добавления новой поездки
  */
 
-public class AddTripPage extends BasePage {
-    @Override
-    public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_trips).getParam());
-    }
+public class AddTripPage extends BaseTripPage {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
 
     @Override
     public void addEvents() {
-        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.trip_add_button);
+        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.trip_commit_button);
         commitButton.setOnClickListener(v -> {
             EditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
             EditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
@@ -54,11 +44,6 @@ public class AddTripPage extends BasePage {
     }
 
     @Override
-    protected int getPageId() {
-        return R.layout.add_trip;
-    }
-
-    @Override
     protected String getTitleHeader() {
         return MainActivity.INSTANCE.getString(R.string.addNewTrip);
     }
@@ -66,11 +51,6 @@ public class AddTripPage extends BasePage {
     @Override
     protected boolean fillFields() {
         return true;
-    }
-
-    @Override
-    protected int getFocusFieldId() {
-        return R.id.trip_name;
     }
 
 

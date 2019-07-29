@@ -28,7 +28,6 @@
     <string name="addNewMember">Добавление нового участника</string>
     <string name="memberEdit">Редактирование участника</string>
     <string name="editTrip">Редактирование поездки</string>
-    <string name="wait">Подождите…</string>
     <string name="membersList">Участники</string>
     <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов. Повторное долгое нажатие вернет операцию в исходное состояние. После отмены или возврата, для актуализации итогов, обновите страницу</string>
     <string name="errorNoActiveTask">Нет активных поездок</string>
