@@ -15,29 +15,27 @@
             android:orientation="horizontal">
 
 
-
             <Button
                 android:id="@+id/export_button"
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:background="@drawable/background_about_fragment_button"
                 android:drawableTop="@drawable/ic_share_24"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
-                android:background="@drawable/background_about_fragment_button"
-                android:text="@string/export"/>
+                android:text="@string/export" />
 
             <Button
                 android:id="@+id/stat_button"
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:background="@drawable/background_about_fragment_button"
                 android:drawableTop="@drawable/ic_stat_24"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
-                android:background="@drawable/background_about_fragment_button"
-                android:text="@string/statistic"
-                />
+                android:text="@string/statistic" />
 
         </LinearLayout>
 
@@ -49,15 +47,14 @@
 
             <Button
                 android:id="@+id/faq_button"
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:background="@drawable/background_about_fragment_button"
                 android:drawableTop="@drawable/ic_help_24"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
-                android:background="@drawable/background_about_fragment_button"
-                android:text="@string/help"
-                />
+                android:text="@string/help" />
 
         </LinearLayout>
 
@@ -70,7 +67,7 @@
                 android:id="@+id/settings_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".5"
+                android:layout_weight="5"
                 android:background="@drawable/background_about_fragment_button"
                 android:drawableTop="@drawable/ic_settings_24"
                 android:paddingTop="40dp"
@@ -81,7 +78,7 @@
                 android:id="@+id/about_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".5"
+                android:layout_weight="5"
                 android:background="@drawable/background_about_fragment_button"
                 android:drawableTop="@drawable/ic_info_24"
                 android:paddingTop="40dp"

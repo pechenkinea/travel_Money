@@ -28,10 +28,8 @@
                 style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
                 android:layout_weight="5"
-
-                android:gravity="top"
+                android:gravity="center_vertical"
                 tools:text="Евгений" />
 
             <TextView
@@ -55,8 +53,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_human_male_20x7"
-                    />
+                    app:srcCompat="@drawable/ic_human_male_20x7" />
 
 
             </LinearLayout>
@@ -79,6 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
+                android:gravity="center_vertical"
                 tools:text="1234.56" />
 
 
@@ -88,10 +86,11 @@
             android:id="@+id/more_information_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal"
             android:visibility="gone"
             tools:ignore="RtlSymmetry"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <View
                 android:layout_width="0dp"
@@ -117,14 +116,13 @@
 
         </LinearLayout>
 
-
         <TextView
             android:id="@+id/comment"
             style="@style/litle"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="24.07.2019 18:16  Магазин" />
-
 
         <View
             android:layout_width="fill_parent"
@@ -142,19 +140,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="4dp">
 
         <TextView
             android:id="@+id/labelHeader"
             style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical" />
+            android:layout_gravity="start|center_vertical"
+            android:paddingEnd="12dp"
+            tools:ignore="RtlSymmetry" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/sum_havefoto"
+            android:id="@+id/sum_have_photo"
             style="@style/listImageButton"
+            android:background="@drawable/edit_button_background"
+            android:padding="12dp"
             android:visibility="invisible"
             app:srcCompat="@drawable/ic_camera_24"
             tools:ignore="ContentDescription"

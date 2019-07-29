@@ -2,8 +2,11 @@ package com.pechenkin.travelmoney.list;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.FileProvider;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.ListAnimation;
@@ -27,6 +31,7 @@ import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.GroupCost;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -288,7 +293,7 @@ public class AdapterCostList extends BaseAdapter {
             this.sum_sum = convertView.findViewById(R.id.sum_sum);
             this.sum_line = convertView.findViewById(R.id.sum_line);
             this.comment = convertView.findViewById(R.id.comment);
-            this.have_photo = convertView.findViewById(R.id.sum_havefoto);
+            this.have_photo = convertView.findViewById(R.id.sum_have_photo);
             this.labelHeader = convertView.findViewById(R.id.labelHeader);
             this.mainLayout = convertView.findViewById(R.id.mainLayout);
             this.member_icons_layout = convertView.findViewById(R.id.member_icons_layout);
@@ -357,6 +362,32 @@ public class AdapterCostList extends BaseAdapter {
         void photoImage(String dir) {
             if (dir.length() > 0) {
                 this.have_photo.setVisibility(View.VISIBLE);
+
+                this.have_photo.setOnClickListener(view -> {
+
+                    String realPath = dir;
+                    if (dir.contains(".provider")) {
+                        //костыль, т.к. раньше в БД хранилось значение уже после работы FileProvider
+                        String badPath = "content://" + MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider/external_files";
+                        realPath = dir.replaceFirst(badPath, Environment.getExternalStorageDirectory().getAbsolutePath());
+                    }
+
+                    File file = new File(realPath);
+                    if (!file.exists()) {
+                        Help.alertError("Файл не найден. " + realPath);
+                        return;
+                    }
+
+                    Uri uri = FileProvider.getUriForFile(
+                            MainActivity.INSTANCE,
+                            MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", file);
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setDataAndType(uri, "image/*");
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    MainActivity.INSTANCE.startActivity(intent);
+
+                });
             } else {
                 this.have_photo.setVisibility(View.GONE);
             }

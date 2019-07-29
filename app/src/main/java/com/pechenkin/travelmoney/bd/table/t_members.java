@@ -163,7 +163,7 @@ public class t_members {
     }
 
     static public MembersQueryResult getAllByTripId(long t_id) {
-        String sql = "SELECT m." + Namespace.FIELD_ID + ", m." + Namespace.FIELD_NAME + ", m." + Namespace.FIELD_COLOR
+        String sql = "SELECT m." + Namespace.FIELD_ID + ", m." + Namespace.FIELD_NAME + ", m." + Namespace.FIELD_COLOR + ", m." + Namespace.FIELD_ICON
                 + " FROM " + Namespace.TABLE_TRIPS_MEMBERS + " as t"
                 + " inner join " + Namespace.TABLE_MEMBERS + " as m"
                 + " on t." + Namespace.FIELD_MEMBER + " = m." + Namespace.FIELD_ID + " and t." + Namespace.FIELD_TRIP + " = '" + t_id + "'";

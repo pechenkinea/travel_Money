@@ -1,15 +1,11 @@
 package com.pechenkin.travelmoney.page.main.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import androidx.core.content.FileProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,7 +22,6 @@ import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
 import com.pechenkin.travelmoney.page.main.CostListBackground;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
-import java.io.File;
 import java.util.List;
 
 
@@ -54,55 +49,16 @@ public class CostListFragment extends BaseMainPageFragment {
     @Override
     void setListeners() {
 
-
         final ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
-        //TODO теперь это не работает. нужно перенести в адаптер
-        listViewCosts.setOnItemClickListener((parent, view, index, id) -> {
-
-            ListAdapter adapter = listViewCosts.getAdapter();
-            Cost item = (Cost) adapter.getItem(index);
-
-            if (item != null && item.image_dir() != null && item.image_dir().length() > 0) {
-
-                String realPath = item.image_dir();
-
-                if (item.image_dir().contains(".provider")) {
-                    //костыль, т.к. раньше в БД хранилось значение уже после работы FileProvider
-                    String badPath = "content://" + MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider/external_files";
-                    realPath = item.image_dir().replaceFirst(badPath, Environment.getExternalStorageDirectory().getAbsolutePath());
-                }
-
-
-                File file = new File(realPath);
-                if (!file.exists()) {
-                    Help.alertError("Файл не найден. " + realPath);
-                    return;
-                }
-
-                Uri uri = FileProvider.getUriForFile(
-                        MainActivity.INSTANCE,
-                        MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", file);
-
-                Intent intent = new Intent(Intent.ACTION_VIEW, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                intent.setDataAndType(uri, "image/*");
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                MainActivity.INSTANCE.startActivity(intent);
-
-            }
-
-
-        });
-
 
         if (readMode) {
             fragmentView.findViewById(R.id.mainPageAddbutton).setVisibility(View.GONE);
             fragmentView.findViewById(R.id.mainPageSpeechRecognition).setVisibility(View.GONE);
-        }
-        else {
+        } else {
+
             FloatingActionButton mainPageSpeechRecognition = fragmentView.findViewById(R.id.mainPageSpeechRecognition);
             mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
 
-            //TODO теперь это не работает. нужно перенести в адаптер
             listViewCosts.setOnItemLongClickListener((arg0, v, index, arg3) -> {
 
                 ListAdapter adapter = listViewCosts.getAdapter();

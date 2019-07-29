@@ -97,9 +97,7 @@ public class AdapterMembersList extends BaseAdapter {
 
 
         if (showEditButton) {
-            holder.editButton.setOnClickListener(v -> {
-                PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
-            });
+            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam()));
         }
 
         if (showSum) {
@@ -173,7 +171,7 @@ public class AdapterMembersList extends BaseAdapter {
         }
 
         if (!showCheckBox) {
-            holder.check.setVisibility(View.INVISIBLE);
+            holder.check.setVisibility(View.GONE);
         }
 
 
@@ -185,6 +183,7 @@ public class AdapterMembersList extends BaseAdapter {
             holder.icon.setVisibility(View.VISIBLE);
             holder.icon.setImageResource(MemberIcons.getIconById(row.icon));
             holder.icon.setColorFilter(row.color);
+
 
             final ListView lv = (ListView) parent;
             SparseBooleanArray sbArray = lv.getCheckedItemPositions();
@@ -248,7 +247,6 @@ public class AdapterMembersList extends BaseAdapter {
             this.memberSumText = convertView.findViewById(R.id.memberSumText);
             this.icon = convertView.findViewById(R.id.icon);
         }
-
 
 
     }
