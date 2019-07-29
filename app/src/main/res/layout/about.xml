@@ -2,102 +2,107 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/travel_money"
-                android:contentDescription="@string/app_name" />
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_launcher" />
 
             <TextView
+                style="@style/h1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/h1"
                 android:gravity="center_horizontal"
-                android:text="@string/app_name"/>
+                android:text="@string/app_name" />
+
             <TextView
-                android:layout_marginTop="15dp"
                 android:id="@+id/about_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/version"/>
+                android:layout_marginTop="15dp"
+                android:text="@string/version" />
 
             <TextView
                 android:id="@+id/about_version_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/versionCode"/>
+                android:text="@string/versionCode" />
 
 
             <TextView
                 android:id="@+id/developerName"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:textColorLink="@color/link"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColorLink="@color/link" />
+
             <TextView
                 android:id="@+id/developerEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorLink="@color/link"/>
+                android:textColorLink="@color/link" />
 
             <TextView
-                android:layout_marginTop="10dp"
                 android:id="@+id/linkToPlayMarket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorLink="@color/link"/>
-            <TextView
                 android:layout_marginTop="10dp"
+                android:textColorLink="@color/link" />
+
+            <TextView
                 android:id="@+id/linkToGitHub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorLink="@color/link"/>
+                android:layout_marginTop="10dp"
+                android:textColorLink="@color/link" />
 
             <TextView
-                android:layout_marginTop="20dp"
+                style="@style/h3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Thanks"
-                style="@style/h3"/>
+                android:layout_marginTop="20dp"
+                android:text="@string/Thanks" />
 
             <TextView
-                android:layout_marginTop="10dp"
                 android:id="@+id/thank_aps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:ignore="HardcodedText" />
-            <TextView
                 android:layout_marginTop="10dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
                 android:id="@+id/thank_pma"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
             <TextView
-                android:layout_marginTop="10dp"
                 android:id="@+id/thank_psv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                 />
+                android:layout_marginTop="10dp" />
 
             <TextView
-                android:layout_marginTop="20dp"
+                style="@style/h3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/thirdSoftware"
-                style="@style/h3"/>
+                android:layout_marginTop="20dp"
+                android:text="@string/thirdSoftware" />
 
 
             <TextView
@@ -107,15 +112,9 @@
                 tools:ignore="HardcodedText" />
 
 
-
-
-
         </LinearLayout>
 
     </ScrollView>
-
-
-
 
 
 </RelativeLayout>
