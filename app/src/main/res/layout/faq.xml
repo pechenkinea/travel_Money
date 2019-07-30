@@ -29,7 +29,7 @@
                 android:textAllCaps="false"
                 android:textStyle="normal"
                 app:drawableEndCompat="@drawable/ic_down_24"
-                tools:drawableEnd="@drawable/ic_up_24"
+                tools:drawableEndCompat="@drawable/ic_up_24"
                 tools:ignore="RtlHardcoded" />
 
             <TextView
