@@ -24,7 +24,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="left|center_vertical"
                 android:text="@string/whyCalc_q"
-                android:drawableEnd="@drawable/ic_down_24"
                 tools:drawableEnd="@drawable/ic_up_24"
                 android:padding="8dp"
                 android:background="@drawable/background_about_fragment_button"
@@ -49,7 +48,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/whyVoteAdd_q"
-                android:drawableEnd="@drawable/ic_down_24"
                 android:padding="8dp"
                 android:background="@drawable/background_about_fragment_button"
                 android:textAllCaps="false"
@@ -72,7 +70,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/faq_color_q"
-                android:drawableEnd="@drawable/ic_down_24"
                 android:padding="8dp"
                 android:background="@drawable/background_about_fragment_button"
                 android:textAllCaps="false"
@@ -94,7 +91,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/faq_other_phone_q"
-                android:drawableEnd="@drawable/ic_down_24"
                 android:padding="8dp"
                 android:background="@drawable/background_about_fragment_button"
                 android:textAllCaps="false"
@@ -107,9 +103,6 @@
                 android:layout_marginTop="4dp"
                 android:visibility="gone"
                 android:text="@string/faq_other_phone_a" />
-
-
-
 
         </LinearLayout>
 

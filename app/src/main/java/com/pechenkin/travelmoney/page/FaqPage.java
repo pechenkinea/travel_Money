@@ -59,6 +59,7 @@ public class FaqPage extends BasePage {
             Integer a = entry.getValue();
 
             TextView questionField = MainActivity.INSTANCE.findViewById(q);
+            questionField.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_down_24, 0);
             questionField.setOnClickListener(view -> {
                 TextView answerField = MainActivity.INSTANCE.findViewById(a);
                 if (answerField.getVisibility() == View.GONE){

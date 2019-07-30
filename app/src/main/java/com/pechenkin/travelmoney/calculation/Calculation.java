@@ -1,6 +1,9 @@
 package com.pechenkin.travelmoney.calculation;
 
 import android.annotation.SuppressLint;
+import android.util.LongSparseArray;
+
+import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
@@ -23,7 +26,7 @@ public class Calculation {
      * @param list массив всех проводок, которые надо посчитать
      * @return массив проводок где указано не кто кому сколько дал а кто кому сколько должен
      */
-    public static Cost[] call(Cost[] list) {
+    public static Cost[] calculate(Cost[] list) {
 
         @SuppressLint("UseSparseArrays")
         HashMap<Long, MemberSum> members = new HashMap<>();
@@ -122,8 +125,61 @@ public class Calculation {
         }
 
 
-
         return resultList.toArray(new Cost[0]);
+
+    }
+
+
+    /**
+     * Вместо id участников ставит id их цветов и закидывает на пересчет
+     *
+     * @param calculationList лист с итогами (<b>кто кому должен</b>)
+     * @return лист с итогами с учетом того, что у одинаковых цветов один бюджет
+     */
+    public static Cost[] groupByColor(Cost[] calculationList) {
+
+        if (calculationList.length == 0)
+            return calculationList;
+
+        Cost[] calcListCosts = new Cost[calculationList.length];
+        LongSparseArray<Long> membersByColor = new LongSparseArray<>();
+        for (int i = 0; i < calculationList.length; i++) {
+
+            Cost calcCost = calculationList[i];
+            MemberBaseTableRow member = t_members.getMemberById(calcCost.member());
+            MemberBaseTableRow to_member = t_members.getMemberById(calcCost.to_member());
+
+            //В приоритете запомнить учатсника, кому должны
+            membersByColor.put(to_member.color, to_member.id);
+            if (membersByColor.indexOfKey(member.color) < 0) {
+                membersByColor.put(member.color, member.id);
+            }
+
+            // т.к. в calculationList приходит "кто кому должен" надо перевернуть значения, что бы получилось "кто кому дал"
+            // поэтому первым параметром в ShortCost отдаем to_member а вторым member
+            Cost forGroupCost = new ShortCost(to_member.color, member.color, calcCost.sum());
+            calcListCosts[i] = forGroupCost;
+        }
+
+
+        calculationList = Calculation.calculate(calcListCosts);
+
+        //Переводим цвета обратно в учатников что бы вывести в список
+        for (int i = 0; i < calculationList.length; i++) {
+
+            Cost c = new ShortCost(
+                    membersByColor.get(calculationList[i].member()),
+                    membersByColor.get(calculationList[i].to_member()),
+                    calculationList[i].sum()
+            );
+
+            calculationList[i] = c;
+
+        }
+
+
+        return calculationList;
+
 
     }
 

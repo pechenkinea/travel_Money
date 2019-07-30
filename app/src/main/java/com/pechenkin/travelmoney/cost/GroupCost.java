@@ -1,5 +1,7 @@
 package com.pechenkin.travelmoney.cost;
 
+import com.pechenkin.travelmoney.Help;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +11,34 @@ import java.util.List;
  * Что бы можно было группировать
  */
 public class GroupCost implements Cost {
+
+    /**
+     * группирует операции по дате и комментарию
+     *
+     * @param costs отсортированный по дате массив трат
+     */
+    public static GroupCost[] group(Cost[] costs) {
+        List<GroupCost> groupCostList = new ArrayList<>();
+        String lastKey = "";
+
+        for (Cost cost : costs) {
+            String key = cost.date().getTime() + cost.comment();
+            if (key.equals(lastKey)) {
+                try {
+                    groupCostList.get(groupCostList.size() - 1).addCost(cost);
+                } catch (Exception ex) {
+                    Help.alert(ex.getMessage());
+                    return null;
+                }
+            } else {
+                groupCostList.add(new GroupCost(cost));
+                lastKey = key;
+            }
+        }
+
+        return groupCostList.toArray(new GroupCost[0]);
+    }
+
     private double sum = 0;
     private String comment;
     private List<Cost> costs;

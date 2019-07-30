@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import android.util.LongSparseArray;
 import android.widget.ListView;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -55,62 +53,17 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
         if (this.trip != null) {
 
-            //TimeMeter allTimer = new TimeMeter("Общее");
             CostQueryResult costList = t_costs.getAllByTripId(this.trip.id);
 
             Cost[] calculationList = {};
             if (costList.hasRows()) {
-                calculationList = Calculation.call(costList.getAllRows());
+                calculationList = Calculation.calculate(costList.getAllRows());
 
                 // Группируем, если есть группировка по цветам
-                if (calculationList.length > 0 && t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)) {
-                            /*
-                               берем итоговый список, вместо id участников ставим id их цветов и закидываем еще раз на пересчет
-                            */
-
-                    //TimeMeter groupTimer = new TimeMeter("Группировка");
-
-                    Cost[] calcListCosts = new Cost[calculationList.length];
-                    LongSparseArray<Long> membersByColor = new LongSparseArray<>();
-                    for (int i = 0; i < calculationList.length; i++) {
-
-                        Cost calcCost = calculationList[i];
-                        MemberBaseTableRow member = t_members.getMemberById(calcCost.member());
-                        MemberBaseTableRow to_member = t_members.getMemberById(calcCost.to_member());
-
-                        //В приоритете запомнить учатсника, кому должны
-                        membersByColor.put(to_member.color, to_member.id);
-                        if (membersByColor.indexOfKey(member.color) < 0) {
-                            membersByColor.put(member.color, member.id);
-                        }
-
-                        // т.к. в calculationList приходит "кто кому должен" надо перевернуть значения, что бы получилось "кто кому дал"
-                        // поэтому первым параметром в ShortCost отдаем to_member а вторым member
-                        Cost forGroupCost = new ShortCost(to_member.color, member.color, calcCost.sum());
-                        calcListCosts[i] = forGroupCost;
-                    }
-
-                    calculationList = Calculation.call(calcListCosts);
-
-                    //Переводим цвета обратно в учатников что бы вывести в список
-                    for (int i = 0; i < calculationList.length; i++) {
-
-                        Cost c = new ShortCost(
-                                membersByColor.get(calculationList[i].member()),
-                                membersByColor.get(calculationList[i].to_member()),
-                                calculationList[i].sum()
-                        );
-
-                        calculationList[i] = c;
-
-                    }
-
-
-                    //groupTimer.stop();
-
+                if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)) {
+                    calculationList = Calculation.groupByColor(calculationList);
                 }
             }
-
 
             if (calculationList.length > 0) {
                 finalList = Help.concat(finalList, new Cost[]{new ShortCost(-1, -1, 0f, "↓ Кто кому сколько должен ↓")});
@@ -122,41 +75,17 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
             if (costList.hasRows()) {
                 finalList = Help.concat(finalList, new Cost[]{new ShortCost(-1, -1, 0f, "↓ Список всех операций ↓")});
 
-                if (!t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST)) {
+                if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST)) {
+                    // Группировка
+                    GroupCost[] groupCostList = GroupCost.group(costList.getAllRows());
+                    if (groupCostList != null) {
+                        finalList = Help.concat(finalList, groupCostList);
+                    }
+                } else {
                     // Если группировка не нужна выводим как есть
                     finalList = Help.concat(finalList, costList.getAllRows());
-                } else {
-                    // Группировка
-                    Cost[] allCost = costList.getAllRows();
-                    List<GroupCost> groupCostList = new ArrayList<>();
-                    String lastKey = "";
-
-                            /*
-                                Предполагается, что getAllRows выдает отсортированный по дате массив поэтому дополнительная сортировка не нужна.
-                                Достаточно "набивать" группу до тех пор, пока не дойдем до следующей даты, все что дальше - следующая группа
-                                Для дополнительной надежности проверяется не только дата но и комментарий
-                             */
-                    for (Cost cost : allCost) {
-                        String key = cost.date().getTime() + cost.comment();
-                        if (key.equals(lastKey)) {
-                            try {
-                                groupCostList.get(groupCostList.size() - 1).addCost(cost);
-                            } catch (Exception ex) {
-                                Help.alert(ex.getMessage());
-                                return null;
-                            }
-                        } else {
-                            groupCostList.add(new GroupCost(cost));
-                            lastKey = key;
-                        }
-                    }
-
-                    finalList = Help.concat(finalList, groupCostList.toArray(new GroupCost[0]));
                 }
-
             }
-
-            //allTimer.stop();
 
             adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), finalList);
 
@@ -168,10 +97,8 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
-        procDialog.dismiss();
-
-
         listViewCosts.setAdapter(adapter);
+        procDialog.dismiss();
 
         if (adapter.getCount() > 5 && !t_settings.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)) {
             Help.alertHelp(MainActivity.INSTANCE.getString(R.string.deleteCostHelp));

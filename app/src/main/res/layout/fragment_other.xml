@@ -21,7 +21,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:background="@drawable/background_about_fragment_button"
-                android:drawableTop="@drawable/ic_share_24"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
                 android:text="@string/export" />
@@ -32,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:background="@drawable/background_about_fragment_button"
-                android:drawableTop="@drawable/ic_stat_24"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
                 android:text="@string/statistic" />
@@ -51,7 +49,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:background="@drawable/background_about_fragment_button"
-                android:drawableTop="@drawable/ic_help_24"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
                 android:text="@string/help" />
@@ -69,7 +66,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:background="@drawable/background_about_fragment_button"
-                android:drawableTop="@drawable/ic_settings_24"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
                 android:text="@string/settings" />
@@ -80,13 +76,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:background="@drawable/background_about_fragment_button"
-                android:drawableTop="@drawable/ic_info_24"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
                 android:text="@string/about" />
 
         </LinearLayout>
-
 
 
         <!--<LinearLayout
