@@ -11,4 +11,19 @@
     <color name="green">#3db432</color>
     <color name="red">#b43232</color>
 
+
+
+    <string-array name="member_colors">
+        <item>#3db432</item>
+        <item>#FC0302</item>
+        <item>#fe8f00</item>
+        <item>#008f59</item>
+        <item>#ff00ff</item>
+        <item>#995C01</item>
+        <item>#060199</item>
+        <item>#BB0000</item>
+        <item>#8E24AA</item>
+        <item>#00ACC1</item>
+    </string-array>
+
 </resources>

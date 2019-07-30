@@ -12,7 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 14);
+        super(context, Namespace.DB_NAME, null, 15);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         }
         // новые цвета
-        if (oldVersion < 14) {
+        if (oldVersion < 15) {
             updateColors(db);
 
         }

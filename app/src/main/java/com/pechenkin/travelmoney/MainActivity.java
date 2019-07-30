@@ -42,12 +42,6 @@ public class MainActivity extends AppCompatActivity {
         t_members.updateMembersCache();
         PageOpener.INSTANCE.open(MainPage.class);
 
-        /*
-            CostCreator c = new CostCreator("Я за всех 350 магазин");
-            PageParam param = new PageParam.BuildingPageParam().setCostCreator(c).getParam();
-            PageOpener.INSTANCE.open(AddCostsListPage.class, param);
-        */
-
     }
 
     @Override
@@ -63,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
+        
         if (resultCode == RESULT_OK) {
 
             // если это результаты отправки на получение фото
