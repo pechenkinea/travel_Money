@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 ext {
-    travelMoneyVersionName = '2.8.7 (Beta)'
+    travelMoneyVersionName = '2.8.8 (Beta)'
     //travelMoneyVersionName = '2.7'
 }
 
@@ -15,7 +15,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 29
         //noinspection HighAppVersionCode20190711
-        versionCode 2019180473
+        versionCode 2019180474
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName);
         vectorDrawables.useSupportLibrary = true
@@ -38,10 +38,7 @@ android {
 
 
 dependencies {
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.wdullaer:materialdatetimepicker:4.2.1'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
 }

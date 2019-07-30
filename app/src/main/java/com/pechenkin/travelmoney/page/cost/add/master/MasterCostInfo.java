@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney.page.cost.add.master;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.core.content.FileProvider;
 
@@ -24,7 +26,6 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -85,7 +86,7 @@ public class MasterCostInfo extends BasePage {
 
         EditText et_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
         String sum = et_sum.getText().toString();
-        if (sum.length() == 0 ||  Help.StringToDouble(sum) <= 0) {
+        if (sum.length() == 0 || Help.StringToDouble(sum) <= 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorFillSum));
             Help.setActiveEditText(R.id.cost_sum, true);
             return;
@@ -205,7 +206,7 @@ public class MasterCostInfo extends BasePage {
 
                 Calendar c1 = Calendar.getInstance();
 
-                TimePickerDialog timeDialog = TimePickerDialog.newInstance((view1, hourOfDay, minute, second) -> {
+                TimePickerDialog.OnTimeSetListener timeCallBack = (timePicker, hourOfDay, minute) -> {
                     Calendar cal = Calendar.getInstance();
                     cal.set(Calendar.YEAR, year);
                     cal.set(Calendar.MONTH, monthOfYear);
@@ -217,13 +218,11 @@ public class MasterCostInfo extends BasePage {
                             .setText(dateFormat.format(cal.getTime()));
 
                     selectDate = cal.getTime();
-                }, c1.get(Calendar.HOUR_OF_DAY), c1.get(Calendar.MINUTE), true);
+                };
 
-                if (c1.get(Calendar.YEAR) == year && c1.get(Calendar.DAY_OF_MONTH) == dayOfMonth && c1.get(Calendar.DAY_OF_MONTH) == dayOfMonth) {
-                    timeDialog.setMaxTime(c1.get(Calendar.HOUR_OF_DAY), c1.get(Calendar.MINUTE), c1.get(Calendar.SECOND));
-                }
+                TimePickerDialog timeDialog = new TimePickerDialog(MainActivity.INSTANCE, timeCallBack, c1.get(Calendar.HOUR_OF_DAY), c1.get(Calendar.MINUTE), true);
 
-                timeDialog.show(MainActivity.INSTANCE.getSupportFragmentManager(), "");
+                timeDialog.show();
             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 
 
