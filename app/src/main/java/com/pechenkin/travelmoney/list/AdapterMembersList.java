@@ -181,7 +181,7 @@ public class AdapterMembersList extends BaseAdapter {
             holder.name.setTextColor(row.color);
 
             holder.icon.setVisibility(View.VISIBLE);
-            holder.icon.setImageResource(MemberIcons.getIconById(row.icon));
+            holder.icon.setImageDrawable(MemberIcons.getIconById(row.icon));
             holder.icon.setColorFilter(row.color);
 
 

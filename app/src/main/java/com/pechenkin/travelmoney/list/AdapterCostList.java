@@ -194,7 +194,7 @@ public class AdapterCostList extends BaseAdapter {
                     if (i < 5) {
                         ImageView memberIcon = new ImageView(MainActivity.INSTANCE);
 
-                        memberIcon.setImageResource(MemberIcons.getIconById(to_member.icon));
+                        memberIcon.setImageDrawable(MemberIcons.getIconById(to_member.icon));
                         memberIcon.setColorFilter(to_memberColor);
 
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -339,6 +339,7 @@ public class AdapterCostList extends BaseAdapter {
             this.comment.setTextColor(Color.BLACK);
             this.to_member.setTextColor(Color.BLACK);
             this.sum_sum.setTextColor(Color.BLACK);
+            this.sum_group_sum.setTextColor(Color.BLACK);
 
             this.labelHeader.setVisibility(View.GONE);
             this.mainLayout.setVisibility(View.VISIBLE);

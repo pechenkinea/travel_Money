@@ -1,9 +1,12 @@
 package com.pechenkin.travelmoney.page;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -54,21 +57,23 @@ public class FaqPage extends BasePage {
         textFields.put(R.id.faq_color_q, R.id.faq_color_a);
         textFields.put(R.id.faq_other_phone_q, R.id.faq_other_phone_a);
 
+        Drawable upIcon = AppCompatResources.getDrawable(MainActivity.INSTANCE, R.drawable.ic_up_24);
+        Drawable downIcon = AppCompatResources.getDrawable(MainActivity.INSTANCE, R.drawable.ic_down_24);
+
         for(Map.Entry<Integer, Integer> entry : textFields.entrySet()) {
             Integer q = entry.getKey();
             Integer a = entry.getValue();
 
             TextView questionField = MainActivity.INSTANCE.findViewById(q);
-            questionField.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_down_24, 0);
             questionField.setOnClickListener(view -> {
                 TextView answerField = MainActivity.INSTANCE.findViewById(a);
                 if (answerField.getVisibility() == View.GONE){
                     answerField.setVisibility(View.VISIBLE);
-                    questionField.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_up_24, 0);
+                    questionField.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, upIcon, null);
                 }
                 else {
                     answerField.setVisibility(View.GONE);
-                    questionField.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_down_24, 0);
+                    questionField.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, downIcon, null);
                 }
             });
 

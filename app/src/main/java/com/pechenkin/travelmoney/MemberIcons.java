@@ -1,5 +1,9 @@
 package com.pechenkin.travelmoney;
 
+import android.graphics.drawable.Drawable;
+
+import androidx.appcompat.content.res.AppCompatResources;
+
 public enum MemberIcons {
 
     MALE(0, R.drawable.ic_human_male_20x7),
@@ -25,13 +29,13 @@ public enum MemberIcons {
         return id;
     }
 
-    public static int getIconById(int id) {
+    public static Drawable getIconById(int id) {
 
         for (MemberIcons m : MemberIcons.values()) {
             if (m.id == id) {
-                return m.icon;
+                return AppCompatResources.getDrawable(MainActivity.INSTANCE, m.icon);
             }
         }
-        return R.drawable.ic_human_male_20x7;
+        return AppCompatResources.getDrawable(MainActivity.INSTANCE, R.drawable.ic_human_male_20x7);
     }
 }

@@ -22,14 +22,13 @@
     <string name="help">Частые вопросы</string>
     <string name="version">Версия:</string>
     <string name="versionCode">Код версии:</string>
-    <string name="thirdSoftware">Стороннее ПО</string>
     <string name="Thanks">Благодарность</string>
     <string name="addNewTrip">Добавление новой поездки</string>
     <string name="addNewMember">Добавление нового участника</string>
     <string name="memberEdit">Редактирование участника</string>
     <string name="editTrip">Редактирование поездки</string>
     <string name="membersList">Участники</string>
-    <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов. Повторное долгое нажатие вернет операцию в исходное состояние.у</string>
+    <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов.\n\nПовторное долгое нажатие вернет операцию в исходное состояние.у</string>
     <string name="errorNoActiveTask">Нет активных поездок</string>
     <string name="errorNoData">Нет данных</string>
     <string name="costInfo">Информация о трате</string>
@@ -48,7 +47,7 @@
     <string name="warning_member_name">Для правильной работы голосового добавления трат рекомендуется использовать одно слово в имени</string>
     <string name="statistic">Статистика</string>
 
-    <string name="fileError"><![CDATA[ Возможно у приложения нет разрешения на использоватние памяти. Посмотрите тут: Настройки -> Диспетчер приложений -> Travel Money -> Разрешения -> Включить хранилище]]></string>
+    <string name="fileError"><![CDATA[\n\nВозможно у приложения нет разрешения на использоватние памяти.\nПосмотрите тут:\nНастройки -> Диспетчер приложений -> Travel Money -> Разрешения -> Включить хранилище]]></string>
 
     <string name="group_by_color_on_off">Группировка итогов по цветам</string>
     <string name="group_by_color_description">При включенной опции участники одного цвета будут иметь общий бюджет при подсчете итогов</string>

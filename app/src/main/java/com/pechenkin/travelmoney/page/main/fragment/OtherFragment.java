@@ -3,6 +3,8 @@ package com.pechenkin.travelmoney.page.main.fragment;
 import android.app.AlertDialog;
 import android.widget.Button;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_trips;
@@ -27,20 +29,16 @@ public class OtherFragment extends BaseMainPageFragment {
 
 
 
-        Button addMemberButton = fragmentView.findViewById(R.id.settings_button);
-        addMemberButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_settings_24, 0, 0);
-        addMemberButton.setOnClickListener(v -> PageOpener.INSTANCE.open(SettingsPage.class));
+        Button settings_button = fragmentView.findViewById(R.id.settings_button);
+        settings_button.setOnClickListener(v -> PageOpener.INSTANCE.open(SettingsPage.class));
 
         Button aboutButton = fragmentView.findViewById(R.id.about_button);
-        aboutButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_info_24, 0, 0);
         aboutButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AboutPage.class));
 
         Button statButton = fragmentView.findViewById(R.id.stat_button);
-        statButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_stat_24, 0, 0);
         statButton.setOnClickListener(v -> PageOpener.INSTANCE.open(SumResultListPage.class));
 
         Button exportButton = fragmentView.findViewById(R.id.export_button);
-        exportButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_share_24, 0, 0);
         exportButton.setOnClickListener(v -> {
 
             String[] fileTypes = new String[ExportFileTypes.values().length];
@@ -63,7 +61,6 @@ public class OtherFragment extends BaseMainPageFragment {
         });
 
         Button faqButton = fragmentView.findViewById(R.id.faq_button);
-        faqButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_help_24, 0, 0);
         faqButton.setOnClickListener(v -> PageOpener.INSTANCE.open(FaqPage.class));
 
         /*

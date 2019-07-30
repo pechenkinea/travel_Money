@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,7 +24,8 @@
                 android:background="@drawable/background_about_fragment_button"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
-                android:text="@string/export" />
+                android:text="@string/export"
+                app:drawableTopCompat="@drawable/ic_share_24" />
 
             <Button
                 android:id="@+id/stat_button"
@@ -33,7 +35,8 @@
                 android:background="@drawable/background_about_fragment_button"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
-                android:text="@string/statistic" />
+                android:text="@string/statistic"
+                app:drawableTopCompat="@drawable/ic_stat_24" />
 
         </LinearLayout>
 
@@ -51,7 +54,8 @@
                 android:background="@drawable/background_about_fragment_button"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
-                android:text="@string/help" />
+                android:text="@string/help"
+                app:drawableTopCompat="@drawable/ic_help_24" />
 
         </LinearLayout>
 
@@ -68,7 +72,8 @@
                 android:background="@drawable/background_about_fragment_button"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
-                android:text="@string/settings" />
+                android:text="@string/settings"
+                app:drawableTopCompat="@drawable/ic_settings_24" />
 
             <Button
                 android:id="@+id/about_button"
@@ -78,7 +83,8 @@
                 android:background="@drawable/background_about_fragment_button"
                 android:paddingTop="40dp"
                 android:paddingBottom="40dp"
-                android:text="@string/about" />
+                android:text="@string/about"
+                app:drawableTopCompat="@drawable/ic_info_24" />
 
         </LinearLayout>
 
