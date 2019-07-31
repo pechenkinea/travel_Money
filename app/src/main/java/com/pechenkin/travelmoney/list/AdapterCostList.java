@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.list;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -32,14 +31,13 @@ import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.GroupCost;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 
 //TODO переписать это все
 public class AdapterCostList extends BaseAdapter {
 
-    private Cost[] data;
+    private final Cost[] data;
     private static LayoutInflater inflater = null;
 
     private int to_member_text_length = 12;
@@ -89,18 +87,13 @@ public class AdapterCostList extends BaseAdapter {
         return false;
     }
 
-
-    @SuppressLint("SimpleDateFormat")
-    private SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yy HH:mm");
-
-    @SuppressLint({"DefaultLocale", "InflateParams"})
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Cost cost = data[position];
 
         ViewHolder holder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item_summary_group, null);
+            convertView = inflater.inflate(R.layout.list_item_summary_group, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -114,12 +107,12 @@ public class AdapterCostList extends BaseAdapter {
             return convertView;
         }
 
-        String summ = Help.DoubleToString(cost.sum());
-        holder.sum_group_sum.setText((cost.sum() != 0) ? summ : "");
+        String sum = Help.DoubleToString(cost.sum());
+        holder.sum_group_sum.setText((cost.sum() != 0) ? sum : "");
 
         String dateText = "";
         if (cost.date() != null) {
-            dateText = df2.format(cost.date());
+            dateText = Help.dateToDateTimeStr(cost.date());
         }
         String comment = dateText + "  " + cost.comment();
         holder.comment.setText(comment);
@@ -205,7 +198,8 @@ public class AdapterCostList extends BaseAdapter {
 
                     } else if (i == 5) { //Если в поле "кому" много участников всех не надо показывать. просто добавляем цифру сколько не влезло
                         TextView moreMembers = new TextView(MainActivity.INSTANCE);
-                        moreMembers.setText(String.format("+%d", costs.size() - i));
+                        String moreMembersCount = "" + (costs.size() - i);
+                        moreMembers.setText(moreMembersCount);
                         holder.member_icons_layout.addView(moreMembers);
                     }
 
@@ -270,18 +264,18 @@ public class AdapterCostList extends BaseAdapter {
 
     static class ViewHolder {
 
-        TextView title;
-        TextView to_member;
-        TextView to_member_one;
-        TextView sum_group_sum;
-        TextView sum_sum;
-        TextView sum_line;
-        TextView comment;
-        AppCompatImageView have_photo;
-        TextView labelHeader;
-        View mainLayout;
-        LinearLayout member_icons_layout;
-        View more_information_layout;
+        final TextView title;
+        final TextView to_member;
+        final TextView to_member_one;
+        final TextView sum_group_sum;
+        final TextView sum_sum;
+        final TextView sum_line;
+        final TextView comment;
+        final AppCompatImageView have_photo;
+        final TextView labelHeader;
+        final View mainLayout;
+        final LinearLayout member_icons_layout;
+        final View more_information_layout;
 
         boolean activeAdditionalInfo = true;
 

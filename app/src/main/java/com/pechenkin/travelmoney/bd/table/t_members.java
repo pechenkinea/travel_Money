@@ -70,7 +70,7 @@ public class t_members {
 
     }
 
-    static private NamesHashMap<BaseTableRow> membersNamesCache = new NamesHashMap<>();
+    static private final NamesHashMap<BaseTableRow> membersNamesCache = new NamesHashMap<>();
 
     static public void updateMembersCache() {
         membersNamesCache.clear();
@@ -146,7 +146,7 @@ public class t_members {
     }
 
 
-    static private LongSparseArray<MemberBaseTableRow> memberCache = new LongSparseArray<>();
+    static private final LongSparseArray<MemberBaseTableRow> memberCache = new LongSparseArray<>();
 
 
     static public MemberBaseTableRow getMemberById(long _id) {

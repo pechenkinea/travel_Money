@@ -40,12 +40,12 @@ public class GroupCost implements Cost {
     }
 
     private double sum = 0;
-    private String comment;
-    private List<Cost> costs;
-    private Date date;
-    private String image_dir;
+    private final String comment;
+    private final List<Cost> costs;
+    private final Date date;
+    private final String image_dir;
 
-    public GroupCost(Cost cost) {
+    private GroupCost(Cost cost) {
         this.costs = new ArrayList<>();
         this.comment = cost.comment();
         this.date = cost.date();
@@ -59,7 +59,7 @@ public class GroupCost implements Cost {
 
     }
 
-    public void addCost(Cost cost) throws Exception {
+    private void addCost(Cost cost) throws Exception {
 
         if (this.date.getTime() != cost.date().getTime() || !this.comment.equals(cost.comment())) {
             throw new Exception("В группу пробует добавится проводка, которая к ней не относится");

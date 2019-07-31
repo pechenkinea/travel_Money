@@ -9,7 +9,7 @@ import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
  * Запрос к БД
  */
 
-public interface QueryResult {
+interface QueryResult {
 
     BaseTableRow[] getAllRows();
     BaseTableRow getFirstRow();

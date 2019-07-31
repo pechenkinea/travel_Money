@@ -2,17 +2,15 @@ package com.pechenkin.travelmoney.metering;
 
 import android.util.Log;
 
-import java.util.Date;
-
 
 /**
  * Created by pechenkin on 09.04.2018.
  */
 
-public class TimeMeter {
+class TimeMeter {
 
-    private String name;
-    private long startTime;
+    private final String name;
+    private final long startTime;
     public TimeMeter(String name)
     {
         this.name = name;

@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.list;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +12,9 @@ import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 
 public class AdapterColors extends BaseAdapter {
 
-    private BaseTableRow[] data;
+    private final BaseTableRow[] data;
     private static LayoutInflater inflater = null;
-    private String text;
+    private final String text;
 
 
     public AdapterColors(Context a, BaseTableRow[] data, String text) {
@@ -40,12 +39,11 @@ public class AdapterColors extends BaseAdapter {
     }
 
 
-    @SuppressLint({"DefaultLocale", "InflateParams"})
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item_color, null);
+            convertView = inflater.inflate(R.layout.list_item_color, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -60,7 +58,7 @@ public class AdapterColors extends BaseAdapter {
     }
 
     static class ViewHolder {
-        TextView colorTextView;
+        final TextView colorTextView;
 
         ViewHolder(View convertView) {
             this.colorTextView = convertView.findViewById(R.id.colorTextView);

@@ -1,28 +1,20 @@
 package com.pechenkin.travelmoney.export;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.widget.ShareActionProvider;
 
-import android.view.MenuItem;
-
+import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 
 /**
  * Created by pechenkin on 02.04.2018.
@@ -66,7 +58,7 @@ public class Export {
             Help.alertError("Ошибка записи: " + e.getMessage());
             return null;
         }
-        return  sdFile;
+        return sdFile;
 
     }
 
@@ -86,9 +78,7 @@ public class Export {
             return "";
         }
 
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-        return sdPath + "/Export " + dateFormat.format(new Date());
+        return sdPath + "/Export " + new Date().getTime();
     }
 
 

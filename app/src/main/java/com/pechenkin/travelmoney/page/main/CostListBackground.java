@@ -1,51 +1,42 @@
 package com.pechenkin.travelmoney.page.main;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.LongSparseArray;
-import android.widget.ListView;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.GroupCost;
 import com.pechenkin.travelmoney.cost.ShortCost;
-import com.pechenkin.travelmoney.list.AdapterCostList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
-    private TripBaseTableRow trip;
-    @SuppressLint("StaticFieldLeak")
-    private ListView listViewCosts;
-    private AdapterCostList adapter = null;
-    private ProgressDialog procDialog;
+    private final TripBaseTableRow trip;
+    private ProgressDialog processDialog;
     private Cost[] finalList = {};
 
-    public CostListBackground(ListView listViewCosts, TripBaseTableRow trip) {
-        this.trip = trip;
-        this.listViewCosts = listViewCosts;
+    public Cost[] getFinalList() {
+        return finalList;
     }
 
+    private final DoOnPostExecute doOnPostExecute;
+
+    public CostListBackground(TripBaseTableRow trip, DoOnPostExecute doOnPostExecute) {
+        this.trip = trip;
+        this.doOnPostExecute = doOnPostExecute;
+    }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        procDialog = Help.createProgressDialog(MainActivity.INSTANCE);
-        procDialog.show();
-
+        processDialog = Help.createProgressDialog(MainActivity.INSTANCE);
+        processDialog.show();
     }
 
     @Override
@@ -86,9 +77,6 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                     finalList = Help.concat(finalList, costList.getAllRows());
                 }
             }
-
-            adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), finalList);
-
         }
 
         return null;
@@ -97,15 +85,16 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
-        listViewCosts.setAdapter(adapter);
-        procDialog.dismiss();
+        processDialog.dismiss();
 
-        if (adapter.getCount() > 5 && !t_settings.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)) {
-            Help.alertHelp(MainActivity.INSTANCE.getString(R.string.deleteCostHelp));
-
-            t_settings.INSTANCE.setActive(NamespaceSettings.DELETE_COST_SHOWED_HELP, true);
+        if (doOnPostExecute != null){
+            doOnPostExecute.onPostExecute(finalList);
         }
-
     }
+
+    public interface DoOnPostExecute{
+        void onPostExecute(Cost[] finalList);
+    }
+
 
 }

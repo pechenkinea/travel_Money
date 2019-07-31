@@ -13,26 +13,43 @@
         android:orientation="vertical">
 
 
-        <EditText
-            android:id="@+id/trip_name"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:hint="@string/Title"
-            android:imeOptions="actionNext"
-            android:inputType="textPersonName|textCapSentences"
-            android:singleLine="true">
-
-            <requestFocus />
-        </EditText>
-
-        <EditText
-            android:id="@+id/trip_comment"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/trip_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:hint="@string/Title" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="8dp"
-            android:hint="@string/Description"
-            android:inputType="textMultiLine|textCapSentences" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/trip_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine|textCapSentences"
+                android:hint="@string/Description" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
 
         <CheckBox
             android:id="@+id/edit_trip_checkAction"

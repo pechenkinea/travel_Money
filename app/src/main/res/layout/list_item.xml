@@ -23,11 +23,11 @@
             android:background="@null"
             android:clickable="false"
             android:contentDescription="@string/check"
+            android:paddingStart="0dp"
             android:paddingTop="12dp"
-            android:paddingRight="12dp"
+            android:paddingEnd="12dp"
             android:paddingBottom="12dp"
-            app:srcCompat="@drawable/ic_check_on_24"
-            tools:ignore="RtlHardcoded,RtlSymmetry" />
+            app:srcCompat="@drawable/ic_check_on_24" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/icon"
@@ -48,7 +48,6 @@
             android:layout_gravity="center_vertical"
 
             android:gravity="center_vertical"
-            tools:ignore="RtlHardcoded"
             tools:text="Text" />
 
     </LinearLayout>
@@ -62,18 +61,16 @@
         android:padding="12dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/ic_view_24"
-        tools:ignore="RtlHardcoded"
         tools:visibility="visible" />
 
     <TextView
         android:id="@+id/memberSumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
+        android:layout_gravity="end|center_vertical"
         android:layout_marginEnd="56dp"
         android:gravity="center_vertical"
         android:visibility="invisible"
-        tools:ignore="RtlHardcoded"
         tools:text="1234.54"
         tools:visibility="visible" />
 

@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.list;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -17,7 +16,7 @@ import com.pechenkin.travelmoney.summry.Summary;
 
 public class AdapterSumResultList extends BaseAdapter {
 
-    private Summary[] data;
+    private final Summary[] data;
     private static LayoutInflater inflater = null;
 
 
@@ -55,12 +54,11 @@ public class AdapterSumResultList extends BaseAdapter {
     }
 
 
-    @SuppressLint("InflateParams")
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_sum_result_item, null);
+            convertView = inflater.inflate(R.layout.list_sum_result_item, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -85,10 +83,10 @@ public class AdapterSumResultList extends BaseAdapter {
     }
 
     static class ViewHolder {
-        TextView name;
-        TextView in;
-        TextView out;
-        TextView sum;
+        final TextView name;
+        final TextView in;
+        final TextView out;
+        final TextView sum;
         ViewHolder(View convertView){
             this.name = convertView.findViewById(R.id.sum_result_member);
             this.in = convertView.findViewById(R.id.sum_result_in);

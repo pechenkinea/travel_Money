@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney.page;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -23,10 +22,7 @@ public class SettingsPage extends BasePage {
         PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_more).getParam());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
+
 
     @Override
     public void addEvents() {

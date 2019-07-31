@@ -1,105 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-        <LinearLayout
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            style="@style/h1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:gravity="center_horizontal"
+            android:text="@string/app_name" />
 
-            <ImageView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher" />
+        <TextView
+            android:id="@+id/about_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/version" />
 
-            <TextView
-                style="@style/h1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/app_name" />
-
-            <TextView
-                android:id="@+id/about_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/version" />
-
-            <TextView
-                android:id="@+id/about_version_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/versionCode" />
+        <TextView
+            android:id="@+id/about_version_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/versionCode" />
 
 
-            <TextView
-                android:id="@+id/developerName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorLink="@color/link" />
+        <TextView
+            android:id="@+id/developerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColorLink="@color/link" />
 
-            <TextView
-                android:id="@+id/developerEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorLink="@color/link" />
+        <TextView
+            android:id="@+id/developerEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorLink="@color/link" />
 
-            <TextView
-                android:id="@+id/linkToPlayMarket"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorLink="@color/link" />
+        <TextView
+            android:id="@+id/linkToPlayMarket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColorLink="@color/link" />
 
-            <TextView
-                android:id="@+id/linkToGitHub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorLink="@color/link" />
+        <TextView
+            android:id="@+id/linkToGitHub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColorLink="@color/link" />
 
-            <TextView
-                style="@style/h3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/Thanks" />
+        <TextView
+            style="@style/h3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/Thanks" />
 
-            <TextView
-                android:id="@+id/thank_aps"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/thank_aps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
 
-            <TextView
-                android:id="@+id/thank_pma"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+        <TextView
+            android:id="@+id/thank_pma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
 
-            <TextView
-                android:id="@+id/thank_psv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+        <TextView
+            android:id="@+id/thank_psv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
 
-        </LinearLayout>
+    </LinearLayout>
 
-    </ScrollView>
-
-
-</RelativeLayout>
+</ScrollView>

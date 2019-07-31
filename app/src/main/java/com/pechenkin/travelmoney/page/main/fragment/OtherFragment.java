@@ -3,14 +3,11 @@ package com.pechenkin.travelmoney.page.main.fragment;
 import android.app.AlertDialog;
 import android.widget.Button;
 
-import androidx.appcompat.content.res.AppCompatResources;
-
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.export.Export;
 import com.pechenkin.travelmoney.export.ExportFileTypes;
-import com.pechenkin.travelmoney.metering.CostCreator;
 import com.pechenkin.travelmoney.page.AboutPage;
 import com.pechenkin.travelmoney.page.FaqPage;
 import com.pechenkin.travelmoney.page.PageOpener;

@@ -3,7 +3,6 @@ package com.pechenkin.travelmoney.bd.table.result;
 import android.database.Cursor;
 
 import com.pechenkin.travelmoney.bd.table.row.SettingTableRow;
-import com.pechenkin.travelmoney.bd.table.row.SettingTableRow;
 
 /**
  * Created by pechenkin on 04.04.2018.

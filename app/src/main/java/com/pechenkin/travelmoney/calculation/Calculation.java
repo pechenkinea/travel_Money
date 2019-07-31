@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.calculation;
 
-import android.annotation.SuppressLint;
 import android.util.LongSparseArray;
 
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
@@ -9,7 +8,6 @@ import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -28,8 +26,7 @@ public class Calculation {
      */
     public static Cost[] calculate(Cost[] list) {
 
-        @SuppressLint("UseSparseArrays")
-        HashMap<Long, MemberSum> members = new HashMap<>();
+        LongSparseArray<MemberSum> members = new LongSparseArray<>();
 
         /*
          * Формируем мапу участников и сразу считаем им сумму
@@ -44,14 +41,14 @@ public class Calculation {
             }
 
             // если в мапе еще нет участника  cost.member() добавляем его с нулевой суммой
-            if (!members.containsKey(cost.member()))
+            if (members.get(cost.member()) == null)
                 members.put(cost.member(), new MemberSum(cost.member()));
 
 
             members.get(cost.member()).addSum(cost.sum()); // Добавляем сумму
 
             // если в мапе еще нет участника  cost.to_member() добавляем его с нулевой суммой
-            if (!members.containsKey(cost.to_member()))
+            if (members.get(cost.to_member()) == null)
                 members.put(cost.to_member(), new MemberSum(cost.to_member()));
 
             members.get(cost.to_member()).removeSum(cost.sum()); // Отнимаем сумму
@@ -62,8 +59,8 @@ public class Calculation {
         ArrayList<MemberSum> positiveMember = new ArrayList<>();
         ArrayList<MemberSum> negativeMember = new ArrayList<>();
 
-        for (MemberSum value : members.values()) {
-
+        for (int i = 0, nsize = members.size(); i < nsize; i++) {
+            MemberSum value = members.valueAt(i);
             // Если кто то дал или взял меньше погрешности то не учитываем такого участника,
             // что бы в итоговом списке не было совсем копеечных значений
             if (value.sum > deviation) {
@@ -72,6 +69,7 @@ public class Calculation {
                 negativeMember.add(value);
             }
         }
+
 
         // Формируем итоговый список
         // т.к. при добавлении суммы одному у другого такую же сумму отнимаем сумма положительных будет равна сумме отрицательных
@@ -187,7 +185,7 @@ public class Calculation {
      * Хранит итогувую сумму для участника
      */
     private static class MemberSum {
-        long id;
+        final long id;
         double sum = 0f;
 
         /**

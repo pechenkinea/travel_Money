@@ -62,7 +62,7 @@
 		<item name="android:textSize">16sp</item>
 	</style>
 
-	<style name="litle">
+	<style name="lite">
 		<item name="android:textColor">#000000</item>
 		<item name="android:textSize">12sp</item>
 	</style>

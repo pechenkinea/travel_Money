@@ -1,121 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
-    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
+    android:orientation="vertical"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="12dp">
+    android:paddingTop="12dp"
+    android:paddingRight="16dp">
 
+
+    <TextView
+        android:id="@+id/sum_result_member"
+        style="@style/h3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="MemberName" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:ignore="UselessParent">
+        android:layout_marginStart="16dp"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/sum_result_member"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/h3"
-            tools:text="MemberName"
-            />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:orientation="vertical">
-
-
-            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Потрачено:"
-                    style="@style/normal"
-                    />
-
-                <TextView
-                    android:id="@+id/sum_result_in"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textColor="@color/red"
-                    style="@style/normal"
-                    tools:text="1234.56"
-                    />
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                style="@style/normal"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="@string/spent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Оплачено:"
-                    style="@style/normal"
-                    />
-
-                <TextView
-                    android:id="@+id/sum_result_out"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/green"
-                    android:layout_marginStart="8dp"
-                    style="@style/normal"
-                    tools:text="1234.56"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/sum_result_in"
+                style="@style/normal"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Итог:"
-                    style="@style/normal"
-                    />
-
-                <TextView
-                    android:id="@+id/sum_result_sum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    style="@style/normal"
-                    tools:text="1234.56"
-                    />
-
-            </LinearLayout>
-
+                android:layout_marginStart="8dp"
+                android:textColor="@color/red"
+                tools:text="1234.56" />
 
         </LinearLayout>
 
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_gravity="end"
-            android:layout_marginTop="12dp"
-            android:background="#cccbcb" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/paid" />
+
+            <TextView
+                android:id="@+id/sum_result_out"
+                style="@style/normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/green"
+                tools:text="1234.56" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total" />
+
+            <TextView
+                android:id="@+id/sum_result_sum"
+                style="@style/normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                tools:text="1234.56" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-</RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_gravity="end"
+        android:layout_marginTop="12dp"
+        android:background="#cccbcb" />
+
+
+</LinearLayout>

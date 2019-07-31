@@ -36,7 +36,7 @@ public class PageParam {
         return name;
     }
 
-    public String getDescription() {
+    private String getDescription() {
         return description;
     }
 
@@ -103,9 +103,9 @@ public class PageParam {
             this.id = id;
             return this;
         }
-        public BuildingPageParam setFotoUrl(String fotoUrl)
+        public BuildingPageParam setPhotoUrl(String photoUrl)
         {
-            this.fotoUrl = fotoUrl;
+            this.fotoUrl = photoUrl;
             return this;
         }
 

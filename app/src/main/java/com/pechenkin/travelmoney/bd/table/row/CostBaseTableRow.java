@@ -13,19 +13,19 @@ import java.util.Date;
 
 public class CostBaseTableRow extends BaseTableRow implements Cost {
 
-    public final String comment;
+    private final String comment;
     private final String image_dir;
 
-    public final Date date;
+    private final Date date;
 
-    public final long member;
+    private final long member;
     private final long to_member;
     //public final int currency;
-    public long  active;
+    private long  active;
     //public final int trip;
     private  int groupId = 0;
 
-    public final double sum;
+    private final double sum;
 
 
     public CostBaseTableRow(Cursor c) {

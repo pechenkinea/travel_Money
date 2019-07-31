@@ -13,17 +13,23 @@
         android:orientation="vertical">
 
 
-        <EditText
-            android:id="@+id/edit_member_Name"
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/Name"
-            android:imeOptions="actionDone"
-            android:inputType="textPersonName|textCapWords"
-            android:singleLine="true">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <requestFocus />
-        </EditText>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_member_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="textPersonName|textCapWords"
+                android:hint="@string/Name" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <TextView
@@ -60,8 +66,7 @@
             android:layout_marginTop="16dp"
             android:background="#000000"
             android:text="@string/Color"
-            android:textColor="#ffffff"
-            tools:ignore="RtlHardcoded" />
+            android:textColor="#ffffff" />
 
 
         <TextView

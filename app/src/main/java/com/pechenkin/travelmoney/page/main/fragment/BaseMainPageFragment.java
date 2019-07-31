@@ -43,6 +43,6 @@ public abstract class BaseMainPageFragment extends Fragment {
 
     abstract int getViewId();
     abstract void setListeners();
-    public abstract void doAfterRender();
+    protected abstract void doAfterRender();
     abstract int[] getButtons();
 }

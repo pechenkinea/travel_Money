@@ -8,7 +8,7 @@ import com.pechenkin.travelmoney.MainActivity;
  * Created by pechenkin on 19.04.2018.
  * Базовый класс для страницы
  */
-
+//TODO оказалось это не правильный подход. нужно для каждой стринцы создавать свою активити а не лепить костыли
 public abstract class BasePage implements Page {
 
     protected abstract int getPageId();

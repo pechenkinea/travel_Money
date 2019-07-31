@@ -1,7 +1,5 @@
 package com.pechenkin.travelmoney.page.main;
 
-import android.view.MenuItem;
-
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -78,10 +76,7 @@ public class MainPage extends BasePage {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
+
 
     @Override
     public void addEvents() {
@@ -128,7 +123,7 @@ public class MainPage extends BasePage {
 
     static class FragmentLoader implements Runnable {
 
-        private BaseMainPageFragment currentFragment;
+        private final BaseMainPageFragment currentFragment;
 
         FragmentLoader(BaseMainPageFragment currentFragment) {
             this.currentFragment = currentFragment;

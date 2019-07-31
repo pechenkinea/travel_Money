@@ -1,7 +1,6 @@
 package com.pechenkin.travelmoney.list;
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,23 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.page.ViewTripPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.ViewTripPage;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
 
 public class AdapterTripsList extends BaseAdapter {
 
-    private BaseTableRow[] data;
+    private final BaseTableRow[] data;
     private static LayoutInflater inflater = null;
-    private boolean showEditButton;
+    private final boolean showEditButton;
 
     public AdapterTripsList(Activity a, BaseTableRow[] data, boolean showEditButton) {
         this.data = data;
@@ -46,14 +43,13 @@ public class AdapterTripsList extends BaseAdapter {
     }
 
 
-    @SuppressLint("InflateParams")
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
         BaseTableRow row = data[position];
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item, null);
+            convertView = inflater.inflate(R.layout.list_item, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -64,18 +60,14 @@ public class AdapterTripsList extends BaseAdapter {
         if (showEditButton) {
             holder.editButton.setVisibility(View.VISIBLE);
 
-            holder.editButton.setOnClickListener(v -> {
-                PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
-            });
+            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam()));
 
         } else {
             holder.editButton.setVisibility(View.INVISIBLE);
         }
 
 
-        holder.viewButton.setOnClickListener(v -> {
-            PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam());
-        });
+        holder.viewButton.setOnClickListener(v -> PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam()));
 
 
         if (row != null && t_trips.ActiveTrip != null && row.id == t_trips.ActiveTrip.id) {
@@ -89,10 +81,10 @@ public class AdapterTripsList extends BaseAdapter {
     }
 
     static class ViewHolder {
-        TextView name;
-        ImageButton check;
-        ImageButton editButton;
-        ImageButton viewButton;
+        final TextView name;
+        final ImageButton check;
+        final ImageButton editButton;
+        final ImageButton viewButton;
 
         ViewHolder(View convertView) {
             this.name = convertView.findViewById(R.id.lm_name);

@@ -5,7 +5,7 @@ package com.pechenkin.travelmoney.bd.table.row;
  */
 
 public class CostMemberBaseTableRow {
-    private MemberBaseTableRow memberRow;
+    private final MemberBaseTableRow memberRow;
     private boolean isChange = false;
     private double sum;
 

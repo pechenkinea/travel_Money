@@ -1,117 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <LinearLayout
+
+        <Button
+            android:id="@+id/whyCalc_q"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:background="@drawable/background_about_fragment_button"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/whyCalc_q"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            app:drawableEndCompat="@drawable/ic_down_24"
+            tools:drawableEndCompat="@drawable/ic_up_24" />
+
+        <TextView
+            android:id="@+id/whyCalc_a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/whyCalc_a"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
 
-            <Button
-                android:id="@+id/whyCalc_q"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_about_fragment_button"
-                android:gravity="left|center_vertical"
-                android:padding="8dp"
-                android:text="@string/whyCalc_q"
-                android:textAllCaps="false"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/ic_down_24"
-                tools:drawableEndCompat="@drawable/ic_up_24"
-                tools:ignore="RtlHardcoded" />
+        <Button
+            android:id="@+id/whyVoteAdd_q"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_about_fragment_button"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/whyVoteAdd_q"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            app:drawableEndCompat="@drawable/ic_down_24"/>
 
-            <TextView
-                android:id="@+id/whyCalc_a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/whyCalc_a"
-                android:visibility="gone"
-                tools:visibility="visible" />
+        <TextView
+            android:id="@+id/whyVoteAdd_a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/whyVoteAdd_a"
+            android:visibility="gone" />
 
 
-            <Button
-                android:id="@+id/whyVoteAdd_q"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/background_about_fragment_button"
-                android:gravity="left|center_vertical"
-                android:padding="8dp"
-                android:text="@string/whyVoteAdd_q"
-                android:textAllCaps="false"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/ic_down_24"
-                tools:ignore="RtlHardcoded" />
+        <Button
+            android:id="@+id/faq_color_q"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_about_fragment_button"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/faq_color_q"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            app:drawableEndCompat="@drawable/ic_down_24" />
 
-            <TextView
-                android:id="@+id/whyVoteAdd_a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/whyVoteAdd_a"
-                android:visibility="gone" />
+        <TextView
+            android:id="@+id/faq_color_a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/faq_color_a"
+            android:visibility="gone" />
 
+        <Button
+            android:id="@+id/faq_other_phone_q"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_about_fragment_button"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/faq_other_phone_q"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            app:drawableEndCompat="@drawable/ic_down_24" />
 
-            <Button
-                android:id="@+id/faq_color_q"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/background_about_fragment_button"
-                android:gravity="left|center_vertical"
-                android:padding="8dp"
-                android:text="@string/faq_color_q"
-                android:textAllCaps="false"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/ic_down_24"
-                tools:ignore="RtlHardcoded" />
+        <TextView
+            android:id="@+id/faq_other_phone_a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/faq_other_phone_a"
+            android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/faq_color_a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/faq_color_a"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/faq_other_phone_q"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/background_about_fragment_button"
-                android:gravity="left|center_vertical"
-                android:padding="8dp"
-                android:text="@string/faq_other_phone_q"
-                android:textAllCaps="false"
-                android:textStyle="normal"
-                app:drawableEndCompat="@drawable/ic_down_24"
-                tools:ignore="RtlHardcoded" />
-
-            <TextView
-                android:id="@+id/faq_other_phone_a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/faq_other_phone_a"
-                android:visibility="gone" />
-
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
 
-</RelativeLayout>
+</ScrollView>

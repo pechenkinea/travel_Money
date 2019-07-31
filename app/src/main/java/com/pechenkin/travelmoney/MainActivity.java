@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     public String photoFileUri = null;
 
-    public static int TAKE_COST_PHOTO = 2;
-    public static int VOICE_RECOGNITION_REQUEST_CODE = 3;
+    public static final int TAKE_COST_PHOTO = 2;
+    public static final int VOICE_RECOGNITION_REQUEST_CODE = 3;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

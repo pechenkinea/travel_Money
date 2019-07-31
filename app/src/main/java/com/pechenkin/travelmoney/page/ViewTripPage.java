@@ -1,7 +1,5 @@
 package com.pechenkin.travelmoney.page;
 
-import android.view.MenuItem;
-
 import androidx.fragment.app.FragmentManager;
 
 import com.pechenkin.travelmoney.MainActivity;
@@ -22,10 +20,7 @@ public class ViewTripPage extends BasePage {
         PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_trips).getParam());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
+
 
 
     @Override

@@ -1,7 +1,9 @@
 package com.pechenkin.travelmoney.bd.table.row;
 
 import android.database.Cursor;
+
 import com.pechenkin.travelmoney.bd.Namespace;
+
 import java.util.Date;
 
 /**
@@ -70,7 +72,7 @@ public class BaseTableRow {
         return  0f;
     }
 
-    protected Date getDateColumnValue(String columnName, Cursor c)
+    Date getDateColumnValue(String columnName, Cursor c)
     {
         String d = getStringColumnValue(columnName, c);
         try {

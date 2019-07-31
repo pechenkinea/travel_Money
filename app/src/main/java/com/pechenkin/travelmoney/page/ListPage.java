@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.page;
 
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,10 +17,7 @@ public abstract class ListPage extends BasePage {
     public void clickBackButton() {
         PageOpener.INSTANCE.open(MainPage.class);
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
+
     @Override
     protected int getFocusFieldId() {
         return 0;

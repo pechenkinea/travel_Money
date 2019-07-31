@@ -40,7 +40,7 @@
     <string name="errorFillSum">Введите сумму</string>
     <string name="errorFillMembers">Выберите участников</string>
     <string name="date">Дата</string>
-    <string name="foto">*Добавлено фото</string>
+    <string name="photo">*Добавлено фото</string>
     <string name="errorBigSum">Сумма свыше %s не поддерживается</string>
     <string name="readMode">просмотр</string>
     <string name="text">Текст</string>
@@ -57,5 +57,9 @@
     <string name="list">Траты</string>
     <string name="other">Ещё</string>
     <string name="colorHelpMessage">Что бы участники одного цвета имели общий бюджет включите опцию \'Группировка итогов по цветам\'</string>
+    <string name="Comment">Комментарий</string>
+    <string name="spent">Потрачено:</string>
+    <string name="paid">Оплачено:</string>
+    <string name="total">Итог:</string>
 
 </resources>

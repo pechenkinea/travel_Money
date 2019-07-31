@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.list;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,7 +27,6 @@ import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.ShortCost;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +35,7 @@ import java.util.Set;
 public class RecyclerAdapterCostList extends RecyclerView.Adapter {
 
 
-    private List<ShortCost> data;
+    private final List<ShortCost> data;
     private boolean isCanEditAllSum = false;
 
     public void remove(int position) {
@@ -95,7 +93,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = inflater.inflate(R.layout.list_item_summary, null);
+        View v = inflater.inflate(R.layout.list_item_summary, parent, false);
 
 
         ViewHolder holder = new ViewHolder(v);
@@ -168,8 +166,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
     }
 
 
-    @SuppressLint("SimpleDateFormat")
-    private SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yy HH:mm");
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
@@ -194,7 +190,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         String comment = "";
         String dateText = "";
         if (song.date() != null) {
-            dateText = df2.format(song.date());
+            dateText = Help.dateToDateTimeStr(song.date());
         }
         comment += dateText + "  " + song.comment();
         holder.sum_comment.setText(comment);
@@ -242,14 +238,14 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        TextView to_member;
-        TextView sum_sum;
-        TextView sum_line;
-        TextView sum_comment;
-        TextView labelHeader;
-        View costSeparator;
-        ImageButton editButton;
+        final TextView title;
+        final TextView to_member;
+        final TextView sum_sum;
+        final TextView sum_line;
+        final TextView sum_comment;
+        final TextView labelHeader;
+        final View costSeparator;
+        final ImageButton editButton;
 
 
         ViewHolder(View convertView) {

@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -9,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -18,9 +16,11 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Objects;
 
 public class Help {
@@ -139,7 +139,7 @@ public class Help {
         return result;
     }
 
-    private static DecimalFormat doubleFormat;
+    private static final DecimalFormat doubleFormat;
 
     static {
         doubleFormat = new DecimalFormat("#.00");
@@ -165,14 +165,20 @@ public class Help {
     }
 
 
-    @SuppressLint("RestrictedApi")
+    private static final DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(MainActivity.INSTANCE);
+    private static final DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(MainActivity.INSTANCE);
+    public static String dateToDateTimeStr(Date date){
+        return dateFormat.format(date) + " " + timeFormat.format(date);
+
+    }
+
     public static void showFabWithAnimation(FloatingActionButton fab) {
 
         AlphaAnimation animation1 = new AlphaAnimation(0, 0.85F);
         animation1.setDuration(700);
         animation1.setFillAfter(true);
         fab.setAnimation(animation1);
-        fab.setVisibility(View.VISIBLE);
+        ((View)fab).setVisibility(View.VISIBLE);
     }
 
 

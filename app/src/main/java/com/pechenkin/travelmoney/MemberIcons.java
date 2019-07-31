@@ -13,8 +13,8 @@ public enum MemberIcons {
     HAI(4, R.drawable.ic_hai_20x15),
     FAT(5, R.drawable.ic_human_fat_20x12);
 
-    private int icon;
-    private int id;
+    private final int icon;
+    private final int id;
 
     MemberIcons(int id, int icon) {
         this.icon = icon;

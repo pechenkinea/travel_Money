@@ -11,7 +11,7 @@ public class PageOpener {
     private PageOpener(){
 
     }
-    public static PageOpener INSTANCE;
+    public static final PageOpener INSTANCE;
     static {
         INSTANCE = new PageOpener();
     }

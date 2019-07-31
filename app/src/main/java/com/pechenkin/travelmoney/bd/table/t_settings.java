@@ -20,13 +20,13 @@ public class t_settings {
         getSettings();
     }
 
-    static public t_settings INSTANCE;
+    static public final t_settings INSTANCE;
 
     static {
         INSTANCE = new t_settings();
     }
 
-    private Map<String, String> settings = new HashMap<>();
+    private final Map<String, String> settings = new HashMap<>();
 
     private void getSettings() {
         settings.clear();

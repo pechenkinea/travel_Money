@@ -85,7 +85,6 @@
             android:layout_marginTop="4dp"
             android:orientation="horizontal"
             android:visibility="gone"
-            tools:ignore="RtlSymmetry"
             tools:visibility="visible">
 
             <View
@@ -114,7 +113,7 @@
 
         <TextView
             android:id="@+id/comment"
-            style="@style/litle"
+            style="@style/lite"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,8 +125,6 @@
             android:layout_gravity="end"
             android:layout_marginTop="12dp"
             android:background="#cccbcb" />
-        <!-- Rightend Duration -->
-
 
     </LinearLayout>
 
@@ -144,9 +141,7 @@
             style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:paddingEnd="12dp"
-            tools:ignore="RtlSymmetry" />
+            android:layout_gravity="start|center_vertical"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sum_have_photo"
@@ -155,7 +150,6 @@
             android:padding="12dp"
             android:visibility="invisible"
             app:srcCompat="@drawable/ic_camera_24"
-            tools:ignore="ContentDescription"
             tools:visibility="visible" />
 
 

@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.list;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -33,7 +32,7 @@ import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
 public class AdapterMembersList extends BaseAdapter {
 
-    private CostMemberBaseTableRow[] data;
+    private final CostMemberBaseTableRow[] data;
     private static LayoutInflater inflater = null;
     private boolean showEditButton = false;
     private double sum = 0f;
@@ -79,7 +78,6 @@ public class AdapterMembersList extends BaseAdapter {
     }
 
 
-    @SuppressLint("InflateParams")
     public View getView(int position, View convertView, ViewGroup parent) {
 
         CostMemberBaseTableRow item = data[position];
@@ -87,7 +85,7 @@ public class AdapterMembersList extends BaseAdapter {
 
         ViewHolder holder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item, null);
+            convertView = inflater.inflate(R.layout.list_item, parent, false);
             holder = new ViewHolder(convertView);
 
             convertView.setTag(holder);
@@ -234,11 +232,11 @@ public class AdapterMembersList extends BaseAdapter {
     }
 
     static class ViewHolder {
-        TextView name;
-        ImageButton check;
-        ImageButton editButton;
-        TextView memberSumText;
-        AppCompatImageView icon;
+        final TextView name;
+        final ImageButton check;
+        final ImageButton editButton;
+        final TextView memberSumText;
+        final AppCompatImageView icon;
 
         ViewHolder(View convertView) {
             this.name = convertView.findViewById(R.id.lm_name);

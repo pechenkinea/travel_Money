@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.page.main.fragment;
 
-import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
@@ -12,11 +11,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
+import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.GroupCost;
+import com.pechenkin.travelmoney.list.AdapterCostList;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
 import com.pechenkin.travelmoney.page.main.CostListBackground;
@@ -29,7 +31,7 @@ public class CostListFragment extends BaseMainPageFragment {
 
     private long scrollPosition = 0;
 
-    private TripBaseTableRow selectTrip;
+    private final TripBaseTableRow selectTrip;
     private boolean readMode = false;
 
     public CostListFragment(TripBaseTableRow trip) {
@@ -52,7 +54,7 @@ public class CostListFragment extends BaseMainPageFragment {
         final ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
 
         if (readMode) {
-            fragmentView.findViewById(R.id.mainPageAddbutton).setVisibility(View.GONE);
+            fragmentView.findViewById(R.id.mainPageAddButton).setVisibility(View.GONE);
             fragmentView.findViewById(R.id.mainPageSpeechRecognition).setVisibility(View.GONE);
         } else {
 
@@ -102,7 +104,7 @@ public class CostListFragment extends BaseMainPageFragment {
                 return false;
             });
 
-            FloatingActionButton addCostButton = fragmentView.findViewById(R.id.mainPageAddbutton);
+            FloatingActionButton addCostButton = fragmentView.findViewById(R.id.mainPageAddButton);
             if (addCostButton != null) {
                 addCostButton.setOnClickListener(v -> {
                     // Открываем мастер Добавления траты
@@ -119,7 +121,6 @@ public class CostListFragment extends BaseMainPageFragment {
 
             }
 
-            @SuppressLint("RestrictedApi")
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 scrollPosition = firstVisibleItem;
@@ -129,7 +130,7 @@ public class CostListFragment extends BaseMainPageFragment {
                     }
                 } else {
                     buttonListToTop.setAnimation(null);
-                    buttonListToTop.setVisibility(View.INVISIBLE);
+                    ((View)buttonListToTop).setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -159,7 +160,7 @@ public class CostListFragment extends BaseMainPageFragment {
     int[] getButtons() {
         if (!readMode) {
             return new int[]{
-                    R.id.mainPageAddbutton,
+                    R.id.mainPageAddButton,
                     R.id.mainPageSpeechRecognition
             };
         } else {
@@ -168,8 +169,21 @@ public class CostListFragment extends BaseMainPageFragment {
     }
 
     private void printCostList() {
-        ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
-        CostListBackground costListBackground = new CostListBackground(listViewCosts, this.selectTrip);
+
+        CostListBackground costListBackground = new CostListBackground(this.selectTrip, (finalList) -> {
+
+            ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
+            AdapterCostList adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), finalList);
+            listViewCosts.setAdapter(adapter);
+
+            if (adapter.getCount() > 5 && !t_settings.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)) {
+                Help.alertHelp(MainActivity.INSTANCE.getString(R.string.deleteCostHelp));
+
+                t_settings.INSTANCE.setActive(NamespaceSettings.DELETE_COST_SHOWED_HELP, true);
+            }
+
+        });
         costListBackground.execute();
+
     }
 }

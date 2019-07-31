@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="12dp">
@@ -27,7 +28,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_weight="3"
                 android:gravity="top"
-                android:text="Member" />
+                tools:text="Member" />
 
             <TextView
                 android:id="@+id/sum_line"
@@ -35,7 +36,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="-->" />
+                tools:text="-->" />
 
             <TextView
                 android:id="@+id/to_member"
@@ -43,7 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="To_member" />
+                tools:text="To_member" />
 
             <TextView
                 android:id="@+id/sum_sum"
@@ -51,7 +52,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Sum" />
+                tools:text="Sum" />
 
             <ImageButton
                 android:id="@+id/listEditButton"
@@ -65,7 +66,7 @@
 
         <TextView
             android:id="@+id/comment"
-            style="@style/litle"
+            style="@style/lite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"/>

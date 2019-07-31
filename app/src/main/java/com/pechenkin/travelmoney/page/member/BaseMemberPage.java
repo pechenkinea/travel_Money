@@ -1,23 +1,19 @@
 package com.pechenkin.travelmoney.page.member;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
@@ -40,15 +36,11 @@ abstract class BaseMemberPage extends BasePage {
         PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
+
 
 
     abstract void formCommit();
 
-    @SuppressLint("DefaultLocale")
     @Override
     public void addEvents() {
         FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.edit_member_commit_button);
@@ -111,7 +103,7 @@ abstract class BaseMemberPage extends BasePage {
         LinearLayout membersIconsLayout = MainActivity.INSTANCE.findViewById(R.id.membersIconsLayout);
         TextView iconId = MainActivity.INSTANCE.findViewById(R.id.iconId);
 
-        Map<AppCompatImageButton, MemberIcons> buttons = new HashMap<>();
+        Map<View, MemberIcons> buttons = new HashMap<>();
 
         for (int i = 0; i < MemberIcons.values().length; i++) {
             MemberIcons icon = MemberIcons.values()[i];
@@ -131,12 +123,11 @@ abstract class BaseMemberPage extends BasePage {
             iconButton.setScaleType(AppCompatImageButton.ScaleType.CENTER);
 
 
-
-            if (activeIcon == icon.getId()){
+            if (activeIcon == icon.getId()) {
                 iconButton.setBackgroundColor(Color.parseColor("#878787"));
-                iconId.setText(String.format("%d", activeIcon));
-            }
-            else {
+                String iconText = "" + activeIcon;
+                iconId.setText(iconText);
+            } else {
                 iconButton.setBackgroundResource(R.drawable.background_about_fragment_button);
             }
 
@@ -145,13 +136,15 @@ abstract class BaseMemberPage extends BasePage {
             membersIconsLayout.addView(iconButton);
 
             iconButton.setOnClickListener(view -> {
-                for (AppCompatImageButton b : buttons.keySet()) {
+                for (View b : buttons.keySet()) {
                     b.setBackgroundResource(R.drawable.background_about_fragment_button);
                 }
                 view.setBackgroundColor(Color.parseColor("#878787"));
 
-                if (buttons.containsKey(view)) {
-                    iconId.setText(String.format("%d", buttons.get(view).getId()));
+                MemberIcons viewButton = buttons.get(view);
+                if (viewButton != null) {
+                    String iconText = "" + viewButton.getId();
+                    iconId.setText(iconText);
                 }
             });
         }

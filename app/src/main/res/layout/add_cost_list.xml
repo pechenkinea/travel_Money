@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -16,11 +16,12 @@
             android:id="@+id/add_costs_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:imeOptions="actionDone"
             android:enabled="false"
             android:hint="@string/text"
-            tools:ignore="LabelFor,TextFields" />
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:singleLine="true"
+            tools:ignore="Autofill" />
 
 
         <EditText
@@ -28,11 +29,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:singleLine="true"
+            android:hint="@string/Description"
             android:imeOptions="actionDone"
             android:inputType="textPersonName|textCapSentences"
-            android:hint="@string/Description"
-            >
+            android:singleLine="true"
+            tools:ignore="Autofill">
 
         </EditText>
 
@@ -40,9 +41,8 @@
             android:id="@+id/list_add_costs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
             android:choiceMode="none"
-            />
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 
@@ -54,8 +54,8 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_costs_list_refresh_button"
             style="@style/secondFab"
-            app:srcCompat="@drawable/ic_refresh_24"
             android:visibility="invisible"
+            app:srcCompat="@drawable/ic_refresh_24"
             tools:visibility="visible" />
 
 

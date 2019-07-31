@@ -1,6 +1,5 @@
 package com.pechenkin.travelmoney.page.cost.add;
 
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -51,10 +50,7 @@ public class AddCostsListPage extends BasePage {
         PageOpener.INSTANCE.open(MainPage.class);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
+
 
     @Override
     public void addEvents() {

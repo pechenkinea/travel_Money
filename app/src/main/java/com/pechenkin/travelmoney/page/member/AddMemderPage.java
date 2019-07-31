@@ -2,28 +2,15 @@ package com.pechenkin.travelmoney.page.member;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.dialog.ColorDialog;
-import com.pechenkin.travelmoney.page.BasePage;
-import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.main.MainPage;
 
 
 /**
@@ -36,7 +23,7 @@ public class AddMemderPage extends BaseMemberPage {
 
     @Override
     void formCommit() {
-        EditText etName = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
+        TextInputEditText etName = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
 
         String name = etName.getText().toString();
         if (t_members.isAdded(name)) {

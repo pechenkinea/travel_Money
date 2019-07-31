@@ -39,10 +39,6 @@ public class SumResultListPage extends ListPage {
         return MainActivity.INSTANCE.getString(R.string.statistic) +  "(" + t_trips.ActiveTrip.name + ")";
     }
 
-    @Override
-    public void addEvents() {
-        super.addEvents();
-    }
 
     @Override
     protected boolean fillFields() {

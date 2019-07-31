@@ -18,8 +18,8 @@ import java.util.List;
  */
 
 public class CostCreator {
-    private WordCollection words;
-    private String text;
+    private final WordCollection words;
+    private final String text;
 
     public CostCreator(String text)
     {
@@ -38,7 +38,7 @@ public class CostCreator {
     }
 
 
-    private List<ShortCost> costs = new ArrayList<>();
+    private final List<ShortCost> costs = new ArrayList<>();
 
     public ShortCost[] getCosts()
     {
@@ -52,8 +52,8 @@ public class CostCreator {
 
     private long masterId = -1;
     private double sums = 0;
-    private List<Long> toMembers = new ArrayList<>();
-    private List<String> commentsList = new ArrayList<>();
+    private final List<Long> toMembers = new ArrayList<>();
+    private final List<String> commentsList = new ArrayList<>();
 
 
 

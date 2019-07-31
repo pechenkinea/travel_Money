@@ -11,12 +11,12 @@ public class ShortCost implements Cost {
 
     static private int numerator = 0;
 
-    private int id = numerator++;
+    private final int id = numerator++;
 
     private  boolean isChange = false;
 
-    public  long member;
-    private long to_member;
+    public final long member;
+    private final long to_member;
     public  double sum;
     private String comment = "";
     private  int groupId = 0;

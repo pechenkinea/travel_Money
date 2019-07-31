@@ -1,7 +1,6 @@
 package com.pechenkin.travelmoney.export.formats;
 
-import android.annotation.SuppressLint;
-
+import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.row.CostBaseTableRow;
@@ -9,14 +8,11 @@ import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class CSV implements ExportFormat {
     @Override
     public String getText(TripBaseTableRow pageTrip) {
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yy");
 
         ArrayList<Long> membersList = new ArrayList<>();
         CostQueryResult costs = t_costs.getAllByTripId(pageTrip.id);
@@ -24,7 +20,7 @@ public class CSV implements ExportFormat {
         valueCosts.append("Дата;Кто;Кому;Сколько;Активно;Комментарий").append("\r\n");
         if (costs.hasRows()) {
             for (CostBaseTableRow cost : costs.getAllRows()) {
-                String line = ((cost.date() != null) ? df2.format(cost.date()) : "") + ";"
+                String line = ((cost.date() != null) ? Help.dateToDateTimeStr(cost.date()) : "") + ";"
                         + cost.member() + ";"
                         + cost.to_member() + ";"
                         + String.valueOf(cost.sum()).replace('.', ',') + ";"
