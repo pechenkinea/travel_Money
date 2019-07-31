@@ -10,7 +10,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
@@ -263,9 +262,9 @@ public class MasterCostInfo extends BasePage {
                             .setText(Help.DoubleToString(getParam().getSum()).replaceAll(" ", ""));
                 }
 
-                if (getParam().getFotoUrl().length() > 0) {
+                if (getParam().getPhotoUrl().length() > 0) {
                     ((TextView) MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView))
-                            .setText(getParam().getFotoUrl());
+                            .setText(getParam().getPhotoUrl());
 
                     MainActivity.INSTANCE.findViewById(R.id.hasPhoto).setVisibility(View.VISIBLE);
                 }

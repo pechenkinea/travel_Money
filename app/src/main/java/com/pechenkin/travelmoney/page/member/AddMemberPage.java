@@ -18,7 +18,7 @@ import com.pechenkin.travelmoney.bd.table.t_trips;
  * Страница добавления нового участника
  */
 
-public class AddMemderPage extends BaseMemberPage {
+public class AddMemberPage extends BaseMemberPage {
 
 
     @Override

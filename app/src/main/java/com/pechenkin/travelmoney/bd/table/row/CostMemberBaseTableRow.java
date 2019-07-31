@@ -36,11 +36,11 @@ public class CostMemberBaseTableRow {
     }
 
     public static CostMemberBaseTableRow[] createCostMemberBaseTableRow(MemberBaseTableRow[] membersRows, double sum) {
-        double ssum = (sum > 0 && membersRows.length > 0) ? sum / membersRows.length : 0;
+        double sSum = (sum > 0 && membersRows.length > 0) ? sum / membersRows.length : 0;
 
         CostMemberBaseTableRow[] result = new CostMemberBaseTableRow[membersRows.length];
         for (int i = 0; i < membersRows.length; i++) {
-            result[i] = new CostMemberBaseTableRow(membersRows[i], ssum);
+            result[i] = new CostMemberBaseTableRow(membersRows[i], sSum);
         }
 
         return result;

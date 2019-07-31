@@ -163,28 +163,11 @@ public class MasterWhom extends ListPage {
                 if (sbArray.get(key)) {
                     CostMemberBaseTableRow item = adapter.getItem(key);
                     if (item != null && item.getSum() > 0) {
-                        t_costs.add(getParam().getId(), item.getMemberRow().id, getParam().getName(), item.getSum(), getParam().getFotoUrl(), t_trips.ActiveTrip.id, getParam().getSelectDate());
+                        t_costs.add(getParam().getId(), item.getMemberRow().id, getParam().getName(), item.getSum(), getParam().getPhotoUrl(), t_trips.ActiveTrip.id, getParam().getSelectDate());
                     }
                 }
             }
 
-
-            /*
-                double sum_on_one;
-                try {
-                    sum_on_one = getParam().getSum()/list_id.size();
-                }
-                catch (Exception ex)
-                {
-                    Help.message(MainActivity.INSTANCE.getString(R.string.errorCalc));
-                    return;
-                }
-
-                for (long to_memmber_id : list_id)
-                {
-                    t_costs.add(getParam().getId(), to_memmber_id, getParam().getName(), sum_on_one, getParam().getFotoUrl(), t_trips.ActiveTrip.id, getParam().getSelectDate());
-                }
-            */
             Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
             PageOpener.INSTANCE.open(MainPage.class);
 
@@ -234,11 +217,11 @@ public class MasterWhom extends ListPage {
     protected void onItemClick(ListView list, AdapterView<?> a, View view, int position, long id) {
 
         SparseBooleanArray sbArray = list.getCheckedItemPositions();
-        AdapterMembersList adapder = (AdapterMembersList)list.getAdapter();
+        AdapterMembersList adapter = (AdapterMembersList)list.getAdapter();
         if (sbArray.get(position, false))
         {
             list.setItemChecked(position, true);
-            adapder.getItem(position).setChange(false);
+            adapter.getItem(position).setChange(false);
         }
         else
         {

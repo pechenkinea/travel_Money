@@ -41,8 +41,8 @@ public class CSV implements ExportFormat {
         valueMembers.append("id;Имя").append("\r\n");
         for (Long m : membersList) {
 
-            BaseTableRow findMemder = t_members.getMemberById(m);
-            String line = m + ";" + ((findMemder != null) ? findMemder.name : "ErrorMemberName");
+            BaseTableRow findMember = t_members.getMemberById(m);
+            String line = m + ";" + ((findMember != null) ? findMember.name : "ErrorMemberName");
             line = line.replaceAll("\n|\n\r", " ");
             valueMembers.append(line).append("\r\n");
 

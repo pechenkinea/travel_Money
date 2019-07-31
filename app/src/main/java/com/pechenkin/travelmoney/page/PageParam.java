@@ -17,7 +17,7 @@ public class PageParam {
     private PageParam(){}
 
     private long id;
-    private String fotoUrl;
+    private String photoUrl;
     private String name;
     private String description;
     private double sum = 0f;
@@ -28,8 +28,8 @@ public class PageParam {
         return id;
     }
 
-    public String getFotoUrl() {
-        return fotoUrl;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
     public String getName() {
@@ -60,7 +60,7 @@ public class PageParam {
     static public class BuildingPageParam
     {
         private long id = -1;
-        private String fotoUrl = "";
+        private String photoUrl = "";
         private String name = "";
         private String description = "";
         private double sum = 0f;
@@ -75,7 +75,7 @@ public class PageParam {
         public BuildingPageParam(PageParam param)
         {
             id = param.getId();
-            fotoUrl = param.fotoUrl;
+            photoUrl = param.photoUrl;
             name = param.getName();
             description = param.getDescription();
             sum = param.getSum();
@@ -88,7 +88,7 @@ public class PageParam {
         {
             PageParam pageParam = new PageParam();
             pageParam.id = this.id;
-            pageParam.fotoUrl = this.fotoUrl;
+            pageParam.photoUrl = this.photoUrl;
             pageParam.name = this.name;
             pageParam.description = this.description;
             pageParam.sum = this.sum;
@@ -105,7 +105,7 @@ public class PageParam {
         }
         public BuildingPageParam setPhotoUrl(String photoUrl)
         {
-            this.fotoUrl = photoUrl;
+            this.photoUrl = photoUrl;
             return this;
         }
 

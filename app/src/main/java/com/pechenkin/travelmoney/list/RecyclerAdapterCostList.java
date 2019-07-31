@@ -178,12 +178,12 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         holder.sum_sum.setPaintFlags(holder.sum_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
 
-        String summ = Help.DoubleToString(song.sum());
+        String sum = Help.DoubleToString(song.sum());
 
         if (song.isChange()) {
-            holder.sum_sum.setText(Html.fromHtml("<b>" + summ + "</b> "));
+            holder.sum_sum.setText(Html.fromHtml("<b>" + sum + "</b> "));
         } else {
-            holder.sum_sum.setText((song.sum() != 0) ? summ : "");
+            holder.sum_sum.setText((song.sum() != 0) ? sum : "");
         }
 
 

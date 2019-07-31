@@ -91,13 +91,6 @@
             style="@style/firstFab"
             app:srcCompat="@drawable/ic_done_24" />
 
-        <!--
-        <Button
-            style="@style/cancelButton"
-            android:onClick="actionviewDataOnClick"
-            />
-            -->
-
     </FrameLayout>
 
 </RelativeLayout>

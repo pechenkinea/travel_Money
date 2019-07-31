@@ -59,7 +59,7 @@ public class Calculation {
         ArrayList<MemberSum> positiveMember = new ArrayList<>();
         ArrayList<MemberSum> negativeMember = new ArrayList<>();
 
-        for (int i = 0, nsize = members.size(); i < nsize; i++) {
+        for (int i = 0, membersSize = members.size(); i < membersSize; i++) {
             MemberSum value = members.valueAt(i);
             // Если кто то дал или взял меньше погрешности то не учитываем такого участника,
             // что бы в итоговом списке не было совсем копеечных значений

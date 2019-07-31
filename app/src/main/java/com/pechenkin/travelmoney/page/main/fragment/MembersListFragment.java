@@ -15,7 +15,7 @@ import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.member.AddMemderPage;
+import com.pechenkin.travelmoney.page.member.AddMemberPage;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
 import java.util.Arrays;
@@ -31,7 +31,7 @@ public class MembersListFragment extends BaseMainPageFragment {
     void setListeners() {
 
         FloatingActionButton addMemberButton = fragmentView.findViewById(R.id.member_add_button);
-        addMemberButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AddMemderPage.class));
+        addMemberButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AddMemberPage.class));
 
         ListView list = fragmentView.findViewById(R.id.list_members);
         list.setOnItemClickListener((parent, view, position, id) -> {

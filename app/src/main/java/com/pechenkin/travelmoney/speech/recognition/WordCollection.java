@@ -168,8 +168,8 @@ class WordCollection {
 
         static String multiplied(String text) {
             double result = 0;
-            String[] numerics = text.split("\\*");
-            for (String s : numerics) {
+            String[] numerates = text.split("\\*");
+            for (String s : numerates) {
 
                 if (s.equals(HALF)) {
 
