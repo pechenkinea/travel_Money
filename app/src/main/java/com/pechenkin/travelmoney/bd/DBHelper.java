@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + ");");
 
 
-        db.execSQL("INSERT INTO " + Namespace.TABLE_MEMBERS + " VALUES (1, 'Я', 0, 1, 1);");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_MEMBERS + " VALUES (1, 'Я', 0, 0, 1);");
 
 
         db.execSQL("create table " + Namespace.TABLE_TRIPS + " ("

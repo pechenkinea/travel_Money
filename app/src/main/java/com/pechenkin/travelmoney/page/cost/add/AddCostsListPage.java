@@ -98,23 +98,7 @@ public class AddCostsListPage extends BasePage {
         });
 
 
-        EditText add_costs_text = MainActivity.INSTANCE.findViewById(R.id.add_costs_text);
-        add_costs_text.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                refreshForm();
-                return true;
-            }
-            return false;
-        });
 
-        TextInputEditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
-        add_cost_comment.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                refreshForm();
-                return true;
-            }
-            return false;
-        });
 
     }
 

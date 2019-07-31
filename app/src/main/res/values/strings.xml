@@ -28,7 +28,7 @@
     <string name="memberEdit">Редактирование участника</string>
     <string name="editTrip">Редактирование поездки</string>
     <string name="membersList">Участники</string>
-    <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов.\n\nПовторное долгое нажатие вернет операцию в исходное состояние.у</string>
+    <string name="deleteCostHelp">Вы можете отменить операцию в общем списке долгим нажатием на строку. Такие операции не будут учтены при подсчете итогов.\n\nПовторное долгое нажатие вернет операцию в исходное состояние.</string>
     <string name="errorNoActiveTask">Нет активных поездок</string>
     <string name="errorNoData">Нет данных</string>
     <string name="costInfo">Информация о трате</string>
@@ -36,7 +36,7 @@
     <string name="costMember">Платит</string>
 
 
-    <string name="errorFillDescription">Заполните описание</string>
+    <string name="errorFillDescription">Введите комментарий</string>
     <string name="errorFillSum">Введите сумму</string>
     <string name="errorFillMembers">Выберите участников</string>
     <string name="date">Дата</string>
