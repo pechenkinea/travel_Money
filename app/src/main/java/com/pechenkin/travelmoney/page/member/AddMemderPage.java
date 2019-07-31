@@ -25,7 +25,7 @@ public class AddMemderPage extends BaseMemberPage {
     void formCommit() {
         TextInputEditText etName = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
 
-        String name = etName.getText().toString();
+        String name = getTextInputEditText(etName);
         if (t_members.isAdded(name)) {
             Help.message("Участник с таким именем уже добавлен");
             Help.setActiveEditText(getFocusFieldId());

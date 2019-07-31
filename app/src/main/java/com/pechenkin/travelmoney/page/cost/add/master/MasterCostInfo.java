@@ -53,10 +53,10 @@ public class MasterCostInfo extends BasePage {
         PageParam.BuildingPageParam buildParam = new PageParam.BuildingPageParam(getParam());
 
         TextInputEditText et_comment = MainActivity.INSTANCE.findViewById(R.id.cost_comment);
-        buildParam.setName(et_comment.getText().toString());
+        buildParam.setName(getTextInputEditText(et_comment));
 
         TextInputEditText et_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
-        String sum = et_sum.getText().toString();
+        String sum = getTextInputEditText(et_sum);
         buildParam.setSum(Help.StringToDouble(sum));
 
         TextView tv_dir = MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView);
@@ -69,10 +69,9 @@ public class MasterCostInfo extends BasePage {
     }
 
 
-
     private void commitForm() {
         TextInputEditText et_comment = MainActivity.INSTANCE.findViewById(R.id.cost_comment);
-        String comment = et_comment.getText().toString();
+        String comment = getTextInputEditText(et_comment);
         if (comment.length() == 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorFillDescription));
             Help.setActiveEditText(R.id.cost_comment);
@@ -80,7 +79,7 @@ public class MasterCostInfo extends BasePage {
         }
 
         TextInputEditText et_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
-        String sum = et_sum.getText().toString();
+        String sum = getTextInputEditText(et_sum);
         if (sum.length() == 0 || Help.StringToDouble(sum) <= 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorFillSum));
             Help.setActiveEditText(R.id.cost_sum, true);
@@ -135,10 +134,10 @@ public class MasterCostInfo extends BasePage {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String sum = cost_sum.getText().toString();
+                String sum = getTextInputEditText(cost_sum);
                 if (Help.StringToDouble(sum) > ERROR_SUM) {
                     cost_sum.setText(String.valueOf(ERROR_SUM));
-                    cost_sum.setSelection(cost_sum.getText().length());
+                    cost_sum.setSelection(getTextInputEditText(cost_sum).length());
                 }
             }
 

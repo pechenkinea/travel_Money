@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.page;
 
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 
@@ -12,22 +13,24 @@ import com.pechenkin.travelmoney.MainActivity;
 public abstract class BasePage implements Page {
 
     protected abstract int getPageId();
+
     protected abstract String getTitleHeader();
+
     protected abstract boolean fillFields();
+
     protected abstract int getFocusFieldId();
 
     private PageParam param;
 
-    protected boolean hasParam()
-    {
+    protected boolean hasParam() {
         return param != null;
     }
-    protected PageParam getParam()
-    {
+
+    protected PageParam getParam() {
         if (param == null)
             return new PageParam.BuildingPageParam().getParam();
 
-        return  param;
+        return param;
     }
 
     @Override
@@ -35,7 +38,7 @@ public abstract class BasePage implements Page {
         this.param = param;
     }
 
-    public void open(){
+    public void open() {
         //Открываем страницу
         MainActivity.INSTANCE.setContentView(getPageId());
 
@@ -54,11 +57,17 @@ public abstract class BasePage implements Page {
         //Если есть поле, на которое надо назначить фокус ставим туда курсор и открываем клавиатуру
         if (getFocusFieldId() != 0) {
             Help.setActiveEditText(getFocusFieldId());
-        }
-        else // Скрываем клавиатуру если фокус не нужен
+        } else // Скрываем клавиатуру если фокус не нужен
         {
             Help.hideKeyboard();
         }
+    }
+
+    /**
+     * Что бы каждый раз не проверять на null
+     */
+    protected String getTextInputEditText(TextInputEditText input) {
+        return input.getText() != null ? input.getText().toString() : "";
     }
 
 

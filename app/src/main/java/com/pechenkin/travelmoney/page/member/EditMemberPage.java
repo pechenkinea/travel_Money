@@ -25,7 +25,7 @@ public class EditMemberPage extends BaseMemberPage {
     @Override
     void formCommit() {
         TextInputEditText etName = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
-        String name = etName.getText().toString();
+        String name = getTextInputEditText(etName);
 
         if (name.length() < 1) {
             Help.message("Введите имя");
@@ -33,7 +33,7 @@ public class EditMemberPage extends BaseMemberPage {
             return;
         }
 
-        long findId = t_members.getIdByName(etName.getText().toString());
+        long findId = t_members.getIdByName(getTextInputEditText(etName));
         if (findId >= 0 && findId != getParam().getId()) {
             Help.message("Имя занято другим участником");
             Help.setActiveEditText(getFocusFieldId());

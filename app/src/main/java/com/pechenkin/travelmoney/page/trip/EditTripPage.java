@@ -2,9 +2,9 @@ package com.pechenkin.travelmoney.page.trip;
 
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -27,10 +27,10 @@ public class EditTripPage extends BaseTripPage {
         FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.trip_commit_button);
         commitButton.setOnClickListener(v -> {
 
-            EditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
-            EditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
+            TextInputEditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
+            TextInputEditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
 
-            String strName = trName.getText().toString();
+            String strName = getTextInputEditText(trName);
             if (strName.length() > 0) {
                 if (t_trips.isAdded(strName)) {
                     if (getParam().getId() != t_trips.getIdByName(strName)) {
@@ -40,7 +40,7 @@ public class EditTripPage extends BaseTripPage {
                     }
                 }
 
-                t_trips.edit(getParam().getId(), strName, trComment.getText().toString());
+                t_trips.edit(getParam().getId(), strName, getTextInputEditText(trComment));
                 CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
 
                 if (isActive.isChecked())
@@ -74,10 +74,10 @@ public class EditTripPage extends BaseTripPage {
             return false;
         }
 
-        EditText t_name = MainActivity.INSTANCE.findViewById(R.id.trip_name);
+        TextInputEditText t_name = MainActivity.INSTANCE.findViewById(R.id.trip_name);
         t_name.setText(trip.name);
 
-        EditText t_comment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
+        TextInputEditText t_comment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
         t_comment.setText(trip.comment);
 
         MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction).setVisibility(View.VISIBLE);

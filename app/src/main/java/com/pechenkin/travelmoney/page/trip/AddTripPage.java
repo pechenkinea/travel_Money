@@ -1,8 +1,7 @@
 package com.pechenkin.travelmoney.page.trip;
 
-import android.widget.EditText;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -23,13 +22,13 @@ public class AddTripPage extends BaseTripPage {
     public void addEvents() {
         FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.trip_commit_button);
         commitButton.setOnClickListener(v -> {
-            EditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
-            EditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
-            String strName = trName.getText().toString();
+            TextInputEditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
+            TextInputEditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
+            String strName = getTextInputEditText(trName);
             if (strName.length() > 0) {
                 if (t_trips.getIdByName(strName) == -1) {
 
-                    long t_id = t_trips.add(strName, trComment.getText().toString());
+                    long t_id = t_trips.add(strName, getTextInputEditText(trComment));
                     t_trips.set_active(t_id);
                     PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
                 } else {
