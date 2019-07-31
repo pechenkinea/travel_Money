@@ -255,11 +255,13 @@ public class MasterCostInfo extends BasePage {
                             .setText(memberCostInfoText);
                 }
 
-                ((EditText) MainActivity.INSTANCE.findViewById(R.id.cost_comment))
+                ((TextInputEditText) MainActivity.INSTANCE.findViewById(R.id.cost_comment))
                         .setText(getParam().getName());
 
-                ((EditText) MainActivity.INSTANCE.findViewById(R.id.cost_sum))
-                        .setText(Help.DoubleToString(getParam().getSum()).replaceAll(" ", ""));
+                if (getParam().getSum() > 0) {
+                    ((TextInputEditText) MainActivity.INSTANCE.findViewById(R.id.cost_sum))
+                            .setText(Help.DoubleToString(getParam().getSum()).replaceAll(" ", ""));
+                }
 
                 if (getParam().getFotoUrl().length() > 0) {
                     ((TextView) MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView))
