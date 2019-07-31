@@ -67,7 +67,7 @@ public abstract class BasePage implements Page {
      * Что бы каждый раз не проверять на null
      */
     protected String getTextInputEditText(TextInputEditText input) {
-        return input.getText() != null ? input.getText().toString() : "";
+        return input.getText() != null ? input.getText().toString().trim() : "";
     }
 
 

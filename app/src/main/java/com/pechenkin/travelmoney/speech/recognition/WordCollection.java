@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney.speech.recognition;
 
 import com.pechenkin.travelmoney.Help;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,21 +9,21 @@ import java.util.regex.Pattern;
  * Created by pechenkin on 22.05.2018.
  */
 
-class WordCollection {
+public class WordCollection {
 
-    static final String ME = "{me}";
-    static final String ALL = "{all}";
-    static final String MASTER = "{master}";
-    static final String OWNER = "{owner}";
+    static String ME = "{me}";
+    static String ALL = "{all}";
+    static String MASTER = "{master}";
+    static String OWNER = "{owner}";
 
 
-    private static final String HALF = "<half>";
+    private static String HALF = "<half>";
 
-    private final String[] words;
-    private final int length;
+    private String[] words;
+    private int length;
     private int position = -1;
 
-    private static final StringNumeric[] NUMERIC_NAMES = {
+    private static StringNumeric[] NUMERIC_NAMES = {
             new StringNumeric("(од)([а-я]{2})", "1"),   //одИН, одНА, одНУ
             new StringNumeric("(дв)([а-я]{1})", "2"), // двА, двЕ
             new StringNumeric("три", "3"),
@@ -52,11 +51,11 @@ class WordCollection {
     };
 
 
-    WordCollection(String text) {
+    public WordCollection(String text) {
         words = new WrapperString(text.toLowerCase())
                 .replaceAll("[,\\.]", "") // убираем все запятые и точки для обработки 3.000
                 .replaceAll("(^|[^\\d])(\\d{1,2})\\s(\\d{3})($|[^\\d])", " $2$3") //убираем пробел между числами если певое 1 или 2 значное а второе 3 значное. Обработка 3 500 или 11 700
-                .replaceNumeric()
+                .replaceNumeric(NUMERIC_NAMES)
                 .replaceAll("(\\d+(\\.\\d+)?)", " $1 ") //все цифры отделяем пробелами для обработки таких строк как 350руб
                 .replaceAll(" и | за ", " ")  //убираем лишние слова в центре
                 .replaceAllWords(new String[]{"всех", "завсех", "всем"}, ALL) //ключ для обработки "за всех"
@@ -70,11 +69,11 @@ class WordCollection {
     }
 
 
-    boolean hasNext() {
+    public boolean hasNext() {
         return position + 1 < length && length > 0;
     }
 
-    String getNext() {
+    public String getNext() {
         if (hasNext()) {
             position++;
             return words[position];
@@ -82,12 +81,15 @@ class WordCollection {
             return "";
     }
 
-    String viewNext(int addPosition) {
+    public String viewNext(int addPosition) {
         return getPosition(position + addPosition);
     }
 
+    public String viewBefore(int downPosition) {
+        return getPosition(position - downPosition);
+    }
 
-    void movePosition(int moveTo) {
+    public void movePosition(int moveTo) {
         position += moveTo;
         if (position < -1)
             position = -1;
@@ -102,7 +104,7 @@ class WordCollection {
 
 
     private static class WrapperString {
-        final String text;
+        String text;
 
         WrapperString(String text) {
             this.text = text;
@@ -125,12 +127,12 @@ class WordCollection {
             return new WrapperString(text.trim());
         }
 
-        WrapperString replaceNumeric() {
+        WrapperString replaceNumeric(StringNumeric[] numeric) {
             String returnText = text;
 
             //заменяем слова на экранированные цифры
             //две с пловиной тысячи -> {n}2{/n} {n}1.5{/n} {n}1000{/n}
-            for (StringNumeric sNumeric : WordCollection.NUMERIC_NAMES) {
+            for (StringNumeric sNumeric : numeric) {
                 returnText = returnText.replaceAll(sNumeric.regex, sNumeric.value);
             }
 
@@ -145,10 +147,10 @@ class WordCollection {
 
 
             //Находим экрнированные числа со знаком умножения и производим вычисления оставляя экраны
-            Pattern regexMultiplication = Pattern.compile("(\\{n})([^{/n}]+\\*[^{/n}]+)(\\{/n})");
+            Pattern regexMultiplication = Pattern.compile("(\\{n\\})([^\\{\\/n\\}]+\\*[^\\{\\/n\\}]+)(\\{\\/n\\})");
             Matcher matcher = regexMultiplication.matcher(returnText);
             while (matcher.find()) {
-                returnText = matcher.replaceFirst(" {n}" + multiplied(Objects.requireNonNull(matcher.group(2))) + "{/n} ");
+                returnText = matcher.replaceFirst(" {n}" + multiplied(matcher.group(2)) + "{/n} ");
                 matcher = regexMultiplication.matcher(returnText);
             }
 
@@ -168,8 +170,8 @@ class WordCollection {
 
         static String multiplied(String text) {
             double result = 0;
-            String[] numerates = text.split("\\*");
-            for (String s : numerates) {
+            String[] numerics = text.split("\\*");
+            for (String s : numerics) {
 
                 if (s.equals(HALF)) {
 
@@ -206,8 +208,8 @@ class WordCollection {
     }
 
     private static class StringNumeric {
-        final String regex;
-        final String value;
+        String regex;
+        String value;
 
         StringNumeric(String regex, String value) {
             this.regex = regex + "(\\s|$)";

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -64,8 +65,8 @@ public class AddCostsListPage extends BasePage {
             RecyclerView listViewCosts = MainActivity.INSTANCE.findViewById(R.id.list_add_costs);
             RecyclerAdapterCostList adapter = (RecyclerAdapterCostList) listViewCosts.getAdapter();
 
-            EditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
-            String comment = add_cost_comment.getText().toString().trim();
+            TextInputEditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
+            String comment =  getTextInputEditText(add_cost_comment);
 
             if (comment.length() == 0) {
                 Help.message(MainActivity.INSTANCE.getString(R.string.errorFillDescription));
@@ -106,7 +107,7 @@ public class AddCostsListPage extends BasePage {
             return false;
         });
 
-        EditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
+        TextInputEditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
         add_cost_comment.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 refreshForm();
@@ -121,10 +122,10 @@ public class AddCostsListPage extends BasePage {
     private void refreshForm() {
         EditText add_costs_text = MainActivity.INSTANCE.findViewById(R.id.add_costs_text);
         String text = add_costs_text.getText().toString();
-        EditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
+        TextInputEditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
 
         if (text.length() > 0) {
-            CostCreator cc = new CostCreator(text, add_cost_comment.getText().toString());
+            CostCreator cc = new CostCreator(text,  getTextInputEditText(add_cost_comment));
             PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
             PageOpener.INSTANCE.open(AddCostsListPage.class, param);
         }
@@ -158,7 +159,7 @@ public class AddCostsListPage extends BasePage {
             finalList.add(new ShortCost(-1, -1, 0f, "Не удалось разобрать"));
         }
 
-        EditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
+        TextInputEditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
         add_cost_comment.setText(getParam().getCostCreator().getComment());
 
 
