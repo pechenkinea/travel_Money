@@ -191,14 +191,14 @@ public class AdapterCostList extends BaseAdapter {
                         memberIcon.setColorFilter(to_memberColor);
 
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        lp.setMargins(0, 0, 4, 0); //компенсация отступов
+                        lp.setMargins(0, 0, 4, 0);
                         memberIcon.setLayoutParams(lp);
 
                         holder.member_icons_layout.addView(memberIcon);
 
                     } else if (i == 5) { //Если в поле "кому" много участников всех не надо показывать. просто добавляем цифру сколько не влезло
                         TextView moreMembers = new TextView(MainActivity.INSTANCE);
-                        String moreMembersCount = "" + (costs.size() - i);
+                        String moreMembersCount = "+" + (costs.size() - i);
                         moreMembers.setText(moreMembersCount);
                         holder.member_icons_layout.addView(moreMembers);
                     }
