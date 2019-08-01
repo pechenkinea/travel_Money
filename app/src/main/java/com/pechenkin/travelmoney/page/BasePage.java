@@ -18,7 +18,9 @@ public abstract class BasePage implements Page {
 
     protected abstract boolean fillFields();
 
-    protected abstract int getFocusFieldId();
+    protected int getFocusFieldId(){
+        return 0;
+    }
 
     private PageParam param;
 

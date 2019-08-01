@@ -63,8 +63,4 @@ public class ViewTripPage extends BasePage {
         return true;
     }
 
-    @Override
-    protected int getFocusFieldId() {
-        return 0;
-    }
 }

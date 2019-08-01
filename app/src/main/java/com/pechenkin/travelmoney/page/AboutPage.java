@@ -76,10 +76,5 @@ public class AboutPage extends BasePage {
         return true;
     }
 
-    @Override
-    protected int getFocusFieldId() {
-        return 0;
-    }
-
 
 }

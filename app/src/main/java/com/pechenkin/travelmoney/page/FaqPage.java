@@ -73,10 +73,5 @@ public class FaqPage extends BasePage {
         return true;
     }
 
-    @Override
-    protected int getFocusFieldId() {
-        return 0;
-    }
-
 
 }
