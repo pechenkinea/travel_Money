@@ -149,6 +149,14 @@ public class t_members {
     static private final LongSparseArray<MemberBaseTableRow> memberCache = new LongSparseArray<>();
 
 
+    static public int getColorById(long _id){
+        MemberBaseTableRow member = getMemberById(_id);
+        if (member != null){
+            return member.color;
+        }
+        return Color.BLACK;
+    }
+
     static public MemberBaseTableRow getMemberById(long _id) {
         MemberBaseTableRow result = memberCache.get(_id);
         if (result == null) {

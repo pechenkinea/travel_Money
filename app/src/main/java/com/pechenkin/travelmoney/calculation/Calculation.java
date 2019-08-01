@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney.calculation;
 
 import android.util.LongSparseArray;
 
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
@@ -144,18 +143,17 @@ public class Calculation {
         for (int i = 0; i < calculationList.length; i++) {
 
             Cost calcCost = calculationList[i];
-            MemberBaseTableRow member = t_members.getMemberById(calcCost.member());
-            MemberBaseTableRow to_member = t_members.getMemberById(calcCost.to_member());
+            int memberColor = t_members.getColorById(calcCost.member());
+            int to_memberColor = t_members.getColorById(calcCost.to_member());
 
-            //В приоритете запомнить учатсника, кому должны
-            membersByColor.put(to_member.color, to_member.id);
-            if (membersByColor.indexOfKey(member.color) < 0) {
-                membersByColor.put(member.color, member.id);
+            membersByColor.put(to_memberColor, calcCost.to_member());
+            if (membersByColor.indexOfKey(memberColor) < 0) {
+                membersByColor.put(memberColor, calcCost.member());
             }
 
             // т.к. в calculationList приходит "кто кому должен" надо перевернуть значения, что бы получилось "кто кому дал"
             // поэтому первым параметром в ShortCost отдаем to_member а вторым member
-            Cost forGroupCost = new ShortCost(to_member.color, member.color, calcCost.sum());
+            Cost forGroupCost = new ShortCost(to_memberColor, memberColor, calcCost.sum());
             calcListCosts[i] = forGroupCost;
         }
 
