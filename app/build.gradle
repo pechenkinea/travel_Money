@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 ext {
-    travelMoneyVersionName = '2.8.15 (Beta)'
-    //travelMoneyVersionName = '2.7'
+    //travelMoneyVersionName = '2.8.16 (Beta)'
+    travelMoneyVersionName = '3.0'
 }
 
 
@@ -15,7 +15,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 29
         //noinspection HighAppVersionCode20190711
-        versionCode 2019180481
+        //versionCode 2019180482
+        versionCode 20190802
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName)
         vectorDrawables.useSupportLibrary = true

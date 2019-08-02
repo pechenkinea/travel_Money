@@ -143,6 +143,7 @@ public class AdapterCostList extends BaseAdapter {
 
                     holder.sum_group_sum.setText("0");
                     holder.sum_group_sum.setTextColor(colorDisableColor);
+                    holder.have_photo.setColorFilter(colorDisableColor);
                 } else {
                     holder.title.setTextColor(member.color);
                 }
@@ -201,6 +202,10 @@ public class AdapterCostList extends BaseAdapter {
                         String moreMembersCount = "+" + (costs.size() - i);
                         moreMembers.setText(moreMembersCount);
                         holder.member_icons_layout.addView(moreMembers);
+
+                        if (cost.sum() == 0) {
+                            moreMembers.setTextColor(colorDisableColor);
+                        }
                     }
 
                     // На случай, если только один участник в блоке "Кому"
@@ -256,6 +261,7 @@ public class AdapterCostList extends BaseAdapter {
                 holder.comment.setTextColor(colorDisableColor);
                 holder.sum_group_sum.setTextColor(colorDisableColor);
                 holder.to_member_one.setTextColor(colorDisableColor);
+                holder.have_photo.setColorFilter(colorDisableColor);
             }
         }
 
@@ -334,6 +340,7 @@ public class AdapterCostList extends BaseAdapter {
             this.to_member.setTextColor(Color.BLACK);
             this.sum_sum.setTextColor(Color.BLACK);
             this.sum_group_sum.setTextColor(Color.BLACK);
+            this.have_photo.setColorFilter(Color.BLACK);
 
             this.labelHeader.setVisibility(View.GONE);
             this.mainLayout.setVisibility(View.VISIBLE);
