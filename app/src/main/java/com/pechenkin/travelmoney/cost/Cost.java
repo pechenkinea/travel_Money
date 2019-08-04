@@ -9,30 +9,30 @@ import java.util.Date;
 
 public interface Cost {
     /**
-     * id проводки
+     * getId проводки
      */
-    long id();
+    long getId();
 
     /**
      * Кто дал денег
      */
-    long member();
+    long getMember();
 
     /**
      * Кому дал денег
      */
-    long to_member();
+    long getToMember();
 
     /**
      * Сколько дал денег
      */
-    double sum();
+    double getSum();
 
     /**
      * возвращает статус проводки
      * @return 0 - проводка удалена, 1 - проводка активна
      */
-    long active();
+    long isActive();
 
     /**
      * меняет статус проводке
@@ -42,27 +42,17 @@ public interface Cost {
     /**
      * Возвращает путь к изображению привязанному к проводке
      */
-    String image_dir();
+    String getImageDir();
 
     /**
      * Возвращает дату проводки
      */
-    Date date();
+    Date getDate();
 
     /**
      * Возвращает комментарий к проводке
      */
-    String comment();
-
-    /**
-     * Задает id группы
-     */
-    void setGroupId(int groupId);
-
-    /**
-     * возвращает id группы
-     */
-    int getGroupId();
+    String getComment();
 
 
 }

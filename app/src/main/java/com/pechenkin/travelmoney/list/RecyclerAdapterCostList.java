@@ -43,14 +43,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         notifyItemRemoved(position);
     }
 
-    public ShortCost getItem(ShortCost cost) {
-        for (ShortCost c : data) {
-            if (c.equals(cost))
-                return c;
-        }
-        return null;
-    }
-
     public ShortCost getItem(int position) {
         try {
             return data.get(position);
@@ -117,7 +109,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             }
             final ShortCost item = adapter.getItem(listView.getChildLayoutPosition(listItem));
 
-            if (item != null && (item.member() > -1 || (isCanEditAllSum && item.sum > 0))) {
+            if (item != null && (item.getMember() > -1 || (isCanEditAllSum && item.sum > 0))) {
 
                 final EditText input = new EditText(MainActivity.INSTANCE);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -134,7 +126,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
                         .setPositiveButton("Ок", (dialog, which) -> commitEditSum(input, item, adapter, dialog, listView, false))
                         .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel());
 
-                if (item.member() > -1) {
+                if (item.getMember() > -1) {
                     builder.setNeutralButton("По умолчанию", (dialog, which) -> commitEditSum(input, item, adapter, dialog, listView, true));
                 }
 
@@ -178,28 +170,28 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         holder.sum_sum.setPaintFlags(holder.sum_sum.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
 
-        String sum = Help.DoubleToString(song.sum());
+        String sum = Help.DoubleToString(song.getSum());
 
         if (song.isChange()) {
             holder.sum_sum.setText(Html.fromHtml("<b>" + sum + "</b> "));
         } else {
-            holder.sum_sum.setText((song.sum() != 0) ? sum : "");
+            holder.sum_sum.setText((song.getSum() != 0) ? sum : "");
         }
 
 
         String comment = "";
         String dateText = "";
-        if (song.date() != null) {
-            dateText = Help.dateToDateTimeStr(song.date());
+        if (song.getDate() != null) {
+            dateText = Help.dateToDateTimeStr(song.getDate());
         }
-        comment += dateText + "  " + song.comment();
+        comment += dateText + "  " + song.getComment();
         holder.sum_comment.setText(comment);
 
         holder.sum_line.setText("-->");
 
-        if (song.id() >= 0) {
+        if (song.getId() >= 0) {
 
-            if (song.active() == 0) {
+            if (song.isActive() == 0) {
                 //Делаем зачеркнутым и добавляем пробелы
                 holder.sum_sum.setPaintFlags(holder.sum_sum.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 holder.sum_sum.setText(String.format(" %s ", holder.sum_sum.getText()));
@@ -208,13 +200,13 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         }
 
 
-        MemberBaseTableRow member = t_members.getMemberById(song.member());
+        MemberBaseTableRow member = t_members.getMemberById(song.getMember());
         if (member != null) {
             holder.title.setText(member.name);
             holder.title.setTextColor(member.color);
         } else {
             holder.labelHeader.setVisibility(View.VISIBLE);
-            holder.labelHeader.setText(song.comment());
+            holder.labelHeader.setText(song.getComment());
             holder.sum_line.setText("");
             holder.title.setText("");
             holder.sum_comment.setText("");
@@ -226,7 +218,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         }
 
 
-        MemberBaseTableRow to_member = t_members.getMemberById(song.to_member());
+        MemberBaseTableRow to_member = t_members.getMemberById(song.getToMember());
         holder.to_member.setText((to_member != null) ? to_member.name : "");
         holder.to_member.setTextColor((to_member != null) ? to_member.color : Color.BLACK);
     }
@@ -293,7 +285,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
                 item.setChange(false);
                 costGroup.add(item);
             } else {
-                sumGroup = item.sum();
+                sumGroup = item.getSum();
                 item.sum = editSum;
                 item.setChange(true);
                 sumGroup = sumGroup - editSum;
@@ -307,7 +299,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
                 if (c.getGroupId() == groupId) {
                     if (!c.equals(item))
                         costGroup.add(c);
-                    sumGroup += c.sum();
+                    sumGroup += c.getSum();
                 }
             }
         }
@@ -324,7 +316,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         double allSum = 0;
         for (ShortCost c : costs) {
             if (c.member > -1) {
-                allSum += c.sum();
+                allSum += c.getSum();
             }
         }
 

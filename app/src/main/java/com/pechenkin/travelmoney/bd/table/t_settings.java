@@ -80,29 +80,5 @@ public class t_settings {
         set(name, active ? "1" : "0");
     }
 
-    public void revertBoolean(String name) {
-        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
-
-
-            String newValue = t_settings.INSTANCE.active(name) ? "0" : "1"; //Было 1 ставим 0. и наоборот
-            ContentValues cv = new ContentValues();
-            cv.put(Namespace.FIELD_NAME, name);
-            cv.put(Namespace.FIELD_VALUE, newValue);
-
-            try {
-                if (settings.containsKey(name)) {
-                    db.update(Namespace.TABLE_SETTINGS, cv, Namespace.FIELD_NAME + " = '" + name + "'", null);
-                } else {
-                    db.insert(Namespace.TABLE_SETTINGS, null, cv);
-                }
-
-                settings.put(name, newValue);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                Help.alert(ex.getMessage());
-            }
-        }
-    }
-
 
 }

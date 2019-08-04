@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney.page.cost.add.master;
 
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -11,11 +10,11 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
-import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -214,7 +213,7 @@ public class MasterWhom extends ListPage {
     }
 
     @Override
-    protected void onItemClick(ListView list, AdapterView<?> a, View view, int position, long id) {
+    protected void onItemClick(ListView list, int position) {
 
         SparseBooleanArray sbArray = list.getCheckedItemPositions();
         AdapterMembersList adapter = (AdapterMembersList)list.getAdapter();
@@ -230,8 +229,5 @@ public class MasterWhom extends ListPage {
         list.invalidateViews();
     }
 
-    @Override
-    protected boolean onItemLongClick(ListView list, AdapterView<?> adapter, View view, int position, long arg3) {
-        return false;
-    }
+
 }

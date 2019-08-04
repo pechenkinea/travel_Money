@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney.page.main.fragment;
 
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -13,18 +12,14 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
-import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.GroupCost;
-import com.pechenkin.travelmoney.list.AdapterCostList;
+import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
+import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
 import com.pechenkin.travelmoney.page.main.CostListBackground;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
-
-import java.util.List;
 
 
 public class CostListFragment extends BaseMainPageFragment {
@@ -61,56 +56,24 @@ public class CostListFragment extends BaseMainPageFragment {
             FloatingActionButton mainPageSpeechRecognition = fragmentView.findViewById(R.id.mainPageSpeechRecognition);
             mainPageSpeechRecognition.setOnClickListener(view -> SpeechRecognitionHelper.run(MainActivity.INSTANCE));
 
+            FloatingActionButton addCostButton = fragmentView.findViewById(R.id.mainPageAddButton);
+            addCostButton.setOnClickListener(v -> PageOpener.INSTANCE.open(MasterWho.class));
+
+
             listViewCosts.setOnItemLongClickListener((arg0, v, index, arg3) -> {
 
-                ListAdapter adapter = listViewCosts.getAdapter();
-                Cost item = (Cost) adapter.getItem(index);
-
-                if (item != null && item.id() >= 0) {
-                    if (item.active() == 1) {
-                        t_costs.disable_cost(item.id());
-                        item.setActive(0);
-                    } else {
-                        item.setActive(1);
-                        t_costs.enable_cost(item.id());
-                    }
-                    //обновляем список
+                AdapterCostList adapter = (AdapterCostList)listViewCosts.getAdapter();
+                CostListItem item = adapter.getItem(index);
+                if (item.onLongClick()) {
                     listViewCosts.invalidateViews();
                     return true;
                 }
-                if (item instanceof GroupCost) {
-
-                    List<Cost> groupCosts = ((GroupCost) item).getCosts();
-                    if (groupCosts.size() > 0) {
-                        long statusFirst = groupCosts.get(0).active();
-                        if (statusFirst == 1) {
-                            for (Cost cost : groupCosts) {
-                                t_costs.disable_cost(cost.id());
-                                cost.setActive(0);
-                            }
-                        } else {
-                            for (Cost cost : groupCosts) {
-                                cost.setActive(1);
-                                t_costs.enable_cost(cost.id());
-                            }
-                        }
-                        ((GroupCost) item).updateSum();
-                        //обновляем список
-                        listViewCosts.invalidateViews();
-                        return true;
-                    }
-                }
 
                 return false;
+
             });
 
-            FloatingActionButton addCostButton = fragmentView.findViewById(R.id.mainPageAddButton);
-            if (addCostButton != null) {
-                addCostButton.setOnClickListener(v -> {
-                    // Открываем мастер Добавления траты
-                    PageOpener.INSTANCE.open(MasterWho.class);
-                });
-            }
+
         }
 
 
@@ -130,7 +93,7 @@ public class CostListFragment extends BaseMainPageFragment {
                     }
                 } else {
                     buttonListToTop.setAnimation(null);
-                    ((View)buttonListToTop).setVisibility(View.INVISIBLE);
+                    ((View) buttonListToTop).setVisibility(View.INVISIBLE);
                 }
             }
         });

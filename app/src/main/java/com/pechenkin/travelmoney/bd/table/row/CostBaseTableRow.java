@@ -1,8 +1,16 @@
 package com.pechenkin.travelmoney.bd.table.row;
 
 import android.database.Cursor;
+import android.view.View;
+
+import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.bd.Namespace;
+import com.pechenkin.travelmoney.bd.table.t_costs;
+import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.cost.adapter.CostListItem;
+import com.pechenkin.travelmoney.cost.adapter.CostListViewHolder;
+
 import java.util.Date;
 
 
@@ -11,7 +19,7 @@ import java.util.Date;
  * Трата
  */
 
-public class CostBaseTableRow extends BaseTableRow implements Cost {
+public class CostBaseTableRow extends BaseTableRow implements Cost, CostListItem {
 
     private final String comment;
     private final String image_dir;
@@ -23,7 +31,6 @@ public class CostBaseTableRow extends BaseTableRow implements Cost {
     //public final int currency;
     private long  active;
     //public final int trip;
-    private  int groupId = 0;
 
     private final double sum;
 
@@ -45,28 +52,28 @@ public class CostBaseTableRow extends BaseTableRow implements Cost {
 
 
     @Override
-    public long id() {
+    public long getId() {
         return id;
     }
 
     @Override
-    public long member() {
+    public long getMember() {
         return member;
     }
 
     @Override
-    public long to_member() {
+    public long getToMember() {
         return to_member;
     }
 
     @Override
-    public double sum() {
+    public double getSum() {
         return sum;
     }
 
 
     @Override
-    public long active() {
+    public long isActive() {
         return active;
     }
 
@@ -76,27 +83,74 @@ public class CostBaseTableRow extends BaseTableRow implements Cost {
     }
 
     @Override
-    public String image_dir() {
+    public String getImageDir() {
         return image_dir;
     }
 
     @Override
-    public Date date() {
+    public Date getDate() {
         return date;
     }
 
     @Override
-    public String comment() {
+    public String getComment() {
         return comment;
     }
 
     @Override
-    public void setGroupId(int groupId){
-        this.groupId = groupId;
+    public void render(CostListViewHolder holder) {
+
+        String sum = Help.DoubleToString(getSum());
+        holder.getSum_group_sum().setText(sum);
+
+        holder.disableAdditionalInfo();
+        holder.getTo_member_one().setVisibility(View.VISIBLE);
+        holder.getMember_icons_layout().setVisibility(View.GONE);
+
+
+        holder.photoImage(getImageDir());
+
+        MemberBaseTableRow member = t_members.getMemberById(getMember());
+        if (member != null) {
+            holder.getTitle().setText(member.name);
+            holder.getTitle().setTextColor(member.color);
+        }
+
+        MemberBaseTableRow to_member = t_members.getMemberById(getToMember());
+        if (to_member != null){
+            holder.getTo_member_one().setText(to_member.name);
+            holder.getTo_member_one().setTextColor(to_member.color);
+        }
+
+        holder.photoImage(getImageDir());
+
+
+        if (isActive() == 0) {
+            holder.getTitle().setTextColor(DISABLE_COLOR);
+            holder.getSum_line().setTextColor(DISABLE_COLOR);
+            holder.getComment().setTextColor(DISABLE_COLOR);
+            holder.getSum_group_sum().setTextColor(DISABLE_COLOR);
+            holder.getTo_member_one().setTextColor(DISABLE_COLOR);
+            holder.getHave_photo().setColorFilter(DISABLE_COLOR);
+        }
+
+
     }
 
     @Override
-    public int getGroupId() {
-        return groupId;
+    public boolean isClicked() {
+        return false;
+    }
+
+    @Override
+    public boolean onLongClick() {
+        if (isActive() == 1) {
+            t_costs.disable_cost(getId());
+            setActive(0);
+        } else {
+            setActive(1);
+            t_costs.enable_cost(getId());
+        }
+        return true;
     }
 }

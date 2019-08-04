@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.test.calculation;
 
-import com.pechenkin.travelmoney.calculation.Calculation;
+import com.pechenkin.travelmoney.cost.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 
@@ -22,9 +22,9 @@ public class TestCalculation {
 
         Assert.assertEquals("в итоге должна быть 1 строка", 1, result.length);
 
-        Assert.assertEquals(TestMembers.MARINA, result[0].member());
-        Assert.assertEquals(TestMembers.EVGENIY, result[0].to_member());
-        Assert.assertEquals(300, result[0].sum(), 0);
+        Assert.assertEquals(TestMembers.MARINA, result[0].getMember());
+        Assert.assertEquals(TestMembers.EVGENIY, result[0].getToMember());
+        Assert.assertEquals(300, result[0].getSum(), 0);
 
     }
 
@@ -43,9 +43,9 @@ public class TestCalculation {
 
         Assert.assertEquals("в итоге должна быть 1 строка", 1, result.length);
 
-        Assert.assertEquals(TestMembers.MARINA, result[0].member());
-        Assert.assertEquals(TestMembers.EVGENIY, result[0].to_member());
-        Assert.assertEquals(200, result[0].sum(), 0);
+        Assert.assertEquals(TestMembers.MARINA, result[0].getMember());
+        Assert.assertEquals(TestMembers.EVGENIY, result[0].getToMember());
+        Assert.assertEquals(200, result[0].getSum(), 0);
 
     }
 
@@ -79,9 +79,9 @@ public class TestCalculation {
 
         Assert.assertEquals("в итоге должна быть 1 строка", 1, result.length);
 
-        Assert.assertEquals(TestMembers.MARINA, result[0].member());
-        Assert.assertEquals(TestMembers.EVGENIY, result[0].to_member());
-        Assert.assertEquals(600, result[0].sum(), 0);
+        Assert.assertEquals(TestMembers.MARINA, result[0].getMember());
+        Assert.assertEquals(TestMembers.EVGENIY, result[0].getToMember());
+        Assert.assertEquals(600, result[0].getSum(), 0);
 
     }
 
@@ -111,7 +111,7 @@ public class TestCalculation {
         Cost[] result = Calculation.calculate(costs);
 
         Assert.assertEquals("в итоге должна быть 2 строки", 2, result.length);
-        Assert.assertEquals(800, result[0].sum() + result[1].sum(), 0);
+        Assert.assertEquals(800, result[0].getSum() + result[1].getSum(), 0);
     }
 
     @Test

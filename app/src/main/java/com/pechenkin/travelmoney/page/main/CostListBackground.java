@@ -10,20 +10,17 @@ import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_settings;
-import com.pechenkin.travelmoney.calculation.Calculation;
-import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.cost.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.GroupCost;
+import com.pechenkin.travelmoney.cost.adapter.LabelItem;
 import com.pechenkin.travelmoney.cost.ShortCost;
+import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
     private final TripBaseTableRow trip;
     private ProgressDialog processDialog;
-    private Cost[] finalList = {};
-
-    public Cost[] getFinalList() {
-        return finalList;
-    }
+    private CostListItem[] finalList = {};
 
     private final DoOnPostExecute doOnPostExecute;
 
@@ -46,7 +43,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
             CostQueryResult costList = t_costs.getAllByTripId(this.trip.id);
 
-            Cost[] calculationList = {};
+            ShortCost[] calculationList = {};
             if (costList.hasRows()) {
                 calculationList = Calculation.calculate(costList.getAllRows());
 
@@ -57,14 +54,14 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
             }
 
             if (calculationList.length > 0) {
-                finalList = Help.concat(finalList, new Cost[]{new ShortCost(-1, -1, 0f, "↓ Кто кому сколько должен ↓")});
+                finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("↓ Кто кому сколько должен ↓")});
                 finalList = Help.concat(finalList, calculationList);
             } else {
-                finalList = Help.concat(finalList, new Cost[]{new ShortCost(-1, -1, 0f, "Долгов нет")});
+                finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Долгов нет")});
             }
 
             if (costList.hasRows()) {
-                finalList = Help.concat(finalList, new Cost[]{new ShortCost(-1, -1, 0f, "↓ Список всех операций ↓")});
+                finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("↓ Список всех операций ↓")});
 
                 if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST)) {
                     // Группировка
@@ -93,7 +90,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
     }
 
     public interface DoOnPostExecute{
-        void onPostExecute(Cost[] finalList);
+        void onPostExecute(CostListItem[] finalList);
     }
 
 

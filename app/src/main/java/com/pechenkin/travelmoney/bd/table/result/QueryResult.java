@@ -19,7 +19,4 @@ interface QueryResult {
     void initializeCountRows(int count);
     void addRow(Cursor c);
 
-
-
-
 }

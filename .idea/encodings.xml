@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding">
+  <component name="Encoding" addBOMForNewFiles="with NO BOM">
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/pechenkin/travelmoney/MainActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/pechenkin/travelmoney/bd/DBHelper.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/pechenkin/travelmoney/list/AdapterCostList.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/pechenkin/travelmoney/list/Adapter_members_list.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/pechenkin/travelmoney/cost/adapter/AdapterCostList.java" charset="UTF-8" />
   </component>
 </project>

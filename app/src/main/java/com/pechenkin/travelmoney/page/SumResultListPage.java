@@ -1,16 +1,14 @@
 package com.pechenkin.travelmoney.page;
 
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.CostBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.t_costs;
+import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterSumResultList;
 import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.summry.Summary;
@@ -73,14 +71,10 @@ public class SumResultListPage extends ListPage {
     }
 
     @Override
-    protected void onItemClick(ListView list, AdapterView<?> a, View view, int position, long id) {
+    protected void onItemClick(ListView list, int position) {
 
     }
 
-    @Override
-    protected boolean onItemLongClick(ListView list, AdapterView<?> a, View view, int position, long arg3) {
-        return false;
-    }
 
 
 }

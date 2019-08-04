@@ -1,7 +1,7 @@
 package com.pechenkin.travelmoney.test.calculation;
 
 import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.calculation.Calculation;
+import com.pechenkin.travelmoney.cost.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 
@@ -45,8 +45,8 @@ public class GroupCalculation {
         Cost[] groupResult = Calculation.groupByColor(result);
         Assert.assertEquals("в итоге должна быть 1 строка", 1, groupResult.length);
 
-        Assert.assertEquals(TestMembers.VLAD, groupResult[0].to_member());
-        Assert.assertEquals(400, groupResult[0].sum(), 0);
+        Assert.assertEquals(TestMembers.VLAD, groupResult[0].getToMember());
+        Assert.assertEquals(400, groupResult[0].getSum(), 0);
 
     }
 

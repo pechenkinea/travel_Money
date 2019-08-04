@@ -22,20 +22,20 @@ public class Total {
 
         for (CostBaseTableRow cost:costs) {
 
-            if (cost.active() == 0 )
+            if (cost.isActive() == 0 )
             {
                 continue;
             }
 
-            if (!members.containsKey(cost.member()))
-                members.put(cost.member(), new MemberSum(cost.member()));
+            if (!members.containsKey(cost.getMember()))
+                members.put(cost.getMember(), new MemberSum(cost.getMember()));
 
-            Objects.requireNonNull(members.get(cost.member())).addSumOut(cost.sum());
+            Objects.requireNonNull(members.get(cost.getMember())).addSumOut(cost.getSum());
 
-            if (!members.containsKey(cost.to_member()))
-                members.put(cost.to_member(), new MemberSum(cost.to_member()));
+            if (!members.containsKey(cost.getToMember()))
+                members.put(cost.getToMember(), new MemberSum(cost.getToMember()));
 
-            Objects.requireNonNull(members.get(cost.to_member())).addSumIn(cost.sum());
+            Objects.requireNonNull(members.get(cost.getToMember())).addSumIn(cost.getSum());
         }
 
 

@@ -11,19 +11,19 @@ import java.util.regex.Pattern;
 
 public class WordCollection {
 
-    static String ME = "{me}";
-    static String ALL = "{all}";
-    static String MASTER = "{master}";
-    static String OWNER = "{owner}";
+    static final String ME = "{me}";
+    static final String ALL = "{all}";
+    static final String MASTER = "{master}";
+    static final String OWNER = "{owner}";
 
 
-    private static String HALF = "<half>";
+    private static final String HALF = "<half>";
 
     private String[] words;
     private int length;
     private int position = -1;
 
-    private static StringNumeric[] NUMERIC_NAMES = {
+    private static final StringNumeric[] NUMERIC_NAMES = {
             new StringNumeric("(од)([а-я]{2})", "1"),   //одИН, одНА, одНУ
             new StringNumeric("(дв)([а-я]{1})", "2"), // двА, двЕ
             new StringNumeric("три", "3"),
@@ -104,7 +104,7 @@ public class WordCollection {
 
 
     private static class WrapperString {
-        String text;
+        final String text;
 
         WrapperString(String text) {
             this.text = text;
@@ -170,12 +170,13 @@ public class WordCollection {
 
         static String multiplied(String text) {
             double result = 0;
-            String[] numerics = text.split("\\*");
-            for (String s : numerics) {
+            String[] numeric = text.split("\\*");
+            for (String s : numeric) {
 
                 if (s.equals(HALF)) {
 
-                    String resultStr = Help.DoubleToString(result).replaceAll(" ", "")
+                    String resultStr = Help.DoubleToString(result)
+                            .replaceAll(" ", "")
                             .replaceAll("(.+)?([1-9]\\d{0,2})((000)+)?$", "$1$2")
                             .replaceAll("null", "");
 
@@ -208,8 +209,8 @@ public class WordCollection {
     }
 
     private static class StringNumeric {
-        String regex;
-        String value;
+        final String regex;
+        final String value;
 
         StringNumeric(String regex, String value) {
             this.regex = regex + "(\\s|$)";

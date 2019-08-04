@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.calculation;
+package com.pechenkin.travelmoney.cost.calculation;
 
 import android.util.LongSparseArray;
 
@@ -23,7 +23,7 @@ public class Calculation {
      * @param list массив всех проводок, которые надо посчитать
      * @return массив проводок где указано не кто кому сколько дал а кто кому сколько должен
      */
-    public static Cost[] calculate(Cost[] list) {
+    public static ShortCost[] calculate(Cost[] list) {
 
         LongSparseArray<MemberSum> members = new LongSparseArray<>();
 
@@ -35,22 +35,22 @@ public class Calculation {
         for (Cost cost : list) {
 
             // если проводка помечена как удаленная или участник дал сам себе то не учитываем такую проводку
-            if (cost.active() == 0 || cost.member() == cost.to_member()) {
+            if (cost.isActive() == 0 || cost.getMember() == cost.getToMember()) {
                 continue;
             }
 
-            // если в мапе еще нет участника  cost.member() добавляем его с нулевой суммой
-            if (members.get(cost.member()) == null)
-                members.put(cost.member(), new MemberSum(cost.member()));
+            // если в мапе еще нет участника  cost.getMember() добавляем его с нулевой суммой
+            if (members.get(cost.getMember()) == null)
+                members.put(cost.getMember(), new MemberSum(cost.getMember()));
 
 
-            members.get(cost.member()).addSum(cost.sum()); // Добавляем сумму
+            members.get(cost.getMember()).addSum(cost.getSum()); // Добавляем сумму
 
-            // если в мапе еще нет участника  cost.to_member() добавляем его с нулевой суммой
-            if (members.get(cost.to_member()) == null)
-                members.put(cost.to_member(), new MemberSum(cost.to_member()));
+            // если в мапе еще нет участника  cost.getToMember() добавляем его с нулевой суммой
+            if (members.get(cost.getToMember()) == null)
+                members.put(cost.getToMember(), new MemberSum(cost.getToMember()));
 
-            members.get(cost.to_member()).removeSum(cost.sum()); // Отнимаем сумму
+            members.get(cost.getToMember()).removeSum(cost.getSum()); // Отнимаем сумму
         }
 
 
@@ -73,7 +73,7 @@ public class Calculation {
         // Формируем итоговый список
         // т.к. при добавлении суммы одному у другого такую же сумму отнимаем сумма положительных будет равна сумме отрицательных
         // остается только распределить эти суммы
-        ArrayList<Cost> resultList = new ArrayList<>();
+        ArrayList<ShortCost> resultList = new ArrayList<>();
 
         // перебираем участников с положительной суммой т.к. главное получить то что отдал а не отдать то, что получил
         for (MemberSum positive : positiveMember) {
@@ -122,59 +122,61 @@ public class Calculation {
         }
 
 
-        return resultList.toArray(new Cost[0]);
+        return resultList.toArray(new ShortCost[0]);
 
     }
 
 
     /**
-     * Вместо id участников ставит id их цветов и закидывает на пересчет
+     * Вместо Id участников ставит id их цветов и закидывает на пересчет
      *
      * @param calculationList лист с итогами (<b>кто кому должен</b>)
      * @return лист с итогами с учетом того, что у одинаковых цветов один бюджет
      */
-    public static Cost[] groupByColor(Cost[] calculationList) {
+    public static ShortCost[] groupByColor(Cost[] calculationList) {
 
         if (calculationList.length == 0)
-            return calculationList;
+            return new ShortCost[0];
 
         Cost[] calcListCosts = new Cost[calculationList.length];
         LongSparseArray<Long> membersByColor = new LongSparseArray<>();
         for (int i = 0; i < calculationList.length; i++) {
 
             Cost calcCost = calculationList[i];
-            int memberColor = t_members.getColorById(calcCost.member());
-            int to_memberColor = t_members.getColorById(calcCost.to_member());
+            int memberColor = t_members.getColorById(calcCost.getMember());
+            int to_memberColor = t_members.getColorById(calcCost.getToMember());
 
-            membersByColor.put(to_memberColor, calcCost.to_member());
+            membersByColor.put(to_memberColor, calcCost.getToMember());
             if (membersByColor.indexOfKey(memberColor) < 0) {
-                membersByColor.put(memberColor, calcCost.member());
+                membersByColor.put(memberColor, calcCost.getMember());
             }
 
             // т.к. в calculationList приходит "кто кому должен" надо перевернуть значения, что бы получилось "кто кому дал"
-            // поэтому первым параметром в ShortCost отдаем to_member а вторым member
-            Cost forGroupCost = new ShortCost(to_memberColor, memberColor, calcCost.sum());
+            // поэтому первым параметром в ShortCost отдаем getToMember а вторым getMember
+            Cost forGroupCost = new ShortCost(to_memberColor, memberColor, calcCost.getSum());
             calcListCosts[i] = forGroupCost;
         }
 
 
         calculationList = Calculation.calculate(calcListCosts);
 
+
+        ShortCost[] result = new ShortCost[calculationList.length];
         //Переводим цвета обратно в учатников что бы вывести в список
         for (int i = 0; i < calculationList.length; i++) {
 
-            Cost c = new ShortCost(
-                    membersByColor.get(calculationList[i].member()),
-                    membersByColor.get(calculationList[i].to_member()),
-                    calculationList[i].sum()
+            ShortCost c = new ShortCost(
+                    membersByColor.get(calculationList[i].getMember()),
+                    membersByColor.get(calculationList[i].getToMember()),
+                    calculationList[i].getSum()
             );
 
-            calculationList[i] = c;
+            result[i] = c;
 
         }
 
 
-        return calculationList;
+        return result;
 
 
     }
@@ -189,7 +191,7 @@ public class Calculation {
         /**
          * Создает новый объект MemberSum с нулевой суммой
          *
-         * @param id id участника
+         * @param id Id участника
          */
         MemberSum(long id) {
             this.id = id;

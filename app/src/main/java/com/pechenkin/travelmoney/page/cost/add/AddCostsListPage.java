@@ -1,7 +1,6 @@
 package com.pechenkin.travelmoney.page.cost.add;
 
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -84,8 +83,8 @@ public class AddCostsListPage extends BasePage {
             boolean added = false;
             Date addCostDate = new Date();
             for (ShortCost c : costs) {
-                if (c.member() > -1 && c.sum() > 0) {
-                    t_costs.add(c.member(), c.to_member(), comment, c.sum(), "", t_trips.ActiveTrip.id, addCostDate);
+                if (c.getMember() > -1 && c.getSum() > 0) {
+                    t_costs.add(c.getMember(), c.getToMember(), comment, c.getSum(), "", t_trips.ActiveTrip.id, addCostDate);
                     added = true;
                 }
             }
@@ -190,7 +189,7 @@ public class AddCostsListPage extends BasePage {
 
 
                 if (item.isChange()) {
-                    sumGroup = item.sum();
+                    sumGroup = item.getSum();
                 }
 
                 for (ShortCost c : costs) {
@@ -200,7 +199,7 @@ public class AddCostsListPage extends BasePage {
                                 costGroup.add(c);
                             }
 
-                            sumGroup += c.sum();
+                            sumGroup += c.getSum();
                         }
                     }
                 }
@@ -215,7 +214,7 @@ public class AddCostsListPage extends BasePage {
                 double allSum = 0;
                 for (ShortCost c : costs) {
                     if (c.member > -1) {
-                        allSum += c.sum();
+                        allSum += c.getSum();
                     }
                 }
                 costs.get(costs.size() - 1).sum = allSum;

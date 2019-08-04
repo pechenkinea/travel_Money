@@ -71,12 +71,6 @@ public class CostCreator {
         }
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-
-
     private void execute()
     {
         while (words.hasNext())

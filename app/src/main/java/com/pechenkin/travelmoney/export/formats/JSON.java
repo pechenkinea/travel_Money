@@ -30,19 +30,19 @@ public class JSON implements ExportFormat {
             if (costs.hasRows()) {
                 for (CostBaseTableRow cost : costs.getAllRows()) {
                     JSONObject json_cost = new JSONObject();
-                    json_cost.put("date", (cost.date() != null) ? cost.date().getTime() : "");
-                    json_cost.put("member", cost.member());
-                    json_cost.put("to_member", cost.to_member());
-                    json_cost.put("sum", cost.sum());
-                    json_cost.put("comment", cost.comment());
-                    json_cost.put("active", cost.active());
+                    json_cost.put("date", (cost.getDate() != null) ? cost.getDate().getTime() : "");
+                    json_cost.put("member", cost.getMember());
+                    json_cost.put("to_member", cost.getToMember());
+                    json_cost.put("sum", cost.getSum());
+                    json_cost.put("comment", cost.getComment());
+                    json_cost.put("active", cost.isActive());
                     json_costs.put(json_cost);
 
-                    if (!membersList.contains(cost.member()))
-                        membersList.add(cost.member());
+                    if (!membersList.contains(cost.getMember()))
+                        membersList.add(cost.getMember());
 
-                    if (!membersList.contains(cost.to_member()))
-                        membersList.add(cost.to_member());
+                    if (!membersList.contains(cost.getToMember()))
+                        membersList.add(cost.getToMember());
 
                 }
             }

@@ -11,6 +11,7 @@
     <color name="green">#3db432</color>
     <color name="red">#b43232</color>
 
+    <string name="disableCost">#cccccc</string>
 
 
     <string-array name="member_colors">

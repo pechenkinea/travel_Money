@@ -20,20 +20,20 @@ public class CSV implements ExportFormat {
         valueCosts.append("Дата;Кто;Кому;Сколько;Активно;Комментарий").append("\r\n");
         if (costs.hasRows()) {
             for (CostBaseTableRow cost : costs.getAllRows()) {
-                String line = ((cost.date() != null) ? Help.dateToDateTimeStr(cost.date()) : "") + ";"
-                        + cost.member() + ";"
-                        + cost.to_member() + ";"
-                        + String.valueOf(cost.sum()).replace('.', ',') + ";"
-                        + cost.active() + ";"
-                        + cost.comment();
+                String line = ((cost.getDate() != null) ? Help.dateToDateTimeStr(cost.getDate()) : "") + ";"
+                        + cost.getMember() + ";"
+                        + cost.getToMember() + ";"
+                        + String.valueOf(cost.getSum()).replace('.', ',') + ";"
+                        + cost.isActive() + ";"
+                        + cost.getComment();
                 line = line.replaceAll("\n|\n\r", " ");
                 valueCosts.append(line).append("\r\n");
 
-                if (!membersList.contains(cost.member()))
-                    membersList.add(cost.member());
+                if (!membersList.contains(cost.getMember()))
+                    membersList.add(cost.getMember());
 
-                if (!membersList.contains(cost.to_member()))
-                    membersList.add(cost.to_member());
+                if (!membersList.contains(cost.getToMember()))
+                    membersList.add(cost.getToMember());
             }
         }
 

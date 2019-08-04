@@ -1,7 +1,5 @@
 package com.pechenkin.travelmoney.page;
 
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.pechenkin.travelmoney.MainActivity;
@@ -24,17 +22,14 @@ public abstract class ListPage extends BasePage {
     }
 
     protected abstract int getListViewId();
-    protected abstract void onItemClick(ListView list, AdapterView<?> adapter, View view, int position, long id);
-    protected abstract  boolean onItemLongClick(ListView list, AdapterView<?> adapter, View view, int position, long arg3);
+    protected abstract void onItemClick(ListView list, int position);
 
     @Override
     public void addEvents() {
         final ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
         if (list != null)
         {
-            list.setOnItemClickListener((parent, view, position, id) -> ListPage.this.onItemClick(list, parent, view, position, id));
-
-            list.setOnItemLongClickListener((parent, view, position, id) -> ListPage.this.onItemLongClick(list, parent, view, position, id));
+            list.setOnItemClickListener((parent, view, position, id) -> ListPage.this.onItemClick(list, position));
         }
     }
 
