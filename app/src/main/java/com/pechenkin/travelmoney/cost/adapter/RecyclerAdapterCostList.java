@@ -27,12 +27,88 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Адаптер для страницы редактирования трат при добавлении голосом
+ */
 public class RecyclerAdapterCostList extends RecyclerView.Adapter {
 
 
     private final List<CostListItem> data;
     private boolean isCanEditAllSum = false;
     private double totalSum;
+    private static LayoutInflater inflater = null;
+    private final RecyclerView listView;
+
+
+    public RecyclerAdapterCostList(Context a, List<CostListItem> data, RecyclerView listView) {
+
+        this.listView = listView;
+        inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.data = data;
+
+        double sum = 0f;
+        Set<Integer> groups = new HashSet<>();
+
+        for (CostListItem c : data) {
+            if (c instanceof ShortCost) {
+                sum += ((ShortCost) c).sum;
+                if (((ShortCost) c).getGroupId() > 0) {
+                    groups.add(((ShortCost) c).getGroupId());
+                }
+            }
+        }
+
+        this.totalSum = sum;
+        //В последнюю строку добавляем сумму всех трат
+        this.data.add(new OnlySumCostItem(this.totalSum));
+
+        // если после распознавания фразы пришла только одна группа трат. т.е. это на фраза вроде "Я за Грина и Свету 140 а за Влада 30" или "Я за всех 350 магазин и за Грина 140"
+        // тогда можно будет редактировать общую сумму и она будет распределяться по всем
+        if (groups.size() == 1) {
+            isCanEditAllSum = true;
+        }
+
+    }
+
+
+    public CostListItem getItem(int position) {
+        try {
+            return data.get(position);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public List<CostListItem> getData() {
+        return data;
+    }
+
+    /**
+     * Обновление общий суммы трат
+     */
+    private void updateTotalSum(){
+        double allSum = 0;
+        for (CostListItem c : data) {
+            if (c instanceof ShortCost) {
+                if (((ShortCost) c).member > -1) {
+                    allSum += ((ShortCost) c).getSum();
+                }
+            }
+        }
+
+        this.totalSum = allSum;
+        ((OnlySumCostItem)data.get(data.size() - 1)).setSum(this.totalSum);
+
+
+        listView.setAdapter(null);
+        listView.setAdapter(this);
+
+
+        View refresh_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button);
+        if (refresh_button != null) {
+            refresh_button.setVisibility(View.VISIBLE);
+        }
+    }
 
     public void remove(int position) {
 
@@ -76,75 +152,6 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
 
         }
 
-    }
-
-    public CostListItem getItem(int position) {
-        try {
-            return data.get(position);
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public List<CostListItem> getData() {
-        return data;
-    }
-
-    private static LayoutInflater inflater = null;
-    private final RecyclerView listView;
-
-    public RecyclerAdapterCostList(Context a, List<CostListItem> data, RecyclerView listView) {
-
-        this.listView = listView;
-        inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.data = data;
-
-        double sum = 0f;
-        Set<Integer> groups = new HashSet<>();
-
-        for (CostListItem c : data) {
-            if (c instanceof ShortCost) {
-                sum += ((ShortCost) c).sum;
-                if (((ShortCost) c).getGroupId() > 0) {
-                    groups.add(((ShortCost) c).getGroupId());
-                }
-            }
-        }
-
-        this.totalSum = sum;
-        this.data.add(new OnlySumCostItem(this.totalSum));
-
-        // если после распознавания фразы пришла только одна группа трат. т.е. это на фраза вроде "Я за Грина и Свету 140 а за Влада 30" или "Я за всех 350 магазин и за Грина 140"
-        // тогда можно будет редактировать общую сумму и она будет распределяться по всем
-        if (groups.size() == 1) {
-            isCanEditAllSum = true;
-        }
-
-    }
-
-    private void updateTotalSum(){
-
-        double allSum = 0;
-        for (CostListItem c : data) {
-            if (c instanceof ShortCost) {
-                if (((ShortCost) c).member > -1) {
-                    allSum += ((ShortCost) c).getSum();
-                }
-            }
-        }
-
-        this.totalSum = allSum;
-        ((OnlySumCostItem)data.get(data.size() - 1)).setSum(this.totalSum);
-
-
-        listView.setAdapter(null);
-        listView.setAdapter(this);
-
-
-        View refresh_button = MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button);
-        if (refresh_button != null) {
-            refresh_button.setVisibility(View.VISIBLE);
-        }
     }
 
 

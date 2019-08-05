@@ -8,7 +8,10 @@ import com.pechenkin.travelmoney.BuildConfig;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.SafeURLSpan;
+import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.page.main.MainPage;
+
+import java.lang.invoke.ConstantCallSite;
 
 /**
  * Created by pechenkin on 11.05.2018.
@@ -55,7 +58,7 @@ public class AboutPage extends BasePage {
         developerEmail.setMovementMethod(LinkMovementMethod.getInstance());
 
         TextView linkToPlayMarket = MainActivity.INSTANCE.findViewById(R.id.linkToPlayMarket);
-        linkToPlayMarket.setText(SafeURLSpan.parseSafeHtml("<a href=\"https://play.google.com/store/apps/details?id=com.pechenkin.travelmoney\">TravelMoney в PlayMarket</a>"));
+        linkToPlayMarket.setText(SafeURLSpan.parseSafeHtml("<a href=\"" + TMConst.TM_APP_URL + "\">TravelMoney в PlayMarket</a>"));
         linkToPlayMarket.setMovementMethod(LinkMovementMethod.getInstance());
 
         TextView linkToGitHub = MainActivity.INSTANCE.findViewById(R.id.linkToGitHub);

@@ -111,7 +111,7 @@ public class ShortCost implements Cost, CostListItem {
     @Override
     public void render(ListItemSummaryViewHolder holder) {
 
-        String sum = Help.DoubleToString(getSum());
+        String sum = Help.doubleToString(getSum());
 
         if (isChange()) {
             holder.getSum_group_sum().setText(Html.fromHtml("<b>" + sum + "</b> "));

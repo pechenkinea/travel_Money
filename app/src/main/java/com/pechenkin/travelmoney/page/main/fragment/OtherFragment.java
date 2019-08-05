@@ -44,7 +44,7 @@ public class OtherFragment extends BaseMainPageFragment {
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
-            builder.setTitle("Выберите тип файла:");
+            builder.setTitle("Выберите тип:");
 
             builder.setItems(fileTypes, (dialog, which) -> {
                 Export.export(t_trips.ActiveTrip, ExportFileTypes.values()[which]);

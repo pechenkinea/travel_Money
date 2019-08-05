@@ -48,7 +48,7 @@ public class MasterWhom extends ListPage {
         String desc = "";
         try
         {
-            desc = " (" + t_members.getMemberById(getParam().getId()).name + " " + Help.DoubleToString(getParam().getSum()) + ")";
+            desc = " (" + t_members.getMemberById(getParam().getId()).name + " " + Help.doubleToString(getParam().getSum()) + ")";
         }
         catch(Exception ex)
         {

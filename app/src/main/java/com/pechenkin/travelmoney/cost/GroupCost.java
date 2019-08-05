@@ -116,7 +116,7 @@ public class GroupCost implements CostListItem {
     @Override
     public void render(ListItemSummaryViewHolder holder) {
 
-        holder.getSum_group_sum().setText(Help.DoubleToString(this.sum));
+        holder.getSum_group_sum().setText(Help.doubleToString(this.sum));
 
         List<Cost> costs = getCosts();
 
@@ -158,7 +158,7 @@ public class GroupCost implements CostListItem {
 
                 int to_memberColor = to_member.color;
 
-                String s = Help.DoubleToString(costInGroup.getSum());
+                String s = Help.doubleToString(costInGroup.getSum());
                 if (costInGroup.isActive() != 0) {
                     sumText.append(s);
                 } else {

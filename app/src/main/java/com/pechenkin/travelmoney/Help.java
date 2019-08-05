@@ -119,7 +119,7 @@ public class Help {
         }
     }
 
-    public static String DoubleToString(double value) {
+    public static String doubleToString(double value) {
         if (value == 0)
             return "0";
 

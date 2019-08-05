@@ -110,7 +110,7 @@ public class AdapterMembersList extends BaseAdapter {
 
                 final EditText input = new EditText(MainActivity.INSTANCE);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                input.setText(Help.DoubleToString(item.getSum()));
+                input.setText(Help.doubleToString(item.getSum()));
 
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -192,7 +192,7 @@ public class AdapterMembersList extends BaseAdapter {
 
                 if (showSum) {
                     if (data[position].isChange()) {
-                        holder.memberSumText.setText(Html.fromHtml("<b>" + Help.DoubleToString(data[position].getSum()) + "</b> "));
+                        holder.memberSumText.setText(Html.fromHtml("<b>" + Help.doubleToString(data[position].getSum()) + "</b> "));
                         holder.memberSumText.setVisibility(View.VISIBLE);
                         holder.editButton.setVisibility(View.VISIBLE);
                     } else {
@@ -211,7 +211,7 @@ public class AdapterMembersList extends BaseAdapter {
                         }
                         if (selectedCount > 0) {
                             double sumOne = distributionSum / selectedCount;
-                            holder.memberSumText.setText(Help.DoubleToString((sumOne > 0) ? sumOne : 0));
+                            holder.memberSumText.setText(Help.doubleToString((sumOne > 0) ? sumOne : 0));
                             data[position].setSum((sumOne > 0) ? sumOne : 0);
 
                             holder.memberSumText.setVisibility(View.VISIBLE);

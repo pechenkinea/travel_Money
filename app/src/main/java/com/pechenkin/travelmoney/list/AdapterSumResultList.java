@@ -68,11 +68,11 @@ public class AdapterSumResultList extends BaseAdapter {
         Summary item = data[position];
         holder.name.setText(t_members.getMemberById(item.member).name);
 
-        holder.in.setText(Help.DoubleToString(item.sumIn));
-        holder.out.setText(Help.DoubleToString(item.sumOut));
+        holder.in.setText(Help.doubleToString(item.sumIn));
+        holder.out.setText(Help.doubleToString(item.sumOut));
 
         double sum = item.sumOut - item.sumIn;
-        holder.sum.setText(Help.DoubleToString(sum));
+        holder.sum.setText(Help.doubleToString(sum));
         if (sum < 0) {
             holder.sum.setTextColor(Color.parseColor("#b43232"));
         } else {

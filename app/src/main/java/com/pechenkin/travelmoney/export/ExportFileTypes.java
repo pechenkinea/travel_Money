@@ -4,6 +4,10 @@ import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.export.formats.CSV;
 import com.pechenkin.travelmoney.export.formats.ExportFormat;
 import com.pechenkin.travelmoney.export.formats.JSON;
+import com.pechenkin.travelmoney.export.formats.TotalDebt;
+import com.pechenkin.travelmoney.export.formats.send.types.SendType;
+import com.pechenkin.travelmoney.export.formats.send.types.SimpleText;
+import com.pechenkin.travelmoney.export.formats.send.types.TextFile;
 
 /**
  * Created by pechenkin on 02.04.2018.
@@ -11,28 +15,26 @@ import com.pechenkin.travelmoney.export.formats.JSON;
  */
 
 public enum ExportFileTypes {
-    JSON("json", "application/json", new JSON()),
-    CSV("csv", "text/csv", new CSV());
+    TOTAL_DEBT("Только итоги", new TotalDebt(), new SimpleText()),
+    JSON("Все опреции в файл .json", new JSON(), new TextFile()),
+    CSV("Все опреции в файл .csv", new CSV(), new TextFile());
 
     private final String fileType;
-    private final String mimeType ;
     private final ExportFormat exportFormat;
+    private final SendType sendType;
 
-    ExportFileTypes(String fType, String mType, ExportFormat exportFormat) {
+    ExportFileTypes(String fType, ExportFormat exportFormat, SendType sendType) {
         this.fileType = fType;
-        this.mimeType = mType;
         this.exportFormat = exportFormat;
+        this.sendType = sendType;
     }
 
-    public String getText(TripBaseTableRow pageTrip){
-        return  exportFormat.getText(pageTrip);
+    public void send(TripBaseTableRow pageTrip){
+        sendType.send(pageTrip, exportFormat);
     }
 
     public String toString() {
         return this.fileType;
     }
 
-    public String getMimeTypeName() {
-        return this.mimeType;
-    }
 }

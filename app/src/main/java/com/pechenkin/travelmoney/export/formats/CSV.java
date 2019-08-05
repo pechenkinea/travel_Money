@@ -50,4 +50,14 @@ public class CSV implements ExportFormat {
         valueMembers.append("\r\n");
         return valueMembers.append(valueCosts).toString();
     }
+
+    @Override
+    public String getMimeType() {
+        return "text/csv";
+    }
+
+    @Override
+    public String getExpansionType() {
+        return ".csv";
+    }
 }

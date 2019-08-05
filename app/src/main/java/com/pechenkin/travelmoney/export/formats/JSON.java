@@ -68,4 +68,14 @@ public class JSON implements ExportFormat {
 
         return exportJson.toString();
     }
+
+    @Override
+    public String getMimeType() {
+        return "application/json";
+    }
+
+    @Override
+    public String getExpansionType() {
+        return ".json";
+    }
 }

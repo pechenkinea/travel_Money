@@ -15,14 +15,12 @@ import com.pechenkin.travelmoney.bd.table.t_trips;
 import java.util.Date;
 import java.util.Random;
 
-@Deprecated
 class CostCreator {
 
     /*
      * Добавляет в текущую поездку 4000 операций разом.
      * каждые 4 имеют общую дату и комментарий для группировки
      */
-    @Deprecated
     public static void createBigCostList() {
 
         final ProgressDialog progressDialog = Help.createProgressDialog(MainActivity.INSTANCE);

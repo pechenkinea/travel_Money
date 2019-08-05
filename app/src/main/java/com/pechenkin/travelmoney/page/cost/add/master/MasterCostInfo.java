@@ -87,7 +87,7 @@ public class MasterCostInfo extends BasePage {
 
 
         if (Help.StringToDouble(sum) > ERROR_SUM) {
-            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.DoubleToString(ERROR_SUM)));
+            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.doubleToString(ERROR_SUM)));
             Help.setActiveEditText(R.id.cost_sum);
             return;
         }
@@ -259,7 +259,7 @@ public class MasterCostInfo extends BasePage {
 
                 if (getParam().getSum() > 0) {
                     ((TextInputEditText) MainActivity.INSTANCE.findViewById(R.id.cost_sum))
-                            .setText(Help.DoubleToString(getParam().getSum()).replaceAll(" ", ""));
+                            .setText(Help.doubleToString(getParam().getSum()).replaceAll(" ", ""));
                 }
 
                 if (getParam().getPhotoUrl().length() > 0) {

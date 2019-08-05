@@ -100,7 +100,7 @@ public class CostBaseTableRow extends BaseTableRow implements Cost, CostListItem
     @Override
     public void render(ListItemSummaryViewHolder holder) {
 
-        String sum = Help.DoubleToString(getSum());
+        String sum = Help.doubleToString(getSum());
         holder.getSum_group_sum().setText(sum);
 
         holder.getTo_member_one().setVisibility(View.VISIBLE);

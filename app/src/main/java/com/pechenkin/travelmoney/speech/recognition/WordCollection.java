@@ -175,7 +175,7 @@ public class WordCollection {
 
                 if (s.equals(HALF)) {
 
-                    String resultStr = Help.DoubleToString(result)
+                    String resultStr = Help.doubleToString(result)
                             .replaceAll(" ", "")
                             .replaceAll("(.+)?([1-9]\\d{0,2})((000)+)?$", "$1$2")
                             .replaceAll("null", "");
@@ -200,7 +200,7 @@ public class WordCollection {
 
             }
 
-            return Help.DoubleToString(result).replaceAll(" ", "");
+            return Help.doubleToString(result).replaceAll(" ", "");
         }
 
         String[] splitSpace() {
