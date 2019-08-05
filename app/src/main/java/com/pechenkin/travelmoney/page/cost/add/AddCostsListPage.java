@@ -15,8 +15,11 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.cost.OnlySumCostItem;
 import com.pechenkin.travelmoney.cost.ShortCost;
-import com.pechenkin.travelmoney.list.RecyclerAdapterCostList;
+import com.pechenkin.travelmoney.cost.adapter.CostListItem;
+import com.pechenkin.travelmoney.cost.adapter.LabelItem;
+import com.pechenkin.travelmoney.cost.adapter.RecyclerAdapterCostList;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -51,7 +54,6 @@ public class AddCostsListPage extends BasePage {
     }
 
 
-
     @Override
     public void addEvents() {
 
@@ -65,7 +67,7 @@ public class AddCostsListPage extends BasePage {
             RecyclerAdapterCostList adapter = (RecyclerAdapterCostList) listViewCosts.getAdapter();
 
             TextInputEditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
-            String comment =  getTextInputEditText(add_cost_comment);
+            String comment = getTextInputEditText(add_cost_comment);
 
             if (comment.length() == 0) {
                 Help.message(MainActivity.INSTANCE.getString(R.string.errorFillDescription));
@@ -78,14 +80,16 @@ public class AddCostsListPage extends BasePage {
                 return;
             }
 
-            List<ShortCost> costs = adapter.getData();
+            List<CostListItem> costs = adapter.getData();
 
             boolean added = false;
             Date addCostDate = new Date();
-            for (ShortCost c : costs) {
-                if (c.getMember() > -1 && c.getSum() > 0) {
-                    t_costs.add(c.getMember(), c.getToMember(), comment, c.getSum(), "", t_trips.ActiveTrip.id, addCostDate);
-                    added = true;
+            for (CostListItem c : costs) {
+                if (c instanceof ShortCost) {
+                    if (((ShortCost) c).getMember() > -1 && ((ShortCost) c).getSum() > 0) {
+                        t_costs.add(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", t_trips.ActiveTrip.id, addCostDate);
+                        added = true;
+                    }
                 }
             }
 
@@ -97,8 +101,6 @@ public class AddCostsListPage extends BasePage {
         });
 
 
-
-
     }
 
 
@@ -108,7 +110,7 @@ public class AddCostsListPage extends BasePage {
         TextInputEditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
 
         if (text.length() > 0) {
-            CostCreator cc = new CostCreator(text,  getTextInputEditText(add_cost_comment));
+            CostCreator cc = new CostCreator(text, getTextInputEditText(add_cost_comment));
             PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
             PageOpener.INSTANCE.open(AddCostsListPage.class, param);
         }
@@ -130,16 +132,16 @@ public class AddCostsListPage extends BasePage {
         text.setText(getParam().getCostCreator().getText());
 
 
-        List<ShortCost> finalList = new ArrayList<>();
+        List<CostListItem> finalList = new ArrayList<>();
         if (getParam().getCostCreator().hasCosts()) {
-            finalList.add(new ShortCost(-1, -1, 0f, "↓ Проверьте кто кому сколько дал ↓"));
+            finalList.add(new LabelItem("↓ Проверьте кто кому сколько дал ↓"));
 
             ShortCost[] costs = getParam().getCostCreator().getCosts();
             finalList.addAll(Arrays.asList(costs));
 
 
         } else {
-            finalList.add(new ShortCost(-1, -1, 0f, "Не удалось разобрать"));
+            finalList.add(new LabelItem("Не удалось разобрать"));
         }
 
         TextInputEditText add_cost_comment = MainActivity.INSTANCE.findViewById(R.id.add_cost_comment);
@@ -153,7 +155,7 @@ public class AddCostsListPage extends BasePage {
         listViewCosts.setLayoutManager(mLayoutManager);
 
 
-        final RecyclerAdapterCostList adapter = new RecyclerAdapterCostList(MainActivity.INSTANCE, finalList);
+        final RecyclerAdapterCostList adapter = new RecyclerAdapterCostList(MainActivity.INSTANCE, finalList, listViewCosts);
 
 
         final ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -164,12 +166,16 @@ public class AddCostsListPage extends BasePage {
                 return false;
             }
 
+            /**
+             * Определяет можно ли удалить строку свайпом. Если вернуть 0 то строку двигать нельзя
+             */
             @Override
             public int getSwipeDirs(@NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                ShortCost item = adapter.getItem(viewHolder.getAdapterPosition());
-                if (item.member < 0) return 0;
-
-                return super.getSwipeDirs(recyclerView, viewHolder);
+                CostListItem item = adapter.getItem(viewHolder.getAdapterPosition());
+                if (item instanceof ShortCost) {
+                    return super.getSwipeDirs(recyclerView, viewHolder);
+                }
+                return 0;
             }
 
             /**
@@ -178,54 +184,8 @@ public class AddCostsListPage extends BasePage {
              */
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-                ShortCost item = adapter.getItem(viewHolder.getAdapterPosition());
-                List<ShortCost> costs = adapter.getData();
-
-                List<ShortCost> costGroup = new ArrayList<>();
-                int groupId = item.getGroupId();
-
-                double sumGroup = 0;
-
-
-                if (item.isChange()) {
-                    sumGroup = item.getSum();
-                }
-
-                for (ShortCost c : costs) {
-                    if (!c.isChange()) {
-                        if (c.getGroupId() == groupId) {
-                            if (!c.equals(item)) {
-                                costGroup.add(c);
-                            }
-
-                            sumGroup += c.getSum();
-                        }
-                    }
-                }
-
                 adapter.remove(viewHolder.getAdapterPosition());
-
-                for (ShortCost c : costGroup) {
-                    c.sum = sumGroup / costGroup.size();
-                }
-
-
-                double allSum = 0;
-                for (ShortCost c : costs) {
-                    if (c.member > -1) {
-                        allSum += c.getSum();
-                    }
-                }
-                costs.get(costs.size() - 1).sum = allSum;
-
-                listViewCosts.setAdapter(null);
-                listViewCosts.setAdapter(adapter);
-
-                MainActivity.INSTANCE.findViewById(R.id.add_costs_list_refresh_button).setVisibility(View.VISIBLE);
-
             }
-
         };
 
         // attaching the touch helper to recycler view

@@ -40,7 +40,7 @@
                 tools:text="-->" />
 
             <TextView
-                android:id="@+id/to_member"
+                android:id="@+id/toMembers"
                 style="@style/normal"
                 android:layout_gravity="center_vertical"
                 android:layout_width="0dp"

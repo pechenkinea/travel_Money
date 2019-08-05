@@ -9,7 +9,7 @@ import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
-import com.pechenkin.travelmoney.cost.adapter.CostListViewHolder;
+import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 
 import java.util.Date;
 
@@ -98,15 +98,15 @@ public class CostBaseTableRow extends BaseTableRow implements Cost, CostListItem
     }
 
     @Override
-    public void render(CostListViewHolder holder) {
+    public void render(ListItemSummaryViewHolder holder) {
 
         String sum = Help.DoubleToString(getSum());
         holder.getSum_group_sum().setText(sum);
 
-        holder.disableAdditionalInfo();
         holder.getTo_member_one().setVisibility(View.VISIBLE);
         holder.getMember_icons_layout().setVisibility(View.GONE);
 
+        holder.setComment(getComment());
 
         holder.photoImage(getImageDir());
 

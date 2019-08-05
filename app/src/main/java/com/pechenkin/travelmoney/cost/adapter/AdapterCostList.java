@@ -52,13 +52,13 @@ public class AdapterCostList extends BaseAdapter {
 
         CostListItem cost = data[position];
 
-        CostListViewHolder holder;
+        ListItemSummaryViewHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item_summary_group, parent, false);
-            holder = new CostListViewHolder(convertView);
+            holder = new ListItemSummaryViewHolder(convertView);
             convertView.setTag(holder);
         } else {
-            holder = (CostListViewHolder) convertView.getTag();
+            holder = (ListItemSummaryViewHolder) convertView.getTag();
         }
 
         holder.toDefaultView();

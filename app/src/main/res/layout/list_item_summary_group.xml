@@ -51,7 +51,6 @@
                 tools:visibility="visible">
 
 
-
             </LinearLayout>
 
             <TextView
@@ -84,8 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:orientation="horizontal"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:visibility="gone">
 
             <View
                 android:layout_width="0dp"
@@ -93,7 +91,7 @@
                 android:layout_weight="7" />
 
             <TextView
-                android:id="@+id/to_member"
+                android:id="@+id/toMembers"
                 style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -115,11 +113,13 @@
             android:id="@+id/comment"
             style="@style/lite"
 
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="24.07.2019 18:16  Магазин" />
 
         <View
+            android:id="@+id/costSeparator"
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:layout_gravity="end"
@@ -141,7 +141,7 @@
             style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"/>
+            android:layout_gravity="start|center_vertical" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sum_have_photo"
@@ -150,6 +150,15 @@
             android:padding="12dp"
             android:visibility="invisible"
             app:srcCompat="@drawable/ic_camera_24"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/listEditButton"
+            style="@style/listImageButton"
+            android:background="@drawable/edit_button_background"
+            android:padding="12dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_edit_24"
             tools:visibility="visible" />
 
 

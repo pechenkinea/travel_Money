@@ -13,7 +13,7 @@ public interface CostListItem {
     /**
      * задает настройки view для отображения траты в списке операций
      */
-    void render(CostListViewHolder costListViewHolder);
+    void render(ListItemSummaryViewHolder listItemSummaryViewHolder);
 
 
     /**

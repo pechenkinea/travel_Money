@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney.cost.adapter;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
 import android.view.View;
@@ -18,7 +19,7 @@ import com.pechenkin.travelmoney.R;
 
 import java.io.File;
 
-public class CostListViewHolder {
+public class ListItemSummaryViewHolder {
 
     private final TextView title;
     private final TextView to_member;
@@ -28,45 +29,39 @@ public class CostListViewHolder {
     private final TextView sum_line;
     private final TextView comment;
     private final AppCompatImageView have_photo;
+    private final AppCompatImageView listEditButton;
     private final TextView labelHeader;
     private final View mainLayout;
     private final LinearLayout member_icons_layout;
     private final View more_information_layout;
-    private boolean activeAdditionalInfo = true;
+    private final View costSeparator;
 
-    CostListViewHolder(View convertView) {
+    ListItemSummaryViewHolder(View convertView) {
         this.title = convertView.findViewById(R.id.sum_title);
-        this.to_member = convertView.findViewById(R.id.to_member);
+        this.to_member = convertView.findViewById(R.id.toMembers);
         this.to_member_one = convertView.findViewById(R.id.to_member_one);
         this.sum_group_sum = convertView.findViewById(R.id.sum_group_sum);
         this.sum_sum = convertView.findViewById(R.id.sum_sum);
         this.sum_line = convertView.findViewById(R.id.sum_line);
         this.comment = convertView.findViewById(R.id.comment);
         this.have_photo = convertView.findViewById(R.id.sum_have_photo);
+        this.listEditButton = convertView.findViewById(R.id.listEditButton);
         this.labelHeader = convertView.findViewById(R.id.labelHeader);
         this.mainLayout = convertView.findViewById(R.id.mainLayout);
         this.member_icons_layout = convertView.findViewById(R.id.member_icons_layout);
         this.more_information_layout = convertView.findViewById(R.id.more_information_layout);
-        setListener();
+        this.costSeparator = convertView.findViewById(R.id.costSeparator);
     }
 
-
-    public void disableAdditionalInfo() {
-        this.mainLayout.setBackground(null);  //убираем анимацию клика
-        this.activeAdditionalInfo = false;    //отключаем клик
-    }
-
-    private void setListener() {
+    public void setListenerOpenAdditionalInfo() {
         /*
          * Обработчик на нажатие кнопки открытия дополнительной информации
          */
         this.mainLayout.setOnClickListener(view -> {
-            if (activeAdditionalInfo) {
-                if (this.more_information_layout.getVisibility() == View.GONE) {
-                    ListAnimation.expand(more_information_layout);
-                } else {
-                    ListAnimation.collapse(more_information_layout);
-                }
+            if (this.more_information_layout.getVisibility() == View.GONE) {
+                ListAnimation.expand(more_information_layout);
+            } else {
+                ListAnimation.collapse(more_information_layout);
             }
         });
 
@@ -79,31 +74,48 @@ public class CostListViewHolder {
      */
     void toDefaultView() {
 
-        this.sum_sum.setText("");
-        this.sum_group_sum.setText("");
-        this.sum_line.setText("-->");
-
+        this.title.setText("");
         this.title.setTextColor(Color.BLACK);
-        this.sum_line.setTextColor(Color.BLACK);
-        this.comment.setTextColor(Color.BLACK);
-        this.to_member.setTextColor(Color.BLACK);
+
+        this.sum_sum.setText("");
         this.sum_sum.setTextColor(Color.BLACK);
+
+        this.sum_group_sum.setText("");
         this.sum_group_sum.setTextColor(Color.BLACK);
+
+        this.sum_line.setText("-->");
+        this.sum_line.setTextColor(Color.BLACK);
+
+
+        this.comment.setVisibility(View.GONE);
+        this.comment.setTextColor(Color.BLACK);
+
         this.have_photo.setColorFilter(Color.BLACK);
+        this.have_photo.setVisibility(View.GONE);
+        this.have_photo.setOnClickListener(null);
+
+        this.listEditButton.setColorFilter(Color.BLACK);
+        listEditButton.setVisibility(View.GONE);
+        this.listEditButton.setOnClickListener(null);
+
+        this.to_member.setTextColor(Color.BLACK);
 
         this.labelHeader.setVisibility(View.GONE);
-        this.mainLayout.setVisibility(View.VISIBLE);
-        this.comment.setVisibility(View.VISIBLE);
-
         this.more_information_layout.setVisibility(View.GONE);
 
 
         this.to_member_one.setVisibility(View.GONE);
-        this.member_icons_layout.removeAllViews(); //очищаем все иконки и отрисовываем по новой. на случай когда отменили трату
+        this.to_member_one.setTextColor(Color.BLACK);
+
+        this.member_icons_layout.removeAllViews(); //очищаем все иконки человечков
         this.member_icons_layout.setVisibility(View.VISIBLE);
 
-        this.activeAdditionalInfo = true;
-        this.mainLayout.setBackgroundResource(R.drawable.background_main_layout_list_view);  //добавляем анимацию клика
+        this.mainLayout.setVisibility(View.VISIBLE);
+        this.mainLayout.setBackground(null);  //убираем анимацию клика
+
+        this.mainLayout.setOnClickListener(null);
+
+        this.costSeparator.setVisibility(View.VISIBLE);
 
     }
 
@@ -144,6 +156,10 @@ public class CostListViewHolder {
         }
     }
 
+    public void setEditButtonClickListener(View.OnClickListener clickListener){
+        this.listEditButton.setVisibility(View.VISIBLE);
+        this.listEditButton.setOnClickListener(clickListener);
+    }
 
     public TextView getTitle() {
         return title;
@@ -173,12 +189,22 @@ public class CostListViewHolder {
         return comment;
     }
 
+    public void setComment(String text) {
+        if (text.trim().length() > 0) {
+            this.comment.setVisibility(View.VISIBLE);
+            this.comment.setText(text);
+        }
+    }
+
     public AppCompatImageView getHave_photo() {
         return have_photo;
     }
 
-    public TextView getLabelHeader() {
-        return labelHeader;
+    void setHeader(String text) {
+        this.labelHeader.setVisibility(View.VISIBLE);
+        this.mainLayout.setVisibility(View.GONE);
+        this.costSeparator.setVisibility(View.INVISIBLE);
+        this.labelHeader.setText(text);
     }
 
     public View getMainLayout() {
@@ -188,5 +214,6 @@ public class CostListViewHolder {
     public LinearLayout getMember_icons_layout() {
         return member_icons_layout;
     }
+
 
 }

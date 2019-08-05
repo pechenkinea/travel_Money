@@ -10,13 +10,14 @@ import android.widget.TextView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
+import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
-import com.pechenkin.travelmoney.cost.adapter.CostListViewHolder;
+import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -113,7 +114,7 @@ public class GroupCost implements CostListItem {
 
 
     @Override
-    public void render(CostListViewHolder holder) {
+    public void render(ListItemSummaryViewHolder holder) {
 
         holder.getSum_group_sum().setText(Help.DoubleToString(this.sum));
 
@@ -141,7 +142,8 @@ public class GroupCost implements CostListItem {
                 dateText = Help.dateToDateTimeStr(this.date);
             }
             String comment = dateText + "  " + this.comment;
-            holder.getComment().setText(comment);
+            holder.setComment(comment);
+
 
             holder.getTitle().setText(member.name);
 
@@ -211,9 +213,14 @@ public class GroupCost implements CostListItem {
 
 
             if (costs.size() == 1) {
-                holder.disableAdditionalInfo();
                 holder.getTo_member_one().setVisibility(View.VISIBLE);
                 holder.getMember_icons_layout().setVisibility(View.GONE);
+            }
+            else {
+
+                holder.getMainLayout().setBackgroundResource(R.drawable.background_main_layout_list_view);  //добавляем анимацию клика
+                holder.setListenerOpenAdditionalInfo();
+
             }
 
 

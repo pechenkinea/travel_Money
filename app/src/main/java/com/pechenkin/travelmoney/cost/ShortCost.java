@@ -1,12 +1,13 @@
 package com.pechenkin.travelmoney.cost;
 
+import android.text.Html;
 import android.view.View;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
-import com.pechenkin.travelmoney.cost.adapter.CostListViewHolder;
+import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 
 import java.util.Date;
 
@@ -108,14 +109,16 @@ public class ShortCost implements Cost, CostListItem {
     }
 
     @Override
-    public void render(CostListViewHolder holder) {
-
-        holder.getComment().setVisibility(View.GONE);
+    public void render(ListItemSummaryViewHolder holder) {
 
         String sum = Help.DoubleToString(getSum());
-        holder.getSum_group_sum().setText(sum);
 
-        holder.disableAdditionalInfo();
+        if (isChange()) {
+            holder.getSum_group_sum().setText(Html.fromHtml("<b>" + sum + "</b> "));
+        } else {
+            holder.getSum_group_sum().setText(sum);
+        }
+
         holder.getTo_member_one().setVisibility(View.VISIBLE);
         holder.getMember_icons_layout().setVisibility(View.GONE);
 
