@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_main_layout_list_view"
-        android:minHeight="48dp"
         android:orientation="vertical"
         android:paddingLeft="16dp"
+        android:paddingTop="12dp"
         android:paddingRight="16dp"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,8 +29,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:gravity="center_vertical"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
                 tools:text="Евгений" />
 
             <TextView
@@ -46,8 +44,8 @@
                 android:id="@+id/member_icons_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="5"
                 android:orientation="horizontal"
                 tools:visibility="gone">
 
@@ -61,8 +59,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:gravity="center_vertical"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
                 android:visibility="gone"
                 tools:text="Вася"
                 tools:visibility="visible" />
@@ -88,7 +84,7 @@
 
             android:orientation="horizontal"
             android:visibility="gone"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <View
                 android:layout_width="0dp"
@@ -117,7 +113,6 @@
         <TextView
             android:id="@+id/comment"
             style="@style/lite"
-            android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -128,53 +123,24 @@
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:layout_gravity="end"
-            android:background="#cccbcb" />
+            android:background="#cccbcb"
+            android:layout_marginTop="12dp"/>
 
     </LinearLayout>
 
 
+
+
     <FrameLayout
-        android:id="@+id/diagram"
-        android:visibility="gone"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp">
-
-
-
-        <TextView
-            android:id="@+id/labelHeader"
-            style="@style/h2"
-            android:textStyle="normal"
-            android:padding="12dp"
-            android:textColor="#FFFFFF"
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-
-
-            tools:text="Список всех операций"/>
-
-
-
-
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sum_have_photo"
             style="@style/listImageButton"
             android:background="@drawable/edit_button_background"
             android:padding="12dp"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_camera_24" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -182,12 +148,47 @@
             style="@style/listImageButton"
             android:background="@drawable/edit_button_background"
             android:padding="12dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/ic_edit_24" />
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_edit_24"
+            tools:visibility="visible"/>
 
     </FrameLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content">
 
+
+        <TextView
+            android:id="@+id/labelHeader"
+            style="@style/h2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorPrimary"
+
+            android:padding="12dp"
+            android:textColor="#FFFFFF"
+            android:textStyle="normal"
+            android:visibility="gone"
+            tools:text="Список всех операций"
+            tools:visibility="gone"/>
+
+
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/diagram"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:visibility="gone">
+
+
+    </FrameLayout>
 
 
 </RelativeLayout>

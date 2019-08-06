@@ -19,7 +19,6 @@ public class OnlySumCostItem implements CostListItem {
     @Override
     public void render(ListItemSummaryViewHolder holder) {
         String sum = Help.doubleToString(this.sum);
-        holder.getTitle().setText("Всего");
         holder.getSum_line().setText("");
         holder.getSum_group_sum().setText(sum);
     }

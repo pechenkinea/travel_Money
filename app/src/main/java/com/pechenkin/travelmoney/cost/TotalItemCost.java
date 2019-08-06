@@ -17,18 +17,6 @@ public class TotalItemCost extends ShortCost {
     public void render(ListItemSummaryViewHolder holder) {
         super.render(holder);
 
-        /*holder.getTitle().setBackgroundResource(R.drawable.edit_button_background);
-        holder.getTitle().setOnClickListener(view -> {
-            PageParam param = new PageParam.BuildingPageParam().setId(getMember()).getParam();
-            PageOpener.INSTANCE.open(MasterCostInfo.class, param);
-        });
-
-        holder.getTo_member_one().setBackgroundResource(R.drawable.edit_button_background);
-        holder.getTo_member_one().setOnClickListener(view -> {
-            PageParam param = new PageParam.BuildingPageParam().setId(getToMember()).getParam();
-            PageOpener.INSTANCE.open(MasterCostInfo.class, param);
-        });*/
-
-        holder.getCostSeparator().setVisibility(View.INVISIBLE);
+        holder.getCostSeparator().setVisibility(View.GONE);
     }
 }

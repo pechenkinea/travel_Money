@@ -90,7 +90,7 @@ public class TotalItemDiagram implements CostListItem {
 
         pieChart.setData(data);
 
-        pieChart.setCenterText("Всего\n" + Help.doubleToString(this.sum));
+        pieChart.setCenterText("Всего\nпотрачено\n" + Help.doubleToString(this.sum));
         pieChart.setCenterTextSize(16);
 
         pieChart.setEntryLabelColor(Color.BLACK); // цвет имен участников

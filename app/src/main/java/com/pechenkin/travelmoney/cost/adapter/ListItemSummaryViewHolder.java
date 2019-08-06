@@ -57,6 +57,8 @@ public class ListItemSummaryViewHolder {
         this.costSeparator = convertView.findViewById(R.id.costSeparator);
         this.diagram = convertView.findViewById(R.id.diagram);
 
+        this.mainLayout.setOnLongClickListener(view -> false);
+
     }
 
     public void setListenerOpenAdditionalInfo() {
@@ -72,7 +74,7 @@ public class ListItemSummaryViewHolder {
         });
 
 
-        this.mainLayout.setOnLongClickListener(view -> false);
+
     }
 
     /**
@@ -82,8 +84,6 @@ public class ListItemSummaryViewHolder {
 
         this.title.setText("");
         this.title.setTextColor(Color.BLACK);
-        this.title.setBackground(null);
-        this.title.setOnClickListener(null);
 
         this.sum_sum.setText("");
         this.sum_sum.setTextColor(Color.BLACK);
@@ -103,7 +103,7 @@ public class ListItemSummaryViewHolder {
         this.have_photo.setOnClickListener(null);
 
         this.listEditButton.setColorFilter(Color.BLACK);
-        listEditButton.setVisibility(View.GONE);
+        this.listEditButton.setVisibility(View.GONE);
         this.listEditButton.setOnClickListener(null);
 
         this.to_member.setTextColor(Color.BLACK);
@@ -114,8 +114,6 @@ public class ListItemSummaryViewHolder {
 
         this.to_member_one.setVisibility(View.GONE);
         this.to_member_one.setTextColor(Color.BLACK);
-        this.to_member_one.setBackground(null);
-        this.to_member_one.setOnClickListener(null);
 
         this.member_icons_layout.removeAllViews(); //очищаем все иконки человечков
         this.member_icons_layout.setVisibility(View.VISIBLE);
