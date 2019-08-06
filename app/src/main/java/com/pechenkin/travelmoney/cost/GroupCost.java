@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney.cost;
 
 import android.os.Build;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -191,7 +192,10 @@ public class GroupCost implements CostListItem {
 
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     lp.setMargins(0, 0, 4, 0);
+                    lp.gravity = Gravity.CENTER_VERTICAL;
+
                     memberIcon.setLayoutParams(lp);
+
 
                     holder.getMember_icons_layout().addView(memberIcon);
 

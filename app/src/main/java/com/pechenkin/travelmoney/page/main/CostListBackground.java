@@ -10,11 +10,16 @@ import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_settings;
+import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.cost.OnlySumCostItem;
+import com.pechenkin.travelmoney.cost.TotalItemDiagram;
 import com.pechenkin.travelmoney.cost.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.GroupCost;
 import com.pechenkin.travelmoney.cost.adapter.LabelItem;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
+import com.pechenkin.travelmoney.summry.Summary;
+import com.pechenkin.travelmoney.summry.Total;
 
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
@@ -54,14 +59,34 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
             }
 
             if (calculationList.length > 0) {
-                finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("↓ Кто кому сколько должен ↓")});
+
+                finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Кто кому сколько должен")});
                 finalList = Help.concat(finalList, calculationList);
             } else {
                 finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Долгов нет")});
             }
 
             if (costList.hasRows()) {
-                finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("↓ Список всех операций ↓")});
+
+
+                //TODO не пробегать по всем операциям несколько раз. все сделавть в одном цикле
+                double allSum = 0;
+                for (Cost cost : costList.getAllRows()) {
+                    if (cost.isActive() != 0){
+                        allSum += cost.getSum();
+                    }
+                }
+
+                Summary[] summary = Total.getSummary(costList.getAllRows());
+
+
+
+                finalList = Help.concat(new CostListItem[]{ new TotalItemDiagram(allSum, summary)}, finalList);
+
+                finalList = Help.concat(finalList, new CostListItem[]{
+                        new LabelItem("Список всех операций")
+                });
+
 
                 if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST)) {
                     // Группировка
@@ -84,12 +109,12 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(result);
         processDialog.dismiss();
 
-        if (doOnPostExecute != null){
+        if (doOnPostExecute != null) {
             doOnPostExecute.onPostExecute(finalList);
         }
     }
 
-    public interface DoOnPostExecute{
+    public interface DoOnPostExecute {
         void onPostExecute(CostListItem[] finalList);
     }
 

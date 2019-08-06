@@ -13,9 +13,8 @@
         android:minHeight="48dp"
         android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingTop="12dp"
         android:paddingRight="16dp"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,6 +29,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:gravity="center_vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
                 tools:text="Евгений" />
 
             <TextView
@@ -46,9 +47,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal"
-                tools:visibility="visible">
+                tools:visibility="gone">
 
 
             </LinearLayout>
@@ -59,10 +60,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
                 android:visibility="gone"
-
                 tools:text="Вася"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
 
             <TextView
@@ -82,8 +85,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <View
                 android:layout_width="0dp"
@@ -112,10 +117,10 @@
         <TextView
             android:id="@+id/comment"
             style="@style/lite"
-
-            android:visibility="gone"
+            android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             tools:text="24.07.2019 18:16  Магазин" />
 
         <View
@@ -123,25 +128,47 @@
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:layout_gravity="end"
-            android:layout_marginTop="12dp"
             android:background="#cccbcb" />
 
     </LinearLayout>
 
 
     <FrameLayout
+        android:id="@+id/diagram"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/piechart"
+            android:layout_width="match_parent"
+            android:layout_height="220dp" />
+
+    </FrameLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="4dp">
+        android:minHeight="48dp">
+
+
 
         <TextView
             android:id="@+id/labelHeader"
             style="@style/h2"
-            android:layout_width="wrap_content"
+            android:padding="12dp"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical" />
+            android:layout_gravity="center_vertical"
+
+
+            tools:text="Список всех операций"/>
+
+
+
+
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sum_have_photo"
@@ -149,8 +176,7 @@
             android:background="@drawable/edit_button_background"
             android:padding="12dp"
             android:visibility="invisible"
-            app:srcCompat="@drawable/ic_camera_24"
-            tools:visibility="visible" />
+            app:srcCompat="@drawable/ic_camera_24" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/listEditButton"
@@ -158,11 +184,11 @@
             android:background="@drawable/edit_button_background"
             android:padding="12dp"
             android:visibility="invisible"
-            app:srcCompat="@drawable/ic_edit_24"
-            tools:visibility="visible" />
-
+            app:srcCompat="@drawable/ic_edit_24" />
 
     </FrameLayout>
+
+
 
 
 </RelativeLayout>

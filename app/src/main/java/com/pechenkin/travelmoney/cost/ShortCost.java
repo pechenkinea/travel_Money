@@ -35,13 +35,14 @@ public class ShortCost implements Cost, CostListItem {
         this.sum = sum;
     }
 
-    public ShortCost(long member, long to_member, double sum, String comment) {
-        this.member = member;
-        this.to_member = to_member;
-        this.sum = sum;
+    public ShortCost(String comment) {
+        this.member = -1;
+        this.to_member = -1;
+        this.sum = 0f;
         this.comment = comment;
     }
 
+    //Используется при составлении списка трат при добавелнии голосом
     public ShortCost(long member, long to_member, double sum, String comment, int groupId) {
         this.member = member;
         this.to_member = to_member;

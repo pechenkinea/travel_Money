@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.FileProvider;
 
+import com.github.mikephil.charting.charts.PieChart;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.ListAnimation;
 import com.pechenkin.travelmoney.MainActivity;
@@ -35,6 +36,9 @@ public class ListItemSummaryViewHolder {
     private final LinearLayout member_icons_layout;
     private final View more_information_layout;
     private final View costSeparator;
+    private final View diagram;
+    private final PieChart piechart;
+
 
     ListItemSummaryViewHolder(View convertView) {
         this.title = convertView.findViewById(R.id.sum_title);
@@ -51,6 +55,9 @@ public class ListItemSummaryViewHolder {
         this.member_icons_layout = convertView.findViewById(R.id.member_icons_layout);
         this.more_information_layout = convertView.findViewById(R.id.more_information_layout);
         this.costSeparator = convertView.findViewById(R.id.costSeparator);
+        this.diagram = convertView.findViewById(R.id.diagram);
+        this.piechart = convertView.findViewById(R.id.piechart);
+
     }
 
     public void setListenerOpenAdditionalInfo() {
@@ -76,6 +83,8 @@ public class ListItemSummaryViewHolder {
 
         this.title.setText("");
         this.title.setTextColor(Color.BLACK);
+        this.title.setBackground(null);
+        this.title.setOnClickListener(null);
 
         this.sum_sum.setText("");
         this.sum_sum.setTextColor(Color.BLACK);
@@ -106,6 +115,8 @@ public class ListItemSummaryViewHolder {
 
         this.to_member_one.setVisibility(View.GONE);
         this.to_member_one.setTextColor(Color.BLACK);
+        this.to_member_one.setBackground(null);
+        this.to_member_one.setOnClickListener(null);
 
         this.member_icons_layout.removeAllViews(); //очищаем все иконки человечков
         this.member_icons_layout.setVisibility(View.VISIBLE);
@@ -117,6 +128,8 @@ public class ListItemSummaryViewHolder {
 
         this.costSeparator.setVisibility(View.VISIBLE);
 
+
+        diagram.setVisibility(View.GONE);
     }
 
     /**
@@ -207,6 +220,10 @@ public class ListItemSummaryViewHolder {
         this.labelHeader.setText(text);
     }
 
+    public View getCostSeparator() {
+        return costSeparator;
+    }
+
     public View getMainLayout() {
         return mainLayout;
     }
@@ -215,5 +232,11 @@ public class ListItemSummaryViewHolder {
         return member_icons_layout;
     }
 
+    public View getDiagram() {
+        return diagram;
+    }
 
+    public PieChart getPiechart() {
+        return piechart;
+    }
 }

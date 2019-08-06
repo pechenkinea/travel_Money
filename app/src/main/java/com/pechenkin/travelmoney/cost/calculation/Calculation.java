@@ -5,6 +5,7 @@ import android.util.LongSparseArray;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
+import com.pechenkin.travelmoney.cost.TotalItemCost;
 
 import java.util.ArrayList;
 
@@ -85,14 +86,14 @@ public class Calculation {
 
                 if (negative.sum * -1 == positive.sum) {
                     // Если долг negative равен сумме positive то добавлем в итог всю сумму и удаляем из списка negativeMember этого должника
-                    resultList.add(new ShortCost(negative.id, positive.id, positive.sum));
+                    resultList.add(new TotalItemCost(negative.id, positive.id, positive.sum));
                     negativeMember.remove(i);
                     // обнуляем сумму positive т.к. есть значение для иога
                     positive.removeSum(positive.sum);
                     break; // сумма positive закрыта. выходим из цикла должников
                 } else if (negative.sum * -1 > positive.sum) {
                     // Если долг negative больше суммы positive то закрываем всю сумму positive и сокращаем долг negative на сумму positive
-                    resultList.add(new ShortCost(negative.id, positive.id, positive.sum));
+                    resultList.add(new TotalItemCost(negative.id, positive.id, positive.sum));
                     //добавляем т.к. сумма negative отрицательная
                     negative.addSum(positive.sum);
                     // обнуляем сумму positive т.к. есть значение для иога
@@ -100,7 +101,7 @@ public class Calculation {
                     break; // сумма positive закрыта. выходим из цикла должников
                 } else {
                     // Если долг negative меньше суммы positive то закрываем сумму positive на весь долг negative и удаляем из списка negativeMember этого должника
-                    resultList.add(new ShortCost(negative.id, positive.id, negative.sum * -1));
+                    resultList.add(new TotalItemCost(negative.id, positive.id, negative.sum * -1));
                     // сокращаем сумму positive т.к. на эту сумму есть значение для иога
                     positive.removeSum(negative.sum * -1);
                     negativeMember.remove(i);
@@ -109,14 +110,16 @@ public class Calculation {
 
             // Если поле обхода всех должников сумма positive меньше нуля, значит где то был косяк и об этом говорим в приложении дополнительной строкой итога
             if (positive.sum < 0) {
-                resultList.add(new ShortCost(-1, -1, 0f, "Ошибка " + t_members.getMemberById(positive.id).name + " (отрицательная сумма)"));
+                //TODO заменить тут ShortCost на что то другое
+                resultList.add(new ShortCost(t_members.getMemberById(positive.id).name + " (отрицательная сумма)"));
             }
 
             // Если поле обхода всех должников сумма positive сильно больше погрешности,
             // значит получилось так, что было много участников с долгом меньше погрешности и не получилось до конца закрыть сумму positive
             // говорим об этом в приложении дополнительной строкой итога
             if (positive.sum > deviation * 10) {
-                resultList.add(new ShortCost(-1, -1, 0f, "Ошибка " + t_members.getMemberById(positive.id).name + " (Остаток " + positive.sum + ")"));
+                //TODO заменить тут ShortCost на что то другое
+                resultList.add(new ShortCost(t_members.getMemberById(positive.id).name + " (Остаток " + positive.sum + ")"));
             }
 
         }
@@ -161,11 +164,11 @@ public class Calculation {
         calculationList = Calculation.calculate(calcListCosts);
 
 
-        ShortCost[] result = new ShortCost[calculationList.length];
+        TotalItemCost[] result = new TotalItemCost[calculationList.length];
         //Переводим цвета обратно в учатников что бы вывести в список
         for (int i = 0; i < calculationList.length; i++) {
 
-            ShortCost c = new ShortCost(
+            TotalItemCost c = new TotalItemCost(
                     membersByColor.get(calculationList[i].getMember()),
                     membersByColor.get(calculationList[i].getToMember()),
                     calculationList[i].getSum()
