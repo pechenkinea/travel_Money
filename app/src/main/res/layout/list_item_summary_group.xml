@@ -136,13 +136,11 @@
     <FrameLayout
         android:id="@+id/diagram"
         android:visibility="gone"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/piechart"
-            android:layout_width="match_parent"
-            android:layout_height="220dp" />
 
     </FrameLayout>
 
@@ -156,6 +154,7 @@
         <TextView
             android:id="@+id/labelHeader"
             style="@style/h2"
+            android:textStyle="normal"
             android:padding="12dp"
             android:textColor="#FFFFFF"
             android:background="@color/colorPrimary"

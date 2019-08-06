@@ -2,11 +2,14 @@ package com.pechenkin.travelmoney.cost;
 
 import android.graphics.Color;
 import android.view.View;
+import android.widget.LinearLayout;
 
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
@@ -47,6 +50,14 @@ public class TotalItemDiagram implements CostListItem {
         holder.getMainLayout().setVisibility(View.GONE);
         holder.getDiagram().setVisibility(View.VISIBLE);
 
+        PieChart pieChart = new PieChart(MainActivity.INSTANCE);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                Help.dpToPx(200));
+
+        pieChart.setLayoutParams(lp);
+
+        holder.getDiagram().addView(pieChart);
 
         ArrayList<PieEntry> NoOfEmp = new ArrayList<>();
 
@@ -66,34 +77,36 @@ public class TotalItemDiagram implements CostListItem {
         dataSet.setSliceSpace(2); //Отступы между группами
         dataSet.setColors(pieColors); // цвета зон
 
-        //dataSet.setSelectionShift(1f);
-        //dataSet.setValueLinePart1Length(1f);
-        //dataSet.setValueLinePart2Length(0.9f);
+        dataSet.setValueLinePart2Length(0.6f);
 
         //вынос названий за границы
         dataSet.setValueLinePart1OffsetPercentage(80f);
         dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
+        dataSet.setValueTextSize(12);
+
         PieData data = new PieData(dataSet);
         data.setValueTextColor(Color.WHITE);
 
-        holder.getPiechart().setData(data);
+        pieChart.setData(data);
 
-        holder.getPiechart().setCenterText("Всего\n" + Help.doubleToString(this.sum));
-        holder.getPiechart().setCenterTextSize(16);
+        pieChart.setCenterText("Всего\n" + Help.doubleToString(this.sum));
+        pieChart.setCenterTextSize(16);
 
-        holder.getPiechart().setEntryLabelColor(Color.BLACK); // цвет имен участников
+        pieChart.setEntryLabelColor(Color.BLACK); // цвет имен участников
+        pieChart.setEntryLabelTextSize(16);
 
-        holder.getPiechart().getDescription().setEnabled(false);
-        holder.getPiechart().getLegend().setEnabled(false);
-        holder.getPiechart().setRotationEnabled(false); //отключает вращение
+        pieChart.getDescription().setEnabled(false);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.setRotationEnabled(false); //отключает вращение
+        pieChart.setClickable(false);
 
         if (!isAnimated) {
             isAnimated = true;
-            holder.getPiechart().animateXY(500, 500);
+            pieChart.animateXY(300, 300);
         }
         else {
-            holder.getPiechart().invalidate();
+            pieChart.invalidate();
         }
 
     }

@@ -134,7 +134,7 @@ public class AddCostsListPage extends BasePage {
 
         List<CostListItem> finalList = new ArrayList<>();
         if (getParam().getCostCreator().hasCosts()) {
-            finalList.add(new LabelItem("↓ Проверьте кто кому сколько дал ↓"));
+            finalList.add(new LabelItem("Проверьте кто кому сколько дал"));
 
             ShortCost[] costs = getParam().getCostCreator().getCosts();
             finalList.addAll(Arrays.asList(costs));

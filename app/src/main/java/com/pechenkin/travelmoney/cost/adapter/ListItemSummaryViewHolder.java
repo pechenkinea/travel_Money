@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,8 +37,7 @@ public class ListItemSummaryViewHolder {
     private final LinearLayout member_icons_layout;
     private final View more_information_layout;
     private final View costSeparator;
-    private final View diagram;
-    private final PieChart piechart;
+    private final FrameLayout diagram;
 
 
     ListItemSummaryViewHolder(View convertView) {
@@ -56,7 +56,6 @@ public class ListItemSummaryViewHolder {
         this.more_information_layout = convertView.findViewById(R.id.more_information_layout);
         this.costSeparator = convertView.findViewById(R.id.costSeparator);
         this.diagram = convertView.findViewById(R.id.diagram);
-        this.piechart = convertView.findViewById(R.id.piechart);
 
     }
 
@@ -129,7 +128,8 @@ public class ListItemSummaryViewHolder {
         this.costSeparator.setVisibility(View.VISIBLE);
 
 
-        diagram.setVisibility(View.GONE);
+        this.diagram.setVisibility(View.GONE);
+        this.diagram.removeAllViews();
     }
 
     /**
@@ -232,11 +232,8 @@ public class ListItemSummaryViewHolder {
         return member_icons_layout;
     }
 
-    public View getDiagram() {
+    public FrameLayout getDiagram() {
         return diagram;
     }
 
-    public PieChart getPiechart() {
-        return piechart;
-    }
 }

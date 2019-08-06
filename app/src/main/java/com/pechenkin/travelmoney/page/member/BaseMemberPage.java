@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
@@ -111,10 +112,7 @@ abstract class BaseMemberPage extends BasePage {
             AppCompatImageButton iconButton = new AppCompatImageButton(MainActivity.INSTANCE);
             iconButton.setImageResource(icon.getIcon());
 
-            int dpValueWidth = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    40,
-                    MainActivity.INSTANCE.getResources().getDisplayMetrics());
+            int dpValueWidth = Help.dpToPx(40);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dpValueWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(0, 0, 8, 0);

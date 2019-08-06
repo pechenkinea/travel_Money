@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -44,6 +45,15 @@ public class Help {
         }
     }
 
+
+    static public int dpToPx(int dp){
+
+        return (int)TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                MainActivity.INSTANCE.getResources().getDisplayMetrics());
+
+    }
     // простое уведомление
     static public void message(String mes) {
 
