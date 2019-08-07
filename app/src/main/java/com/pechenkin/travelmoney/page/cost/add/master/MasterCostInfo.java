@@ -43,7 +43,12 @@ public class MasterCostInfo extends BasePage {
     @Override
     public void clickBackButton() {
         setParam();
-        PageOpener.INSTANCE.open(MasterWho.class, getParam());
+        if (getParam().getBackPage() != null){
+            PageOpener.INSTANCE.open(getParam().getBackPage());
+        }
+        else {
+            PageOpener.INSTANCE.open(MasterWho.class, getParam());
+        }
     }
 
     private Date selectDate = new Date();

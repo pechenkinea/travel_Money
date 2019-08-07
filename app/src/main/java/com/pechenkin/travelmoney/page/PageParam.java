@@ -24,6 +24,8 @@ public class PageParam {
     private Date selectDate;
     private Set<Long> selectedIds;
 
+    private Class<? extends Page> backPage;
+
     public long getId() {
         return id;
     }
@@ -56,6 +58,9 @@ public class PageParam {
         return costCreator;
     }
 
+    public Class<? extends Page> getBackPage() {
+        return backPage;
+    }
 
     static public class BuildingPageParam
     {
@@ -67,6 +72,7 @@ public class PageParam {
         private Date selectDate = new Date();
         private Set<Long> selectedIds = new HashSet<>();
         private CostCreator costCreator = null;
+        private Class<? extends Page> backPage = null;
 
         public BuildingPageParam(){
 
@@ -82,7 +88,9 @@ public class PageParam {
             selectDate = param.getSelectDate();
             selectedIds = param.getSelectedIds();
             costCreator = param.getCostCreator();
+            backPage = param.getBackPage();
         }
+
 
         public PageParam getParam()
         {
@@ -95,6 +103,8 @@ public class PageParam {
             pageParam.selectDate = this.selectDate;
             pageParam.selectedIds = this.selectedIds;
             pageParam.costCreator = this.costCreator;
+            pageParam.backPage = this.backPage;
+
             return pageParam;
         }
 
@@ -144,5 +154,9 @@ public class PageParam {
             return this;
         }
 
+        public BuildingPageParam setBackPage(Class<? extends Page> backPage) {
+            this.backPage = backPage;
+            return this;
+        }
     }
 }

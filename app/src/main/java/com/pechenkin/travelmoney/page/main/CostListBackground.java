@@ -12,7 +12,7 @@ import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.cost.GroupCost;
 import com.pechenkin.travelmoney.cost.ShortCost;
-import com.pechenkin.travelmoney.cost.TotalItemDiagram;
+import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.LabelItem;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
@@ -26,11 +26,13 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
     private final TripBaseTableRow trip;
     private ProgressDialog processDialog;
     private CostListItem[] finalList = {};
+    private boolean readOnly;
 
     private final DoOnPostExecute doOnPostExecute;
 
-    public CostListBackground(TripBaseTableRow trip, DoOnPostExecute doOnPostExecute) {
+    public CostListBackground(boolean readOnly, TripBaseTableRow trip, DoOnPostExecute doOnPostExecute) {
         this.trip = trip;
+        this.readOnly = readOnly;
         this.doOnPostExecute = doOnPostExecute;
     }
 
@@ -63,8 +65,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                 calculationList = calc.getResult();
                 totalResult = total.getResult();
                 allSum = allSumIteration.getSum();
-            }
-            else {
+            } else {
                 calculationList = new ShortCost[0];
                 totalResult = new Total.MemberSum[0];
             }
@@ -78,11 +79,9 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
             if (costList.hasRows()) {
 
-                finalList = Help.concat(new CostListItem[]{new TotalItemDiagram(allSum, totalResult)}, finalList);
+                finalList = Help.concat(new CostListItem[]{new TotalItemDiagram(allSum, totalResult, this.readOnly)}, finalList);
 
-                finalList = Help.concat(finalList, new CostListItem[]{
-                        new LabelItem("Список всех операций")
-                });
+                finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Список всех операций")});
 
 
                 if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST)) {

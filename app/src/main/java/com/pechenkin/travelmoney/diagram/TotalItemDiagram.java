@@ -1,13 +1,16 @@
-package com.pechenkin.travelmoney.cost;
+package com.pechenkin.travelmoney.diagram;
 
 import android.graphics.Color;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
@@ -15,22 +18,30 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.page.PageOpener;
+import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
+import com.pechenkin.travelmoney.page.main.MainPage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
 /**
- * Для того, что бы сделать кликабельными участников в итогах
+ * Рисует круговую диаграмму с отображением кто сколько потратил
+ * Если открыта страница только для просмотра то диаграмма не кликабельна
  */
-public class TotalItemDiagram implements CostListItem {
+public class TotalItemDiagram implements CostListItem, Diagram {
 
     private double sum;
     private Total.MemberSum[] total;
     private boolean isAnimated = false;
+    private PieChart pieChart = null;
+    private boolean readOnly;
 
-    public TotalItemDiagram(double sum, Total.MemberSum[] total) {
+    public TotalItemDiagram(double sum, Total.MemberSum[] total, boolean readOnly) {
         this.sum = sum;
+        this.readOnly = readOnly;
 
         Arrays.sort(total, (t1, t2) -> {
 
@@ -41,32 +52,32 @@ public class TotalItemDiagram implements CostListItem {
         });
 
         this.total = total;
+
+
     }
 
-    @Override
-    public void render(ListItemSummaryViewHolder holder) {
+    private void createDiagram() {
 
-        holder.getMainLayout().setVisibility(View.GONE);
-        holder.getDiagram().setVisibility(View.VISIBLE);
+        if (pieChart != null)
+            return;
 
-        PieChart pieChart = new PieChart(MainActivity.INSTANCE);
+        pieChart = new PieChart(MainActivity.INSTANCE);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 Help.dpToPx(200));
 
         pieChart.setLayoutParams(lp);
 
-        holder.getDiagram().addView(pieChart);
 
         ArrayList<PieEntry> NoOfEmp = new ArrayList<>();
 
         int[] pieColors = new int[this.total.length];
 
-        int i=0;
+        int i = 0;
         for (Total.MemberSum c : this.total) {
             long memberId = c.getMemberId();
             MemberBaseTableRow member = t_members.getMemberById(memberId);
-            NoOfEmp.add(new PieEntry((float) c.getSumIn(), member.name));
+            NoOfEmp.add(new CostPieEntry((float) c.getSumIn(), member.name, memberId));
             pieColors[i++] = member.color;
         }
 
@@ -98,13 +109,51 @@ public class TotalItemDiagram implements CostListItem {
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
         pieChart.setRotationEnabled(false); //отключает вращение
-        pieChart.setClickable(false);
+
+        if (this.readOnly) {
+            pieChart.setTouchEnabled(false);
+        }
+        else {
+            CostPieEntry[] selectedEntry = new CostPieEntry[]{null};
+
+            pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(final Entry e, Highlight h) {
+                    if (e instanceof CostPieEntry){
+                        selectedEntry[0] = (CostPieEntry)e;
+                    }
+                }
+
+                @Override
+                public void onNothingSelected() {
+
+                    PageParam param = new PageParam.BuildingPageParam()
+                            .setId(selectedEntry[0].getMemberId())
+                            .setBackPage(MainPage.class)
+                            .getParam();
+                    PageOpener.INSTANCE.open(MasterCostInfo.class, param);
+
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void render(ListItemSummaryViewHolder holder) {
+
+        holder.getMainLayout().setVisibility(View.GONE);
+        holder.getDiagram().setVisibility(View.VISIBLE);
+
+        createDiagram();
+
+        holder.getDiagram().addView(pieChart);
+
 
         if (!isAnimated) {
             isAnimated = true;
             pieChart.animateXY(300, 300);
-        }
-        else {
+        } else {
             pieChart.invalidate();
         }
 
@@ -118,5 +167,26 @@ public class TotalItemDiagram implements CostListItem {
     @Override
     public boolean onLongClick() {
         return false;
+    }
+
+    @Override
+    public PieChart getDiagram() {
+        createDiagram();
+        return pieChart;
+    }
+
+
+    static private class CostPieEntry extends PieEntry {
+
+        private long memberId;
+
+        CostPieEntry(float value, String label, long memberId) {
+            super(value, label);
+            this.memberId = memberId;
+        }
+
+        long getMemberId() {
+            return memberId;
+        }
     }
 }

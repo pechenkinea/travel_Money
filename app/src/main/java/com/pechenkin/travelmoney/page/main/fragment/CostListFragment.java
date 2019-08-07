@@ -27,11 +27,11 @@ public class CostListFragment extends BaseMainPageFragment {
     private long scrollPosition = 0;
 
     private final TripBaseTableRow selectTrip;
-    private boolean readMode = false;
+    private boolean readOnly = false;
 
     public CostListFragment(TripBaseTableRow trip) {
         this.selectTrip = trip;
-        readMode = true;
+        this.readOnly = true;
     }
 
     public CostListFragment() {
@@ -48,7 +48,7 @@ public class CostListFragment extends BaseMainPageFragment {
 
         final ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
 
-        if (readMode) {
+        if (this.readOnly) {
             fragmentView.findViewById(R.id.mainPageAddButton).setVisibility(View.GONE);
             fragmentView.findViewById(R.id.mainPageSpeechRecognition).setVisibility(View.GONE);
         } else {
@@ -121,7 +121,7 @@ public class CostListFragment extends BaseMainPageFragment {
 
     @Override
     int[] getButtons() {
-        if (!readMode) {
+        if (!this.readOnly) {
             return new int[]{
                     R.id.mainPageAddButton,
                     R.id.mainPageSpeechRecognition
@@ -133,7 +133,7 @@ public class CostListFragment extends BaseMainPageFragment {
 
     private void printCostList() {
 
-        CostListBackground costListBackground = new CostListBackground(this.selectTrip, (finalList) -> {
+        CostListBackground costListBackground = new CostListBackground(this.readOnly ,this.selectTrip, (finalList) -> {
 
             ListView listViewCosts = fragmentView.findViewById(R.id.main_list);
             AdapterCostList adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), finalList);
