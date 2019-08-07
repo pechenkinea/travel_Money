@@ -32,12 +32,14 @@ public class ListItemSummaryViewHolder {
     private final TextView comment;
     private final AppCompatImageView have_photo;
     private final AppCompatImageView listEditButton;
+    private final AppCompatImageView miniMenu;
     private final TextView labelHeader;
     private final View mainLayout;
     private final LinearLayout member_icons_layout;
     private final View more_information_layout;
     private final View costSeparator;
     private final FrameLayout diagram;
+
 
 
     ListItemSummaryViewHolder(View convertView) {
@@ -50,6 +52,7 @@ public class ListItemSummaryViewHolder {
         this.comment = convertView.findViewById(R.id.comment);
         this.have_photo = convertView.findViewById(R.id.sum_have_photo);
         this.listEditButton = convertView.findViewById(R.id.listEditButton);
+        this.miniMenu = convertView.findViewById(R.id.miniMenu);
         this.labelHeader = convertView.findViewById(R.id.labelHeader);
         this.mainLayout = convertView.findViewById(R.id.mainLayout);
         this.member_icons_layout = convertView.findViewById(R.id.member_icons_layout);
@@ -105,6 +108,9 @@ public class ListItemSummaryViewHolder {
         this.listEditButton.setColorFilter(Color.BLACK);
         this.listEditButton.setVisibility(View.GONE);
         this.listEditButton.setOnClickListener(null);
+
+        this.miniMenu.setVisibility(View.GONE);
+        this.miniMenu.setOnClickListener(null);
 
         this.to_member.setTextColor(Color.BLACK);
 
@@ -234,4 +240,7 @@ public class ListItemSummaryViewHolder {
         return diagram;
     }
 
+    public AppCompatImageView getMiniMenu() {
+        return miniMenu;
+    }
 }
