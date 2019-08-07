@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.cost.calculation;
+package com.pechenkin.travelmoney.cost.processing.calculation;
 
 import android.util.LongSparseArray;
 
@@ -6,54 +6,60 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.TotalItemCost;
+import com.pechenkin.travelmoney.cost.processing.CostIterable;
 
 import java.util.ArrayList;
 
 
 /**
  * Класс для проведения расчетов
+ * Считает кто кому сколько должен
  */
-public class Calculation {
+public class Calculation implements CostIterable {
 
     //Погрешность
     private static final float deviation = 0.01f;
 
-    /**
-     * Считает кто кому сколько должен
-     *
-     * @param list массив всех проводок, которые надо посчитать
-     * @return массив проводок где указано не кто кому сколько дал а кто кому сколько должен
+    private LongSparseArray<MemberSum> members;
+    private boolean needGroupByColor;
+    private ShortCost[] result;
+
+
+    public Calculation(boolean needGroupByColor) {
+        this.needGroupByColor = needGroupByColor;
+        this.members = new LongSparseArray<>();
+    }
+
+    /*
+     * Формируем мапу участников и сразу считаем им сумму
+     * Кто дал денег - прибавляем сумму
+     * Кому дали денег - отнимаем сумму
      */
-    public static ShortCost[] calculate(Cost[] list) {
+    @Override
+    public void iterate(Cost cost) {
 
-        LongSparseArray<MemberSum> members = new LongSparseArray<>();
-
-        /*
-         * Формируем мапу участников и сразу считаем им сумму
-         * Кто дал денег - прибавляем сумму
-         * Кому дали денег - отнимаем сумму
-         */
-        for (Cost cost : list) {
-
-            // если проводка помечена как удаленная или участник дал сам себе то не учитываем такую проводку
-            if (cost.isActive() == 0 || cost.getMember() == cost.getToMember()) {
-                continue;
-            }
-
-            // если в мапе еще нет участника  cost.getMember() добавляем его с нулевой суммой
-            if (members.get(cost.getMember()) == null)
-                members.put(cost.getMember(), new MemberSum(cost.getMember()));
-
-
-            members.get(cost.getMember()).addSum(cost.getSum()); // Добавляем сумму
-
-            // если в мапе еще нет участника  cost.getToMember() добавляем его с нулевой суммой
-            if (members.get(cost.getToMember()) == null)
-                members.put(cost.getToMember(), new MemberSum(cost.getToMember()));
-
-            members.get(cost.getToMember()).removeSum(cost.getSum()); // Отнимаем сумму
+        // если проводка помечена как удаленная или участник дал сам себе то не учитываем такую проводку
+        if (!cost.isActive() || cost.getMember() == cost.getToMember()) {
+            return;
         }
 
+        // если в мапе еще нет участника  cost.getMember() добавляем его с нулевой суммой
+        if (members.get(cost.getMember()) == null)
+            members.put(cost.getMember(), new MemberSum(cost.getMember()));
+
+
+        members.get(cost.getMember()).addSum(cost.getSum()); // Добавляем сумму
+
+        // если в мапе еще нет участника  cost.getToMember() добавляем его с нулевой суммой
+        if (members.get(cost.getToMember()) == null)
+            members.put(cost.getToMember(), new MemberSum(cost.getToMember()));
+
+        members.get(cost.getToMember()).removeSum(cost.getSum()); // Отнимаем сумму
+
+    }
+
+    @Override
+    public void postIterate() {
 
         //Формируем списки с положительной суммой (positiveMember) и с отрицательной суммой (negativeMember)
         ArrayList<MemberSum> positiveMember = new ArrayList<>();
@@ -116,17 +122,25 @@ public class Calculation {
 
             // Если поле обхода всех должников сумма positive сильно больше погрешности,
             // значит получилось так, что было много участников с долгом меньше погрешности и не получилось до конца закрыть сумму positive
+            // (если более 100 участников должны кому то по 0.01)
             // говорим об этом в приложении дополнительной строкой итога
-            if (positive.sum > deviation * 10) {
+            if (positive.sum > deviation * 100) {
                 //TODO заменить тут ShortCost на что то другое
                 resultList.add(new ShortCost(t_members.getMemberById(positive.id).name + " (Остаток " + positive.sum + ")"));
             }
-
         }
 
 
-        return resultList.toArray(new ShortCost[0]);
+        if (needGroupByColor) {
+            result = groupByColor(resultList);
+        } else {
+            result = resultList.toArray(new ShortCost[0]);
+        }
+    }
 
+
+    public ShortCost[] getResult() {
+        return result;
     }
 
 
@@ -136,16 +150,16 @@ public class Calculation {
      * @param calculationList лист с итогами (<b>кто кому должен</b>)
      * @return лист с итогами с учетом того, что у одинаковых цветов один бюджет
      */
-    public static ShortCost[] groupByColor(Cost[] calculationList) {
+    private TotalItemCost[] groupByColor(ArrayList<ShortCost> calculationList) {
 
-        if (calculationList.length == 0)
-            return new ShortCost[0];
+        if (calculationList.size() == 0)
+            return new TotalItemCost[0];
 
-        Cost[] calcListCosts = new Cost[calculationList.length];
+        Cost[] calcListCosts = new Cost[calculationList.size()];
         LongSparseArray<Long> membersByColor = new LongSparseArray<>();
-        for (int i = 0; i < calculationList.length; i++) {
+        for (int i = 0; i < calculationList.size(); i++) {
 
-            Cost calcCost = calculationList[i];
+            Cost calcCost = calculationList.get(i);
             int memberColor = t_members.getColorById(calcCost.getMember());
             int to_memberColor = t_members.getColorById(calcCost.getToMember());
 
@@ -161,28 +175,28 @@ public class Calculation {
         }
 
 
-        calculationList = Calculation.calculate(calcListCosts);
+        Calculation calcByGroup = new Calculation(false);
+        for (Cost item : calcListCosts) {
+            calcByGroup.iterate(item);
+        }
+        calcByGroup.postIterate();
 
 
-        TotalItemCost[] result = new TotalItemCost[calculationList.length];
+        ShortCost[] calcByGroupResult = calcByGroup.getResult();
+        TotalItemCost[] result = new TotalItemCost[calcByGroupResult.length];
         //Переводим цвета обратно в учатников что бы вывести в список
-        for (int i = 0; i < calculationList.length; i++) {
+        for (int i = 0; i < calcByGroupResult.length; i++) {
 
             TotalItemCost c = new TotalItemCost(
-                    membersByColor.get(calculationList[i].getMember()),
-                    membersByColor.get(calculationList[i].getToMember()),
-                    calculationList[i].getSum()
+                    membersByColor.get(calcByGroupResult[i].getMember()),
+                    membersByColor.get(calcByGroupResult[i].getToMember()),
+                    calcByGroupResult[i].getSum()
             );
-
             result[i] = c;
-
         }
-
-
         return result;
-
-
     }
+
 
     /**
      * Хранит итогувую сумму для участника

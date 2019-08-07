@@ -77,7 +77,7 @@ public class GroupCost implements CostListItem {
         this.date = cost.getDate();
         this.image_dir = cost.getImageDir();
 
-        if (cost.isActive() != 0) {
+        if (cost.isActive()) {
             this.sum = cost.getSum();
         }
 
@@ -91,7 +91,7 @@ public class GroupCost implements CostListItem {
             throw new Exception("В группу пробует добавится проводка, которая к ней не относится");
         }
 
-        if (cost.isActive() != 0) {
+        if (cost.isActive()) {
             this.sum += cost.getSum();
         }
         this.costs.add(cost);
@@ -100,16 +100,13 @@ public class GroupCost implements CostListItem {
     private void updateSum() {
         this.sum = 0;
         for (Cost cost : costs) {
-            if (cost.isActive() != 0) {
+            if (cost.isActive()) {
                 this.sum += cost.getSum();
             }
         }
     }
 
 
-    public List<Cost> getCosts() {
-        return costs;
-    }
 
 
 
@@ -119,11 +116,10 @@ public class GroupCost implements CostListItem {
 
         holder.getSum_group_sum().setText(Help.doubleToString(this.sum));
 
-        List<Cost> costs = getCosts();
 
-        if (costs.size() > 0) {
+        if (this.costs.size() > 0) {
 
-            MemberBaseTableRow member = t_members.getMemberById(costs.get(0).getMember());
+            MemberBaseTableRow member = t_members.getMemberById(this.costs.get(0).getMember());
 
             if (this.sum == 0) {
                 holder.getTitle().setTextColor(DISABLE_COLOR);
@@ -152,15 +148,15 @@ public class GroupCost implements CostListItem {
             StringBuilder sumText = new StringBuilder();
 
 
-            for (int i = 0; i < costs.size(); i++) {
+            for (int i = 0; i < this.costs.size(); i++) {
 
-                Cost costInGroup = costs.get(i);
+                Cost costInGroup = this.costs.get(i);
                 MemberBaseTableRow to_member = t_members.getMemberById(costInGroup.getToMember());
 
                 int to_memberColor = to_member.color;
 
                 String s = Help.doubleToString(costInGroup.getSum());
-                if (costInGroup.isActive() != 0) {
+                if (costInGroup.isActive()) {
                     sumText.append(s);
                 } else {
                     sumText.append("<font color='").append(DISABLE_COLOR_STR).append("'>").append(s).append("</font>");
@@ -177,7 +173,7 @@ public class GroupCost implements CostListItem {
 
                 to_memberText.append(to_memberLine);
 
-                if (i < costs.size() - 1) {
+                if (i < this.costs.size() - 1) {
                     to_memberText.append("<br>");
                     sumText.append("<br>");
                 }
@@ -216,7 +212,7 @@ public class GroupCost implements CostListItem {
             }
 
 
-            if (costs.size() == 1) {
+            if (this.costs.size() == 1) {
                 holder.getTo_member_one().setVisibility(View.VISIBLE);
                 holder.getMember_icons_layout().setVisibility(View.GONE);
             }
@@ -245,20 +241,19 @@ public class GroupCost implements CostListItem {
 
     @Override
     public boolean isClicked() {
-        return costs.size() > 1;
+        return this.costs.size() > 1;
     }
 
     @Override
     public boolean onLongClick() {
-        if (costs.size() > 0) {
-            long statusFirst = costs.get(0).isActive();
-            if (statusFirst == 1) {
-                for (Cost cost : costs) {
+        if (this.costs.size() > 0) {
+            if (this.costs.get(0).isActive()) {
+                for (Cost cost : this.costs) {
                     t_costs.disable_cost(cost.getId());
                     cost.setActive(0);
                 }
             } else {
-                for (Cost cost : costs) {
+                for (Cost cost : this.costs) {
                     cost.setActive(1);
                     t_costs.enable_cost(cost.getId());
                 }

@@ -12,7 +12,9 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
-import com.pechenkin.travelmoney.cost.calculation.Calculation;
+import com.pechenkin.travelmoney.cost.processing.CostIterable;
+import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
+import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
 
 import java.util.Date;
 
@@ -27,11 +29,11 @@ public class TotalDebt implements ExportFormat {
 
         StringBuilder result = new StringBuilder();
 
-        ShortCost[] calculateCosts = Calculation.calculate(allCosts.getAllRows());
 
-        if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)){
-            calculateCosts = Calculation.groupByColor(calculateCosts);
-        }
+        Calculation calc = new Calculation(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
+        ProcessIterate.doIterate(allCosts.getAllRows(), new CostIterable[]{calc});
+        ShortCost[] calculateCosts = calc.getResult();
+
 
         if (calculateCosts.length == 0) {
             return "Долгов нет";

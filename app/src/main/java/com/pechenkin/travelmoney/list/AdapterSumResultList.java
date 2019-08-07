@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney.list;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,18 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.summry.Summary;
+import com.pechenkin.travelmoney.cost.processing.summary.Total;
 
 public class AdapterSumResultList extends BaseAdapter {
 
-    private final Summary[] data;
+    private final Total.MemberSum[] data;
     private static LayoutInflater inflater = null;
 
 
-    public AdapterSumResultList(Activity a, Summary[] dataList) {
+    public AdapterSumResultList(Activity a, Total.MemberSum[] dataList) {
         data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -30,7 +30,7 @@ public class AdapterSumResultList extends BaseAdapter {
         return data.length;
     }
 
-    public Summary getItem(int position) {
+    public Total.MemberSum getItem(int position) {
         try {
             return data[position];
         } catch (Exception ex) {
@@ -40,7 +40,7 @@ public class AdapterSumResultList extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return data[position].member;
+        return data[position].getMemberId();
     }
 
     @Override
@@ -65,18 +65,18 @@ public class AdapterSumResultList extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Summary item = data[position];
-        holder.name.setText(t_members.getMemberById(item.member).name);
+        Total.MemberSum item = data[position];
+        holder.name.setText(t_members.getMemberById(item.getMemberId()).name);
 
-        holder.in.setText(Help.doubleToString(item.sumIn));
-        holder.out.setText(Help.doubleToString(item.sumOut));
+        holder.in.setText(Help.doubleToString(item.getSumIn()));
+        holder.out.setText(Help.doubleToString(item.getSumOut()));
 
-        double sum = item.sumOut - item.sumIn;
+        double sum = item.getSumOut() - item.getSumIn();
         holder.sum.setText(Help.doubleToString(sum));
         if (sum < 0) {
-            holder.sum.setTextColor(Color.parseColor("#b43232"));
+            holder.sum.setTextColor(MainActivity.INSTANCE.getResources().getColor(R.color.red));
         } else {
-            holder.sum.setTextColor(Color.parseColor("#3db432"));
+            holder.sum.setTextColor(MainActivity.INSTANCE.getResources().getColor(R.color.green));
         }
 
         return convertView;

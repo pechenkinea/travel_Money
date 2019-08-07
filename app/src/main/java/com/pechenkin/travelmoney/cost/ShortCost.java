@@ -81,8 +81,8 @@ public class ShortCost implements Cost, CostListItem {
     }
 
     @Override
-    public long isActive() {
-        return -1;
+    public boolean isActive() {
+        return true;
     }
 
     @Override

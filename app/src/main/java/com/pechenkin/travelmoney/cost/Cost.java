@@ -30,9 +30,8 @@ public interface Cost {
 
     /**
      * возвращает статус проводки
-     * @return 0 - проводка удалена, 1 - проводка активна
      */
-    long isActive();
+    boolean isActive();
 
     /**
      * меняет статус проводке

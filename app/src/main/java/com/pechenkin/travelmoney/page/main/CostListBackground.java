@@ -10,16 +10,16 @@ import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_settings;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.OnlySumCostItem;
-import com.pechenkin.travelmoney.cost.TotalItemDiagram;
-import com.pechenkin.travelmoney.cost.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.GroupCost;
-import com.pechenkin.travelmoney.cost.adapter.LabelItem;
 import com.pechenkin.travelmoney.cost.ShortCost;
+import com.pechenkin.travelmoney.cost.TotalItemDiagram;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
-import com.pechenkin.travelmoney.summry.Summary;
-import com.pechenkin.travelmoney.summry.Total;
+import com.pechenkin.travelmoney.cost.adapter.LabelItem;
+import com.pechenkin.travelmoney.cost.processing.CostIterable;
+import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
+import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
+import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
+import com.pechenkin.travelmoney.cost.processing.summary.Total;
 
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
@@ -48,18 +48,28 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
             CostQueryResult costList = t_costs.getAllByTripId(this.trip.id);
 
-            ShortCost[] calculationList = {};
-            if (costList.hasRows()) {
-                calculationList = Calculation.calculate(costList.getAllRows());
+            ShortCost[] calculationList;
+            Total.MemberSum[] totalResult;
+            double allSum = 0;
 
-                // Группируем, если есть группировка по цветам
-                if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)) {
-                    calculationList = Calculation.groupByColor(calculationList);
-                }
+            if (costList.hasRows()) {
+
+                Calculation calc = new Calculation(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
+                Total total = new Total();
+                AllSum allSumIteration = new AllSum();
+
+                ProcessIterate.doIterate(costList.getAllRows(), new CostIterable[]{calc, total, allSumIteration});
+
+                calculationList = calc.getResult();
+                totalResult = total.getResult();
+                allSum = allSumIteration.getSum();
+            }
+            else {
+                calculationList = new ShortCost[0];
+                totalResult = new Total.MemberSum[0];
             }
 
             if (calculationList.length > 0) {
-
                 finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Кто кому сколько должен")});
                 finalList = Help.concat(finalList, calculationList);
             } else {
@@ -68,20 +78,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
             if (costList.hasRows()) {
 
-
-                //TODO не пробегать по всем операциям несколько раз. все сделавть в одном цикле
-                double allSum = 0;
-                for (Cost cost : costList.getAllRows()) {
-                    if (cost.isActive() != 0){
-                        allSum += cost.getSum();
-                    }
-                }
-
-                Summary[] summary = Total.getSummary(costList.getAllRows());
-
-
-
-                finalList = Help.concat(new CostListItem[]{ new TotalItemDiagram(allSum, summary)}, finalList);
+                finalList = Help.concat(new CostListItem[]{new TotalItemDiagram(allSum, totalResult)}, finalList);
 
                 finalList = Help.concat(finalList, new CostListItem[]{
                         new LabelItem("Список всех операций")

@@ -1,6 +1,8 @@
 package com.pechenkin.travelmoney.test.calculation;
 
-import com.pechenkin.travelmoney.cost.calculation.Calculation;
+import com.pechenkin.travelmoney.cost.processing.CostIterable;
+import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
+import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 
@@ -18,7 +20,11 @@ public class TestCalculation {
                 new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
         };
 
-        Cost[] result = Calculation.calculate(costs);
+
+        Calculation calc = new Calculation(false);
+        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
+        Cost[] result = calc.getResult();
+
 
         Assert.assertEquals("в итоге должна быть 1 строка", 1, result.length);
 
@@ -39,7 +45,9 @@ public class TestCalculation {
                 new ShortCost(TestMembers.VLAD, TestMembers.EVGENIY, 100),
         };
 
-        Cost[] result = Calculation.calculate(costs);
+        Calculation calc = new Calculation(false);
+        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
+        Cost[] result = calc.getResult();
 
         Assert.assertEquals("в итоге должна быть 1 строка", 1, result.length);
 
@@ -75,7 +83,9 @@ public class TestCalculation {
 
         };
 
-        Cost[] result = Calculation.calculate(costs);
+        Calculation calc = new Calculation(false);
+        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
+        Cost[] result = calc.getResult();
 
         Assert.assertEquals("в итоге должна быть 1 строка", 1, result.length);
 
@@ -108,7 +118,9 @@ public class TestCalculation {
                 new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 100),
         };
 
-        Cost[] result = Calculation.calculate(costs);
+        Calculation calc = new Calculation(false);
+        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
+        Cost[] result = calc.getResult();
 
         Assert.assertEquals("в итоге должна быть 2 строки", 2, result.length);
         Assert.assertEquals(800, result[0].getSum() + result[1].getSum(), 0);
@@ -122,7 +134,11 @@ public class TestCalculation {
             costs[i] = new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, i);
             costs[i + 1] = new ShortCost(TestMembers.MARINA, TestMembers.EVGENIY, i);
         }
-        Cost[] result = Calculation.calculate(costs);
+
+        Calculation calc = new Calculation(false);
+        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
+        Cost[] result = calc.getResult();
+
         Assert.assertEquals("в итоге должна быть 0 строк", 0, result.length);
     }
 }

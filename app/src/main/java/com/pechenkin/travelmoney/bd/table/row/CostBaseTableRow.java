@@ -73,8 +73,8 @@ public class CostBaseTableRow extends BaseTableRow implements Cost, CostListItem
 
 
     @Override
-    public long isActive() {
-        return active;
+    public boolean isActive() {
+        return active != 0;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class CostBaseTableRow extends BaseTableRow implements Cost, CostListItem
         holder.photoImage(getImageDir());
 
 
-        if (isActive() == 0) {
+        if (!isActive()) {
             holder.getTitle().setTextColor(DISABLE_COLOR);
             holder.getSum_line().setTextColor(DISABLE_COLOR);
             holder.getComment().setTextColor(DISABLE_COLOR);
@@ -144,7 +144,7 @@ public class CostBaseTableRow extends BaseTableRow implements Cost, CostListItem
 
     @Override
     public boolean onLongClick() {
-        if (isActive() == 1) {
+        if (isActive()) {
             t_costs.disable_cost(getId());
             setActive(0);
         } else {

@@ -6,13 +6,13 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.CostBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.cost.processing.CostIterable;
+import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
+import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.list.AdapterSumResultList;
 import com.pechenkin.travelmoney.page.main.MainPage;
-import com.pechenkin.travelmoney.summry.Summary;
-import com.pechenkin.travelmoney.summry.Total;
 
 /**
  * Created by pechenkin on 19.04.2018.]
@@ -57,9 +57,11 @@ public class SumResultListPage extends ListPage {
         }
         else
         {
-            CostBaseTableRow[] costs = allCostTrip.getAllRows();
-            Summary[] summary = Total.getSummary(costs);
-            AdapterSumResultList adapter = new AdapterSumResultList(MainActivity.INSTANCE, summary);
+            Total total = new Total();
+            ProcessIterate.doIterate(allCostTrip.getAllRows(), new CostIterable[]{total});
+            Total.MemberSum[] totalResult = total.getResult();
+
+            AdapterSumResultList adapter = new AdapterSumResultList(MainActivity.INSTANCE, totalResult);
             list1.setAdapter(adapter);
         }
         return true;

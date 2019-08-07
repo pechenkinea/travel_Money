@@ -1,7 +1,9 @@
 package com.pechenkin.travelmoney.test.calculation;
 
 import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.cost.calculation.Calculation;
+import com.pechenkin.travelmoney.cost.processing.CostIterable;
+import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
+import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 
@@ -28,8 +30,6 @@ public class GroupCalculation {
 
                 new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 200),
                 new ShortCost(TestMembers.VLAD, TestMembers.EVGENIY, 200),
-
-
         };
 
         //Заглушка. EVGENIY и MARINA одного цвета а VLAD другого
@@ -39,10 +39,11 @@ public class GroupCalculation {
         PowerMockito.when(t_members.getColorById(TestMembers.VLAD)).thenReturn(2);
 
 
-        Cost[] result = Calculation.calculate(costs);
-        Assert.assertEquals("в итоге должна быть 2 строки", 2, result.length);
+        Calculation calc = new Calculation(true);
+        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
+        Cost[] groupResult = calc.getResult();
 
-        Cost[] groupResult = Calculation.groupByColor(result);
+
         Assert.assertEquals("в итоге должна быть 1 строка", 1, groupResult.length);
 
         Assert.assertEquals(TestMembers.VLAD, groupResult[0].getToMember());
@@ -70,10 +71,10 @@ public class GroupCalculation {
         PowerMockito.when(t_members.getColorById(TestMembers.SVETA)).thenReturn(2);
 
 
-        Cost[] result = Calculation.calculate(costs);
-        Assert.assertEquals("в итоге должна быть 2 строки", 2, result.length);
+        Calculation calc = new Calculation(true);
+        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
+        Cost[] groupResult = calc.getResult();
 
-        Cost[] groupResult = Calculation.groupByColor(result);
         Assert.assertEquals("в итоге должна быть 0 строк", 0, groupResult.length);
     }
 

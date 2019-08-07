@@ -12,10 +12,9 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
-import com.pechenkin.travelmoney.summry.Summary;
+import com.pechenkin.travelmoney.cost.processing.summary.Total;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,16 +26,16 @@ import java.util.Arrays;
 public class TotalItemDiagram implements CostListItem {
 
     private double sum;
-    private Summary[] total;
+    private Total.MemberSum[] total;
     private boolean isAnimated = false;
 
-    public TotalItemDiagram(double sum, Summary[] total) {
+    public TotalItemDiagram(double sum, Total.MemberSum[] total) {
         this.sum = sum;
 
         Arrays.sort(total, (t1, t2) -> {
 
-            MemberBaseTableRow t1Member = t_members.getMemberById(t1.member);
-            MemberBaseTableRow t2Member = t_members.getMemberById(t2.member);
+            MemberBaseTableRow t1Member = t_members.getMemberById(t1.getMemberId());
+            MemberBaseTableRow t2Member = t_members.getMemberById(t2.getMemberId());
 
             return Integer.compare(t1Member.color, t2Member.color);
         });
@@ -64,10 +63,10 @@ public class TotalItemDiagram implements CostListItem {
         int[] pieColors = new int[this.total.length];
 
         int i=0;
-        for (Summary c : this.total) {
-            long memberId = c.member;
+        for (Total.MemberSum c : this.total) {
+            long memberId = c.getMemberId();
             MemberBaseTableRow member = t_members.getMemberById(memberId);
-            NoOfEmp.add(new PieEntry((float) c.sumIn, member.name));
+            NoOfEmp.add(new PieEntry((float) c.getSumIn(), member.name));
             pieColors[i++] = member.color;
         }
 
