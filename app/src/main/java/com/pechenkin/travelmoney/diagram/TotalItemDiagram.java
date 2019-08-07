@@ -1,6 +1,8 @@
 package com.pechenkin.travelmoney.diagram;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -36,7 +38,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
     private double sum;
     private Total.MemberSum[] total;
     private boolean isAnimated = false;
-    private PieChart pieChart = null;
+    private mPieChart pieChart = null;
     private boolean readOnly;
 
     public TotalItemDiagram(double sum, Total.MemberSum[] total, boolean readOnly) {
@@ -61,7 +63,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         if (pieChart != null)
             return;
 
-        pieChart = new PieChart(MainActivity.INSTANCE);
+        pieChart = new mPieChart(MainActivity.INSTANCE);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 Help.dpToPx(200));
@@ -112,27 +114,29 @@ public class TotalItemDiagram implements CostListItem, Diagram {
 
         if (this.readOnly) {
             pieChart.setTouchEnabled(false);
-        }
-        else {
+        } else {
             CostPieEntry[] selectedEntry = new CostPieEntry[]{null};
 
             pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(final Entry e, Highlight h) {
-                    if (e instanceof CostPieEntry){
-                        selectedEntry[0] = (CostPieEntry)e;
+                    if (e instanceof CostPieEntry) {
+
+                        if (selectedEntry[0] != null && selectedEntry[0].equals(e)) {
+                            PageParam param = new PageParam.BuildingPageParam()
+                                    .setId(selectedEntry[0].getMemberId())
+                                    .setBackPage(MainPage.class)
+                                    .getParam();
+                            PageOpener.INSTANCE.open(MasterCostInfo.class, param);
+                        } else {
+                            selectedEntry[0] = (CostPieEntry) e;
+                        }
+
                     }
                 }
 
                 @Override
                 public void onNothingSelected() {
-
-                    PageParam param = new PageParam.BuildingPageParam()
-                            .setId(selectedEntry[0].getMemberId())
-                            .setBackPage(MainPage.class)
-                            .getParam();
-                    PageOpener.INSTANCE.open(MasterCostInfo.class, param);
-
                 }
             });
         }
@@ -175,6 +179,37 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         return pieChart;
     }
 
+
+    static private class mPieChart extends PieChart {
+
+        public mPieChart(Context context) {
+            super(context);
+        }
+
+        //что бы сторонние клики не сбрасывали выделенную ячейку, что бы можно было обработать повторный клик
+        @Override
+        public void highlightValue(Highlight high, boolean callListener) {
+
+            if (high == null)
+                return;
+
+            Entry e = mData.getEntryForHighlight(high);
+            if (e == null) {
+                return;
+            } else {
+                mIndicesToHighlight = new Highlight[]{
+                        high
+                };
+            }
+
+            setLastHighlighted(mIndicesToHighlight);
+
+            if (callListener && mSelectionListener != null) {
+                mSelectionListener.onValueSelected(e, high);
+            }
+            invalidate();
+        }
+    }
 
     static private class CostPieEntry extends PieEntry {
 
