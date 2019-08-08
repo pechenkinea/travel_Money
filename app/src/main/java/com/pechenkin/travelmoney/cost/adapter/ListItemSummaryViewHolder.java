@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -38,7 +39,7 @@ public class ListItemSummaryViewHolder {
     private final LinearLayout member_icons_layout;
     private final View more_information_layout;
     private final View costSeparator;
-    private final FrameLayout diagram;
+    private final RelativeLayout diagram;
 
 
 
@@ -110,6 +111,7 @@ public class ListItemSummaryViewHolder {
         this.listEditButton.setOnClickListener(null);
 
         this.miniMenu.setVisibility(View.GONE);
+        this.miniMenu.setColorFilter(Color.BLACK);
         this.miniMenu.setOnClickListener(null);
 
         this.to_member.setTextColor(Color.BLACK);
@@ -236,7 +238,7 @@ public class ListItemSummaryViewHolder {
         return member_icons_layout;
     }
 
-    public FrameLayout getDiagram() {
+    public RelativeLayout getDiagram() {
         return diagram;
     }
 

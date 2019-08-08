@@ -189,7 +189,7 @@
 
     </FrameLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/diagram"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
         android:visibility="gone">
 
 
-    </FrameLayout>
+    </RelativeLayout>
 
 
 </RelativeLayout>

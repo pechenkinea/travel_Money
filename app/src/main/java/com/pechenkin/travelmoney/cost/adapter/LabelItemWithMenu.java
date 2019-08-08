@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.cost.adapter;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
@@ -32,6 +33,9 @@ public class LabelItemWithMenu extends LabelItem {
         super.render(holder);
 
         holder.getMiniMenu().setVisibility(View.VISIBLE);
+
+        holder.getMiniMenu().setColorFilter(Color.WHITE);
+
         holder.getMiniMenu().setOnClickListener(view -> {
 
 
@@ -44,8 +48,11 @@ public class LabelItemWithMenu extends LabelItem {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
 
-            lp.setMargins(16, 16, 16, 16);
+
             input.setLayoutParams(lp);
+
+            int padding = Help.dpToPx(16);
+            input.setPadding(padding, padding, padding, padding);
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);

@@ -1,10 +1,11 @@
 package com.pechenkin.travelmoney.diagram;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -15,6 +16,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
@@ -38,7 +40,8 @@ public class TotalItemDiagram implements CostListItem, Diagram {
     private double sum;
     private Total.MemberSum[] total;
     private boolean isAnimated = false;
-    private mPieChart pieChart = null;
+    private PieChart pieChart = null;
+    private TextView textView = null;
     private boolean readOnly;
 
     public TotalItemDiagram(double sum, Total.MemberSum[] total, boolean readOnly) {
@@ -63,7 +66,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         if (pieChart != null)
             return;
 
-        pieChart = new mPieChart(MainActivity.INSTANCE);
+        pieChart = new PieChart(MainActivity.INSTANCE);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 Help.dpToPx(200));
@@ -84,15 +87,14 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         }
 
         PieDataSet dataSet = new PieDataSet(NoOfEmp, "");
-        //dataSet.setDrawIcons(false);
 
         dataSet.setSliceSpace(2); //Отступы между группами
         dataSet.setColors(pieColors); // цвета зон
 
-        dataSet.setValueLinePart2Length(0.6f);
 
         //вынос названий за границы
         dataSet.setValueLinePart1OffsetPercentage(80f);
+        dataSet.setValueLinePart2Length(0.6f);
         dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
         dataSet.setValueTextSize(12);
@@ -102,36 +104,26 @@ public class TotalItemDiagram implements CostListItem, Diagram {
 
         pieChart.setData(data);
 
-        pieChart.setCenterText("Всего\nпотрачено\n" + Help.doubleToString(this.sum));
-        pieChart.setCenterTextSize(16);
-
         pieChart.setEntryLabelColor(Color.BLACK); // цвет имен участников
         pieChart.setEntryLabelTextSize(16);
 
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
         pieChart.setRotationEnabled(false); //отключает вращение
+        pieChart.setMaxHighlightDistance(1);
 
         if (this.readOnly) {
             pieChart.setTouchEnabled(false);
         } else {
-            CostPieEntry[] selectedEntry = new CostPieEntry[]{null};
-
             pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(final Entry e, Highlight h) {
                     if (e instanceof CostPieEntry) {
-
-                        if (selectedEntry[0] != null && selectedEntry[0].equals(e)) {
-                            PageParam param = new PageParam.BuildingPageParam()
-                                    .setId(selectedEntry[0].getMemberId())
-                                    .setBackPage(MainPage.class)
-                                    .getParam();
-                            PageOpener.INSTANCE.open(MasterCostInfo.class, param);
-                        } else {
-                            selectedEntry[0] = (CostPieEntry) e;
-                        }
-
+                        PageParam param = new PageParam.BuildingPageParam()
+                                .setId(((CostPieEntry) e).getMemberId())
+                                .setBackPage(MainPage.class)
+                                .getParam();
+                        PageOpener.INSTANCE.open(MasterCostInfo.class, param);
                     }
                 }
 
@@ -143,6 +135,29 @@ public class TotalItemDiagram implements CostListItem, Diagram {
 
     }
 
+    //Поверх диаграммы добавляем TextView, что бы перекрыть центр и не давать туда кликать.
+    private void createTextView() {
+        if (textView != null) {
+            return;
+        }
+
+        textView = new TextView(MainActivity.INSTANCE);
+
+        RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp2.addRule(RelativeLayout.CENTER_IN_PARENT);
+        textView.setLayoutParams(lp2);
+
+        textView.setBackgroundResource(R.drawable.background_pie_center);
+
+        String text = "Всего\nпотрачено\n" + Help.doubleToString(this.sum);
+        textView.setText(text);
+        textView.setOnClickListener(null);
+        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        textView.setTextColor(Color.BLACK);
+        textView.setGravity(Gravity.CENTER);
+
+    }
+
     @Override
     public void render(ListItemSummaryViewHolder holder) {
 
@@ -150,8 +165,10 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         holder.getDiagram().setVisibility(View.VISIBLE);
 
         createDiagram();
+        holder.getDiagram().addView(this.pieChart);
 
-        holder.getDiagram().addView(pieChart);
+        createTextView();  //важно добавлять после диаграммы
+        holder.getDiagram().addView(this.textView);
 
 
         if (!isAnimated) {
@@ -179,37 +196,6 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         return pieChart;
     }
 
-
-    static private class mPieChart extends PieChart {
-
-        public mPieChart(Context context) {
-            super(context);
-        }
-
-        //что бы сторонние клики не сбрасывали выделенную ячейку, что бы можно было обработать повторный клик
-        @Override
-        public void highlightValue(Highlight high, boolean callListener) {
-
-            if (high == null)
-                return;
-
-            Entry e = mData.getEntryForHighlight(high);
-            if (e == null) {
-                return;
-            } else {
-                mIndicesToHighlight = new Highlight[]{
-                        high
-                };
-            }
-
-            setLastHighlighted(mIndicesToHighlight);
-
-            if (callListener && mSelectionListener != null) {
-                mSelectionListener.onValueSelected(e, high);
-            }
-            invalidate();
-        }
-    }
 
     static private class CostPieEntry extends PieEntry {
 
