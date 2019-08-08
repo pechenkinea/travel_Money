@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.page;
 
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
@@ -33,6 +34,8 @@ public class PageOpener {
 
     public  void open(Class<? extends Page> pageClass, PageParam param)
     {
+        MainActivity.INSTANCE.setRefreshActon(null);
+
         Page page;
         try {
             page = pageClass.newInstance();

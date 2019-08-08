@@ -23,6 +23,18 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private DBHelper dbHelper;
+    private RefreshActon refreshActon = null;
+
+
+    public void setRefreshActon(RefreshActon refreshActon) {
+        this.refreshActon = refreshActon;
+    }
+
+    public void refresh(){
+        if (refreshActon != null){
+            refreshActon.refresh();
+        }
+    }
 
     public DBHelper getDbHelper() {
         return dbHelper;
@@ -126,4 +138,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    public interface RefreshActon{
+        void refresh();
+    }
 }

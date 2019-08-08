@@ -116,6 +116,9 @@ public class CostListFragment extends BaseMainPageFragment {
 
     @Override
     public void doAfterRender() {
+
+        MainActivity.INSTANCE.setRefreshActon(this::printCostList);
+
         printCostList();
     }
 

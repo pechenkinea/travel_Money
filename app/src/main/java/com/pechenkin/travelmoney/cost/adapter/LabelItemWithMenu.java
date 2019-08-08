@@ -38,11 +38,12 @@ public class LabelItemWithMenu extends LabelItem {
 
         holder.getMiniMenu().setOnClickListener(view -> {
 
+            boolean currentCheckValue = t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR);
 
             final CheckBox input = new CheckBox(MainActivity.INSTANCE);
 
             input.setText(MainActivity.INSTANCE.getString(R.string.group_by_color_on_off));
-            input.setChecked(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
+            input.setChecked(currentCheckValue);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -69,7 +70,15 @@ public class LabelItemWithMenu extends LabelItem {
             input.setOnCheckedChangeListener((compoundButton, checked) -> t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_BY_COLOR, checked));
 
             alert.setCanceledOnTouchOutside(true);
+            alert.setOnCancelListener(dialogInterface -> {
+
+                if (currentCheckValue != t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)){
+                    MainActivity.INSTANCE.refresh();
+                }
+
+            });
             alert.show();
+
 
         });
     }

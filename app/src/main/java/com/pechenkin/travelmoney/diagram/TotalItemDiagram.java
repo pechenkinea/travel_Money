@@ -82,7 +82,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         for (Total.MemberSum c : this.total) {
             long memberId = c.getMemberId();
             MemberBaseTableRow member = t_members.getMemberById(memberId);
-            NoOfEmp.add(new CostPieEntry((float) c.getSumIn(), member.name, memberId));
+            NoOfEmp.add(new PieEntry((float) c.getSumIn(), member.name, memberId));
             pieColors[i++] = member.color;
         }
 
@@ -118,13 +118,16 @@ public class TotalItemDiagram implements CostListItem, Diagram {
             pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(final Entry e, Highlight h) {
-                    if (e instanceof CostPieEntry) {
+
+                    Object memberId = e.getData();
+                    if (memberId instanceof Long){
                         PageParam param = new PageParam.BuildingPageParam()
-                                .setId(((CostPieEntry) e).getMemberId())
+                                .setId((Long) memberId)
                                 .setBackPage(MainPage.class)
                                 .getParam();
                         PageOpener.INSTANCE.open(MasterCostInfo.class, param);
                     }
+
                 }
 
                 @Override
@@ -151,8 +154,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
 
         String text = "Всего\nпотрачено\n" + Help.doubleToString(this.sum);
         textView.setText(text);
-        textView.setOnClickListener(null);
-        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        textView.setOnClickListener(null); // перехват клика
         textView.setTextColor(Color.BLACK);
         textView.setGravity(Gravity.CENTER);
 
@@ -196,18 +198,4 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         return pieChart;
     }
 
-
-    static private class CostPieEntry extends PieEntry {
-
-        private long memberId;
-
-        CostPieEntry(float value, String label, long memberId) {
-            super(value, label);
-            this.memberId = memberId;
-        }
-
-        long getMemberId() {
-            return memberId;
-        }
-    }
 }

@@ -139,6 +139,8 @@ public class MainPage extends BasePage {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            MainActivity.INSTANCE.setRefreshActon(null);
             FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.fragment, currentFragment).commit();
         }
