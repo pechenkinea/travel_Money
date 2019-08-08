@@ -46,14 +46,15 @@ public class Help {
     }
 
 
-    static public int dpToPx(int dp){
+    static public int dpToPx(int dp) {
 
-        return (int)TypedValue.applyDimension(
+        return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 dp,
                 MainActivity.INSTANCE.getResources().getDisplayMetrics());
 
     }
+
     // простое уведомление
     static public void message(String mes) {
 
@@ -177,9 +178,18 @@ public class Help {
 
     private static final DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(MainActivity.INSTANCE);
     private static final DateFormat timeFormat = android.text.format.DateFormat.getTimeFormat(MainActivity.INSTANCE);
-    public static String dateToDateTimeStr(Date date){
-        return dateFormat.format(date) + " " + timeFormat.format(date);
 
+    public static String dateToDateTimeStr(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return dateFormat.format(date) + " " + timeFormat.format(date);
+    }
+    public static String dateToDateStr(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return dateFormat.format(date);
     }
 
     public static void showFabWithAnimation(FloatingActionButton fab) {
@@ -188,7 +198,7 @@ public class Help {
         animation1.setDuration(700);
         animation1.setFillAfter(true);
         fab.setAnimation(animation1);
-        ((View)fab).setVisibility(View.VISIBLE);
+        ((View) fab).setVisibility(View.VISIBLE);
     }
 
 
@@ -206,10 +216,6 @@ public class Help {
         // dialog.setMessage(Message);
         return dialog;
     }
-
-
-
-
 
 
 }

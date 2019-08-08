@@ -28,22 +28,17 @@ public class QueryResultFactory {
        }
 
        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getReadableDatabase()) {
-           Cursor sqlResult = db.rawQuery(query, null);
-
-           if (sqlResult.moveToFirst()) {
-               result.initializeCountRows(sqlResult.getCount());
-               do {
-                   result.addRow(sqlResult);
+           try (Cursor sqlResult = db.rawQuery(query, null)) {
+               if (sqlResult.moveToFirst()) {
+                   result.initializeCountRows(sqlResult.getCount());
+                   do {
+                       result.addRow(sqlResult);
+                   }
+                   while (sqlResult.moveToNext());
+               } else {
+                   result.initializeCountRows(0);
                }
-               while (sqlResult.moveToNext());
            }
-           else {
-               result.initializeCountRows(0);
-           }
-
-       } catch (Exception ex) {
-           ex.printStackTrace();
-           //Help.alertError("Обновите страницу");
        }
 
 

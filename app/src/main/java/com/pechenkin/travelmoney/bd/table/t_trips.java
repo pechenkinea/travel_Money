@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.bd.table;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
@@ -11,7 +12,15 @@ import com.pechenkin.travelmoney.bd.table.result.TripsQueryResult;
 import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
 
+import java.util.Date;
+
 public class t_trips {
+
+    static public TripBaseTableRow ActiveTrip;
+
+    static {
+        ActiveTrip = getActiveTrip();
+    }
 
     static public long add(String name, String comment) {
         ContentValues cv = new ContentValues();
@@ -131,11 +140,7 @@ public class t_trips {
         return result != null && result.hasRows();
     }
 
-    static public TripBaseTableRow ActiveTrip;
 
-    static {
-        ActiveTrip = getActiveTrip();
-    }
 
     private static TripBaseTableRow getActiveTrip() {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_PROCESSED + " = '1'";
@@ -163,6 +168,49 @@ public class t_trips {
         return result.getFirstRow();
 
     }
+
+    public static Date getStartTripDate(long t_id){
+        String query = String.format("SELECT MIN(%s) FROM %s WHERE %s = '%s'",
+                Namespace.FIELD_DATE,
+                Namespace.TABLE_COSTS,
+                Namespace.FIELD_TRIP,
+                t_id
+        );
+        Date result = null;
+
+        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getReadableDatabase()) {
+            try (Cursor sqlResult = db.rawQuery(query, null)) {
+
+                if (sqlResult.moveToFirst()) {
+                    long value = sqlResult.getLong(0);
+                    result = new Date(value);
+                }
+            }
+        }
+        return result;
+    }
+
+    public static Date getEndTripDate(long t_id){
+        String query = String.format("SELECT MAX(%s) FROM %s WHERE %s = '%s'",
+                Namespace.FIELD_DATE,
+                Namespace.TABLE_COSTS,
+                Namespace.FIELD_TRIP,
+                t_id
+        );
+        Date result = null;
+
+        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getReadableDatabase()) {
+            try (Cursor sqlResult = db.rawQuery(query, null)) {
+
+                if (sqlResult.moveToFirst()) {
+                    long value = sqlResult.getLong(0);
+                    result = new Date(value);
+                }
+            }
+        }
+        return result;
+    }
+
 
 
 }

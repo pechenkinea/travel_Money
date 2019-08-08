@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getApplicationContext());
         t_members.updateMembersCache();
+
         PageOpener.INSTANCE.open(MainPage.class);
 
         /*CostCreator c = new CostCreator("Я за всех 500 магазин");
