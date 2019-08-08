@@ -1,8 +1,8 @@
 package com.pechenkin.travelmoney.bd.table;
 
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.result.BaseQueryResult;
-import com.pechenkin.travelmoney.bd.table.result.QueryResultFactory;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResultFactory;
 
 public class t_colors {
 

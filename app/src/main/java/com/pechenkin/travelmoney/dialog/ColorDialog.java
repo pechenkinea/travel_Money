@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_colors;
 import com.pechenkin.travelmoney.list.AdapterColors;
 

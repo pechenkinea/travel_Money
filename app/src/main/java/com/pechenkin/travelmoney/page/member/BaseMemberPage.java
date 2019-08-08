@@ -3,7 +3,6 @@ package com.pechenkin.travelmoney.page.member;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -19,7 +18,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.dialog.ColorDialog;
@@ -94,7 +93,7 @@ abstract class BaseMemberPage extends BasePage {
 
         int activeIcon = 0;
         if (hasParam()) {
-            MemberBaseTableRow member = t_members.getMemberById(getParam().getId());
+            MemberTableRow member = t_members.getMemberById(getParam().getId());
             if (member != null) {
                 activeIcon = member.icon;
             }

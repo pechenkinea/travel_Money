@@ -1,15 +1,13 @@
-package com.pechenkin.travelmoney.bd.table.result;
+package com.pechenkin.travelmoney.bd.table.query;
 
 import android.database.Cursor;
-
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 
 /**
  * Created by pechenkin on 06.04.2018.
  * Запрос к БД
  */
 
-interface QueryResult {
+public interface QueryResult {
 
     BaseTableRow[] getAllRows();
     BaseTableRow getFirstRow();

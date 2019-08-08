@@ -4,7 +4,7 @@ import android.text.Html;
 import android.view.View;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
@@ -123,13 +123,13 @@ public class ShortCost implements Cost, CostListItem {
         holder.getTo_member_one().setVisibility(View.VISIBLE);
         holder.getMember_icons_layout().setVisibility(View.GONE);
 
-        MemberBaseTableRow member = t_members.getMemberById(getMember());
+        MemberTableRow member = t_members.getMemberById(getMember());
         if (member != null) {
             holder.getTitle().setText(member.name);
             holder.getTitle().setTextColor(member.color);
         }
 
-        MemberBaseTableRow to_member = t_members.getMemberById(getToMember());
+        MemberTableRow to_member = t_members.getMemberById(getToMember());
         if (to_member != null) {
             holder.getTo_member_one().setText(to_member.name);
             holder.getTo_member_one().setTextColor(to_member.color);

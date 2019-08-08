@@ -1,10 +1,10 @@
 package com.pechenkin.travelmoney.export.formats;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.row.CostBaseTableRow;
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.cost.CostQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.cost.CostTableRow;
+import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class JSON implements ExportFormat {
     @Override
-    public String getText(TripBaseTableRow pageTrip) {
+    public String getText(TripTableRow pageTrip) {
         JSONObject exportJson = new JSONObject();
         try {
             exportJson.put("tripId", pageTrip.id);
@@ -28,7 +28,7 @@ public class JSON implements ExportFormat {
             CostQueryResult costs = t_costs.getAllByTripId(pageTrip.id);
             JSONArray json_costs = new JSONArray();
             if (costs.hasRows()) {
-                for (CostBaseTableRow cost : costs.getAllRows()) {
+                for (CostTableRow cost : costs.getAllRows()) {
                     JSONObject json_cost = new JSONObject();
                     json_cost.put("date", (cost.getDate() != null) ? cost.getDate().getTime() : "");
                     json_cost.put("member", cost.getMember());

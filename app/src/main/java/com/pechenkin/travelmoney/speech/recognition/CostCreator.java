@@ -2,8 +2,8 @@ package com.pechenkin.travelmoney.speech.recognition;
 
 import android.text.TextUtils;
 
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.ShortCost;
@@ -159,7 +159,7 @@ public class CostCreator {
         {
             MembersQueryResult membersTrip = t_members.getAllByTripId(t_trips.ActiveTrip.id);
             if (membersTrip.hasRows()) {
-                for (MemberBaseTableRow toMember:membersTrip.getAllRows()) {
+                for (MemberTableRow toMember:membersTrip.getAllRows()) {
                     addToMember(toMember.id);
                 }
             }

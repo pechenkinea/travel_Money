@@ -6,17 +6,17 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.result.BaseQueryResult;
-import com.pechenkin.travelmoney.bd.table.result.QueryResultFactory;
-import com.pechenkin.travelmoney.bd.table.result.TripsQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResultFactory;
+import com.pechenkin.travelmoney.bd.table.query.trip.TripsQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
 
 import java.util.Date;
 
 public class t_trips {
 
-    static public TripBaseTableRow ActiveTrip;
+    static public TripTableRow ActiveTrip;
 
     static {
         ActiveTrip = getActiveTrip();
@@ -94,12 +94,12 @@ public class t_trips {
         return -1;
     }
 
-    static public TripBaseTableRow getTripById(long id) {
+    static public TripTableRow getTripById(long id) {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_ID + " = " + id;
 
         TripsQueryResult result = QueryResultFactory.createQueryResult(sql, TripsQueryResult.class);
 
-        TripBaseTableRow row = result != null ? result.getFirstRow() : null;
+        TripTableRow row = result != null ? result.getFirstRow() : null;
         if (row != null)
             return row;
 
@@ -142,7 +142,7 @@ public class t_trips {
 
 
 
-    private static TripBaseTableRow getActiveTrip() {
+    private static TripTableRow getActiveTrip() {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_PROCESSED + " = '1'";
 
         TripsQueryResult result = null;
@@ -155,7 +155,7 @@ public class t_trips {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    return TripBaseTableRow.getEmpty();
+                    return TripTableRow.getEmpty();
                 }
             }
             wait = true;
@@ -163,7 +163,7 @@ public class t_trips {
         }
 
         if (result == null || !result.hasRows())
-            return TripBaseTableRow.getEmpty();
+            return TripTableRow.getEmpty();
 
         return result.getFirstRow();
 

@@ -1,8 +1,8 @@
-package com.pechenkin.travelmoney.bd.table.result;
+package com.pechenkin.travelmoney.bd.table.query.member;
 
 import android.database.Cursor;
 
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
 
 /**
  * Created by pechenkin on 04.04.2018.
@@ -10,27 +10,25 @@ import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
  */
 
 public class MembersQueryResult extends BaseQueryResult {
-    MembersQueryResult() {
 
-    }
 
     @Override
     public void addRow(Cursor c) {
-        allRows[index++] = new MemberBaseTableRow(c);
+        allRows[index++] = new MemberTableRow(c);
     }
 
     @Override
     public void initializeCountRows(int count) {
-        allRows = new MemberBaseTableRow[count];
+        allRows = new MemberTableRow[count];
     }
 
     @Override
-    public MemberBaseTableRow[] getAllRows() {
+    public MemberTableRow[] getAllRows() {
         return allRows;
     }
 
     @Override
-    public MemberBaseTableRow getFirstRow() {
+    public MemberTableRow getFirstRow() {
         if (hasRows())
             return allRows[0];
         else
@@ -42,6 +40,6 @@ public class MembersQueryResult extends BaseQueryResult {
         return allRows != null && allRows.length > 0;
     }
 
-    private MemberBaseTableRow[] allRows;
+    private MemberTableRow[] allRows;
 
 }

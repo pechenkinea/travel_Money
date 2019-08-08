@@ -4,9 +4,9 @@ import com.pechenkin.travelmoney.BuildConfig;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.cost.CostQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
+import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
@@ -19,14 +19,12 @@ import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 
-import java.util.Date;
-
 /**
  * Вернет итоги в виде текста
  */
 public class TotalDebt implements ExportFormat {
     @Override
-    public String getText(TripBaseTableRow pageTrip) {
+    public String getText(TripTableRow pageTrip) {
 
         CostQueryResult allCosts = t_costs.getAllByTripId(pageTrip.id);
 
@@ -58,10 +56,10 @@ public class TotalDebt implements ExportFormat {
 
             for (Cost cost : calculateCosts) {
                 long memberId = cost.getMember();
-                MemberBaseTableRow member = t_members.getMemberById(memberId);
+                MemberTableRow member = t_members.getMemberById(memberId);
 
                 long toMemberId = cost.getToMember();
-                MemberBaseTableRow toMember = t_members.getMemberById(toMemberId);
+                MemberTableRow toMember = t_members.getMemberById(toMemberId);
 
                 result.append(member.name).append(" --> ").append(toMember.name).append(" ").append(Help.doubleToString(cost.getSum())).append("\n");
             }
@@ -73,7 +71,7 @@ public class TotalDebt implements ExportFormat {
             result.append("Кто сколько потратил:\n");
 
             for (Total.MemberSum mSum : totalResult) {
-                MemberBaseTableRow member = t_members.getMemberById(mSum.getMemberId());
+                MemberTableRow member = t_members.getMemberById(mSum.getMemberId());
                 result.append(member.name).append(": ").append(Help.doubleToString(mSum.getSumIn())).append("\n");
             }
         }

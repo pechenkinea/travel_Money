@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd.table.result;
+package com.pechenkin.travelmoney.bd.table.query;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

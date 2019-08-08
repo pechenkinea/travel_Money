@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.page.main.fragment.CostListFragment;
@@ -38,11 +38,11 @@ public class ViewTripPage extends BasePage {
         return "";
     }
 
-    private TripBaseTableRow getPageTrip() {
+    private TripTableRow getPageTrip() {
         return pageTrip;
     }
 
-    private TripBaseTableRow pageTrip = t_trips.ActiveTrip;
+    private TripTableRow pageTrip = t_trips.ActiveTrip;
 
     @Override
     protected boolean fillFields() {

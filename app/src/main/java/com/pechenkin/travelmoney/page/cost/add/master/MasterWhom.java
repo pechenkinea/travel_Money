@@ -9,8 +9,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
@@ -84,7 +83,7 @@ public class MasterWhom extends ListPage {
         }
         else
         {
-            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMemberBaseTableRow.createCostMemberBaseTableRow(tripMembers.getAllRows(), getParam().getSum()), getParam().getSum());
+            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers.getAllRows(), getParam().getSum()), getParam().getSum());
             list1.setAdapter(adapter);
 
             if (hasParam())
@@ -160,7 +159,7 @@ public class MasterWhom extends ListPage {
             for (int i = 0; i < sbArray.size(); i++) {
                 int key = sbArray.keyAt(i);
                 if (sbArray.get(key)) {
-                    CostMemberBaseTableRow item = adapter.getItem(key);
+                    CostMember item = adapter.getItem(key);
                     if (item != null && item.getSum() > 0) {
                         t_costs.add(getParam().getId(), item.getMemberRow().id, getParam().getName(), item.getSum(), getParam().getPhotoUrl(), t_trips.ActiveTrip.id, getParam().getSelectDate());
                     }

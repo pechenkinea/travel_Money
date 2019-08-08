@@ -13,7 +13,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_settings;
@@ -119,7 +119,7 @@ public class GroupCost implements CostListItem {
 
         if (this.costs.size() > 0) {
 
-            MemberBaseTableRow member = t_members.getMemberById(this.costs.get(0).getMember());
+            MemberTableRow member = t_members.getMemberById(this.costs.get(0).getMember());
 
             if (this.sum == 0) {
                 holder.getTitle().setTextColor(DISABLE_COLOR);
@@ -151,7 +151,7 @@ public class GroupCost implements CostListItem {
             for (int i = 0; i < this.costs.size(); i++) {
 
                 Cost costInGroup = this.costs.get(i);
-                MemberBaseTableRow to_member = t_members.getMemberById(costInGroup.getToMember());
+                MemberTableRow to_member = t_members.getMemberById(costInGroup.getToMember());
 
                 int to_memberColor = to_member.color;
 

@@ -8,11 +8,11 @@ import android.util.LongSparseArray;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.NamesHashMap;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.result.BaseQueryResult;
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.result.QueryResultFactory;
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResultFactory;
+import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 
 import java.util.Map;
 
@@ -77,7 +77,7 @@ public class t_members {
 
         MembersQueryResult allMembers = getAllByTripId(t_trips.ActiveTrip.id);
         if (allMembers.hasRows()) {
-            for (MemberBaseTableRow member : allMembers.getAllRows()) {
+            for (MemberTableRow member : allMembers.getAllRows()) {
                 membersNamesCache.put(member.name, member);
             }
         }
@@ -146,19 +146,19 @@ public class t_members {
     }
 
 
-    static private final LongSparseArray<MemberBaseTableRow> memberCache = new LongSparseArray<>();
+    static private final LongSparseArray<MemberTableRow> memberCache = new LongSparseArray<>();
 
 
     static public int getColorById(long _id){
-        MemberBaseTableRow member = getMemberById(_id);
+        MemberTableRow member = getMemberById(_id);
         if (member != null){
             return member.color;
         }
         return Color.BLACK;
     }
 
-    static public MemberBaseTableRow getMemberById(long _id) {
-        MemberBaseTableRow result = memberCache.get(_id);
+    static public MemberTableRow getMemberById(long _id) {
+        MemberTableRow result = memberCache.get(_id);
         if (result == null) {
             String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_ID + " = '" + _id + "'";
             MembersQueryResult find = QueryResultFactory.createQueryResult(sql, MembersQueryResult.class);

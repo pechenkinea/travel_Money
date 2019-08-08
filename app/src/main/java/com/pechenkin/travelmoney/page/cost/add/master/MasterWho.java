@@ -6,9 +6,8 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
@@ -55,7 +54,7 @@ public class MasterWho extends ListPage {
         }
         else
         {
-            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMemberBaseTableRow.createCostMemberBaseTableRow(tripMembers.getAllRows(), 0), false);
+            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers.getAllRows(), 0), false);
             adapter.setShowCheckBox(false);
 
             list1.setAdapter(adapter);

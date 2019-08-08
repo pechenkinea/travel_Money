@@ -6,13 +6,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.result.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
-import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
+import com.pechenkin.travelmoney.page.cost.add.master.CostMember;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.member.AddMemberPage;
@@ -50,7 +50,7 @@ public class MembersListFragment extends BaseMainPageFragment {
         });
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-            MemberBaseTableRow item = adapter.getItem(position).getMemberRow();
+            MemberTableRow item = adapter.getItem(position).getMemberRow();
 
             PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
 
@@ -68,7 +68,7 @@ public class MembersListFragment extends BaseMainPageFragment {
                 Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
                 list.setAdapter(null);
             } else {
-                MemberBaseTableRow[] members = allMembers.getAllRows();
+                MemberTableRow[] members = allMembers.getAllRows();
 
                 // сортируем так, что бы те, кто в текущей поездке отображались сверху
                 Arrays.sort(members, (m1, m2) -> {
@@ -86,7 +86,7 @@ public class MembersListFragment extends BaseMainPageFragment {
                     return Long.compare(m1.id, m2.id);
                 });
 
-                AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMemberBaseTableRow.createCostMemberBaseTableRow(members, 0), true);
+                AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(members, 0), true);
                 list.setAdapter(adapter);
 
                 for (int i = 0; i < adapter.getCount(); i++) {

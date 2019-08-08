@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.result.QueryResultFactory;
+import com.pechenkin.travelmoney.bd.table.query.cost.CostQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResultFactory;
 
 import java.util.Date;
 

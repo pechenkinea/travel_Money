@@ -8,7 +8,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -68,7 +68,7 @@ public class EditTripPage extends BaseTripPage {
             return false;
         }
 
-        TripBaseTableRow trip = t_trips.getTripById(getParam().getId());
+        TripTableRow trip = t_trips.getTripById(getParam().getId());
         if (trip == null) {
             Help.message("Ошибка. Не найдена поездка с id " + getParam().getId());
             return false;

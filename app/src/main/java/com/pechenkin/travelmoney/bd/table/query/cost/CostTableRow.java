@@ -1,10 +1,12 @@
-package com.pechenkin.travelmoney.bd.table.row;
+package com.pechenkin.travelmoney.bd.table.query.cost;
 
 import android.database.Cursor;
 import android.view.View;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.bd.Namespace;
+import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
@@ -19,7 +21,7 @@ import java.util.Date;
  * Трата
  */
 
-public class CostBaseTableRow extends BaseTableRow implements Cost, CostListItem {
+public class CostTableRow extends BaseTableRow implements Cost, CostListItem {
 
     private final String comment;
     private final String image_dir;
@@ -35,7 +37,7 @@ public class CostBaseTableRow extends BaseTableRow implements Cost, CostListItem
     private final double sum;
 
 
-    public CostBaseTableRow(Cursor c) {
+    public CostTableRow(Cursor c) {
         super(c);
 
         this.comment = getStringColumnValue(Namespace.FIELD_COMMENT, c);
@@ -110,13 +112,13 @@ public class CostBaseTableRow extends BaseTableRow implements Cost, CostListItem
 
         holder.photoImage(getImageDir());
 
-        MemberBaseTableRow member = t_members.getMemberById(getMember());
+        MemberTableRow member = t_members.getMemberById(getMember());
         if (member != null) {
             holder.getTitle().setText(member.name);
             holder.getTitle().setTextColor(member.color);
         }
 
-        MemberBaseTableRow to_member = t_members.getMemberById(getToMember());
+        MemberTableRow to_member = t_members.getMemberById(getToMember());
         if (to_member != null){
             holder.getTo_member_one().setText(to_member.name);
             holder.getTo_member_one().setTextColor(to_member.color);

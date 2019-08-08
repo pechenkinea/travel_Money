@@ -3,6 +3,7 @@ package com.pechenkin.travelmoney.diagram;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
@@ -50,8 +51,8 @@ public class TotalItemDiagram implements CostListItem, Diagram {
 
         Arrays.sort(total, (t1, t2) -> {
 
-            MemberBaseTableRow t1Member = t_members.getMemberById(t1.getMemberId());
-            MemberBaseTableRow t2Member = t_members.getMemberById(t2.getMemberId());
+            MemberTableRow t1Member = t_members.getMemberById(t1.getMemberId());
+            MemberTableRow t2Member = t_members.getMemberById(t2.getMemberId());
 
             return Integer.compare(t1Member.color, t2Member.color);
         });
@@ -81,7 +82,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         int i = 0;
         for (Total.MemberSum c : this.total) {
             long memberId = c.getMemberId();
-            MemberBaseTableRow member = t_members.getMemberById(memberId);
+            MemberTableRow member = t_members.getMemberById(memberId);
             NoOfEmp.add(new PieEntry((float) c.getSumIn(), member.name, memberId));
             pieColors[i++] = member.color;
         }
@@ -167,9 +168,16 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         holder.getDiagram().setVisibility(View.VISIBLE);
 
         createDiagram();
+        if(pieChart.getParent() != null) {
+            ((ViewGroup)pieChart.getParent()).removeView(pieChart); // <- fix
+        }
         holder.getDiagram().addView(this.pieChart);
 
+
         createTextView();  //важно добавлять после диаграммы
+        if(textView.getParent() != null) {
+            ((ViewGroup)textView.getParent()).removeView(textView); // <- fix
+        }
         holder.getDiagram().addView(this.textView);
 
 

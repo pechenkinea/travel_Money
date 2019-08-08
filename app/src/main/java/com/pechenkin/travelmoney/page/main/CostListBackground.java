@@ -6,8 +6,8 @@ import android.os.AsyncTask;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.result.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.row.TripBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.cost.CostQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.cost.GroupCost;
@@ -24,14 +24,14 @@ import com.pechenkin.travelmoney.cost.processing.summary.Total;
 
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
-    private final TripBaseTableRow trip;
+    private final TripTableRow trip;
     private ProgressDialog processDialog;
     private CostListItem[] finalList = {};
     private boolean readOnly;
 
     private final DoOnPostExecute doOnPostExecute;
 
-    public CostListBackground(boolean readOnly, TripBaseTableRow trip, DoOnPostExecute doOnPostExecute) {
+    public CostListBackground(boolean readOnly, TripTableRow trip, DoOnPostExecute doOnPostExecute) {
         this.trip = trip;
         this.readOnly = readOnly;
         this.doOnPostExecute = doOnPostExecute;

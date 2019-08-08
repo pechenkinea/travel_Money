@@ -1,8 +1,8 @@
-package com.pechenkin.travelmoney.bd.table.result;
+package com.pechenkin.travelmoney.bd.table.query.setting;
 
 import android.database.Cursor;
 
-import com.pechenkin.travelmoney.bd.table.row.SettingTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
 
 /**
  * Created by pechenkin on 04.04.2018.
@@ -10,9 +10,7 @@ import com.pechenkin.travelmoney.bd.table.row.SettingTableRow;
  */
 
 public class SettingsQueryResult extends BaseQueryResult {
-    SettingsQueryResult() {
 
-    }
 
     @Override
     public void addRow(Cursor c) {

@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -252,7 +252,7 @@ public class MasterCostInfo extends BasePage {
         if (hasParam()) {
 
             try {
-                MemberBaseTableRow member = t_members.getMemberById(getParam().getId());
+                MemberTableRow member = t_members.getMemberById(getParam().getId());
                 if (member != null) {
                     String memberCostInfoText = MainActivity.INSTANCE.getString(R.string.costMember) + " " + member.name;
                     ((TextView) MainActivity.INSTANCE.findViewById(R.id.memberCostInfo))

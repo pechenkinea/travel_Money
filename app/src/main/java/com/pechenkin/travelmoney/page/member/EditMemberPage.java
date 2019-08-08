@@ -8,7 +8,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -68,7 +68,7 @@ public class EditMemberPage extends BaseMemberPage {
             return false;
         }
 
-        MemberBaseTableRow member = t_members.getMemberById(getParam().getId());
+        MemberTableRow member = t_members.getMemberById(getParam().getId());
         if (member == null) {
             Help.message("Ошибка. Не найден учатсяник с id " + getParam().getId());
             return false;

@@ -1,21 +1,16 @@
-package com.pechenkin.travelmoney.bd.table.result;
+package com.pechenkin.travelmoney.bd.table.query;
 
 import android.database.Cursor;
-
-import com.pechenkin.travelmoney.bd.table.row.BaseTableRow;
 
 
 /**
  * Created by pechenkin on 04.04.2018.
  * Базовый запрос к БД
  */
-
+//TODO оставить только один QueryResult, остальные явно лишние
 public class BaseQueryResult implements QueryResult {
 
-    BaseQueryResult() {
-    }
-
-    int index = 0;
+    protected int index = 0;
 
     private BaseTableRow[] allRows;
 

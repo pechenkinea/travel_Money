@@ -1,8 +1,8 @@
-package com.pechenkin.travelmoney.bd.table.result;
+package com.pechenkin.travelmoney.bd.table.query.cost;
 
 import android.database.Cursor;
 
-import com.pechenkin.travelmoney.bd.table.row.CostBaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
 
 /**
  * Created by pechenkin on 04.04.2018.
@@ -10,28 +10,27 @@ import com.pechenkin.travelmoney.bd.table.row.CostBaseTableRow;
  */
 
 public class CostQueryResult extends BaseQueryResult {
-    CostQueryResult() {
-    }
+
 
     @Override
     public void addRow(Cursor c) {
-        allRows[index++] = new CostBaseTableRow(c);
+        allRows[index++] = new CostTableRow(c);
     }
 
-    private CostBaseTableRow[] allRows;
+    private CostTableRow[] allRows;
 
     @Override
     public void initializeCountRows(int count) {
-        allRows = new CostBaseTableRow[count];
+        allRows = new CostTableRow[count];
     }
 
     @Override
-    public CostBaseTableRow[] getAllRows() {
+    public CostTableRow[] getAllRows() {
         return allRows;
     }
 
     @Override
-    public CostBaseTableRow getFirstRow() {
+    public CostTableRow getFirstRow() {
         if (hasRows())
             return allRows[0];
         else

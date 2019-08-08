@@ -24,15 +24,15 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.row.CostMemberBaseTableRow;
-import com.pechenkin.travelmoney.bd.table.row.MemberBaseTableRow;
+import com.pechenkin.travelmoney.page.cost.add.master.CostMember;
+import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
 public class AdapterMembersList extends BaseAdapter {
 
-    private final CostMemberBaseTableRow[] data;
+    private final CostMember[] data;
     private static LayoutInflater inflater = null;
     private boolean showEditButton = false;
     private double sum = 0f;
@@ -43,13 +43,13 @@ public class AdapterMembersList extends BaseAdapter {
         this.showCheckBox = showCheckBox;
     }
 
-    public AdapterMembersList(Activity a, CostMemberBaseTableRow[] dataList, boolean showEditButton) {
+    public AdapterMembersList(Activity a, CostMember[] dataList, boolean showEditButton) {
         data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showEditButton = showEditButton;
     }
 
-    public AdapterMembersList(Activity a, CostMemberBaseTableRow[] dataList, double sum) {
+    public AdapterMembersList(Activity a, CostMember[] dataList, double sum) {
         data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.sum = sum;
@@ -61,7 +61,7 @@ public class AdapterMembersList extends BaseAdapter {
     }
 
 
-    public CostMemberBaseTableRow getItem(int position) {
+    public CostMember getItem(int position) {
         try {
             return data[position];
         } catch (Exception ex) {
@@ -80,8 +80,8 @@ public class AdapterMembersList extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        CostMemberBaseTableRow item = data[position];
-        MemberBaseTableRow row = item.getMemberRow();
+        CostMember item = data[position];
+        MemberTableRow row = item.getMemberRow();
 
         ViewHolder holder;
         if (convertView == null) {
