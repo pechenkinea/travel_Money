@@ -169,14 +169,17 @@ public class TotalItemDiagram implements CostListItem, Diagram {
 
         createDiagram();
         if(pieChart.getParent() != null) {
-            ((ViewGroup)pieChart.getParent()).removeView(pieChart); // <- fix
+            // была ошибка. нигрывалась так: надо прокрутить список всех операций вниз,
+            // потом пометить трату как неактивную и через кнопку прокрутки вернуться вверх
+            // ниже с textView аналогичная ситуация
+            ((ViewGroup)pieChart.getParent()).removeView(pieChart);
         }
         holder.getDiagram().addView(this.pieChart);
 
 
         createTextView();  //важно добавлять после диаграммы
         if(textView.getParent() != null) {
-            ((ViewGroup)textView.getParent()).removeView(textView); // <- fix
+            ((ViewGroup)textView.getParent()).removeView(textView);
         }
         holder.getDiagram().addView(this.textView);
 
