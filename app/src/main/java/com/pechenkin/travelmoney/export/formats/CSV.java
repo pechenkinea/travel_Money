@@ -1,10 +1,10 @@
 package com.pechenkin.travelmoney.export.formats;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.table.query.cost.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.query.cost.CostTableRow;
-import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 
@@ -15,7 +15,7 @@ public class CSV implements ExportFormat {
     public String getText(TripTableRow pageTrip) {
 
         ArrayList<Long> membersList = new ArrayList<>();
-        CostQueryResult costs = t_costs.getAllByTripId(pageTrip.id);
+        BaseQueryResult<CostTableRow> costs = t_costs.getAllByTripId(pageTrip.id);
         StringBuilder valueCosts = new StringBuilder("Операции\r\n");
         valueCosts.append("Дата;Кто;Кому;Сколько;Активно;Комментарий").append("\r\n");
         if (costs.hasRows()) {
@@ -41,7 +41,7 @@ public class CSV implements ExportFormat {
         valueMembers.append("id;Имя").append("\r\n");
         for (Long m : membersList) {
 
-            BaseTableRow findMember = t_members.getMemberById(m);
+            IdAndNameTableRow findMember = t_members.getMemberById(m);
             String line = m + ";" + ((findMember != null) ? findMember.name : "ErrorMemberName");
             line = line.replaceAll("\n|\n\r", " ");
             valueMembers.append(line).append("\r\n");

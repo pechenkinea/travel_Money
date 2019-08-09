@@ -6,15 +6,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
-import com.pechenkin.travelmoney.page.cost.add.master.CostMember;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.cost.add.master.CostMember;
 import com.pechenkin.travelmoney.page.member.AddMemberPage;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
@@ -37,13 +37,13 @@ public class MembersListFragment extends BaseMainPageFragment {
         list.setOnItemClickListener((parent, view, position, id) -> {
 
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-            BaseTableRow item = adapter.getItem(position).getMemberRow();
+            IdAndNameTableRow item = adapter.getItem(position).getMemberRow();
 
-            if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, item.id)) {
-                t_trips.removeMemberInTrip(t_trips.ActiveTrip.id, item.id);
+            if (t_trips.isMemberInTrip(t_trips.getActiveTrip().id, item.id)) {
+                t_trips.removeMemberInTrip(t_trips.getActiveTrip().id, item.id);
                 list.setItemChecked(position, false);
             } else {
-                t_trips.addMemberInTrip(t_trips.ActiveTrip.id, item.id);
+                t_trips.addMemberInTrip(t_trips.getActiveTrip().id, item.id);
                 list.setItemChecked(position, true);
             }
             list.invalidateViews();
@@ -61,7 +61,7 @@ public class MembersListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        MembersQueryResult allMembers = t_members.getAll();
+        BaseQueryResult<MemberTableRow> allMembers = t_members.getAll();
         ListView list = fragmentView.findViewById(R.id.list_members);
         if (list != null) {
             if (!allMembers.hasRows()) {
@@ -73,8 +73,8 @@ public class MembersListFragment extends BaseMainPageFragment {
                 // сортируем так, что бы те, кто в текущей поездке отображались сверху
                 Arrays.sort(members, (m1, m2) -> {
 
-                    boolean m1InTRip = m1.inTrip(t_trips.ActiveTrip.id);
-                    boolean m2InTRip = m2.inTrip(t_trips.ActiveTrip.id);
+                    boolean m1InTRip = m1.inTrip(t_trips.getActiveTrip().id);
+                    boolean m2InTRip = m2.inTrip(t_trips.getActiveTrip().id);
 
                     if (m1InTRip && !m2InTRip){
                         return -1;
@@ -91,7 +91,7 @@ public class MembersListFragment extends BaseMainPageFragment {
 
                 for (int i = 0; i < adapter.getCount(); i++) {
                     long m_id = adapter.getItem(i).getMemberRow().id;
-                    if (t_trips.isMemberInTrip(t_trips.ActiveTrip.id, m_id)) {
+                    if (t_trips.isMemberInTrip(t_trips.getActiveTrip().id, m_id)) {
                         list.setItemChecked(i, true);
                     }
                 }

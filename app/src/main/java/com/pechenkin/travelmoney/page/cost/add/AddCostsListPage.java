@@ -45,7 +45,7 @@ public class AddCostsListPage extends BasePage {
 
     @Override
     protected String getTitleHeader() {
-        return "Добавить траты" + "(" + t_trips.ActiveTrip.name + ")";
+        return "Добавить траты" + "(" + t_trips.getActiveTrip().name + ")";
     }
 
     @Override
@@ -87,7 +87,7 @@ public class AddCostsListPage extends BasePage {
             for (CostListItem c : costs) {
                 if (c instanceof ShortCost) {
                     if (((ShortCost) c).getMember() > -1 && ((ShortCost) c).getSum() > 0) {
-                        t_costs.add(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", t_trips.ActiveTrip.id, addCostDate);
+                        t_costs.add(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", t_trips.getActiveTrip().id, addCostDate);
                         added = true;
                     }
                 }
@@ -120,7 +120,7 @@ public class AddCostsListPage extends BasePage {
 
     @Override
     protected boolean fillFields() {
-        if (t_trips.ActiveTrip == null) {
+        if (t_trips.getActiveTrip() == null) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
             return false;
         }

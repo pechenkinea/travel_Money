@@ -9,7 +9,7 @@ import androidx.core.content.FileProvider;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.export.formats.ExportFormat;
 
 import java.io.BufferedWriter;

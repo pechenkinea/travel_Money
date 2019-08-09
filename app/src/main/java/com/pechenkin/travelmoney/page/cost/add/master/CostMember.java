@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.page.cost.add.master;
 
-import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 
 /**
  * Created by pechenkin on 04.06.2018.

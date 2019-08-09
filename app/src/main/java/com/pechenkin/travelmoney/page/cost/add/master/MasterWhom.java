@@ -9,7 +9,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
@@ -59,7 +60,7 @@ public class MasterWhom extends ListPage {
 
     @Override
     protected boolean fillFields() {
-        if (t_trips.ActiveTrip == null)
+        if (t_trips.getActiveTrip() == null)
         {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
             return false;
@@ -74,7 +75,7 @@ public class MasterWhom extends ListPage {
         MainActivity.INSTANCE.findViewById(R.id.member_add_button)
                 .setVisibility(View.INVISIBLE);
 
-        MembersQueryResult tripMembers = t_members.getAllByTripId(t_trips.ActiveTrip.id);
+        BaseQueryResult<MemberTableRow> tripMembers = t_members.getAllByTripId(t_trips.getActiveTrip().id);
         ListView list1 =  MainActivity.INSTANCE.findViewById(getListViewId());
         if (!tripMembers.hasRows())
         {
@@ -161,7 +162,7 @@ public class MasterWhom extends ListPage {
                 if (sbArray.get(key)) {
                     CostMember item = adapter.getItem(key);
                     if (item != null && item.getSum() > 0) {
-                        t_costs.add(getParam().getId(), item.getMemberRow().id, getParam().getName(), item.getSum(), getParam().getPhotoUrl(), t_trips.ActiveTrip.id, getParam().getSelectDate());
+                        t_costs.add(getParam().getId(), item.getMemberRow().id, getParam().getName(), item.getSum(), getParam().getPhotoUrl(), t_trips.getActiveTrip().id, getParam().getSelectDate());
                     }
                 }
             }

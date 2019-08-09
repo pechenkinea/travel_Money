@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.export;
 
-import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.export.formats.CSV;
 import com.pechenkin.travelmoney.export.formats.ExportFormat;
 import com.pechenkin.travelmoney.export.formats.JSON;

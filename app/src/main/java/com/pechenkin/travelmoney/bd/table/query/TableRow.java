@@ -6,19 +6,18 @@ import com.pechenkin.travelmoney.bd.Namespace;
 
 import java.util.Date;
 
+
 /**
- * Created by pechenkin on 04.04.2018.
- * Строка БД
+ * Пустая строка, работает быстрее всех т.к. не получает значение не из каких ячеек
  */
+public class TableRow {
 
-public class BaseTableRow {
 
-    public final long id;
-    public final String name;
+    public TableRow(Cursor c) {
 
-    public BaseTableRow(Cursor c) {
-        id = getLongColumnValue(Namespace.FIELD_ID, c);
-        name = getStringColumnValue(Namespace.FIELD_NAME, c);
+    }
+    protected TableRow() {
+
     }
 
     protected String getStringColumnValue(String columnName, Cursor c) {

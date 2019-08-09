@@ -2,14 +2,14 @@ package com.pechenkin.travelmoney.bd.table;
 
 import com.pechenkin.travelmoney.bd.Namespace;
 import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.QueryResultFactory;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 
 public class t_colors {
 
-	static public BaseQueryResult getAll()
+	static public BaseQueryResult<IdAndNameTableRow> getAll()
 	{
 		String sql = "SELECT * FROM " + Namespace.TABLE_COLORS;
-		return QueryResultFactory.createQueryResult(sql, BaseQueryResult.class);
+		return new BaseQueryResult<>(sql, IdAndNameTableRow.class);
 	}
 
 	/*static public void updateColors(){

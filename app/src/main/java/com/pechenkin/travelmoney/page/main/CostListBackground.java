@@ -6,21 +6,22 @@ import android.os.AsyncTask;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.query.cost.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.cost.GroupCost;
 import com.pechenkin.travelmoney.cost.ShortCost;
-import com.pechenkin.travelmoney.cost.adapter.LabelItemWithMenu;
-import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.LabelItem;
+import com.pechenkin.travelmoney.cost.adapter.LabelItemWithMenu;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
 
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
@@ -49,7 +50,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
         if (this.trip != null) {
 
-            CostQueryResult costList = t_costs.getAllByTripId(this.trip.id);
+            BaseQueryResult<CostTableRow> costList = t_costs.getAllByTripId(this.trip.id);
 
             ShortCost[] calculationList;
             Total.MemberSum[] totalResult;

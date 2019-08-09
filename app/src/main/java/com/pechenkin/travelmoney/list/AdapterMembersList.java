@@ -25,7 +25,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.page.cost.add.master.CostMember;
-import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;

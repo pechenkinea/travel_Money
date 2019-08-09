@@ -7,20 +7,48 @@ import android.database.sqlite.SQLiteDatabase;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Namespace;
 import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.QueryResultFactory;
-import com.pechenkin.travelmoney.bd.table.query.trip.TripsQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
+import com.pechenkin.travelmoney.bd.table.query.IdTableRow;
+import com.pechenkin.travelmoney.bd.table.query.TableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 
 import java.util.Date;
 
 public class t_trips {
 
-    static public TripTableRow ActiveTrip;
+    static private TripTableRow activeTrip = null;
 
-    static {
-        ActiveTrip = getActiveTrip();
+    public static TripTableRow getActiveTrip() {
+        if (activeTrip == null) {
+
+            String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_PROCESSED + " = '1'";
+
+            BaseQueryResult<TripTableRow> result = new BaseQueryResult<>(sql, TripTableRow.class);
+
+            if (!result.hasRows())
+                return TripTableRow.getEmpty();
+
+            activeTrip = result.getFirstRow();
+        }
+
+        return activeTrip;
+
     }
+
+    static public void set_active(long t_id) {
+        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
+
+            ContentValues cv = new ContentValues();
+            cv.put(Namespace.FIELD_PROCESSED, "0");
+            db.update(Namespace.TABLE_TRIPS, cv, Namespace.FIELD_PROCESSED + " != 0", null);
+
+            ContentValues cv2 = new ContentValues();
+            cv2.put(Namespace.FIELD_PROCESSED, "1");
+
+            db.update(Namespace.TABLE_TRIPS, cv2, Namespace.FIELD_ID + " = " + t_id, null);
+        }
+        activeTrip = null;
+    }
+
 
     static public long add(String name, String comment) {
         ContentValues cv = new ContentValues();
@@ -50,8 +78,8 @@ public class t_trips {
 
     static public Boolean isAdded(String trip_name) {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_NAME + " = '" + trip_name + "'";
-        BaseQueryResult result = QueryResultFactory.createQueryResult(sql, BaseQueryResult.class);
-        return result != null && result.hasRows();
+        BaseQueryResult<TableRow> result = new BaseQueryResult<>(sql, TableRow.class);
+        return result.hasRows();
     }
 
 
@@ -77,17 +105,17 @@ public class t_trips {
         }
     }
 
-    static public TripsQueryResult getAll() {
+    static public BaseQueryResult<TripTableRow> getAll() {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " ORDER BY " + Namespace.FIELD_ID + " DESC";
-        return QueryResultFactory.createQueryResult(sql, TripsQueryResult.class);
+        return new BaseQueryResult<>(sql, TripTableRow.class);
     }
 
     static public long getIdByName(String t_name) {
         String sql = "SELECT " + Namespace.FIELD_ID + " FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_NAME + " = '" + t_name + "'";
 
-        BaseQueryResult result = QueryResultFactory.createQueryResult(sql, BaseQueryResult.class);
+        BaseQueryResult<IdTableRow> result = new BaseQueryResult<>(sql, IdTableRow.class);
 
-        BaseTableRow row = result != null ? result.getFirstRow() : null;
+        IdTableRow row = result.getFirstRow();
         if (row != null)
             return row.id;
 
@@ -97,9 +125,9 @@ public class t_trips {
     static public TripTableRow getTripById(long id) {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_ID + " = " + id;
 
-        TripsQueryResult result = QueryResultFactory.createQueryResult(sql, TripsQueryResult.class);
+        BaseQueryResult<TripTableRow> result = new BaseQueryResult<>(sql, TripTableRow.class);
 
-        TripTableRow row = result != null ? result.getFirstRow() : null;
+        TripTableRow row = result.getFirstRow();
         if (row != null)
             return row;
 
@@ -111,63 +139,23 @@ public class t_trips {
             return false;
 
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS_MEMBERS + " WHERE " + Namespace.FIELD_TRIP + " = '" + tripId + "' and " + Namespace.FIELD_MEMBER + " = '" + memberId + "'";
-        BaseQueryResult result = QueryResultFactory.createQueryResult(sql, BaseQueryResult.class);
+        BaseQueryResult result = new BaseQueryResult<>(sql, TableRow.class);
 
-        return result != null && result.hasRows();
-
+        return result.hasRows();
     }
 
-    static public void set_active(long t_id) {
-        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
 
-            ContentValues cv = new ContentValues();
-            cv.put(Namespace.FIELD_PROCESSED, "0");
-            db.update(Namespace.TABLE_TRIPS, cv, Namespace.FIELD_PROCESSED + " != 0", null);
-
-            ContentValues cv2 = new ContentValues();
-            cv2.put(Namespace.FIELD_PROCESSED, "1");
-
-            db.update(Namespace.TABLE_TRIPS, cv2, Namespace.FIELD_ID + " = " + t_id, null);
-        }
-
-        ActiveTrip = getActiveTrip();
-    }
 
     static public Boolean isActive(long t_id) {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_ID + " = '" + t_id + "' and " + Namespace.FIELD_PROCESSED + " = 1";
 
-        TripsQueryResult result = QueryResultFactory.createQueryResult(sql, TripsQueryResult.class);
-        return result != null && result.hasRows();
+        BaseQueryResult result = new BaseQueryResult<>(sql, TableRow.class);
+        return result.hasRows();
     }
 
 
 
-    private static TripTableRow getActiveTrip() {
-        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_PROCESSED + " = '1'";
 
-        TripsQueryResult result = null;
-        int tryCount = 0;
-        boolean wait = false;
-
-        while ((result == null || !result.hasRows()) && ++tryCount < 5) {
-            if (wait) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return TripTableRow.getEmpty();
-                }
-            }
-            wait = true;
-            result = QueryResultFactory.createQueryResult(sql, TripsQueryResult.class);
-        }
-
-        if (result == null || !result.hasRows())
-            return TripTableRow.getEmpty();
-
-        return result.getFirstRow();
-
-    }
 
     public static Date getStartTripDate(long t_id){
         String query = String.format("SELECT MIN(%s) FROM %s WHERE %s = '%s'",

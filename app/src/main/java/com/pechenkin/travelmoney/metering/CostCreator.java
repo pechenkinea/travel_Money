@@ -7,8 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 
@@ -28,8 +29,8 @@ class CostCreator {
 
         Thread printCostThready = new Thread(() -> {
 
-            MembersQueryResult currentTripMembers = t_members.getAllByTripId(t_trips.ActiveTrip.id);
-            BaseTableRow[] members = currentTripMembers.getAllRows();
+            BaseQueryResult<MemberTableRow> currentTripMembers = t_members.getAllByTripId(t_trips.getActiveTrip().id);
+            IdAndNameTableRow[] members = currentTripMembers.getAllRows();
 
             try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
 
@@ -40,7 +41,7 @@ class CostCreator {
 
                 for (int i = 0; i < 1000; i++) {
 
-                    BaseTableRow member = members[memberRandom.nextInt(members.length)];
+                    IdAndNameTableRow member = members[memberRandom.nextInt(members.length)];
                     String comment = "comment " + i;
 
                     String dateStr = String.valueOf(date + i);
@@ -54,7 +55,7 @@ class CostCreator {
                         cv.put(Namespace.FIELD_SUM, String.valueOf(new Random().nextInt(300)));
                         cv.put(Namespace.FIELD_IMAGE_DIR, "");
                         cv.put(Namespace.FIELD_ACTIVE, 1);
-                        cv.put(Namespace.FIELD_TRIP, t_trips.ActiveTrip.id);
+                        cv.put(Namespace.FIELD_TRIP, t_trips.getActiveTrip().id);
                         cv.put(Namespace.FIELD_DATE, dateStr);
 
                         db.insert(Namespace.TABLE_COSTS, null, cv);

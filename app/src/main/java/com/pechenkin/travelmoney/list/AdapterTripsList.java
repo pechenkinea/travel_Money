@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -20,11 +20,11 @@ import com.pechenkin.travelmoney.page.trip.EditTripPage;
 
 public class AdapterTripsList extends BaseAdapter {
 
-    private final BaseTableRow[] data;
+    private final IdAndNameTableRow[] data;
     private static LayoutInflater inflater = null;
     private final boolean showEditButton;
 
-    public AdapterTripsList(Activity a, BaseTableRow[] data, boolean showEditButton) {
+    public AdapterTripsList(Activity a, IdAndNameTableRow[] data, boolean showEditButton) {
         this.data = data;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showEditButton = showEditButton;
@@ -34,7 +34,7 @@ public class AdapterTripsList extends BaseAdapter {
         return data.length;
     }
 
-    public BaseTableRow getItem(int position) {
+    public IdAndNameTableRow getItem(int position) {
         return data[position];
     }
 
@@ -46,7 +46,7 @@ public class AdapterTripsList extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
-        BaseTableRow row = data[position];
+        IdAndNameTableRow row = data[position];
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item, parent, false);
@@ -70,7 +70,7 @@ public class AdapterTripsList extends BaseAdapter {
         holder.viewButton.setOnClickListener(v -> PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam()));
 
 
-        if (row != null && t_trips.ActiveTrip != null && row.id == t_trips.ActiveTrip.id) {
+        if (row != null && t_trips.getActiveTrip() != null && row.id == t_trips.getActiveTrip().id) {
             holder.check.setImageResource(R.drawable.radio_button_checked_black_18dp);
         } else {
             holder.check.setImageResource(R.drawable.radio_button_unchecked_black_18dp);

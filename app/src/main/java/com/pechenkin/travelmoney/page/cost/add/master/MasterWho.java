@@ -6,8 +6,9 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
@@ -33,7 +34,7 @@ public class MasterWho extends ListPage {
 
     @Override
     protected boolean fillFields() {
-        if (t_trips.ActiveTrip == null)
+        if (t_trips.getActiveTrip() == null)
         {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
             return false;
@@ -45,7 +46,7 @@ public class MasterWho extends ListPage {
          MainActivity.INSTANCE.findViewById(R.id.member_list_commit)
                 .setVisibility(View.INVISIBLE);
 
-        MembersQueryResult tripMembers = t_members.getAllByTripId(t_trips.ActiveTrip.id);
+        BaseQueryResult<MemberTableRow> tripMembers = t_members.getAllByTripId(t_trips.getActiveTrip().id);
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
         if (!tripMembers.hasRows())
         {
@@ -84,7 +85,7 @@ public class MasterWho extends ListPage {
     protected void onItemClick(ListView list, int position) {
 
         AdapterMembersList adapter =  (AdapterMembersList)list.getAdapter();
-        BaseTableRow item = adapter.getItem(position).getMemberRow();
+        IdAndNameTableRow item = adapter.getItem(position).getMemberRow();
         PageParam param = new PageParam.BuildingPageParam(getParam()).setId(item.id).getParam();
         PageOpener.INSTANCE.open(MasterCostInfo.class, param);
     }

@@ -1,7 +1,7 @@
 package com.pechenkin.travelmoney.export;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 
 /**
  * Created by pechenkin on 02.04.2018.

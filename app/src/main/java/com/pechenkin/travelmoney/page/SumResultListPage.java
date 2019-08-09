@@ -5,7 +5,8 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.cost.CostQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
@@ -34,20 +35,20 @@ public class SumResultListPage extends ListPage {
 
     @Override
     protected String getTitleHeader() {
-        return MainActivity.INSTANCE.getString(R.string.statistic) +  "(" + t_trips.ActiveTrip.name + ")";
+        return MainActivity.INSTANCE.getString(R.string.statistic) +  "(" + t_trips.getActiveTrip().name + ")";
     }
 
 
     @Override
     protected boolean fillFields() {
-        if (t_trips.ActiveTrip == null)
+        if (t_trips.getActiveTrip() == null)
         {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
             return false;
         }
 
 
-        CostQueryResult allCostTrip = t_costs.getAllByTripId(t_trips.ActiveTrip.id);
+        BaseQueryResult<CostTableRow> allCostTrip = t_costs.getAllByTripId(t_trips.getActiveTrip().id);
         ListView list1 =  MainActivity.INSTANCE.findViewById(getListViewId());
         if (!allCostTrip.hasRows())
         {

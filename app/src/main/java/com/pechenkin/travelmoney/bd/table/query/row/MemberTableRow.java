@@ -1,10 +1,10 @@
-package com.pechenkin.travelmoney.bd.table.query.member;
+package com.pechenkin.travelmoney.bd.table.query.row;
 
 import android.database.Cursor;
 import android.graphics.Color;
 
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 
 
@@ -13,7 +13,7 @@ import com.pechenkin.travelmoney.bd.table.t_trips;
  * Участник
  */
 
-public class MemberTableRow extends BaseTableRow {
+public class MemberTableRow extends IdAndNameTableRow {
 
 
     public final int color;

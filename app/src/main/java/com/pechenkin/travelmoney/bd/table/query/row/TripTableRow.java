@@ -1,16 +1,16 @@
-package com.pechenkin.travelmoney.bd.table.query.trip;
+package com.pechenkin.travelmoney.bd.table.query.row;
 
 import android.database.Cursor;
 
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 
 /**
  * Created by pechenkin on 04.04.2018.
  * поездка
  */
 
-public class TripTableRow extends BaseTableRow {
+public class TripTableRow extends IdAndNameTableRow {
 
     //public final long processed;
     public final String comment;

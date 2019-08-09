@@ -44,7 +44,7 @@ public class AddMemberPage extends BaseMemberPage {
 
             long m_id = t_members.add(name, color, (int) Help.StringToDouble(icon));
             Help.message("Успешно");
-            t_trips.addMemberInTrip(t_trips.ActiveTrip.id, m_id);
+            t_trips.addMemberInTrip(t_trips.getActiveTrip().id, m_id);
 
             clickBackButton();
         } else {

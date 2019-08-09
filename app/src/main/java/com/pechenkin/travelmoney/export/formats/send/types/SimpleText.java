@@ -3,7 +3,7 @@ package com.pechenkin.travelmoney.export.formats.send.types;
 import androidx.core.app.ShareCompat;
 
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.export.formats.ExportFormat;
 
 public class SimpleText implements SendType {

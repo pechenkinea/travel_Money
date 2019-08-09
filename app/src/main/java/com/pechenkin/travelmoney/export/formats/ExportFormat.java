@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.export.formats;
 
-import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 
 public interface ExportFormat {
 

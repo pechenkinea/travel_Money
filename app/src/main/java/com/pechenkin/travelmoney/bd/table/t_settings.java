@@ -7,9 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.QueryResultFactory;
-import com.pechenkin.travelmoney.bd.table.query.setting.SettingsQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.setting.SettingTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.row.SettingTableRow;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +30,10 @@ public class t_settings {
     private void getSettings() {
         settings.clear();
         String sql = "SELECT * FROM " + Namespace.TABLE_SETTINGS;
-        SettingsQueryResult settingQuery = QueryResultFactory.createQueryResult(sql, SettingsQueryResult.class);
-        if (settingQuery != null && settingQuery.hasRows()) {
+        BaseQueryResult<SettingTableRow> settingQuery = new BaseQueryResult<>(sql, SettingTableRow.class);
+        if (settingQuery.hasRows()) {
             for (SettingTableRow row : settingQuery.getAllRows()) {
-                settings.put(row.name, row.getValue());
+                settings.put(row.name, row.value);
             }
         }
     }

@@ -1,12 +1,11 @@
-package com.pechenkin.travelmoney.bd.table.query.cost;
+package com.pechenkin.travelmoney.bd.table.query.row;
 
 import android.database.Cursor;
 import android.view.View;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.query.member.MemberTableRow;
+import com.pechenkin.travelmoney.bd.table.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
@@ -21,7 +20,7 @@ import java.util.Date;
  * Трата
  */
 
-public class CostTableRow extends BaseTableRow implements Cost, CostListItem {
+public class CostTableRow extends IdTableRow implements Cost, CostListItem {
 
     private final String comment;
     private final String image_dir;

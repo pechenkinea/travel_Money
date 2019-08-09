@@ -47,7 +47,7 @@ public class OtherFragment extends BaseMainPageFragment {
             builder.setTitle("Выберите тип:");
 
             builder.setItems(fileTypes, (dialog, which) -> {
-                Export.export(t_trips.ActiveTrip, ExportFileTypes.values()[which]);
+                Export.export(t_trips.getActiveTrip(), ExportFileTypes.values()[which]);
                 dialog.dismiss();
             });
 

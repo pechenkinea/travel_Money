@@ -6,8 +6,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.trip.TripsQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterTripsList;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -32,7 +33,7 @@ public class TripsListFragment extends BaseMainPageFragment {
         list.setOnItemClickListener((parent, view, position, id) -> {
 
                     AdapterTripsList adapter = (AdapterTripsList) list.getAdapter();
-                    BaseTableRow item = adapter.getItem(position);
+                    IdAndNameTableRow item = adapter.getItem(position);
                     t_trips.set_active(item.id);
 
                     MainActivity.INSTANCE.setTitle(item.name);
@@ -42,7 +43,7 @@ public class TripsListFragment extends BaseMainPageFragment {
                 });
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AdapterTripsList tripAdapter = (AdapterTripsList) list.getAdapter();
-            BaseTableRow trip = tripAdapter.getItem(position);
+            IdAndNameTableRow trip = tripAdapter.getItem(position);
             PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(trip.id).getParam());
             return true;
         });
@@ -52,7 +53,7 @@ public class TripsListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        TripsQueryResult allTrips = t_trips.getAll();
+        BaseQueryResult<TripTableRow> allTrips = t_trips.getAll();
         ListView list = fragmentView.findViewById(R.id.catalog_trips_list);
 
         if (!allTrips.hasRows()) {

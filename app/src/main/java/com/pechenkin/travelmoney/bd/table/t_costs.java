@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.cost.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.QueryResultFactory;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
 
 import java.util.Date;
 
@@ -31,9 +31,9 @@ public class t_costs {
         }
     }
 
-    static public CostQueryResult getAllByTripId(long t_id) {
+    static public BaseQueryResult<CostTableRow> getAllByTripId(long t_id) {
         String sql = "SELECT * FROM " + Namespace.TABLE_COSTS + " where " + Namespace.FIELD_TRIP + " = '" + t_id + "' ORDER BY " + Namespace.FIELD_DATE + " DESC";
-        return QueryResultFactory.createQueryResult(sql, CostQueryResult.class);
+        return new BaseQueryResult<>(sql, CostTableRow.class);
     }
 
     static public void disable_cost(long id) {

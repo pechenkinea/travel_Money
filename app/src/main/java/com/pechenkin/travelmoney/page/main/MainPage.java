@@ -5,7 +5,8 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.member.MembersQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
@@ -29,7 +30,7 @@ public class MainPage extends BasePage {
     @Override
     protected boolean fillFields() {
 
-        MainActivity.INSTANCE.setTitle(t_trips.ActiveTrip.name);
+        MainActivity.INSTANCE.setTitle(t_trips.getActiveTrip().name);
 
         BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
 
@@ -46,7 +47,7 @@ public class MainPage extends BasePage {
                 renderFragment(new MembersListFragment());
             }
         } else {
-            MembersQueryResult membersByActiveTrip = t_members.getAllByTripId(t_trips.ActiveTrip.id);
+            BaseQueryResult<MemberTableRow> membersByActiveTrip = t_members.getAllByTripId(t_trips.getActiveTrip().id);
             //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
             if (!membersByActiveTrip.hasRows() || membersByActiveTrip.getAllRows().length < 2) {
                 navView.setSelectedItemId(R.id.navigation_members);

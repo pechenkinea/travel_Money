@@ -1,10 +1,10 @@
 package com.pechenkin.travelmoney.export.formats;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.table.query.cost.CostQueryResult;
-import com.pechenkin.travelmoney.bd.table.query.BaseTableRow;
-import com.pechenkin.travelmoney.bd.table.query.cost.CostTableRow;
-import com.pechenkin.travelmoney.bd.table.query.trip.TripTableRow;
+import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
+import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
 
@@ -25,7 +25,7 @@ public class JSON implements ExportFormat {
 
             ArrayList<Long> membersList = new ArrayList<>();
 
-            CostQueryResult costs = t_costs.getAllByTripId(pageTrip.id);
+            BaseQueryResult<CostTableRow> costs = t_costs.getAllByTripId(pageTrip.id);
             JSONArray json_costs = new JSONArray();
             if (costs.hasRows()) {
                 for (CostTableRow cost : costs.getAllRows()) {
@@ -53,7 +53,7 @@ public class JSON implements ExportFormat {
             for (long m : membersList) {
                 JSONObject member = new JSONObject();
                 member.put("id", m);
-                BaseTableRow findMember = t_members.getMemberById(m);
+                IdAndNameTableRow findMember = t_members.getMemberById(m);
                 member.put("name", (findMember != null) ? findMember.name : "ErrorMemberName");
                 members.put(member);
             }
