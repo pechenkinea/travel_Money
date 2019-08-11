@@ -16,9 +16,7 @@ public class TableRow {
     public TableRow(Cursor c) {
 
     }
-    protected TableRow() {
 
-    }
 
     protected String getStringColumnValue(String columnName, Cursor c) {
         if (c == null) return "";
