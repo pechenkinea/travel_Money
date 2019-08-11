@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
 
 ext {
-    travelMoneyVersionName = '3.1.0 (Beta)'
-    //travelMoneyVersionName = '3.1'
+    travelMoneyVersionName = '3.2.0 (Beta)'
+    //travelMoneyVersionName = '3.2'
 }
 
 
@@ -16,7 +16,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 29
         //noinspection HighAppVersionCode20190802
-        versionCode 2019180486
+        versionCode 2019180487
+        //versionCode 20190812
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName)
         vectorDrawables.useSupportLibrary = true
@@ -37,10 +38,6 @@ android {
 
 
 }
-
-
-
-
 
 
 
