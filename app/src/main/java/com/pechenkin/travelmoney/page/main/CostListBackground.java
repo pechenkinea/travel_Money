@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
@@ -50,7 +50,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
         if (this.trip != null) {
 
-            BaseQueryResult<CostTableRow> costList = t_costs.getAllByTripId(this.trip.id);
+            QueryResult<CostTableRow> costList = t_costs.getAllByTripId(this.trip.id);
 
             ShortCost[] calculationList;
             Total.MemberSum[] totalResult;

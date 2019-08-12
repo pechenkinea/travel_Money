@@ -1,7 +1,7 @@
 package com.pechenkin.travelmoney.export.formats;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
@@ -25,7 +25,7 @@ public class JSON implements ExportFormat {
 
             ArrayList<Long> membersList = new ArrayList<>();
 
-            BaseQueryResult<CostTableRow> costs = t_costs.getAllByTripId(pageTrip.id);
+            QueryResult<CostTableRow> costs = t_costs.getAllByTripId(pageTrip.id);
             JSONArray json_costs = new JSONArray();
             if (costs.hasRows()) {
                 for (CostTableRow cost : costs.getAllRows()) {

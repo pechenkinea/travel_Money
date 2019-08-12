@@ -6,7 +6,7 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
@@ -46,7 +46,7 @@ public class MasterWho extends ListPage {
          MainActivity.INSTANCE.findViewById(R.id.member_list_commit)
                 .setVisibility(View.INVISIBLE);
 
-        BaseQueryResult<MemberTableRow> tripMembers = t_members.getAllByTripId(t_trips.getActiveTrip().id);
+        QueryResult<MemberTableRow> tripMembers = t_members.getAllByTripId(t_trips.getActiveTrip().id);
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
         if (!tripMembers.hasRows())
         {

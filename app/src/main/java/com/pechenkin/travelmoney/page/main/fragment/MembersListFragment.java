@@ -6,7 +6,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
@@ -61,7 +61,7 @@ public class MembersListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        BaseQueryResult<MemberTableRow> allMembers = t_members.getAll();
+        QueryResult<MemberTableRow> allMembers = t_members.getAll();
         ListView list = fragmentView.findViewById(R.id.list_members);
         if (list != null) {
             if (!allMembers.hasRows()) {

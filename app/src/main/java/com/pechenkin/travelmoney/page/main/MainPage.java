@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
@@ -47,7 +47,7 @@ public class MainPage extends BasePage {
                 renderFragment(new MembersListFragment());
             }
         } else {
-            BaseQueryResult<MemberTableRow> membersByActiveTrip = t_members.getAllByTripId(t_trips.getActiveTrip().id);
+            QueryResult<MemberTableRow> membersByActiveTrip = t_members.getAllByTripId(t_trips.getActiveTrip().id);
             //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
             if (!membersByActiveTrip.hasRows() || membersByActiveTrip.getAllRows().length < 2) {
                 navView.setSelectedItemId(R.id.navigation_members);

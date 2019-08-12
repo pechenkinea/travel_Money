@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
@@ -29,7 +29,7 @@ class CostCreator {
 
         Thread printCostThready = new Thread(() -> {
 
-            BaseQueryResult<MemberTableRow> currentTripMembers = t_members.getAllByTripId(t_trips.getActiveTrip().id);
+            QueryResult<MemberTableRow> currentTripMembers = t_members.getAllByTripId(t_trips.getActiveTrip().id);
             IdAndNameTableRow[] members = currentTripMembers.getAllRows();
 
             try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {

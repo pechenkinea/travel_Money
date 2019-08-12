@@ -6,7 +6,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_trips;
@@ -53,7 +53,7 @@ public class TripsListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        BaseQueryResult<TripTableRow> allTrips = t_trips.getAll();
+        QueryResult<TripTableRow> allTrips = t_trips.getAll();
         ListView list = fragmentView.findViewById(R.id.catalog_trips_list);
 
         if (!allTrips.hasRows()) {

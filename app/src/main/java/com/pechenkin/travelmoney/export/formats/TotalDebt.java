@@ -4,7 +4,7 @@ import com.pechenkin.travelmoney.BuildConfig;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
@@ -27,7 +27,7 @@ public class TotalDebt implements ExportFormat {
     @Override
     public String getText(TripTableRow pageTrip) {
 
-        BaseQueryResult<CostTableRow> allCosts = t_costs.getAllByTripId(pageTrip.id);
+        QueryResult<CostTableRow> allCosts = t_costs.getAllByTripId(pageTrip.id);
 
         StringBuilder result = new StringBuilder();
 

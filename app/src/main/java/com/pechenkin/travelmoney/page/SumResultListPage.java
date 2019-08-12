@@ -5,7 +5,7 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_trips;
@@ -48,7 +48,7 @@ public class SumResultListPage extends ListPage {
         }
 
 
-        BaseQueryResult<CostTableRow> allCostTrip = t_costs.getAllByTripId(t_trips.getActiveTrip().id);
+        QueryResult<CostTableRow> allCostTrip = t_costs.getAllByTripId(t_trips.getActiveTrip().id);
         ListView list1 =  MainActivity.INSTANCE.findViewById(getListViewId());
         if (!allCostTrip.hasRows())
         {

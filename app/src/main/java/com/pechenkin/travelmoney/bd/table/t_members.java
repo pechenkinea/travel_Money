@@ -8,7 +8,7 @@ import android.util.LongSparseArray;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.NamesHashMap;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.query.TableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
@@ -19,7 +19,7 @@ public class t_members {
 
     static public Boolean isAdded(String user_name) {
         String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + user_name + "'";
-        BaseQueryResult result = new BaseQueryResult<>(sql, TableRow.class);
+        QueryResult result = new QueryResult<>(sql, TableRow.class);
         return result.hasRows();
     }
 
@@ -63,9 +63,9 @@ public class t_members {
         updateMembersCache();
     }
 
-    static public BaseQueryResult<MemberTableRow> getAll() {
+    static public QueryResult<MemberTableRow> getAll() {
         String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS;
-        return new BaseQueryResult<>(sql, MemberTableRow.class);
+        return new QueryResult<>(sql, MemberTableRow.class);
 
     }
 
@@ -74,7 +74,7 @@ public class t_members {
     static public void updateMembersCache() {
         membersNamesCache.clear();
 
-        BaseQueryResult<MemberTableRow> allMembers = getAllByTripId(t_trips.getActiveTrip().id);
+        QueryResult<MemberTableRow> allMembers = getAllByTripId(t_trips.getActiveTrip().id);
         if (allMembers.hasRows()) {
             for (MemberTableRow member : allMembers.getAllRows()) {
                 membersNamesCache.put(member.name, member);
@@ -86,7 +86,7 @@ public class t_members {
         MemberTableRow row = membersNamesCache.get(m_name);
         if (row == null) {
             String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + m_name + "'";
-            BaseQueryResult<MemberTableRow> result = new BaseQueryResult<>(sql, MemberTableRow.class);
+            QueryResult<MemberTableRow> result = new QueryResult<>(sql, MemberTableRow.class);
             row = result.getFirstRow();
             if (row != null) {
                 membersNamesCache.put(m_name, row);
@@ -158,20 +158,20 @@ public class t_members {
         MemberTableRow result = memberCache.get(_id);
         if (result == null) {
             String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_ID + " = '" + _id + "'";
-            BaseQueryResult<MemberTableRow> find = new BaseQueryResult<>(sql, MemberTableRow.class);
+            QueryResult<MemberTableRow> find = new QueryResult<>(sql, MemberTableRow.class);
             result = find.getFirstRow();
             memberCache.put(_id, result);
         }
         return result;
     }
 
-    static public BaseQueryResult<MemberTableRow> getAllByTripId(long t_id) {
+    static public QueryResult<MemberTableRow> getAllByTripId(long t_id) {
         String sql = "SELECT m." + Namespace.FIELD_ID + ", m." + Namespace.FIELD_NAME + ", m." + Namespace.FIELD_COLOR + ", m." + Namespace.FIELD_ICON
                 + " FROM " + Namespace.TABLE_TRIPS_MEMBERS + " as t"
                 + " inner join " + Namespace.TABLE_MEMBERS + " as m"
                 + " on t." + Namespace.FIELD_MEMBER + " = m." + Namespace.FIELD_ID + " and t." + Namespace.FIELD_TRIP + " = '" + t_id + "'";
 
-        return new BaseQueryResult<>(sql, MemberTableRow.class);
+        return new QueryResult<>(sql, MemberTableRow.class);
     }
 
 }

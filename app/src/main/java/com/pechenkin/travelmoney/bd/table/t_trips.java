@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.BaseQueryResult;
+import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.table.query.TableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
@@ -22,7 +22,7 @@ public class t_trips {
 
             String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_PROCESSED + " = '1'";
 
-            BaseQueryResult<TripTableRow> result = new BaseQueryResult<>(sql, TripTableRow.class);
+            QueryResult<TripTableRow> result = new QueryResult<>(sql, TripTableRow.class);
 
             if (!result.hasRows())
                 return TripTableRow.getEmpty();
@@ -78,7 +78,7 @@ public class t_trips {
 
     static public Boolean isAdded(String trip_name) {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_NAME + " = '" + trip_name + "'";
-        BaseQueryResult<TableRow> result = new BaseQueryResult<>(sql, TableRow.class);
+        QueryResult<TableRow> result = new QueryResult<>(sql, TableRow.class);
         return result.hasRows();
     }
 
@@ -105,15 +105,15 @@ public class t_trips {
         }
     }
 
-    static public BaseQueryResult<TripTableRow> getAll() {
+    static public QueryResult<TripTableRow> getAll() {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " ORDER BY " + Namespace.FIELD_ID + " DESC";
-        return new BaseQueryResult<>(sql, TripTableRow.class);
+        return new QueryResult<>(sql, TripTableRow.class);
     }
 
     static public long getIdByName(String t_name) {
         String sql = "SELECT " + Namespace.FIELD_ID + " FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_NAME + " = '" + t_name + "'";
 
-        BaseQueryResult<IdTableRow> result = new BaseQueryResult<>(sql, IdTableRow.class);
+        QueryResult<IdTableRow> result = new QueryResult<>(sql, IdTableRow.class);
 
         IdTableRow row = result.getFirstRow();
         if (row != null)
@@ -125,7 +125,7 @@ public class t_trips {
     static public TripTableRow getTripById(long id) {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_ID + " = " + id;
 
-        BaseQueryResult<TripTableRow> result = new BaseQueryResult<>(sql, TripTableRow.class);
+        QueryResult<TripTableRow> result = new QueryResult<>(sql, TripTableRow.class);
 
         TripTableRow row = result.getFirstRow();
         if (row != null)
@@ -139,7 +139,7 @@ public class t_trips {
             return false;
 
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS_MEMBERS + " WHERE " + Namespace.FIELD_TRIP + " = '" + tripId + "' and " + Namespace.FIELD_MEMBER + " = '" + memberId + "'";
-        BaseQueryResult result = new BaseQueryResult<>(sql, TableRow.class);
+        QueryResult result = new QueryResult<>(sql, TableRow.class);
 
         return result.hasRows();
     }
@@ -149,7 +149,7 @@ public class t_trips {
     static public Boolean isActive(long t_id) {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_ID + " = '" + t_id + "' and " + Namespace.FIELD_PROCESSED + " = 1";
 
-        BaseQueryResult result = new BaseQueryResult<>(sql, TableRow.class);
+        QueryResult result = new QueryResult<>(sql, TableRow.class);
         return result.hasRows();
     }
 
