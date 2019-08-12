@@ -9,6 +9,8 @@ import com.pechenkin.travelmoney.cost.TotalItemCost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 /**
@@ -76,6 +78,9 @@ public class Calculation implements CostIterable {
             }
         }
 
+
+        Collections.sort(positiveMember, new MemberSumComparatorDesc());
+        Collections.sort(negativeMember, new MemberSumComparatorDesc());
 
         // Формируем итоговый список
         // т.к. при добавлении суммы одному у другого такую же сумму отнимаем сумма положительных будет равна сумме отрицательных
@@ -232,6 +237,13 @@ public class Calculation implements CostIterable {
          */
         void removeSum(double sum) {
             this.sum -= sum;
+        }
+    }
+
+    public class MemberSumComparatorDesc implements Comparator<MemberSum>
+    {
+        public int compare(MemberSum left, MemberSum right) {
+            return Double.compare(right.sum, left.sum);
         }
     }
 
