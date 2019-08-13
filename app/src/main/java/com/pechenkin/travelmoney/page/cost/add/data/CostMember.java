@@ -1,18 +1,17 @@
-package com.pechenkin.travelmoney.page.cost.add.master;
+package com.pechenkin.travelmoney.page.cost.add.data;
 
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 
 /**
  * Created by pechenkin on 04.06.2018.
  */
-//TODO переписать это и все, что с этим связано
 public class CostMember {
-    private final MemberTableRow memberRow;
+    private final long memberId;
     private boolean isChange = false;
     private double sum;
 
-    private CostMember(MemberTableRow memberRow, double sum) {
-        this.memberRow = memberRow;
+    private CostMember(long memberId, double sum) {
+        this.memberId = memberId;
         this.sum = sum;
     }
 
@@ -33,16 +32,16 @@ public class CostMember {
         isChange = value;
     }
 
-    public MemberTableRow getMemberRow() {
-        return memberRow;
+    public long getMemberId() {
+        return memberId;
     }
 
     public static CostMember[] createCostMemberBaseTableRow(MemberTableRow[] membersRows, double sum) {
-        double sSum = (sum > 0 && membersRows.length > 0) ? sum / membersRows.length : 0;
+        double oneMemberSum = (sum > 0 && membersRows.length > 0) ? sum / membersRows.length : 0;
 
         CostMember[] result = new CostMember[membersRows.length];
         for (int i = 0; i < membersRows.length; i++) {
-            result[i] = new CostMember(membersRows[i], sSum);
+            result[i] = new CostMember(membersRows[i].id, oneMemberSum);
         }
 
         return result;

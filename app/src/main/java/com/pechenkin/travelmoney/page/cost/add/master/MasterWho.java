@@ -7,7 +7,6 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
@@ -15,6 +14,7 @@ import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 
 /**
  * Created by pechenkin on 15.05.2018.
@@ -63,7 +63,7 @@ public class MasterWho extends ListPage {
             if (hasParam() && getParam().getId() > -1)
             {
                 for (int i = 0; i < adapter.getCount(); i++) {
-                    if (adapter.getItem(i).getMemberRow().id == getParam().getId()) {
+                    if (adapter.getItem(i).getMemberId() == getParam().getId()) {
                         list1.setItemChecked(i, true);
                         break;
                     }
@@ -85,8 +85,8 @@ public class MasterWho extends ListPage {
     protected void onItemClick(ListView list, int position) {
 
         AdapterMembersList adapter =  (AdapterMembersList)list.getAdapter();
-        IdAndNameTableRow item = adapter.getItem(position).getMemberRow();
-        PageParam param = new PageParam.BuildingPageParam(getParam()).setId(item.id).getParam();
+        long itemId = adapter.getItem(position).getMemberId();
+        PageParam param = new PageParam.BuildingPageParam(getParam()).setId(itemId).getParam();
         PageOpener.INSTANCE.open(MasterCostInfo.class, param);
     }
 

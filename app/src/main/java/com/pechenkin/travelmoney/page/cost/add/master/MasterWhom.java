@@ -18,6 +18,7 @@ import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
 import java.util.HashSet;
@@ -92,7 +93,7 @@ public class MasterWhom extends ListPage {
                 if (getParam().getSelectedIds().size() > 0)
                 {
                     for (int i = 0; i < adapter.getCount(); i++) {
-                        if (getParam().getSelectedIds().contains(adapter.getItem(i).getMemberRow().id)) {
+                        if (getParam().getSelectedIds().contains(adapter.getItem(i).getMemberId())) {
                             list1.setItemChecked(i, true);
                         }
                     }
@@ -100,7 +101,7 @@ public class MasterWhom extends ListPage {
                 else if (getParam().getId() > -1)
                 {
                     for (int i = 0; i < adapter.getCount(); i++) {
-                        if (adapter.getItem(i).getMemberRow().id == getParam().getId()) {
+                        if (adapter.getItem(i).getMemberId() == getParam().getId()) {
                             list1.setItemChecked(i, true);
                             break;
                         }
@@ -162,7 +163,7 @@ public class MasterWhom extends ListPage {
                 if (sbArray.get(key)) {
                     CostMember item = adapter.getItem(key);
                     if (item != null && item.getSum() > 0) {
-                        t_costs.add(getParam().getId(), item.getMemberRow().id, getParam().getName(), item.getSum(), getParam().getPhotoUrl(), t_trips.getActiveTrip().id, getParam().getSelectDate());
+                        t_costs.add(getParam().getId(), item.getMemberId(), getParam().getName(), item.getSum(), getParam().getPhotoUrl(), t_trips.getActiveTrip().id, getParam().getSelectDate());
                     }
                 }
             }

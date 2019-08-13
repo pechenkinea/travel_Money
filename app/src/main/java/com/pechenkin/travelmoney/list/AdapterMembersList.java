@@ -24,10 +24,11 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.page.cost.add.master.CostMember;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
+import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
 public class AdapterMembersList extends BaseAdapter {
@@ -71,7 +72,7 @@ public class AdapterMembersList extends BaseAdapter {
 
     public long getItemId(int position) {
         try {
-            return data[position].getMemberRow().id;
+            return data[position].getMemberId();
         } catch (Exception ex) {
             return -1;
         }
@@ -81,7 +82,7 @@ public class AdapterMembersList extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         CostMember item = data[position];
-        MemberTableRow row = item.getMemberRow();
+
 
         ViewHolder holder;
         if (convertView == null) {
@@ -95,7 +96,7 @@ public class AdapterMembersList extends BaseAdapter {
 
 
         if (showEditButton) {
-            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam()));
+            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(item.getMemberId()).getParam()));
         }
 
         if (showSum) {
@@ -173,6 +174,7 @@ public class AdapterMembersList extends BaseAdapter {
         }
 
 
+        MemberTableRow row = t_members.getMemberById(item.getMemberId());
         if (row != null) {
             holder.name.setText(row.name);
 

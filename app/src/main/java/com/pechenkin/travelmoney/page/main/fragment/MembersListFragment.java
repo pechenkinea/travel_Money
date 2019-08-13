@@ -7,14 +7,13 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.cost.add.master.CostMember;
+import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.member.AddMemberPage;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
@@ -37,22 +36,22 @@ public class MembersListFragment extends BaseMainPageFragment {
         list.setOnItemClickListener((parent, view, position, id) -> {
 
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-            IdAndNameTableRow item = adapter.getItem(position).getMemberRow();
+            long itemId = adapter.getItem(position).getMemberId();
 
-            if (t_trips.isMemberInTrip(t_trips.getActiveTrip().id, item.id)) {
-                t_trips.removeMemberInTrip(t_trips.getActiveTrip().id, item.id);
+            if (t_trips.isMemberInTrip(t_trips.getActiveTrip().id, itemId)) {
+                t_trips.removeMemberInTrip(t_trips.getActiveTrip().id, itemId);
                 list.setItemChecked(position, false);
             } else {
-                t_trips.addMemberInTrip(t_trips.getActiveTrip().id, item.id);
+                t_trips.addMemberInTrip(t_trips.getActiveTrip().id, itemId);
                 list.setItemChecked(position, true);
             }
             list.invalidateViews();
         });
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-            MemberTableRow item = adapter.getItem(position).getMemberRow();
+            long itemId = adapter.getItem(position).getMemberId();
 
-            PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(item.id).getParam());
+            PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(itemId).getParam());
 
             return true;
         });
@@ -90,7 +89,7 @@ public class MembersListFragment extends BaseMainPageFragment {
                 list.setAdapter(adapter);
 
                 for (int i = 0; i < adapter.getCount(); i++) {
-                    long m_id = adapter.getItem(i).getMemberRow().id;
+                    long m_id = adapter.getItem(i).getMemberId();
                     if (t_trips.isMemberInTrip(t_trips.getActiveTrip().id, m_id)) {
                         list.setItemChecked(i, true);
                     }
