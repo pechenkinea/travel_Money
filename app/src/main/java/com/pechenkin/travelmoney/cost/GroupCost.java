@@ -216,7 +216,8 @@ public class GroupCost implements CostListItem {
                 holder.getMember_icons_layout().setVisibility(View.GONE);
 
                 if (this.costs.get(0).isRepayment()){
-                    holder.getSum_line().setImageResource(R.drawable.ic_undo_24);
+                    int color = MainActivity.INSTANCE.getResources().getColor(R.color.colorPrimary);
+                    holder.getSum_group_sum().setTextColor(color);
                 }
 
             }
