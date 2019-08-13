@@ -8,7 +8,7 @@ public class AllSum implements CostIterable {
 
     @Override
     public void iterate(Cost cost) {
-        if (cost.isActive()) {
+        if (cost.isActive() && !cost.isRepayment()) {
             sum += cost.getSum();
         }
     }

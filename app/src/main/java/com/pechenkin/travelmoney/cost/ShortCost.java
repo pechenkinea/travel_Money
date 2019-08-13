@@ -86,6 +86,11 @@ public class ShortCost implements Cost, CostListItem {
     }
 
     @Override
+    public boolean isRepayment() {
+        return false;
+    }
+
+    @Override
     public void setActive(int i) {
 
     }

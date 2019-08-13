@@ -163,7 +163,7 @@ public class MasterWhom extends ListPage {
                 if (sbArray.get(key)) {
                     CostMember item = adapter.getItem(key);
                     if (item != null && item.getSum() > 0) {
-                        t_costs.add(getParam().getId(), item.getMemberId(), getParam().getName(), item.getSum(), getParam().getPhotoUrl(), t_trips.getActiveTrip().id, getParam().getSelectDate());
+                        t_costs.add(getParam().getId(), item.getMemberId(), getParam().getName(), item.getSum(), getParam().getPhotoUrl(), t_trips.getActiveTrip().id, getParam().getSelectDate(), false);
                     }
                 }
             }

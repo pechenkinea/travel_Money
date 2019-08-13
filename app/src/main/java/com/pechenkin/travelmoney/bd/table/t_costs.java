@@ -15,7 +15,7 @@ public class t_costs {
     private t_costs() {
     }
 
-    static public void add(long member_id, long to_member_id, String comment, double sum, String image_dir, long tripId, Date date) {
+    static public void add(long member_id, long to_member_id, String comment, double sum, String image_dir, long tripId, Date date, boolean isRepayment) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_MEMBER, member_id);
         cv.put(Namespace.FIELD_TO_MEMBER, to_member_id);
@@ -25,6 +25,7 @@ public class t_costs {
         cv.put(Namespace.FIELD_ACTIVE, 1);
         cv.put(Namespace.FIELD_TRIP, tripId);
         cv.put(Namespace.FIELD_DATE, date.getTime());
+        cv.put(Namespace.FIELD_REPAYMENT, isRepayment ? 1 : 0);
 
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
             db.insert(Namespace.TABLE_COSTS, null, cv);
@@ -37,24 +38,21 @@ public class t_costs {
     }
 
     static public void disable_cost(long id) {
-
-        ContentValues cv = new ContentValues();
-        cv.put(Namespace.FIELD_ACTIVE, 0);
-
-        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
-            db.update(Namespace.TABLE_COSTS, cv, Namespace.FIELD_ID + " = " + id, null);
-        }
-
+        setCostState(id, false);
     }
 
     static public void enable_cost(long id) {
+        setCostState(id, true);
+    }
+
+
+    static private void setCostState(long id, boolean active) {
         ContentValues cv = new ContentValues();
-        cv.put(Namespace.FIELD_ACTIVE, 1);
+        cv.put(Namespace.FIELD_ACTIVE, active ? 1 : 0);
 
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
             db.update(Namespace.TABLE_COSTS, cv, Namespace.FIELD_ID + " = " + id, null);
         }
-
     }
 
 

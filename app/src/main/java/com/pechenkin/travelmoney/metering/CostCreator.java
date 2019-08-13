@@ -57,6 +57,7 @@ class CostCreator {
                         cv.put(Namespace.FIELD_ACTIVE, 1);
                         cv.put(Namespace.FIELD_TRIP, t_trips.getActiveTrip().id);
                         cv.put(Namespace.FIELD_DATE, dateStr);
+                        cv.put(Namespace.FIELD_REPAYMENT, 0);
 
                         db.insert(Namespace.TABLE_COSTS, null, cv);
                     }

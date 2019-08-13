@@ -30,7 +30,8 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
     private final long member;
     private final long to_member;
     //public final int currency;
-    private long  active;
+    private long active;
+    private long repayment;
     //public final int trip;
 
     private final double sum;
@@ -48,6 +49,7 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
         this.to_member = getLongColumnValue(Namespace.FIELD_TO_MEMBER, c);
         //currency = getLongColumnValue(Namespace.FIELD_CURRENCY, c);
         this.active = getLongColumnValue(Namespace.FIELD_ACTIVE, c);
+        this.repayment = getLongColumnValue(Namespace.FIELD_REPAYMENT, c);
         //trip = getLongColumnValue(Namespace.FIELD_TRIP, c);
     }
 
@@ -76,6 +78,11 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
     @Override
     public boolean isActive() {
         return active != 0;
+    }
+
+    @Override
+    public boolean isRepayment() {
+        return repayment != 0;
     }
 
     @Override
@@ -118,7 +125,7 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
         }
 
         MemberTableRow to_member = t_members.getMemberById(getToMember());
-        if (to_member != null){
+        if (to_member != null) {
             holder.getTo_member_one().setText(to_member.name);
             holder.getTo_member_one().setTextColor(to_member.color);
         }

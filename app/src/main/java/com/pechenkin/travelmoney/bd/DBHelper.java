@@ -12,7 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 15);
+        super(context, Namespace.DB_NAME, null, 16);
     }
 
     @Override
@@ -68,6 +68,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "sum text, "
                 + "image_dir text, "
                 + "active integer, "
+                + Namespace.FIELD_REPAYMENT + " integer, "
                 + "trip integer, "
                 + "date integer, "
                 + "FOREIGN KEY(member) REFERENCES members(_id),"
@@ -100,7 +101,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    private void updateColors(SQLiteDatabase db){
+    private void updateColors(SQLiteDatabase db) {
 
         db.execSQL("DELETE FROM " + Namespace.TABLE_COLORS + ";");
 
@@ -167,7 +168,11 @@ public class DBHelper extends SQLiteOpenHelper {
         // новые цвета
         if (oldVersion < 15) {
             updateColors(db);
+        }
 
+        //Добавлен параметр для операций возврата долга
+        if (oldVersion < 16){
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_COSTS + " ADD COLUMN " + Namespace.FIELD_REPAYMENT + " integer default 0;");
         }
 
     }

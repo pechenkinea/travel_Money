@@ -31,6 +31,7 @@ public interface Namespace {
     String FIELD_DATE = "date";
     String FIELD_ACTIVE = "active";
     String FIELD_VALUE = "value";
+    String FIELD_REPAYMENT = "repayment";
 
 
 

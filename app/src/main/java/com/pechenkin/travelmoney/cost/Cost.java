@@ -34,6 +34,11 @@ public interface Cost {
     boolean isActive();
 
     /**
+     * Если true то операция является возвратом долга
+     */
+    boolean isRepayment();
+
+    /**
      * меняет статус проводке
      */
     void setActive(int i);

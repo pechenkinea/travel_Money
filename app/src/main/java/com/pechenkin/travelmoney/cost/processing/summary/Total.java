@@ -26,7 +26,7 @@ public class Total implements CostIterable {
 
     @Override
     public void iterate(Cost cost) {
-        if (!cost.isActive()) {
+        if (!cost.isActive() || cost.isRepayment()) {
             return;
         }
 

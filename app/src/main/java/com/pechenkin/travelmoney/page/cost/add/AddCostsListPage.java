@@ -87,7 +87,7 @@ public class AddCostsListPage extends BasePage {
             for (CostListItem c : costs) {
                 if (c instanceof ShortCost) {
                     if (((ShortCost) c).getMember() > -1 && ((ShortCost) c).getSum() > 0) {
-                        t_costs.add(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", t_trips.getActiveTrip().id, addCostDate);
+                        t_costs.add(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", t_trips.getActiveTrip().id, addCostDate, false);
                         added = true;
                     }
                 }
