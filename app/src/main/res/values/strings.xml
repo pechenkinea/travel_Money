@@ -61,5 +61,6 @@
     <string name="spent">Потрачено:</string>
     <string name="paid">Оплачено:</string>
     <string name="total">Итог:</string>
+    <string name="repayment">Возврат долга</string>
 
 </resources>

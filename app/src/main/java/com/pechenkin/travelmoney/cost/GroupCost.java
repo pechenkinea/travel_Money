@@ -123,12 +123,11 @@ public class GroupCost implements CostListItem {
 
             if (this.sum == 0) {
                 holder.getTitle().setTextColor(DISABLE_COLOR);
-                holder.getSum_line().setTextColor(DISABLE_COLOR);
+                holder.getSum_line().setColorFilter(DISABLE_COLOR);
                 holder.getComment().setTextColor(DISABLE_COLOR);
 
                 holder.getSum_group_sum().setTextColor(DISABLE_COLOR);
                 holder.getHave_photo().setColorFilter(DISABLE_COLOR);
-
             } else {
                 holder.getTitle().setTextColor(member.color);
             }
@@ -215,6 +214,11 @@ public class GroupCost implements CostListItem {
             if (this.costs.size() == 1) {
                 holder.getTo_member_one().setVisibility(View.VISIBLE);
                 holder.getMember_icons_layout().setVisibility(View.GONE);
+
+                if (this.costs.get(0).isRepayment()){
+                    holder.getSum_line().setImageResource(R.drawable.ic_undo_24);
+                }
+
             }
             else {
 

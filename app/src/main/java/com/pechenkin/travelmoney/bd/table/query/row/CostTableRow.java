@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.view.View;
 
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Namespace;
 import com.pechenkin.travelmoney.bd.table.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
@@ -108,6 +109,8 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
     @Override
     public void render(ListItemSummaryViewHolder holder) {
 
+
+
         String sum = Help.doubleToString(getSum());
         holder.getSum_group_sum().setText(sum);
 
@@ -132,15 +135,20 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
 
         holder.photoImage(getImageDir());
 
+        if (isRepayment()){
+            holder.getSum_line().setImageResource(R.drawable.ic_undo_24);
+        }
 
         if (!isActive()) {
             holder.getTitle().setTextColor(DISABLE_COLOR);
-            holder.getSum_line().setTextColor(DISABLE_COLOR);
+            holder.getSum_line().setColorFilter(DISABLE_COLOR);
             holder.getComment().setTextColor(DISABLE_COLOR);
             holder.getSum_group_sum().setTextColor(DISABLE_COLOR);
             holder.getTo_member_one().setTextColor(DISABLE_COLOR);
             holder.getHave_photo().setColorFilter(DISABLE_COLOR);
         }
+
+
 
 
     }

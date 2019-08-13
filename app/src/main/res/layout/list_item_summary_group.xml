@@ -14,7 +14,8 @@
         android:paddingLeft="16dp"
         android:paddingTop="12dp"
         android:paddingRight="16dp"
-        tools:visibility="gone">
+        android:paddingBottom="12dp"
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,14 +32,14 @@
                 android:gravity="center_vertical"
                 tools:text="Евгений" />
 
-            <TextView
+
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/sum_line"
-                style="@style/normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:gravity="center"
-                tools:text="-->" />
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_arrow_forward_24" />
 
             <LinearLayout
                 android:id="@+id/member_icons_layout"
@@ -84,7 +85,7 @@
 
             android:orientation="horizontal"
             android:visibility="gone"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <View
                 android:layout_width="0dp"
@@ -118,18 +119,17 @@
             android:visibility="gone"
             tools:text="24.07.2019 18:16  Магазин" />
 
-        <View
-            android:id="@+id/costSeparator"
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_gravity="end"
-            android:background="#cccbcb"
-            android:layout_marginTop="12dp"/>
 
     </LinearLayout>
 
-
-
+    <View
+        android:id="@+id/costSeparator"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_below="@+id/mainLayout"
+        android:layout_gravity="end"
+        android:background="#cccbcb"
+        tools:visibility="visible" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -150,14 +150,14 @@
             android:padding="12dp"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_edit_24"
-            tools:visibility="visible"/>
+            tools:visibility="gone" />
 
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="12dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
 
 
         <TextView
@@ -173,7 +173,7 @@
             android:textStyle="normal"
             android:visibility="gone"
             tools:text="Список всех операций"
-            tools:visibility="visible"/>
+            tools:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/miniMenu"
@@ -182,9 +182,7 @@
             android:padding="12dp"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_list_24dp"
-            tools:visibility="visible"/>
-
-
+            tools:visibility="gone" />
 
 
     </FrameLayout>

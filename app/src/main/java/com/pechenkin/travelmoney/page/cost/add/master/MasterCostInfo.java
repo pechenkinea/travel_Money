@@ -24,6 +24,7 @@ import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.cost.add.listener.DateOnClickListener;
 
 import java.io.File;
 import java.util.Calendar;
@@ -38,15 +39,15 @@ import static android.app.Activity.RESULT_OK;
 
 public class MasterCostInfo extends BasePage {
 
+    //TODO вынести куда нибудь
     public static final int ERROR_SUM = 1000000;
 
     @Override
     public void clickBackButton() {
         setParam();
-        if (getParam().getBackPage() != null){
+        if (getParam().getBackPage() != null) {
             PageOpener.INSTANCE.open(getParam().getBackPage());
-        }
-        else {
+        } else {
             PageOpener.INSTANCE.open(MasterWho.class, getParam());
         }
     }
@@ -195,44 +196,7 @@ public class MasterCostInfo extends BasePage {
 
 
         TextInputEditText textDate = MainActivity.INSTANCE.findViewById(R.id.textDate);
-        textDate.setOnClickListener(v -> {
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(selectDate);
-
-
-            DatePickerDialog.OnDateSetListener onDateSetListener = (datePicker, year, monthOfYear, dayOfMonth) -> {
-                Calendar c1 = Calendar.getInstance();
-
-                TimePickerDialog.OnTimeSetListener timeCallBack = (timePicker, hourOfDay, minute) -> {
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.YEAR, year);
-                    cal.set(Calendar.MONTH, monthOfYear);
-                    cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                    cal.set(Calendar.MINUTE, minute);
-
-                    ((TextView) MainActivity.INSTANCE.findViewById(R.id.textDate))
-                            .setText(Help.dateToDateTimeStr(cal.getTime()));
-
-                    selectDate = cal.getTime();
-                };
-
-                TimePickerDialog timeDialog = new TimePickerDialog(MainActivity.INSTANCE, timeCallBack, c1.get(Calendar.HOUR_OF_DAY), c1.get(Calendar.MINUTE), true);
-
-                timeDialog.show();
-            };
-
-            DatePickerDialog dateDialog = new DatePickerDialog(MainActivity.INSTANCE, onDateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-
-            Calendar cMax = Calendar.getInstance();
-            cMax.set(Calendar.HOUR_OF_DAY, 23);
-            cMax.set(Calendar.MINUTE, 59);
-
-            dateDialog.getDatePicker().setMaxDate(cMax.getTime().getTime());
-            dateDialog.show();
-        });
-
+        textDate.setOnClickListener(new DateOnClickListener(selectDate, v -> this.selectDate = v));
 
     }
 

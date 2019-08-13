@@ -2,11 +2,9 @@ package com.pechenkin.travelmoney.cost.adapter;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.FileProvider;
 
-import com.github.mikephil.charting.charts.PieChart;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.ListAnimation;
 import com.pechenkin.travelmoney.MainActivity;
@@ -29,13 +26,13 @@ public class ListItemSummaryViewHolder {
     private final TextView to_member_one;
     private final TextView sum_group_sum;
     private final TextView sum_sum;
-    private final TextView sum_line;
+    private final AppCompatImageView sum_line;
     private final TextView comment;
     private final AppCompatImageView have_photo;
     private final AppCompatImageView listEditButton;
     private final AppCompatImageView miniMenu;
     private final TextView labelHeader;
-    private final View mainLayout;
+    private final LinearLayout mainLayout;
     private final LinearLayout member_icons_layout;
     private final View more_information_layout;
     private final View costSeparator;
@@ -95,8 +92,8 @@ public class ListItemSummaryViewHolder {
         this.sum_group_sum.setText("");
         this.sum_group_sum.setTextColor(Color.BLACK);
 
-        this.sum_line.setText("-->");
-        this.sum_line.setTextColor(Color.BLACK);
+        this.sum_line.setImageResource(R.drawable.ic_arrow_forward_24);
+        this.sum_line.setColorFilter(Color.BLACK);
 
 
         this.comment.setVisibility(View.GONE);
@@ -128,8 +125,11 @@ public class ListItemSummaryViewHolder {
 
         this.mainLayout.setVisibility(View.VISIBLE);
         this.mainLayout.setBackground(null);  //убираем анимацию клика
-
         this.mainLayout.setOnClickListener(null);
+
+        int padding12 = Help.dpToPx(12);
+        int padding16 = Help.dpToPx(16);
+        this.mainLayout.setPadding(padding16, padding12, padding16, padding12);
 
         this.costSeparator.setVisibility(View.VISIBLE);
 
@@ -175,7 +175,7 @@ public class ListItemSummaryViewHolder {
         }
     }
 
-    public void setEditButtonClickListener(View.OnClickListener clickListener){
+    void setEditButtonClickListener(View.OnClickListener clickListener){
         this.listEditButton.setVisibility(View.VISIBLE);
         this.listEditButton.setOnClickListener(clickListener);
     }
@@ -200,7 +200,7 @@ public class ListItemSummaryViewHolder {
         return sum_sum;
     }
 
-    public TextView getSum_line() {
+    public AppCompatImageView getSum_line() {
         return sum_line;
     }
 
@@ -230,7 +230,7 @@ public class ListItemSummaryViewHolder {
         return costSeparator;
     }
 
-    public View getMainLayout() {
+    public LinearLayout getMainLayout() {
         return mainLayout;
     }
 
@@ -242,7 +242,9 @@ public class ListItemSummaryViewHolder {
         return diagram;
     }
 
-    public AppCompatImageView getMiniMenu() {
+    AppCompatImageView getMiniMenu() {
         return miniMenu;
     }
+
+
 }

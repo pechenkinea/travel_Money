@@ -1,5 +1,7 @@
 package com.pechenkin.travelmoney.cost;
 
+import android.view.View;
+
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
@@ -19,7 +21,7 @@ public class OnlySumCostItem implements CostListItem {
     @Override
     public void render(ListItemSummaryViewHolder holder) {
         String sum = Help.doubleToString(this.sum);
-        holder.getSum_line().setText("");
+        holder.getSum_line().setVisibility(View.INVISIBLE);
         holder.getSum_group_sum().setText(sum);
     }
 

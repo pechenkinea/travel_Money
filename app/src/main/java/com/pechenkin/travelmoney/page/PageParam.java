@@ -17,6 +17,7 @@ public class PageParam {
     private PageParam(){}
 
     private long id;
+    private long toMemberId;
     private String photoUrl;
     private String name;
     private String description;
@@ -62,9 +63,14 @@ public class PageParam {
         return backPage;
     }
 
+    public long getToMemberId() {
+        return toMemberId;
+    }
+
     static public class BuildingPageParam
     {
         private long id = -1;
+        private long toMemberId = -1;
         private String photoUrl = "";
         private String name = "";
         private String description = "";
@@ -89,6 +95,7 @@ public class PageParam {
             selectedIds = param.getSelectedIds();
             costCreator = param.getCostCreator();
             backPage = param.getBackPage();
+            toMemberId = param.getToMemberId();
         }
 
 
@@ -104,6 +111,7 @@ public class PageParam {
             pageParam.selectedIds = this.selectedIds;
             pageParam.costCreator = this.costCreator;
             pageParam.backPage = this.backPage;
+            pageParam.toMemberId = this.toMemberId;
 
             return pageParam;
         }
@@ -156,6 +164,11 @@ public class PageParam {
 
         public BuildingPageParam setBackPage(Class<? extends Page> backPage) {
             this.backPage = backPage;
+            return this;
+        }
+
+        public BuildingPageParam setToMemberId(long toMemberId) {
+            this.toMemberId = toMemberId;
             return this;
         }
     }
