@@ -11,11 +11,11 @@ import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
 import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_settings;
-import com.pechenkin.travelmoney.cost.group.GroupCost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.LabelItem;
 import com.pechenkin.travelmoney.cost.adapter.LabelItemWithMenu;
+import com.pechenkin.travelmoney.cost.group.GroupCost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
@@ -81,7 +81,10 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
             if (costList.hasRows()) {
 
-                finalList = Help.concat(new CostListItem[]{new TotalItemDiagram(allSum, totalResult, this.readOnly)}, finalList);
+                finalList = Help.concat(new CostListItem[]{
+                        new TotalItemDiagram(allSum, totalResult, this.readOnly)
+                        //new BarDiagram(totalResult)
+                }, finalList);
 
                 finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Список всех операций")});
 
@@ -89,9 +92,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                 if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST)) {
                     // Группировка
                     GroupCost[] groupCostList = GroupCost.group(costList.getAllRows());
-                    if (groupCostList != null) {
-                        finalList = Help.concat(finalList, groupCostList);
-                    }
+                    finalList = Help.concat(finalList, groupCostList);
                 } else {
                     // Если группировка не нужна выводим как есть
                     finalList = Help.concat(finalList, costList.getAllRows());

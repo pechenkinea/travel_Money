@@ -26,19 +26,23 @@ public class Total implements CostIterable {
 
     @Override
     public void iterate(Cost cost) {
-        if (!cost.isActive() || cost.isRepayment()) {
+        if (!cost.isActive()) {
             return;
         }
+
+        if (!cost.isRepayment()) {  //операции возврата не считаем тратой, поэтому не добавляем
+
+            if (!members.containsKey(cost.getToMember()))
+                members.put(cost.getToMember(), new MemberSum(cost.getToMember()));
+
+            Objects.requireNonNull(members.get(cost.getToMember())).addSumIn(cost.getSum());
+        }
+
 
         if (!members.containsKey(cost.getMember()))
             members.put(cost.getMember(), new MemberSum(cost.getMember()));
 
         Objects.requireNonNull(members.get(cost.getMember())).addSumOut(cost.getSum());
-
-        if (!members.containsKey(cost.getToMember()))
-            members.put(cost.getToMember(), new MemberSum(cost.getToMember()));
-
-        Objects.requireNonNull(members.get(cost.getToMember())).addSumIn(cost.getSum());
     }
 
     @Override

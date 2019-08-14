@@ -41,7 +41,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
     private double sum;
     private Total.MemberSum[] total;
     private boolean isAnimated = false;
-    private PieChart pieChart = null;
+    private PieChart diagram = null;
     private TextView textView = null;
     private boolean readOnly;
 
@@ -64,15 +64,15 @@ public class TotalItemDiagram implements CostListItem, Diagram {
 
     private void createDiagram() {
 
-        if (pieChart != null)
+        if (diagram != null)
             return;
 
-        pieChart = new PieChart(MainActivity.INSTANCE);
+        diagram = new PieChart(MainActivity.INSTANCE);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 Help.dpToPx(180));
 
-        pieChart.setLayoutParams(lp);
+        diagram.setLayoutParams(lp);
 
 
         ArrayList<PieEntry> NoOfEmp = new ArrayList<>();
@@ -103,20 +103,20 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         PieData data = new PieData(dataSet);
         data.setValueTextColor(Color.WHITE);
 
-        pieChart.setData(data);
+        diagram.setData(data);
 
-        pieChart.setEntryLabelColor(Color.BLACK); // цвет имен участников
-        pieChart.setEntryLabelTextSize(16);
+        diagram.setEntryLabelColor(Color.BLACK); // цвет имен участников
+        diagram.setEntryLabelTextSize(16);
 
-        pieChart.getDescription().setEnabled(false);
-        pieChart.getLegend().setEnabled(false);
-        pieChart.setRotationEnabled(false); //отключает вращение
-        pieChart.setMaxHighlightDistance(1);
+        diagram.getDescription().setEnabled(false);
+        diagram.getLegend().setEnabled(false);
+        diagram.setRotationEnabled(false); //отключает вращение
+        diagram.setMaxHighlightDistance(1);
 
         if (this.readOnly) {
-            pieChart.setTouchEnabled(false);
+            diagram.setTouchEnabled(false);
         } else {
-            pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            diagram.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(final Entry e, Highlight h) {
 
@@ -168,13 +168,13 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         holder.getDiagram().setVisibility(View.VISIBLE);
 
         createDiagram();
-        if(pieChart.getParent() != null) {
+        if(diagram.getParent() != null) {
             // была ошибка. нигрывалась так: надо прокрутить список всех операций вниз,
             // потом пометить трату как неактивную и через кнопку прокрутки вернуться вверх
             // ниже с textView аналогичная ситуация
-            ((ViewGroup)pieChart.getParent()).removeView(pieChart);
+            ((ViewGroup) diagram.getParent()).removeView(diagram);
         }
-        holder.getDiagram().addView(this.pieChart);
+        holder.getDiagram().addView(this.diagram);
 
 
         createTextView();  //важно добавлять после диаграммы
@@ -186,9 +186,9 @@ public class TotalItemDiagram implements CostListItem, Diagram {
 
         if (!isAnimated) {
             isAnimated = true;
-            pieChart.animateXY(300, 300);
+            diagram.animateXY(300, 300);
         } else {
-            pieChart.invalidate();
+            diagram.invalidate();
         }
 
     }
@@ -206,7 +206,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
     @Override
     public PieChart getDiagram() {
         createDiagram();
-        return pieChart;
+        return diagram;
     }
 
 }
