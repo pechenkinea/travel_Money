@@ -70,7 +70,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         pieChart = new PieChart(MainActivity.INSTANCE);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                Help.dpToPx(200));
+                Help.dpToPx(180));
 
         pieChart.setLayoutParams(lp);
 

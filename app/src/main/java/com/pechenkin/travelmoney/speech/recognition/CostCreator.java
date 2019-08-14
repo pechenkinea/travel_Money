@@ -2,12 +2,12 @@ package com.pechenkin.travelmoney.speech.recognition;
 
 import android.text.TextUtils;
 
+import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.ShortCost;
-import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,9 +92,9 @@ public class CostCreator {
     private void createCosts()
     {
         if (masterId > -1 && sums > 0) {
-                if (sums > MasterCostInfo.ERROR_SUM)
+                if (sums > TMConst.ERROR_SUM)
                 {
-                    sums = MasterCostInfo.ERROR_SUM;
+                    sums = TMConst.ERROR_SUM;
                 }
 
                 groupCost++;

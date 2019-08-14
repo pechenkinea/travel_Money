@@ -8,6 +8,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_members;
@@ -15,7 +16,6 @@ import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.cost.add.listener.DateOnClickListener;
-import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
 import java.util.Date;
@@ -52,8 +52,8 @@ public class Repayment extends BasePage {
         }
 
 
-        if (Help.StringToDouble(sum) > MasterCostInfo.ERROR_SUM) {
-            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.doubleToString(MasterCostInfo.ERROR_SUM)));
+        if (Help.StringToDouble(sum) > TMConst.ERROR_SUM) {
+            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.doubleToString(TMConst.ERROR_SUM)));
             Help.setActiveEditText(R.id.cost_sum);
             return;
         }

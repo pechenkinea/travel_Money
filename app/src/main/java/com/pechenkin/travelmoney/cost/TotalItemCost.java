@@ -1,7 +1,6 @@
 package com.pechenkin.travelmoney.cost;
 
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.pechenkin.travelmoney.Help;
@@ -28,7 +27,7 @@ public class TotalItemCost extends ShortCost {
 
         LinearLayout ml = holder.getMainLayout();
 
-        int padding6 = Help.dpToPx(6);
+        int padding6 = Help.dpToPx(8);
         ml.setPadding(ml.getPaddingLeft(), padding6, ml.getPaddingRight(), padding6);
 
         holder.getMainLayout().setOnClickListener(view -> {

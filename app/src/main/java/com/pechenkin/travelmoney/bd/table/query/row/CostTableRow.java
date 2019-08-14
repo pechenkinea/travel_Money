@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.view.View;
 
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Namespace;
 import com.pechenkin.travelmoney.bd.table.query.IdTableRow;
@@ -136,7 +137,8 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
         holder.photoImage(getImageDir());
 
         if (isRepayment()){
-            holder.getSum_line().setImageResource(R.drawable.ic_undo_24);
+            int color = MainActivity.INSTANCE.getResources().getColor(R.color.colorPrimary);
+            holder.getSum_group_sum().setTextColor(color);
         }
 
         if (!isActive()) {

@@ -1,7 +1,5 @@
 package com.pechenkin.travelmoney.page.cost.add.master;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -19,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.page.BasePage;
@@ -27,7 +26,6 @@ import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.listener.DateOnClickListener;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
@@ -39,8 +37,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class MasterCostInfo extends BasePage {
 
-    //TODO вынести куда нибудь
-    public static final int ERROR_SUM = 1000000;
 
     @Override
     public void clickBackButton() {
@@ -92,8 +88,8 @@ public class MasterCostInfo extends BasePage {
         }
 
 
-        if (Help.StringToDouble(sum) > ERROR_SUM) {
-            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.doubleToString(ERROR_SUM)));
+        if (Help.StringToDouble(sum) > TMConst.ERROR_SUM) {
+            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.doubleToString(TMConst.ERROR_SUM)));
             Help.setActiveEditText(R.id.cost_sum);
             return;
         }
@@ -140,8 +136,8 @@ public class MasterCostInfo extends BasePage {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String sum = getTextInputEditText(cost_sum);
-                if (Help.StringToDouble(sum) > ERROR_SUM) {
-                    cost_sum.setText(String.valueOf(ERROR_SUM));
+                if (Help.StringToDouble(sum) > TMConst.ERROR_SUM) {
+                    cost_sum.setText(String.valueOf(TMConst.ERROR_SUM));
                     cost_sum.setSelection(getTextInputEditText(cost_sum).length());
                 }
             }
