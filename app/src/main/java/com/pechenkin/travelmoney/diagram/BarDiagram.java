@@ -10,7 +10,11 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
@@ -71,29 +75,26 @@ public class BarDiagram implements CostListItem, Diagram {
         dataSet.setColors(pieColors); // цвета зон
 
 
-
-
         XAxis xAxis = diagram.getXAxis();
-        //xAxis.setGranularity(1f);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setDrawGridLines(false);
-        //xAxis.setAxisMaximum(6);
-        xAxis.setPosition(XAxis.XAxisPosition.TOP);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
+        xAxis.setEnabled(true);
+        xAxis.setDrawGridLines(false); //вертикальные линии отключаем
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return  xVals.get((int) value);
+            }
+        });
 
 
         diagram.getAxisRight().setEnabled(false);
+        diagram.getLegend().setEnabled(false);
         diagram.getDescription().setEnabled(false);
 
 
-
-
         BarData data = new BarData(dataSet);
-        data.setBarWidth(0.9f); // set custom bar width
 
-        //diagram.getDescription().setEnabled(false);
         diagram.setTouchEnabled(false);
 
         diagram.setData(data);
@@ -127,7 +128,7 @@ public class BarDiagram implements CostListItem, Diagram {
 
         if (!isAnimated) {
             isAnimated = true;
-            this.diagram.animateXY(300, 300);
+            this.diagram.animateY(300);
         } else {
             this.diagram.invalidate();
         }

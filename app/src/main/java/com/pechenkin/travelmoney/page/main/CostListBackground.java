@@ -21,6 +21,7 @@ import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.diagram.BarDiagram;
 import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
 
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
@@ -82,8 +83,8 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
             if (costList.hasRows()) {
 
                 finalList = Help.concat(new CostListItem[]{
-                        new TotalItemDiagram(allSum, totalResult, this.readOnly)
-                        //new BarDiagram(totalResult)
+                        new TotalItemDiagram(allSum, totalResult, this.readOnly),
+                        new BarDiagram(totalResult)
                 }, finalList);
 
                 finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Список всех операций")});
