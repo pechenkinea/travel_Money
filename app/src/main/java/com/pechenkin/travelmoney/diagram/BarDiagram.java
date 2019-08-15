@@ -1,8 +1,12 @@
 package com.pechenkin.travelmoney.diagram;
 
+import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -28,10 +32,12 @@ public class BarDiagram implements Diagram {
 
     private BarChart diagram = null;
     private boolean isAnimated = false;
+    private double sum;
     private Total.MemberSum[] total;
     private OnDiagramSelectItem onDiagramSelectItem = null;
 
-    public BarDiagram(Total.MemberSum[] total) {
+    public BarDiagram(double sum, Total.MemberSum[] total) {
+        this.sum = sum;
 
         Arrays.sort(total, (t1, t2) -> {
 
@@ -52,7 +58,9 @@ public class BarDiagram implements Diagram {
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 Help.dpToPx(180));
+        lp.setMargins(0, Help.dpToPx(12), 0, 0);
         diagram.setLayoutParams(lp);
+
 
         int[] pieColors = new int[this.total.length];
 
@@ -77,6 +85,7 @@ public class BarDiagram implements Diagram {
         xAxis.setEnabled(true);
         xAxis.setDrawGridLines(false); //вертикальные линии отключаем
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelRotationAngle(-45); //наклон подписей
 
         //делаем сетку по оси Х с шагом 1
         xAxis.setGranularity(1f);
@@ -132,6 +141,18 @@ public class BarDiagram implements Diagram {
 
         holder.getMainLayout().setVisibility(View.GONE);
         holder.getDiagram().setVisibility(View.VISIBLE);
+
+        TextView textView = new TextView(MainActivity.INSTANCE);
+
+        RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        textView.setLayoutParams(lp2);
+
+        String textTotal = "Всего потрачено " + Help.doubleToString(this.sum);
+        textView.setText(textTotal);
+        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView.setTextColor(Color.BLACK);
+
+        holder.getDiagram().addView(textView);
 
         createDiagram();
 

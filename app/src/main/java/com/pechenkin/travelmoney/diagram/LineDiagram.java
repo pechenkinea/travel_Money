@@ -1,11 +1,17 @@
 package com.pechenkin.travelmoney.diagram;
 
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -55,18 +61,19 @@ public class LineDiagram implements Diagram {
         diagram = new HorizontalBarChart(MainActivity.INSTANCE);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                Help.dpToPx(100));
+                Help.dpToPx(80));
+        lp.setMargins(0, Help.dpToPx(4), 0, 0);
         diagram.setLayoutParams(lp);
 
         int[] pieColors = new int[this.total.length * 2];
+        LegendEntry[] legendEntries = new LegendEntry[this.total.length];
 
 
-        String[] xValsLabels = new String[this.total.length * 2];
+        //String[] xValsLabels = new String[this.total.length * 2];
         int i = 0;
-
+        int j = 0;
         float[] values = new float[this.total.length * 2];
-
-        float indent = (float) (this.sum / 100);
+        float indent = (float) (this.sum / 80);
 
         for (Total.MemberSum c : this.total) {
             values[i] = (float) c.getSumIn();
@@ -76,10 +83,13 @@ public class LineDiagram implements Diagram {
             long memberId = c.getMemberId();
             MemberTableRow member = t_members.getMemberById(memberId);
 
-            xValsLabels[i] = member.name;
-            xValsLabels[i + 1] = "";
+            legendEntries[j] = new LegendEntry();
+            legendEntries[j].label = member.name;
+            legendEntries[j].formColor = member.color;
+            j++;
+
             pieColors[i++] = member.color;
-            pieColors[i++] = Color.WHITE;
+            pieColors[i++] = MainActivity.INSTANCE.getResources().getColor(android.R.color.transparent);
         }
 
 
@@ -90,7 +100,6 @@ public class LineDiagram implements Diagram {
         BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColors(pieColors); // цвета зон
 
-        dataSet.setStackLabels(xValsLabels);
 
         dataSet.setValueFormatter(new ValueFormatter() {
             @Override
@@ -100,6 +109,7 @@ public class LineDiagram implements Diagram {
                 }
                 return String.valueOf(value);
             }
+
         });
 
 
@@ -107,21 +117,22 @@ public class LineDiagram implements Diagram {
 
         diagram.setDrawValueAboveBar(false); // Делает значения внутри полоски диаграммы
 
-        diagram.getAxisLeft().setAxisMinimum(0f); //ость Y, значения начинать с 0
-        diagram.getAxisLeft().setAxisMaximum((float) (this.sum + (this.total.length * indent)));
-
         diagram.getXAxis().setEnabled(false);
 
-        //diagram.getAxisRight().setEnabled(false); // снизу не надо значения по y
+
+        diagram.getAxisRight().setEnabled(false); // снизу не надо значения по y
         diagram.getAxisLeft().setEnabled(false); // сверху не надо значения по y
-        diagram.getLegend().setEnabled(false);
+
+        diagram.getLegend().setCustom(legendEntries);
+        diagram.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+
         diagram.getDescription().setEnabled(false);
 
 
         BarData data = new BarData(dataSet);
 
         diagram.setData(data);
-        diagram.setFitBars(true); // make the x-axis fit exactly all bars
+        //diagram.setFitBars(true); // make the x-axis fit exactly all bars
 
 
         if (this.onDiagramSelectItem == null) {
@@ -154,6 +165,18 @@ public class LineDiagram implements Diagram {
 
         holder.getMainLayout().setVisibility(View.GONE);
         holder.getDiagram().setVisibility(View.VISIBLE);
+
+        TextView textView = new TextView(MainActivity.INSTANCE);
+
+        RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        textView.setLayoutParams(lp2);
+
+        String textTotal = "Всего потрачено " + Help.doubleToString(this.sum);
+        textView.setText(textTotal);
+        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView.setTextColor(Color.BLACK);
+
+        holder.getDiagram().addView(textView);
 
         createDiagram();
 

@@ -69,7 +69,7 @@ public class SumResultListPage extends ListPage {
 
             CostListItem[] listItems = new CostListItem[]{
                     new TotalItemDiagram(allSum, totalResult),
-                    new BarDiagram(totalResult),
+                    new BarDiagram(allSum, totalResult),
                     new LineDiagram(allSum, totalResult)
             };
 
