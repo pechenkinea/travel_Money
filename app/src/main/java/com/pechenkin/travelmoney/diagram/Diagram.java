@@ -1,8 +1,9 @@
 package com.pechenkin.travelmoney.diagram;
 
-import com.github.mikephil.charting.charts.Chart;
+import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 
-public interface Diagram {
+public interface Diagram extends CostListItem {
 
-    Chart getDiagram();
+    void setOnDiagramSelectItem(OnDiagramSelectItem onDiagramSelectItem);
+
 }

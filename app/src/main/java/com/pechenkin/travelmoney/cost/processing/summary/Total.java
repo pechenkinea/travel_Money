@@ -2,10 +2,13 @@ package com.pechenkin.travelmoney.cost.processing.summary;
 
 import androidx.collection.LongSparseArray;
 
+import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
+import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,7 +58,6 @@ public class Total implements CostIterable {
                 result.add(new MemberSum(value.memberId, value.sumIn, value.sumOut));
             }
         }
-
     }
 
     public MemberSum[] getResult() {

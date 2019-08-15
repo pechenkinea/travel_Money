@@ -21,8 +21,11 @@ import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
-import com.pechenkin.travelmoney.diagram.BarDiagram;
+import com.pechenkin.travelmoney.diagram.Diagram;
 import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
+import com.pechenkin.travelmoney.page.PageOpener;
+import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
 
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
@@ -82,10 +85,23 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
             if (costList.hasRows()) {
 
-                finalList = Help.concat(new CostListItem[]{
-                        new TotalItemDiagram(allSum, totalResult, this.readOnly),
-                        new BarDiagram(totalResult)
-                }, finalList);
+                // TODO надо показывать диаграмму, которая понравилась пользователю на странице статистики
+
+                Diagram diagram = new TotalItemDiagram(allSum, totalResult);
+
+                if (!this.readOnly) {
+                    diagram.setOnDiagramSelectItem(itemId -> {
+
+                        PageParam param = new PageParam.BuildingPageParam()
+                                .setId(itemId)
+                                .setBackPage(MainPage.class)
+                                .getParam();
+                        PageOpener.INSTANCE.open(MasterCostInfo.class, param);
+
+                    });
+                }
+
+                finalList = Help.concat(new CostListItem[]{diagram}, finalList);
 
                 finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Список всех операций")});
 

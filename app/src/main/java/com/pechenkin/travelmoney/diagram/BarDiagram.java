@@ -5,21 +5,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 
@@ -27,11 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BarDiagram implements CostListItem, Diagram {
+public class BarDiagram implements Diagram {
 
     private BarChart diagram = null;
     private boolean isAnimated = false;
     private Total.MemberSum[] total;
+    private OnDiagramSelectItem onDiagramSelectItem = null;
 
     public BarDiagram(Total.MemberSum[] total) {
 
@@ -59,13 +57,13 @@ public class BarDiagram implements CostListItem, Diagram {
         int[] pieColors = new int[this.total.length];
 
         List<BarEntry> entries = new ArrayList<>();
-        final ArrayList<String> xVals = new ArrayList<>();
+        final ArrayList<String> xValsLabels = new ArrayList<>();
         int i = 0;
         for (Total.MemberSum c : this.total) {
             long memberId = c.getMemberId();
             MemberTableRow member = t_members.getMemberById(memberId);
-            entries.add(new BarEntry(i, (float) c.getSumIn(), member.name));
-            xVals.add(member.name);
+            entries.add(new BarEntry(i, (float) c.getSumIn(), member.id));
+            xValsLabels.add(member.name);
             pieColors[i++] = member.color;
         }
 
@@ -80,33 +78,53 @@ public class BarDiagram implements CostListItem, Diagram {
         xAxis.setDrawGridLines(false); //вертикальные линии отключаем
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
+        //делаем сетку по оси Х с шагом 1
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return  xVals.get((int) value);
+                return xValsLabels.get((int) value);
             }
         });
 
+        diagram.getAxisLeft().setAxisMinimum(0f); //ость Y, значения начинать с 0
 
-        diagram.getAxisRight().setEnabled(false);
+        diagram.getAxisRight().setEnabled(false); // справа не надо значения по y
         diagram.getLegend().setEnabled(false);
         diagram.getDescription().setEnabled(false);
 
 
         BarData data = new BarData(dataSet);
 
-        diagram.setTouchEnabled(false);
-
         diagram.setData(data);
         diagram.setFitBars(true); // make the x-axis fit exactly all bars
 
 
+        if (this.onDiagramSelectItem == null) {
+            diagram.setTouchEnabled(false);
+        } else {
+            diagram.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(final Entry e, Highlight h) {
+                    Object memberId = e.getData();
+                    if (memberId instanceof Long) {
+                        onDiagramSelectItem.doOnSelect((Long) memberId);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected() {
+                }
+            });
+        }
     }
 
+
     @Override
-    public Chart getDiagram() {
-        createDiagram();
-        return diagram;
+    public void setOnDiagramSelectItem(OnDiagramSelectItem onDiagramSelectItem) {
+        this.onDiagramSelectItem = onDiagramSelectItem;
     }
 
     @Override

@@ -9,10 +9,14 @@ import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
 import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
+import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
+import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
-import com.pechenkin.travelmoney.list.AdapterSumResultList;
+import com.pechenkin.travelmoney.diagram.BarDiagram;
+import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
@@ -35,34 +39,41 @@ public class SumResultListPage extends ListPage {
 
     @Override
     protected String getTitleHeader() {
-        return MainActivity.INSTANCE.getString(R.string.statistic) +  "(" + t_trips.getActiveTrip().name + ")";
+        return MainActivity.INSTANCE.getString(R.string.statistic) + "(" + t_trips.getActiveTrip().name + ")";
     }
 
 
     @Override
     protected boolean fillFields() {
-        if (t_trips.getActiveTrip() == null)
-        {
+        if (t_trips.getActiveTrip() == null) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
             return false;
         }
 
 
         QueryResult<CostTableRow> allCostTrip = t_costs.getAllByTripId(t_trips.getActiveTrip().id);
-        ListView list1 =  MainActivity.INSTANCE.findViewById(getListViewId());
-        if (!allCostTrip.hasRows())
-        {
+        ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
+        if (!allCostTrip.hasRows()) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
             list1.setAdapter(null);
             return false;
-        }
-        else
-        {
+        } else {
             Total total = new Total();
-            ProcessIterate.doIterate(allCostTrip.getAllRows(), new CostIterable[]{total});
-            Total.MemberSum[] totalResult = total.getResult();
+            AllSum allSumIteration = new AllSum();
 
-            AdapterSumResultList adapter = new AdapterSumResultList(MainActivity.INSTANCE, totalResult);
+            ProcessIterate.doIterate(allCostTrip.getAllRows(), new CostIterable[]{total, allSumIteration});
+
+            Total.MemberSum[] totalResult = total.getResult();
+            double allSum = allSumIteration.getSum();
+
+            CostListItem[] listItems = new CostListItem[]{
+                    new TotalItemDiagram(allSum, totalResult),
+                    new BarDiagram(totalResult)
+            };
+
+            AdapterCostList adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), listItems);
+
+            //AdapterSumResultList adapter = new AdapterSumResultList(MainActivity.INSTANCE, totalResult);
             list1.setAdapter(adapter);
         }
         return true;
@@ -77,7 +88,6 @@ public class SumResultListPage extends ListPage {
     protected void onItemClick(ListView list, int position) {
 
     }
-
 
 
 }

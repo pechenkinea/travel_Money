@@ -20,13 +20,8 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
-import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
-import com.pechenkin.travelmoney.page.main.MainPage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,18 +31,17 @@ import java.util.Arrays;
  * Рисует круговую диаграмму с отображением кто сколько потратил
  * Если открыта страница только для просмотра то диаграмма не кликабельна
  */
-public class TotalItemDiagram implements CostListItem, Diagram {
+public class TotalItemDiagram implements Diagram {
 
     private double sum;
     private Total.MemberSum[] total;
     private boolean isAnimated = false;
     private PieChart diagram = null;
     private TextView textView = null;
-    private boolean readOnly;
+    private OnDiagramSelectItem onDiagramSelectItem = null;
 
-    public TotalItemDiagram(double sum, Total.MemberSum[] total, boolean readOnly) {
+    public TotalItemDiagram(double sum, Total.MemberSum[] total) {
         this.sum = sum;
-        this.readOnly = readOnly;
 
         Arrays.sort(total, (t1, t2) -> {
 
@@ -113,22 +107,16 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         diagram.setRotationEnabled(false); //отключает вращение
         diagram.setMaxHighlightDistance(1);
 
-        if (this.readOnly) {
+        if (this.onDiagramSelectItem == null) {
             diagram.setTouchEnabled(false);
         } else {
             diagram.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(final Entry e, Highlight h) {
-
                     Object memberId = e.getData();
-                    if (memberId instanceof Long){
-                        PageParam param = new PageParam.BuildingPageParam()
-                                .setId((Long) memberId)
-                                .setBackPage(MainPage.class)
-                                .getParam();
-                        PageOpener.INSTANCE.open(MasterCostInfo.class, param);
+                    if (memberId instanceof Long) {
+                        onDiagramSelectItem.doOnSelect((Long) memberId);
                     }
-
                 }
 
                 @Override
@@ -136,7 +124,12 @@ public class TotalItemDiagram implements CostListItem, Diagram {
                 }
             });
         }
+    }
 
+
+    @Override
+    public void setOnDiagramSelectItem(OnDiagramSelectItem onDiagramSelectItem) {
+        this.onDiagramSelectItem = onDiagramSelectItem;
     }
 
     //Поверх диаграммы добавляем TextView, что бы перекрыть центр и не давать туда кликать.
@@ -168,7 +161,7 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         holder.getDiagram().setVisibility(View.VISIBLE);
 
         createDiagram();
-        if(diagram.getParent() != null) {
+        if (diagram.getParent() != null) {
             // была ошибка. нигрывалась так: надо прокрутить список всех операций вниз,
             // потом пометить трату как неактивную и через кнопку прокрутки вернуться вверх
             // ниже с textView аналогичная ситуация
@@ -178,8 +171,8 @@ public class TotalItemDiagram implements CostListItem, Diagram {
 
 
         createTextView();  //важно добавлять после диаграммы
-        if(textView.getParent() != null) {
-            ((ViewGroup)textView.getParent()).removeView(textView);
+        if (textView.getParent() != null) {
+            ((ViewGroup) textView.getParent()).removeView(textView);
         }
         holder.getDiagram().addView(this.textView);
 
@@ -203,10 +196,5 @@ public class TotalItemDiagram implements CostListItem, Diagram {
         return false;
     }
 
-    @Override
-    public PieChart getDiagram() {
-        createDiagram();
-        return diagram;
-    }
 
 }
