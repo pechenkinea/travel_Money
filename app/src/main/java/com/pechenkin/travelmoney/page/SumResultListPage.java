@@ -16,6 +16,7 @@ import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.BarDiagram;
+import com.pechenkin.travelmoney.diagram.LineDiagram;
 import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
@@ -68,7 +69,8 @@ public class SumResultListPage extends ListPage {
 
             CostListItem[] listItems = new CostListItem[]{
                     new TotalItemDiagram(allSum, totalResult),
-                    new BarDiagram(totalResult)
+                    new BarDiagram(totalResult),
+                    new LineDiagram(allSum, totalResult)
             };
 
             AdapterCostList adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), listItems);
