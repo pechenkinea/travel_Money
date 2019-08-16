@@ -62,5 +62,6 @@
     <string name="paid">Оплачено:</string>
     <string name="total">Итог:</string>
     <string name="repayment">Возврат долга</string>
+    <string name="other_lib">Сторонее ПО</string>
 
 </resources>

@@ -2,19 +2,18 @@ package com.pechenkin.travelmoney.diagram;
 
 import android.graphics.Color;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -22,51 +21,36 @@ import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.diagram.total.TotalBase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 /**
  * Рисует круговую диаграмму с отображением кто сколько потратил
- * Если открыта страница только для просмотра то диаграмма не кликабельна
  */
-public class TotalItemDiagram implements Diagram {
+public class TotalItemDiagram extends TotalBase {
 
-    private double sum;
-    private Total.MemberSum[] total;
     private boolean isAnimated = false;
-    private PieChart diagram = null;
-    private TextView textView = null;
-    private OnDiagramSelectItem onDiagramSelectItem = null;
 
     public TotalItemDiagram(double sum, Total.MemberSum[] total) {
-        this.sum = sum;
-
-        Arrays.sort(total, (t1, t2) -> {
-
-            MemberTableRow t1Member = t_members.getMemberById(t1.getMemberId());
-            MemberTableRow t2Member = t_members.getMemberById(t2.getMemberId());
-
-            return Integer.compare(t1Member.color, t2Member.color);
-        });
-
-        this.total = total;
-
-
+        super(sum, total);
     }
 
-    private void createDiagram() {
 
-        if (diagram != null)
-            return;
+    @NonNull
+    @Override
+    protected Chart getDiagram() {
+        if (this.diagram != null)
+            return this.diagram;
 
-        diagram = new PieChart(MainActivity.INSTANCE);
+
+        PieChart diagramPieChart = new PieChart(MainActivity.INSTANCE);
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 Help.dpToPx(180));
 
-        diagram.setLayoutParams(lp);
+        diagramPieChart.setLayoutParams(lp);
 
 
         ArrayList<PieEntry> NoOfEmp = new ArrayList<>();
@@ -97,49 +81,27 @@ public class TotalItemDiagram implements Diagram {
         PieData data = new PieData(dataSet);
         data.setValueTextColor(Color.WHITE);
 
-        diagram.setData(data);
+        diagramPieChart.setData(data);
 
-        diagram.setEntryLabelColor(Color.BLACK); // цвет имен участников
-        diagram.setEntryLabelTextSize(16);
+        diagramPieChart.setEntryLabelColor(Color.BLACK); // цвет имен участников
+        diagramPieChart.setEntryLabelTextSize(16);
 
-        diagram.getDescription().setEnabled(false);
-        diagram.getLegend().setEnabled(false);
-        diagram.setRotationEnabled(false); //отключает вращение
-        diagram.setMaxHighlightDistance(1);
+        diagramPieChart.getDescription().setEnabled(false);
+        diagramPieChart.getLegend().setEnabled(false);
+        diagramPieChart.setRotationEnabled(false); //отключает вращение
+        diagramPieChart.setMaxHighlightDistance(1);
 
-        if (this.onDiagramSelectItem == null) {
-            diagram.setTouchEnabled(false);
-        } else {
-            diagram.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-                @Override
-                public void onValueSelected(final Entry e, Highlight h) {
-                    Object memberId = e.getData();
-                    if (memberId instanceof Long) {
-                        onDiagramSelectItem.doOnSelect((Long) memberId);
-                    }
-                }
+        return  diagramPieChart;
 
-                @Override
-                public void onNothingSelected() {
-                }
-            });
-        }
     }
 
 
     @Override
-    public void setOnDiagramSelectItem(OnDiagramSelectItem onDiagramSelectItem) {
-        this.onDiagramSelectItem = onDiagramSelectItem;
-    }
+    public void render(ListItemSummaryViewHolder holder) {
 
-    //Поверх диаграммы добавляем TextView, что бы перекрыть центр и не давать туда кликать.
-    private void createTextView() {
-        if (textView != null) {
-            return;
-        }
+        super.render(holder);
 
-        textView = new TextView(MainActivity.INSTANCE);
-
+        TextView textView = new TextView(MainActivity.INSTANCE);
         RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp2.addRule(RelativeLayout.CENTER_IN_PARENT);
         textView.setLayoutParams(lp2);
@@ -151,30 +113,10 @@ public class TotalItemDiagram implements Diagram {
         textView.setOnClickListener(null); // перехват клика
         textView.setTextColor(Color.BLACK);
         textView.setGravity(Gravity.CENTER);
-
-    }
-
-    @Override
-    public void render(ListItemSummaryViewHolder holder) {
-
-        holder.getMainLayout().setVisibility(View.GONE);
-        holder.getDiagram().setVisibility(View.VISIBLE);
-
-        createDiagram();
-        if (diagram.getParent() != null) {
-            // была ошибка. нигрывалась так: надо прокрутить список всех операций вниз,
-            // потом пометить трату как неактивную и через кнопку прокрутки вернуться вверх
-            // ниже с textView аналогичная ситуация
-            ((ViewGroup) diagram.getParent()).removeView(diagram);
-        }
-        holder.getDiagram().addView(this.diagram);
-
-
-        createTextView();  //важно добавлять после диаграммы
         if (textView.getParent() != null) {
             ((ViewGroup) textView.getParent()).removeView(textView);
         }
-        holder.getDiagram().addView(this.textView);
+        holder.getDiagram().addView(textView); // Важно добавлять после диаграммы
 
 
         if (!isAnimated) {
@@ -185,16 +127,5 @@ public class TotalItemDiagram implements Diagram {
         }
 
     }
-
-    @Override
-    public boolean isClicked() {
-        return false;
-    }
-
-    @Override
-    public boolean onLongClick() {
-        return false;
-    }
-
 
 }

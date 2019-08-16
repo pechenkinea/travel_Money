@@ -73,7 +73,7 @@ public class AboutPage extends BasePage {
                 .setText(Html.fromHtml("<b>Печёнкиной Марине</b>. За идеи по функционалу и тестирование"));
 
         ((TextView) MainActivity.INSTANCE.findViewById(R.id.thank_psv))
-                .setText(Html.fromHtml("<b>Подлесных Сергею</b>. За идеи по функционалу"));
+                .setText(Html.fromHtml("<b>Подлесных Сергею</b>. За идеи по функционалу и тестирование"));
 
 
         return true;
