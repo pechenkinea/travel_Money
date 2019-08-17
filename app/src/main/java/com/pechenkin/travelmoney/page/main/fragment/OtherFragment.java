@@ -12,7 +12,7 @@ import com.pechenkin.travelmoney.page.AboutPage;
 import com.pechenkin.travelmoney.page.FaqPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.SettingsPage;
-import com.pechenkin.travelmoney.page.SumResultListPage;
+import com.pechenkin.travelmoney.page.DiagramsListPage;
 
 public class OtherFragment extends BaseMainPageFragment {
 
@@ -33,7 +33,7 @@ public class OtherFragment extends BaseMainPageFragment {
         aboutButton.setOnClickListener(v -> PageOpener.INSTANCE.open(AboutPage.class));
 
         Button statButton = fragmentView.findViewById(R.id.stat_button);
-        statButton.setOnClickListener(v -> PageOpener.INSTANCE.open(SumResultListPage.class));
+        statButton.setOnClickListener(v -> PageOpener.INSTANCE.open(DiagramsListPage.class));
 
         Button exportButton = fragmentView.findViewById(R.id.export_button);
         exportButton.setOnClickListener(v -> {

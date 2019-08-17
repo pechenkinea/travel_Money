@@ -20,7 +20,6 @@ import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
-import com.pechenkin.travelmoney.diagram.total.TotalBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
 /**
  * Рисует диаграмму с отображением кто сколько потратил в виде палок
  */
-public class BarDiagram extends TotalBase {
+public class BarDiagram extends Base {
 
     private boolean isAnimated = false;
 
@@ -76,14 +75,7 @@ public class BarDiagram extends TotalBase {
 
 
         //Пустые значения по оси Х дают отступ
-        XAxis xAxis = diagramBarChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                return "";
-            }
-        });
+        diagramBarChart.getXAxis().setEnabled(false);
 
         /*
         XAxis xAxis = diagramBarChart.getXAxis();
@@ -143,13 +135,4 @@ public class BarDiagram extends TotalBase {
 
     }
 
-    @Override
-    public boolean isClicked() {
-        return false;
-    }
-
-    @Override
-    public boolean onLongClick() {
-        return false;
-    }
 }

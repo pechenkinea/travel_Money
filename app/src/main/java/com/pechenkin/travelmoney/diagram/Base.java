@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.diagram.total;
+package com.pechenkin.travelmoney.diagram;
 
 import android.graphics.Color;
 import android.view.Gravity;
@@ -19,21 +19,30 @@ import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
-import com.pechenkin.travelmoney.diagram.Diagram;
-import com.pechenkin.travelmoney.diagram.OnDiagramSelectItem;
 
 import java.util.Arrays;
 
-public abstract class TotalBase implements Diagram {
+public abstract class Base implements Diagram {
 
 
     protected Total.MemberSum[] total;
     protected double sum;
     protected Chart diagram = null;
+    private OnDiagramSelect onDiagramSelect = null;
+
+    public Diagram setOnDiagramSelect(OnDiagramSelect onDiagramSelect) {
+        this.onDiagramSelect = onDiagramSelect;
+        return this;
+    }
 
     private OnDiagramSelectItem onDiagramSelectItem = null;
 
-    public TotalBase(double sum, Total.MemberSum[] total) {
+    @Override
+    public void setOnDiagramSelectItem(OnDiagramSelectItem onDiagramSelectItem) {
+        this.onDiagramSelectItem = onDiagramSelectItem;
+    }
+
+    public Base(double sum, Total.MemberSum[] total) {
         this.sum = sum;
         Arrays.sort(total, (t1, t2) -> {
 
@@ -49,7 +58,7 @@ public abstract class TotalBase implements Diagram {
     @NonNull
     protected abstract Chart getDiagram();
 
-    protected void createDiagram() {
+    private void createDiagram() {
 
         diagram = getDiagram();
         if (this.onDiagramSelectItem == null) {
@@ -71,16 +80,19 @@ public abstract class TotalBase implements Diagram {
         }
     }
 
-    @Override
-    public void setOnDiagramSelectItem(OnDiagramSelectItem onDiagramSelectItem) {
-        this.onDiagramSelectItem = onDiagramSelectItem;
-    }
+
 
 
     @Override
     public void render(ListItemSummaryViewHolder holder) {
         holder.getMainLayout().setVisibility(View.GONE);
         holder.getDiagram().setVisibility(View.VISIBLE);
+
+        if (this.onDiagramSelect != null){
+            holder.getDiagram().setOnClickListener(view -> {
+                this.onDiagramSelect.doOnSelect(this);
+            });
+        }
 
         createDiagram();
 
@@ -94,7 +106,7 @@ public abstract class TotalBase implements Diagram {
         holder.getDiagram().addView(this.diagram);
     }
 
-    protected TextView getTotalTextView() {
+    TextView getTotalTextView() {
 
         TextView textView = new TextView(MainActivity.INSTANCE);
 
@@ -111,7 +123,7 @@ public abstract class TotalBase implements Diagram {
 
     @Override
     public boolean isClicked() {
-        return false;
+        return onDiagramSelect != null;
     }
 
     @Override

@@ -21,7 +21,6 @@ import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
-import com.pechenkin.travelmoney.diagram.total.TotalBase;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 /**
  * Рисует круговую диаграмму с отображением кто сколько потратил
  */
-public class TotalItemDiagram extends TotalBase {
+public class TotalItemDiagram extends Base {
 
     private boolean isAnimated = false;
 

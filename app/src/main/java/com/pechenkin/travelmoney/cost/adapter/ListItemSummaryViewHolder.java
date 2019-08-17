@@ -136,6 +136,7 @@ public class ListItemSummaryViewHolder {
 
         this.diagram.setVisibility(View.GONE);
         this.diagram.removeAllViews();
+        this.diagram.setOnClickListener(null);
     }
 
     /**

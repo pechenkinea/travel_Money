@@ -1,5 +1,7 @@
 package com.pechenkin.travelmoney.page;
 
+import android.app.AlertDialog;
+import android.view.View;
 import android.widget.ListView;
 
 import com.pechenkin.travelmoney.Help;
@@ -16,16 +18,21 @@ import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.BarDiagram;
+import com.pechenkin.travelmoney.diagram.DebitCreditDiagram;
 import com.pechenkin.travelmoney.diagram.LineDiagram;
+import com.pechenkin.travelmoney.diagram.OnDiagramSelect;
 import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
+import com.pechenkin.travelmoney.page.cost.add.AddCostsListPage;
 import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.speech.recognition.CostCreator;
+import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
 /**
  * Created by pechenkin on 19.04.2018.]
  * Страница "Статистика"
  */
 
-public class SumResultListPage extends ListPage {
+public class DiagramsListPage extends ListPage {
 
 
     @Override
@@ -40,7 +47,7 @@ public class SumResultListPage extends ListPage {
 
     @Override
     protected String getTitleHeader() {
-        return MainActivity.INSTANCE.getString(R.string.statistic) + "(" + t_trips.getActiveTrip().name + ")";
+        return MainActivity.INSTANCE.getString(R.string.diagrams) + "(" + t_trips.getActiveTrip().name + ")";
     }
 
 
@@ -67,15 +74,32 @@ public class SumResultListPage extends ListPage {
             Total.MemberSum[] totalResult = total.getResult();
             double allSum = allSumIteration.getSum();
 
+            OnDiagramSelect onDiagramSelect = diagram -> {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
+                builder.setTitle("")
+                        .setMessage("Выбрать эту диаграмму для отображения в списке трат?")
+                        .setCancelable(true)
+
+                        .setPositiveButton("Да", (dialog, which) -> {
+                            dialog.cancel();
+                            //TODO доделать выбор диаграммы по умолчанию
+                            Help.alert("не реализовано");
+                        })
+                        .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel());
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            };
+
             CostListItem[] listItems = new CostListItem[]{
-                    new TotalItemDiagram(allSum, totalResult),
-                    new BarDiagram(allSum, totalResult),
-                    new LineDiagram(allSum, totalResult)
+                    new TotalItemDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect),
+                    new BarDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect),
+                    new LineDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect),
+                    new DebitCreditDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect)
             };
 
             AdapterCostList adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), listItems);
-
-            //AdapterSumResultList adapter = new AdapterSumResultList(MainActivity.INSTANCE, totalResult);
             list1.setAdapter(adapter);
         }
         return true;

@@ -20,7 +20,6 @@ import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
-import com.pechenkin.travelmoney.diagram.total.TotalBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.List;
 /**
  * значения кто сколько потратив в виде одной линии
  */
-public class LineDiagram extends TotalBase {
+public class LineDiagram extends Base {
 
     private boolean isAnimated = false;
 
