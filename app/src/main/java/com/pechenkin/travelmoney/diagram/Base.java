@@ -89,9 +89,7 @@ public abstract class Base implements Diagram {
         holder.getDiagram().setVisibility(View.VISIBLE);
 
         if (this.onDiagramSelect != null){
-            holder.getDiagram().setOnClickListener(view -> {
-                this.onDiagramSelect.doOnSelect(this);
-            });
+            holder.getDiagram().setOnClickListener(view -> this.onDiagramSelect.doOnSelect(this));
         }
 
         createDiagram();

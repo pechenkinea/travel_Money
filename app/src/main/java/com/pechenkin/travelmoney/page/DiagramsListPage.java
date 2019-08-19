@@ -1,7 +1,6 @@
 package com.pechenkin.travelmoney.page;
 
 import android.app.AlertDialog;
-import android.view.View;
 import android.widget.ListView;
 
 import com.pechenkin.travelmoney.Help;
@@ -22,10 +21,7 @@ import com.pechenkin.travelmoney.diagram.DebitCreditDiagram;
 import com.pechenkin.travelmoney.diagram.LineDiagram;
 import com.pechenkin.travelmoney.diagram.OnDiagramSelect;
 import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
-import com.pechenkin.travelmoney.page.cost.add.AddCostsListPage;
 import com.pechenkin.travelmoney.page.main.MainPage;
-import com.pechenkin.travelmoney.speech.recognition.CostCreator;
-import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 
 /**
  * Created by pechenkin on 19.04.2018.]
