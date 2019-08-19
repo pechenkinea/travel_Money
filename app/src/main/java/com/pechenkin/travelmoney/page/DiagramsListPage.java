@@ -14,6 +14,7 @@ import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
+import com.pechenkin.travelmoney.cost.adapter.LabelItem;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
@@ -100,9 +101,11 @@ public class DiagramsListPage extends ListPage {
             };
 
             CostListItem[] listItems = new CostListItem[]{
+                    new LabelItem("Траты"),
                     new TotalItemDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect),
                     new BarDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect),
                     new LineDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect),
+                    new LabelItem("Долги"),
                     new DebitCreditDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect)
             };
 

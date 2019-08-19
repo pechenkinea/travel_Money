@@ -13,7 +13,9 @@ import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
@@ -54,12 +56,15 @@ public class LineDiagram extends Base {
         //String[] xValsLabels = new String[this.total.length * 2];
         int valuesIndex = 0;
         int legendEntriesIndex = 0;
-        float[] values = new float[this.total.length * 2];
+        float[] values = new float[(this.total.length * 2) - 1];
         float indent = (float) (this.sum / 80); // отступы
 
         for (Total.MemberSum c : this.total) {
-            values[valuesIndex] = (float) c.getSumIn();
-            values[valuesIndex + 1] = indent; // отступ
+            values[valuesIndex] = (float) c.getSumExpense();
+
+            if (valuesIndex < (this.total.length * 2) - 2) {
+                values[valuesIndex + 1] = indent; // отступ
+            }
 
 
             long memberId = c.getMemberId();
@@ -77,7 +82,7 @@ public class LineDiagram extends Base {
 
         List<BarEntry> entries = new ArrayList<>();
 
-        entries.add( new BarEntry(1, values));
+        entries.add(new BarEntry(1, values));
 
         BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColors(pieColors); // цвета зон
@@ -139,4 +144,15 @@ public class LineDiagram extends Base {
         }
     }
 
+    @Override
+    protected long getMemberIdByEntryAndHighlight(Entry e, Highlight h) {
+
+        if (e instanceof BarEntry && ((BarEntry) e).getYVals().length > 1) {
+            int valueIndex = h.getStackIndex();
+            if (valueIndex % 2 == 0) {
+                return total[valueIndex / 2].getMemberId();
+            }
+        }
+        return -1;
+    }
 }

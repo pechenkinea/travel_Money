@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -79,10 +81,11 @@ public abstract class Base implements Diagram {
             diagram.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(final Entry e, Highlight h) {
-                    Object memberId = e.getData();
-                    if (memberId instanceof Long ) {
-                        onDiagramSelectItem.doOnSelect((Long) memberId);
+                    long memberId = getMemberIdByEntryAndHighlight(e, h);
+                    if (memberId > -1){
+                        onDiagramSelectItem.doOnSelect(memberId);
                     }
+
                 }
 
                 @Override
@@ -90,6 +93,15 @@ public abstract class Base implements Diagram {
                 }
             });
         }
+    }
+
+    protected long getMemberIdByEntryAndHighlight(Entry e, Highlight h){
+
+        Object memberId = e.getData();
+        if (memberId instanceof Long ) {
+            return (long) memberId;
+        }
+        return -1;
     }
 
 

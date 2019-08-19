@@ -63,7 +63,7 @@ public class TotalItemDiagram extends Base {
         for (Total.MemberSum c : this.total) {
             long memberId = c.getMemberId();
             MemberTableRow member = t_members.getMemberById(memberId);
-            NoOfEmp.add(new PieEntry((float) c.getSumIn(), member.name, memberId));
+            NoOfEmp.add(new PieEntry((float) c.getSumExpense(), member.name, memberId));
             pieColors[i++] = member.color;
         }
 

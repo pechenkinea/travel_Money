@@ -1,7 +1,5 @@
 package com.pechenkin.travelmoney.diagram.impl;
 
-import android.content.Context;
-import android.util.Log;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -15,7 +13,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.highlight.ChartHighlighter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.highlight.HorizontalBarHighlighter;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
@@ -24,6 +21,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.Base;
 import com.pechenkin.travelmoney.diagram.DiagramName;
@@ -33,6 +31,8 @@ import java.util.List;
 
 @DiagramName(name = "DebitCreditDiagram")
 public class DebitCreditDiagram extends Base {
+    private boolean isAnimated = false;
+
     public DebitCreditDiagram(double sum, Total.MemberSum[] total) {
         super(sum, total);
     }
@@ -56,12 +56,12 @@ public class DebitCreditDiagram extends Base {
         List<BarEntry> entries = new ArrayList<>();
         LegendEntry[] legendEntries = new LegendEntry[this.total.length];
         int i = 0;
-        int legendIndex = this.total.length-1;  //В горизонтальной диаграмме рисуется зеркально и легенду надо писать в обратном порядке
+        int legendIndex = this.total.length - 1;  //В горизонтальной диаграмме рисуется зеркально и легенду надо писать в обратном порядке
         for (Total.MemberSum c : this.total) {
             long memberId = c.getMemberId();
             MemberTableRow member = t_members.getMemberById(memberId);
 
-            double totalSum = c.getSumOut() - c.getSumIn();
+            double totalSum = c.getSumPay() - c.getSumExpense();
 
             entries.add(new BarEntry(i, (float) totalSum, member.id));
 
@@ -84,7 +84,6 @@ public class DebitCreditDiagram extends Base {
                 return Help.doubleToString(entries.get((int) value).getY());
             }
         });
-
 
 
         horizontalBarChart.getAxisRight().setEnabled(false); // снизу не надо значения по y
@@ -126,8 +125,19 @@ public class DebitCreditDiagram extends Base {
     }
 
 
+    @Override
+    public void render(ListItemSummaryViewHolder holder) {
+        super.render(holder);
 
-    private static class MyHighlighter extends HorizontalBarHighlighter{
+        if (!isAnimated) {
+            isAnimated = true;
+            this.diagram.animateY(300);
+        } else {
+            this.diagram.invalidate();
+        }
+    }
+
+    private static class MyHighlighter extends HorizontalBarHighlighter {
 
         private MyHighlighter(BarDataProvider chart) {
             super(chart);
@@ -137,12 +147,12 @@ public class DebitCreditDiagram extends Base {
         protected Highlight getHighlightForX(float xVal, float x, float y) {
 
             Highlight result = super.getHighlightForX(xVal, x, y);
-            if (result != null){
+            if (result != null) {
 
                 MPPointD pos = getValsForTouch(y, x);
 
                 //если нажали на колонку с другой стороны от нуля то не надо выделять строку. это нажатие на пустое место
-                if (result.getY() * pos.y > 0){
+                if (result.getY() * pos.y > 0) {
                     return null;
                 }
 

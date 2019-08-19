@@ -73,7 +73,7 @@ public class TotalDebt implements ExportFormat {
 
             for (Total.MemberSum mSum : totalResult) {
                 MemberTableRow member = t_members.getMemberById(mSum.getMemberId());
-                result.append(member.name).append(": ").append(Help.doubleToString(mSum.getSumIn())).append("\n");
+                result.append(member.name).append(": ").append(Help.doubleToString(mSum.getSumExpense())).append("\n");
             }
         }
 

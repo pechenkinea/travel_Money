@@ -2,13 +2,10 @@ package com.pechenkin.travelmoney.cost.processing.summary;
 
 import androidx.collection.LongSparseArray;
 
-import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,19 +30,21 @@ public class Total implements CostIterable {
             return;
         }
 
-        if (!cost.isRepayment()) {  //операции возврата не считаем тратой, поэтому не добавляем
-
-            if (!members.containsKey(cost.getToMember()))
-                members.put(cost.getToMember(), new MemberSum(cost.getToMember()));
-
-            Objects.requireNonNull(members.get(cost.getToMember())).addSumIn(cost.getSum());
-        }
-
+        if (!members.containsKey(cost.getToMember()))
+            members.put(cost.getToMember(), new MemberSum(cost.getToMember()));
 
         if (!members.containsKey(cost.getMember()))
             members.put(cost.getMember(), new MemberSum(cost.getMember()));
 
-        Objects.requireNonNull(members.get(cost.getMember())).addSumOut(cost.getSum());
+
+        if (!cost.isRepayment()) {  //операции возврата не считаем тратой, поэтому не добавляем
+            Objects.requireNonNull(members.get(cost.getToMember())).addSumExpense(cost.getSum());
+        } else {
+            //но операция возврата уменьшает "дебет" того, кому отдали долг
+            Objects.requireNonNull(members.get(cost.getToMember())).removeSumPay(cost.getSum());
+        }
+
+        Objects.requireNonNull(members.get(cost.getMember())).addSumPay(cost.getSum());
     }
 
     @Override
@@ -55,48 +54,52 @@ public class Total implements CostIterable {
             long key = members.keyAt(i);
             MemberSum value = members.get(key);
             if (value != null) {
-                result.add(new MemberSum(value.memberId, value.sumIn, value.sumOut));
+                result.add(new MemberSum(value.memberId, value.sumExpense, value.sumPay));
             }
         }
     }
 
     public MemberSum[] getResult() {
-        return  result.toArray(new MemberSum[0]);
+        return result.toArray(new MemberSum[0]);
     }
 
     public static class MemberSum {
         final long memberId;
-        double sumIn = 0f;
-        double sumOut = 0f;
+        double sumExpense = 0f;
+        double sumPay = 0f;
 
         private MemberSum(long memberId) {
             this.memberId = memberId;
         }
 
-        MemberSum(long memberId, double sumIn, double sumOut) {
+        MemberSum(long memberId, double sumExpense, double sumPay) {
             this.memberId = memberId;
-            this.sumIn = sumIn;
-            this.sumOut = sumOut;
+            this.sumExpense = sumExpense;
+            this.sumPay = sumPay;
         }
 
-        private void addSumIn(double sum) {
-            this.sumIn += sum;
+        private void addSumExpense(double sum) {
+            this.sumExpense += sum;
         }
 
-        private void addSumOut(double sum) {
-            this.sumOut += sum;
+        private void addSumPay(double sum) {
+            this.sumPay += sum;
+        }
+
+        private void removeSumPay(double sum) {
+            this.sumPay -= sum;
         }
 
         public long getMemberId() {
             return memberId;
         }
 
-        public double getSumIn() {
-            return sumIn;
+        public double getSumExpense() {
+            return sumExpense;
         }
 
-        public double getSumOut() {
-            return sumOut;
+        public double getSumPay() {
+            return sumPay;
         }
     }
 }
