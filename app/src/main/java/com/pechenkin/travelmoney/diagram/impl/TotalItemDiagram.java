@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.diagram;
+package com.pechenkin.travelmoney.diagram.impl;
 
 import android.graphics.Color;
 import android.view.Gravity;
@@ -21,6 +21,8 @@ import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.diagram.Base;
+import com.pechenkin.travelmoney.diagram.DiagramName;
 
 import java.util.ArrayList;
 
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 /**
  * Рисует круговую диаграмму с отображением кто сколько потратил
  */
+@DiagramName(name = "TotalItemDiagram")
 public class TotalItemDiagram extends Base {
 
     private boolean isAnimated = false;
@@ -88,6 +91,7 @@ public class TotalItemDiagram extends Base {
         diagramPieChart.getDescription().setEnabled(false);
         diagramPieChart.getLegend().setEnabled(false);
         diagramPieChart.setRotationEnabled(false); //отключает вращение
+
         diagramPieChart.setMaxHighlightDistance(1);
 
         return  diagramPieChart;

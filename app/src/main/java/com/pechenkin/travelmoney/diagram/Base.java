@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.diagram;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -19,11 +21,11 @@ import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.diagram.impl.BarDiagram;
 
 import java.util.Arrays;
 
 public abstract class Base implements Diagram {
-
 
     protected Total.MemberSum[] total;
     protected double sum;
@@ -61,14 +63,24 @@ public abstract class Base implements Diagram {
     private void createDiagram() {
 
         diagram = getDiagram();
+
+
+        diagram.setMaxHighlightDistance(16);
+        if (diagram instanceof BarChart) { //отключаем масштабирование, а то на "отжатие" срабатывает событие и падает с NPE
+            ((BarChart)diagram).setDragEnabled(false);
+            ((BarChart)diagram).setScaleEnabled(false);
+        }
+
+
         if (this.onDiagramSelectItem == null) {
             diagram.setTouchEnabled(false);
         } else {
+
             diagram.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(final Entry e, Highlight h) {
                     Object memberId = e.getData();
-                    if (memberId instanceof Long) {
+                    if (memberId instanceof Long ) {
                         onDiagramSelectItem.doOnSelect((Long) memberId);
                     }
                 }
@@ -81,14 +93,12 @@ public abstract class Base implements Diagram {
     }
 
 
-
-
     @Override
     public void render(ListItemSummaryViewHolder holder) {
         holder.getMainLayout().setVisibility(View.GONE);
         holder.getDiagram().setVisibility(View.VISIBLE);
 
-        if (this.onDiagramSelect != null){
+        if (this.onDiagramSelect != null) {
             holder.getDiagram().setOnClickListener(view -> this.onDiagramSelect.doOnSelect(this));
         }
 
@@ -104,7 +114,7 @@ public abstract class Base implements Diagram {
         holder.getDiagram().addView(this.diagram);
     }
 
-    TextView getTotalTextView() {
+    protected TextView getTotalTextView() {
 
         TextView textView = new TextView(MainActivity.INSTANCE);
 

@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.diagram;
+package com.pechenkin.travelmoney.diagram.impl;
 
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -9,17 +9,17 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.diagram.Base;
+import com.pechenkin.travelmoney.diagram.DiagramName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ import java.util.List;
 /**
  * Рисует диаграмму с отображением кто сколько потратил в виде палок
  */
+@DiagramName(name = "BarDiagram")
 public class BarDiagram extends Base {
 
     private boolean isAnimated = false;
@@ -108,6 +109,7 @@ public class BarDiagram extends Base {
         diagramBarChart.setData(data);
         diagramBarChart.setFitBars(true); // make the x-axis fit exactly all bars
 
+        diagramBarChart.setScaleEnabled(false);
 
         return diagramBarChart;
     }

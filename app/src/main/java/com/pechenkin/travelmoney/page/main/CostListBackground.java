@@ -21,8 +21,9 @@ import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.diagram.DefaultDiagram;
 import com.pechenkin.travelmoney.diagram.Diagram;
-import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
+import com.pechenkin.travelmoney.diagram.impl.TotalItemDiagram;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
@@ -85,9 +86,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
             if (costList.hasRows()) {
 
-                // TODO надо показывать диаграмму, которая понравилась пользователю на странице статистики
-
-                Diagram diagram = new TotalItemDiagram(allSum, totalResult);
+                Diagram diagram = DefaultDiagram.createDefaultDiagram(allSum, totalResult);
 
                 if (!this.readOnly) {
                     diagram.setOnDiagramSelectItem(itemId -> {

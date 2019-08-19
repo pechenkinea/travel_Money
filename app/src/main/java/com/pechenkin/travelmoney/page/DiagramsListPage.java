@@ -6,9 +6,11 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.table.query.QueryResult;
 import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
 import com.pechenkin.travelmoney.bd.table.t_costs;
+import com.pechenkin.travelmoney.bd.table.t_settings;
 import com.pechenkin.travelmoney.bd.table.t_trips;
 import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
@@ -16,11 +18,12 @@ import com.pechenkin.travelmoney.cost.processing.CostIterable;
 import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
-import com.pechenkin.travelmoney.diagram.BarDiagram;
-import com.pechenkin.travelmoney.diagram.DebitCreditDiagram;
-import com.pechenkin.travelmoney.diagram.LineDiagram;
+import com.pechenkin.travelmoney.diagram.DiagramName;
+import com.pechenkin.travelmoney.diagram.impl.BarDiagram;
+import com.pechenkin.travelmoney.diagram.impl.DebitCreditDiagram;
+import com.pechenkin.travelmoney.diagram.impl.LineDiagram;
 import com.pechenkin.travelmoney.diagram.OnDiagramSelect;
-import com.pechenkin.travelmoney.diagram.TotalItemDiagram;
+import com.pechenkin.travelmoney.diagram.impl.TotalItemDiagram;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
@@ -79,8 +82,16 @@ public class DiagramsListPage extends ListPage {
 
                         .setPositiveButton("Да", (dialog, which) -> {
                             dialog.cancel();
-                            //TODO доделать выбор диаграммы по умолчанию
-                            Help.alert("не реализовано");
+
+                            DiagramName diagramName = diagram.getClass().getAnnotation(DiagramName.class);
+                            if (diagramName != null) {
+                                t_settings.INSTANCE.set(NamespaceSettings.LIKE_DIAGRAM_NAME, diagramName.name());
+                                Help.message("Успешно");
+                            }
+                            else {
+                                Help.message("Ошибка");
+                            }
+
                         })
                         .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel());
 

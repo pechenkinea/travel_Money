@@ -1,5 +1,7 @@
-package com.pechenkin.travelmoney.diagram;
+package com.pechenkin.travelmoney.diagram.impl;
 
+import android.content.Context;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -13,15 +15,23 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.ChartHighlighter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.highlight.HorizontalBarHighlighter;
+import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
+import com.github.mikephil.charting.utils.MPPointD;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.table.t_members;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.diagram.Base;
+import com.pechenkin.travelmoney.diagram.DiagramName;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@DiagramName(name = "DebitCreditDiagram")
 public class DebitCreditDiagram extends Base {
     public DebitCreditDiagram(double sum, Total.MemberSum[] total) {
         super(sum, total);
@@ -108,7 +118,37 @@ public class DebitCreditDiagram extends Base {
         horizontalBarChart.setFitBars(true); // make the x-axis fit exactly all bars
 
 
+        horizontalBarChart.setHighlighter(new MyHighlighter(horizontalBarChart));
+
+
         return horizontalBarChart;
 
     }
+
+
+
+    private static class MyHighlighter extends HorizontalBarHighlighter{
+
+        private MyHighlighter(BarDataProvider chart) {
+            super(chart);
+        }
+
+        @Override
+        protected Highlight getHighlightForX(float xVal, float x, float y) {
+
+            Highlight result = super.getHighlightForX(xVal, x, y);
+            if (result != null){
+
+                MPPointD pos = getValsForTouch(y, x);
+
+                //если нажали на колонку с другой стороны от нуля то не надо выделять строку. это нажатие на пустое место
+                if (result.getY() * pos.y > 0){
+                    return null;
+                }
+
+            }
+            return result;
+        }
+    }
+
 }

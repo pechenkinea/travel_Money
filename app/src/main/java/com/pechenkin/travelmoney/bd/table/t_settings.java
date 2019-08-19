@@ -38,6 +38,13 @@ public class t_settings {
         }
     }
 
+    public String get(String name, String defaultValue) {
+        if (settings.containsKey(name)) {
+            return settings.get(name);
+        }
+        return defaultValue;
+    }
+
     public String get(String name) {
         if (settings.containsKey(name)) {
             return settings.get(name);
