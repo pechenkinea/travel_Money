@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'de.mobilej.unmock'
 
 ext {
-    travelMoneyVersionName = '3.2.2 (Beta)'
+    travelMoneyVersionName = '3.2.3 (Beta)'
     //travelMoneyVersionName = '3.2'
 }
 
@@ -16,7 +16,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 29
         //noinspection HighAppVersionCode20190802
-        versionCode 2019180489
+        versionCode 2019180490
         //versionCode 20190812
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName)
