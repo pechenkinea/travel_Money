@@ -1,9 +1,8 @@
 package com.pechenkin.travelmoney.export.formats;
 
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 
 import org.json.JSONArray;
@@ -21,7 +20,7 @@ public class JSON implements ExportFormat {
             exportJson.put("tripName", trip.getName());
 
 
-            ArrayList<Long> membersList = new ArrayList<>();
+            ArrayList<Member> membersList = new ArrayList<>();
 
             Cost[] costs = trip.getAllCost();
             JSONArray json_costs = new JSONArray();
@@ -48,11 +47,10 @@ public class JSON implements ExportFormat {
 
 
             JSONArray members = new JSONArray();
-            for (long m : membersList) {
+            for (Member m : membersList) {
                 JSONObject member = new JSONObject();
-                member.put("id", m);
-                IdAndNameTableRow findMember = t_members.getMemberById(m);
-                member.put("name", (findMember != null) ? findMember.name : "ErrorMemberName");
+                member.put("id", m.getId());
+                member.put("name", m.getName());
                 members.put(member);
             }
 

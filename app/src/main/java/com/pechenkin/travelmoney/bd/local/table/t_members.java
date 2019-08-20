@@ -10,20 +10,11 @@ import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.NamesHashMap;
 import com.pechenkin.travelmoney.bd.local.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.local.table.query.TableRow;
 import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-
-import java.util.Map;
 
 public class t_members {
 
-    static public Boolean isExist(String user_name) {
-        String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + user_name + "'";
-        QueryResult result = new QueryResult<>(sql, TableRow.class);
-        return result.hasRows();
-    }
-
-    static public long add(String name, int color, int icon) {
+    public static Member add(String name, int color, int icon) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);
         cv.put(Namespace.FIELD_ICON, icon);
@@ -41,7 +32,7 @@ public class t_members {
         }
 
         updateMembersCache();
-        return rowID;
+        return getMemberById(rowID);
     }
 
     static public void edit(long id, String name, int color, int icon) {
@@ -96,54 +87,14 @@ public class t_members {
     }
 
 
-    static public long getIdByNameCache(String m_name) {
-        Member row = membersNamesCache.get(m_name);
-        if (row == null) {
-            return -1;
-        } else
-            return row.getId();
+    static public Member getIdByNameCache(String m_name) {
+        return membersNamesCache.get(m_name);
     }
-
-    static public long getMe() {
-        return 1;
-    }
-
-    /**
-     * Ищет участника с учетом падежей.
-     * Для этого пробует найти участника по переданному имени. Если не удалось найти убирает последнюю букву от переданного значения и ищет по совпадению парвых символов.
-     * Так продолжается до тех пор пока не уменьшим переданное значение на 30% или оно не станет меньше 2х букв
-     *
-     * @param m_name строка для поиска
-     * @return id сотудника или -1
-     */
-    static public long getIdByNameCase(String m_name) {
-
-        String nameCase = NamesHashMap.keyValidate(m_name);
-        Member row = membersNamesCache.get(nameCase);
-
-        while (row == null && nameCase.length() > 2 && nameCase.length() / m_name.length() > 0.7) {
-            nameCase = nameCase.substring(0, nameCase.length() - 1);
-
-            for (Map.Entry<String, Member> entry : membersNamesCache.entrySet()) {
-                String rowCache = entry.getKey();
-                if (rowCache.startsWith(nameCase)) {
-                    row = entry.getValue();
-                    break;
-                }
-            }
-        }
-
-        if (row != null)
-            return row.getId();
-        else
-            return -1;
-
-    }
-
 
     static private final LongSparseArray<MemberTableRow> memberCache = new LongSparseArray<>();
 
 
+    //TODO убрать
     static public int getColorById(long _id) {
         MemberTableRow member = getMemberById(_id);
         if (member != null) {

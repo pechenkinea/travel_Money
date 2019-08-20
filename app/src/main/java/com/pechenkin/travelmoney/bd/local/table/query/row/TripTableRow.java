@@ -76,7 +76,7 @@ public class TripTableRow extends IdAndNameTableRow implements Trip {
     }
 
     @Override
-    public void addMember(Member member) {
+    public void setMemberActive(Member member) {
         t_trips.addMemberInTrip(this.id, member.getId());
     }
 
@@ -98,5 +98,23 @@ public class TripTableRow extends IdAndNameTableRow implements Trip {
     @Override
     public Cost[] getAllCost() {
         return t_costs.getAllByTripId(this.id).getAllRows();
+    }
+
+    @Override
+    public Member createMember(String name, int color, int icon) {
+
+        Member member = t_members.add(name, color, icon);
+        setMemberActive(member);
+        return member;
+    }
+
+    @Override
+    public Member getMe() {
+        return t_members.getMemberById(1);
+    }
+
+    @Override
+    public Member getMemberById(long id) {
+        return t_members.getMemberById(id);
     }
 }

@@ -1,5 +1,7 @@
 package com.pechenkin.travelmoney.cost;
 
+import com.pechenkin.travelmoney.bd.Member;
+
 import java.util.Date;
 
 /**
@@ -16,12 +18,12 @@ public interface Cost {
     /**
      * Кто дал денег
      */
-    long getMember();
+    Member getMember();
 
     /**
      * Кому дал денег
      */
-    long getToMember();
+    Member getToMember();
 
     /**
      * Сколько дал денег

@@ -20,7 +20,7 @@ public interface Trip {
 
     boolean memberIsActive(Member member);
 
-    void addMember(Member member);
+    void setMemberActive(Member member);
 
     void removeMember(Member member);
 
@@ -29,5 +29,11 @@ public interface Trip {
     boolean isActive();
 
     Cost[] getAllCost();
+
+    Member createMember(String name, int color, int icon);
+
+    Member getMe();
+
+    Member getMemberById(long id);
 
 }

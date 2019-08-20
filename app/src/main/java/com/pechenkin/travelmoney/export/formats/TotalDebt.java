@@ -3,10 +3,9 @@ package com.pechenkin.travelmoney.export.formats;
 import com.pechenkin.travelmoney.BuildConfig;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.TMConst;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
@@ -53,13 +52,10 @@ public class TotalDebt implements ExportFormat {
             result.append("Кто кому сколько должен:\n");
 
             for (Cost cost : calculateCosts) {
-                long memberId = cost.getMember();
-                MemberTableRow member = t_members.getMemberById(memberId);
+                Member member = cost.getMember();
+                Member toMember =  cost.getToMember();
 
-                long toMemberId = cost.getToMember();
-                MemberTableRow toMember = t_members.getMemberById(toMemberId);
-
-                result.append(member.name).append(" --> ").append(toMember.name).append(" ").append(Help.doubleToString(cost.getSum())).append("\n");
+                result.append(member.getName()).append(" --> ").append(toMember.getName()).append(" ").append(Help.doubleToString(cost.getSum())).append("\n");
             }
         }
 
@@ -69,8 +65,8 @@ public class TotalDebt implements ExportFormat {
             result.append("Кто сколько потратил:\n");
 
             for (Total.MemberSum mSum : totalResult) {
-                MemberTableRow member = t_members.getMemberById(mSum.getMemberId());
-                result.append(member.name).append(": ").append(Help.doubleToString(mSum.getSumExpense())).append("\n");
+                Member member = mSum.getMember();
+                result.append(member.getName()).append(": ").append(Help.doubleToString(mSum.getSumExpense())).append("\n");
             }
         }
 

@@ -19,8 +19,7 @@ import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.Base;
@@ -58,19 +57,18 @@ public class DebitCreditDiagram extends Base {
         int i = 0;
         int legendIndex = this.total.length - 1;  //В горизонтальной диаграмме рисуется зеркально и легенду надо писать в обратном порядке
         for (Total.MemberSum c : this.total) {
-            long memberId = c.getMemberId();
-            MemberTableRow member = t_members.getMemberById(memberId);
+            Member member = c.getMember();
 
             double totalSum = c.getSumPay() - c.getSumExpense();
 
-            entries.add(new BarEntry(i, (float) totalSum, member.id));
+            entries.add(new BarEntry(i, (float) totalSum, member.getId()));
 
             legendEntries[legendIndex] = new LegendEntry();
-            legendEntries[legendIndex].label = member.name;
-            legendEntries[legendIndex].formColor = member.color;
+            legendEntries[legendIndex].label = member.getName();
+            legendEntries[legendIndex].formColor = member.getColor();
             legendIndex--;
 
-            pieColors[i] = member.color;
+            pieColors[i] = member.getColor();
 
             i++;
         }
@@ -143,6 +141,7 @@ public class DebitCreditDiagram extends Base {
             super(chart);
         }
 
+        @SuppressWarnings("all")
         @Override
         protected Highlight getHighlightForX(float xVal, float x, float y) {
 

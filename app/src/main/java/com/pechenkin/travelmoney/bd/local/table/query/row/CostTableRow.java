@@ -6,6 +6,7 @@ import android.view.View;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.local.table.t_costs;
@@ -29,8 +30,8 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
 
     private final Date date;
 
-    private final long member;
-    private final long to_member;
+    private final Member member;
+    private final Member to_member;
     //public final int currency;
     private long active;
     private long repayment;
@@ -47,8 +48,8 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
         this.image_dir = getStringColumnValue(Namespace.FIELD_IMAGE_DIR, c);
         this.date = getDateColumnValue(Namespace.FIELD_DATE, c);
 
-        this.member = getLongColumnValue(Namespace.FIELD_MEMBER, c);
-        this.to_member = getLongColumnValue(Namespace.FIELD_TO_MEMBER, c);
+        this.member = t_members.getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
+        this.to_member = t_members.getMemberById(getLongColumnValue(Namespace.FIELD_TO_MEMBER, c));
         //currency = getLongColumnValue(Namespace.FIELD_CURRENCY, c);
         this.active = getLongColumnValue(Namespace.FIELD_ACTIVE, c);
         this.repayment = getLongColumnValue(Namespace.FIELD_REPAYMENT, c);
@@ -62,12 +63,12 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
     }
 
     @Override
-    public long getMember() {
+    public Member getMember() {
         return member;
     }
 
     @Override
-    public long getToMember() {
+    public Member getToMember() {
         return to_member;
     }
 
@@ -122,16 +123,16 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
 
         holder.photoImage(getImageDir());
 
-        MemberTableRow member = t_members.getMemberById(getMember());
+        Member member = getMember();
         if (member != null) {
-            holder.getTitle().setText(member.name);
-            holder.getTitle().setTextColor(member.color);
+            holder.getTitle().setText(member.getName());
+            holder.getTitle().setTextColor(member.getColor());
         }
 
-        MemberTableRow to_member = t_members.getMemberById(getToMember());
+        Member to_member = getToMember();
         if (to_member != null) {
-            holder.getTo_member_one().setText(to_member.name);
-            holder.getTo_member_one().setTextColor(to_member.color);
+            holder.getTo_member_one().setText(to_member.getName());
+            holder.getTo_member_one().setTextColor(to_member.getColor());
         }
 
         holder.photoImage(getImageDir());
@@ -166,8 +167,8 @@ public class CostTableRow extends IdTableRow implements Cost, CostListItem {
             t_costs.disable_cost(getId());
             setActive(0);
         } else {
-            setActive(1);
             t_costs.enable_cost(getId());
+            setActive(1);
         }
         return true;
     }

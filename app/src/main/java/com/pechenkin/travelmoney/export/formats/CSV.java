@@ -1,9 +1,8 @@
 package com.pechenkin.travelmoney.export.formats;
 
 import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ public class CSV implements ExportFormat {
     @Override
     public String getText(Trip trip) {
 
-        ArrayList<Long> membersList = new ArrayList<>();
+        ArrayList<Member> membersList = new ArrayList<>();
         Cost[] costs = trip.getAllCost();
         StringBuilder valueCosts = new StringBuilder("Операции\r\n");
         valueCosts.append("Дата;Кто;Кому;Сколько;Активно;Комментарий").append("\r\n");
@@ -37,10 +36,9 @@ public class CSV implements ExportFormat {
 
         StringBuilder valueMembers = new StringBuilder("Участники\r\n");
         valueMembers.append("id;Имя").append("\r\n");
-        for (Long m : membersList) {
+        for (Member member : membersList) {
 
-            IdAndNameTableRow findMember = t_members.getMemberById(m);
-            String line = m + ";" + ((findMember != null) ? findMember.name : "ErrorMemberName");
+            String line = member.getId() + ";" + member.getName();
             line = line.replaceAll("\n|\n\r", " ");
             valueMembers.append(line).append("\r\n");
 

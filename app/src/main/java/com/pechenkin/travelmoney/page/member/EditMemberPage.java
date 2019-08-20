@@ -8,8 +8,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
@@ -43,14 +44,20 @@ public class EditMemberPage extends BaseMemberPage {
 
         Button buttonColor = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
 
-        String icon = ((TextView)MainActivity.INSTANCE.findViewById(R.id.iconId)).getText().toString();
+        String icon = ((TextView) MainActivity.INSTANCE.findViewById(R.id.iconId)).getText().toString();
 
         int color = Help.getBackgroundColor(buttonColor);
 
-        t_members.edit(getParam().getId(), name, color, (int) Help.StringToDouble(icon));
-        Help.message("Успешно");
+        Member member = t_trips.getActiveTripNew().getMemberById(getParam().getId());
+        if (member != null) {
+            member.edit(name, color, (int) Help.StringToDouble(icon));
+            Help.message("Успешно");
+            PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
+        } else {
+            Help.message("Ошибка");
+        }
 
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
+
     }
 
 
@@ -60,7 +67,6 @@ public class EditMemberPage extends BaseMemberPage {
     }
 
 
-
     @Override
     boolean fillFieldsMemberPage() {
         if (!hasParam()) {
@@ -68,25 +74,23 @@ public class EditMemberPage extends BaseMemberPage {
             return false;
         }
 
-        MemberTableRow member = t_members.getMemberById(getParam().getId());
+        Member member = t_trips.getActiveTripNew().getMemberById(getParam().getId());
         if (member == null) {
             Help.message("Ошибка. Не найден учатсяник с id " + getParam().getId());
             return false;
         }
 
         TextInputEditText edit_name = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
-        edit_name.setText(member.name);
-        if (member.name.contains(" ")) {
+        edit_name.setText(member.getName());
+        if (member.getName().contains(" ")) {
             MainActivity.INSTANCE.findViewById(R.id.memberNameWarning).setVisibility(View.VISIBLE);
         }
 
         Button buttonColor = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
-        buttonColor.setBackgroundColor(member.color);
+        buttonColor.setBackgroundColor(member.getColor());
 
         return true;
     }
-
-
 
 
 }

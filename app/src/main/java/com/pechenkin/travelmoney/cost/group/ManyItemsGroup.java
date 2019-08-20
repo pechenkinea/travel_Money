@@ -11,10 +11,9 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.local.table.t_costs;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
@@ -81,7 +80,7 @@ public class ManyItemsGroup extends GroupCost {
         holder.setListenerOpenAdditionalInfo();
 
         holder.getSum_group_sum().setText(Help.doubleToString(this.sum));
-        MemberTableRow member = t_members.getMemberById(this.costs[0].getMember());
+        Member member = this.costs[0].getMember();
 
         String dateText = "";
         if (this.date != null) {
@@ -90,7 +89,7 @@ public class ManyItemsGroup extends GroupCost {
         String comment = dateText + "  " + this.comment;
         holder.setComment(comment);
 
-        holder.getTitle().setText(member.name);
+        holder.getTitle().setText(member.getName());
 
         StringBuilder to_memberText = new StringBuilder();
         StringBuilder sumText = new StringBuilder();
@@ -98,9 +97,9 @@ public class ManyItemsGroup extends GroupCost {
         for (int i = 0; i < this.costs.length; i++) {
 
             Cost costInGroup = this.costs[i];
-            MemberTableRow to_member = t_members.getMemberById(costInGroup.getToMember());
+            Member to_member = costInGroup.getToMember();
 
-            int to_memberColor = to_member.color;
+            int to_memberColor = to_member.getColor();
 
             String s = Help.doubleToString(costInGroup.getSum());
             if (costInGroup.isActive()) {
@@ -110,7 +109,7 @@ public class ManyItemsGroup extends GroupCost {
                 to_memberColor = DISABLE_COLOR;
             }
 
-            String to_memberName = to_member.name;
+            String to_memberName = to_member.getName();
             if (to_memberName.length() > to_member_text_length) {
                 to_memberName = to_memberName.substring(0, to_member_text_length - 3).trim() + "...";
             }
@@ -130,7 +129,7 @@ public class ManyItemsGroup extends GroupCost {
             if (i < 5) {
                 ImageView memberIcon = new ImageView(MainActivity.INSTANCE);
 
-                memberIcon.setImageDrawable(MemberIcons.getIconById(to_member.icon));
+                memberIcon.setImageDrawable(MemberIcons.getIconById(to_member.getIcon()));
                 memberIcon.setColorFilter(to_memberColor);
 
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -175,7 +174,7 @@ public class ManyItemsGroup extends GroupCost {
             holder.getSum_group_sum().setTextColor(DISABLE_COLOR);
             holder.getHave_photo().setColorFilter(DISABLE_COLOR);
         } else {
-            holder.getTitle().setTextColor(member.color);
+            holder.getTitle().setTextColor(member.getColor());
         }
 
     }

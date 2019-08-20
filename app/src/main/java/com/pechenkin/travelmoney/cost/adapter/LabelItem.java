@@ -1,7 +1,5 @@
 package com.pechenkin.travelmoney.cost.adapter;
 
-import android.view.View;
-
 /**
  * Created by pechenkin on 06.04.2018.
  * Для итогов и дополнительных строк листа операций

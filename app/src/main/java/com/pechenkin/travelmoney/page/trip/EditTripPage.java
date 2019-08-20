@@ -8,6 +8,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -31,27 +32,37 @@ public class EditTripPage extends BaseTripPage {
             TextInputEditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
 
             String strName = getTextInputEditText(trName);
-            if (strName.length() > 0) {
-                if (t_trips.isAdded(strName)) {
-                    if (getParam().getId() != t_trips.getIdByName(strName)) {
-                        Help.message("Название занято");
-                        Help.setActiveEditText(R.id.trip_name);
-                        return;
-                    }
-                }
 
-                t_trips.edit(getParam().getId(), strName, getTextInputEditText(trComment));
+            if (strName.length() == 0) {
+                Help.message("Введите название");
+                Help.setActiveEditText(R.id.trip_name);
+                return;
+            }
+
+            if (t_trips.isAdded(strName)) {
+                if (getParam().getId() != t_trips.getIdByName(strName)) {
+                    Help.message("Название занято");
+                    Help.setActiveEditText(R.id.trip_name);
+                    return;
+                }
+            }
+
+            Trip trip = t_trips.getTripById(getParam().getId());
+
+            if (trip != null) {
+                trip.edit(strName, getTextInputEditText(trComment));
                 CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
 
                 if (isActive.isChecked())
                     t_trips.set_active(getParam().getId());
 
                 Help.message("Сохранено");
+
                 PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
             } else {
-                Help.message("Введите название");
-                Help.setActiveEditText(R.id.trip_name);
+                Help.message("Ошибка");
             }
+
 
         });
     }

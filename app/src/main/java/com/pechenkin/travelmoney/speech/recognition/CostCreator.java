@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.NamesHashMap;
 import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.ShortCost;
@@ -20,12 +21,14 @@ public class CostCreator {
     private final WordCollection words;
     private final String text;
 
-    public CostCreator(String text) {
-        this.text = text;
-        this.words = new WordCollection(text);
-        t_members.updateMembersCache();
-        execute();
-    }
+    private Member master = null;
+    private double sums = 0;
+    private final List<Member> toMembers = new ArrayList<>();
+    private final List<String> commentsList = new ArrayList<>();
+
+
+    private String comment;
+    private WordAction lastAction = WordAction.none;
 
     public CostCreator(String text, String comment) {
         this.comment = comment;
@@ -47,16 +50,6 @@ public class CostCreator {
     }
 
 
-    private long masterId = -1;
-    private double sums = 0;
-    private final List<Long> toMembers = new ArrayList<>();
-    private final List<String> commentsList = new ArrayList<>();
-
-
-    private String comment = "";
-    private WordAction lastAction = WordAction.none;
-
-
     public String getComment() {
         if (comment.length() == 0) {
             return TextUtils.join(" ", commentsList).replaceAll(" {2}", " ").trim();
@@ -71,8 +64,8 @@ public class CostCreator {
             identifyType(word);
         }
 
-        if (masterId < 0 && toMembers.size() > 0) {
-            masterId = toMembers.get(0);
+        if (master == null && toMembers.size() > 0) {
+            master = toMembers.get(0);
             toMembers.remove(0);
         }
 
@@ -82,15 +75,15 @@ public class CostCreator {
     private int groupCost = 0;
 
     private void createCosts() {
-        if (masterId > -1 && sums > 0) {
+        if (master != null && sums > 0) {
             if (sums > TMConst.ERROR_SUM) {
                 sums = TMConst.ERROR_SUM;
             }
 
             groupCost++;
-            for (long toMember : toMembers) {
-                long to = (toMember < 0) ? masterId : toMember; //Для случаев когда мастер идет не первом в фразе
-                costs.add(new ShortCost(masterId, to, sums / toMembers.size(), getComment(), groupCost));
+            for (Member toMember : toMembers) {
+                Member to = (toMember == null) ? master : toMember; //Для случаев когда мастер идет не первом в фразе
+                costs.add(new ShortCost(master, to, sums / toMembers.size(), getComment(), groupCost));
             }
 
 
@@ -100,16 +93,16 @@ public class CostCreator {
     }
 
 
-    private void setMaster(long master) {
-        if (masterId < 0) {
-            masterId = master;
+    private void setMaster(Member master) {
+        if (this.master == null) {
+            this.master = master;
             lastAction = WordAction.addMaster;
         } else {
             addToMember(master);
         }
     }
 
-    private void addToMember(long toMember) {
+    private void addToMember(Member toMember) {
         if (toMembers.size() > 0 && lastAction == WordAction.addSum)
             createCosts();
 
@@ -119,7 +112,7 @@ public class CostCreator {
         lastAction = WordAction.addToMember;
     }
 
-    private void removeToMember(long toMember) {
+    private void removeToMember(Member toMember) {
         int index = toMembers.indexOf(toMember);
         if (index >= 0) {
             toMembers.remove(index);
@@ -141,7 +134,7 @@ public class CostCreator {
         if (text.equals(WordCollection.ALL)) {
             Member[] membersTrip = t_trips.getActiveTripNew().getActiveMembers();
             for (Member toMember : membersTrip) {
-                addToMember(toMember.getId());
+                addToMember(toMember);
             }
             return;
         }
@@ -150,17 +143,17 @@ public class CostCreator {
             int i = 1;
             while (words.viewNext(i).length() > 0) {
                 if (words.viewNext(i).equals(WordCollection.MASTER)) {
-                    removeToMember(masterId);
+                    removeToMember(master);
                 } else if (words.viewNext(i).equals(WordCollection.ME)) {
-                    long me = t_members.getMe();
-                    if (me > -1) {
+                    Member me = t_trips.getActiveTripNew().getMe();
+                    if (me != null) {
                         removeToMember(me);
                     } else
                         break;
                 } else {
                     //Поиск с учетом падежей
-                    long toMember = t_members.getIdByNameCase(words.viewNext(i));
-                    if (toMember > -1) {
+                    Member toMember = getIdByNameCase(words.viewNext(i));
+                    if (toMember != null) {
                         removeToMember(toMember);
                     } else {
                         break;
@@ -175,41 +168,79 @@ public class CostCreator {
 
         //За себя
         if (text.equals(WordCollection.MASTER)) {
-            addToMember(masterId);
+            addToMember(master);
             return;
         }
 
         //За меня
         if (text.equals(WordCollection.ME)) {
-            long toMember = t_members.getMe();
-            if (toMember > -1) {
+            Member toMember = t_trips.getActiveTripNew().getMe();
+            if (toMember != null) {
                 addToMember(toMember);
                 return;
             }
         }
 
         if (text.equals(WordCollection.OWNER)) {
-            long meMaster = t_members.getMe();
-            if (meMaster > -1) {
+            Member meMaster = t_trips.getActiveTripNew().getMe();
+            if (meMaster != null) {
                 setMaster(meMaster);
                 return;
             }
         }
 
-        long master = t_members.getIdByNameCache(text);
-        if (master > -1) {
+        //TODO может оно и не надо и можно объединить со следующим блоком
+        Member master = t_members.getIdByNameCache(text);
+        if (master != null) {
             setMaster(master);
             return;
         }
 
         //Поиск с учетом падежей
-        long toMember = t_members.getIdByNameCase(text);
-        if (toMember > -1) {
+        Member toMember = getIdByNameCase(text);
+        if (toMember != null) {
             addToMember(toMember);
             return;
         }
 
         commentsList.add(text);
+
+    }
+
+
+    /**
+     * Ищет участника с учетом падежей.
+     * Для этого пробует найти участника по переданному имени. Если не удалось найти убирает последнюю букву от переданного значения и ищет по совпадению парвых символов.
+     * Так продолжается до тех пор пока не уменьшим переданное значение на 30% или оно не станет меньше 2х букв
+     *
+     * @param m_name строка для поиска
+     * @return id сотудника или -1
+     */
+    private Member getIdByNameCase(String m_name) {
+
+        String nameCase = NamesHashMap.keyValidate(m_name);
+
+        Member[] members = t_trips.getActiveTripNew().getActiveMembers();
+        for (Member member : members) {
+            if (NamesHashMap.keyValidate(member.getName()).equals(nameCase)) {
+                return member;
+            }
+        }
+
+        Member row = null;
+        while (row == null && nameCase.length() > 2 && nameCase.length() / m_name.length() > 0.7) {
+            nameCase = nameCase.substring(0, nameCase.length() - 1);
+
+            for (Member member : members) {
+                String rowCache = NamesHashMap.keyValidate(member.getName());
+                if (rowCache.startsWith(nameCase)) {
+                    row = member;
+                    break;
+                }
+            }
+        }
+
+        return row;
 
     }
 

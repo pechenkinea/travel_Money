@@ -1,6 +1,8 @@
 package com.pechenkin.travelmoney.diagram;
 
+import com.pechenkin.travelmoney.bd.Member;
+
 public interface OnDiagramSelectItem {
 
-    void doOnSelect(long itemId);
+    void doOnSelect(Member itemId);
 }

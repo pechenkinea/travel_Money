@@ -14,8 +14,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.Base;
@@ -58,15 +57,14 @@ public class BarDiagram extends Base {
         LegendEntry[] legendEntries = new LegendEntry[this.total.length];
         int i = 0;
         for (Total.MemberSum c : this.total) {
-            long memberId = c.getMemberId();
-            MemberTableRow member = t_members.getMemberById(memberId);
-            entries.add(new BarEntry(i, (float) c.getSumExpense(), member.id));
+            Member member = c.getMember();
+            entries.add(new BarEntry(i, (float) c.getSumExpense(), member));
 
             legendEntries[i] = new LegendEntry();
-            legendEntries[i].label = member.name;
-            legendEntries[i].formColor = member.color;
+            legendEntries[i].label = member.getName();
+            legendEntries[i].formColor = member.getColor();
 
-            pieColors[i++] = member.color;
+            pieColors[i++] = member.getColor();
         }
 
 

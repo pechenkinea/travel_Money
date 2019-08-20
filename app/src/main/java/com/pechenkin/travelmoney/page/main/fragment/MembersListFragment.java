@@ -7,8 +7,6 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
 import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
@@ -46,7 +44,7 @@ public class MembersListFragment extends BaseMainPageFragment {
                 t_trips.getActiveTripNew().removeMember(member);
                 list.setItemChecked(position, false);
             } else {
-                t_trips.getActiveTripNew().addMember(member);
+                t_trips.getActiveTripNew().setMemberActive(member);
                 list.setItemChecked(position, true);
             }
             list.invalidateViews();
@@ -64,14 +62,13 @@ public class MembersListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        QueryResult<MemberTableRow> allMembers = t_members.getAll();
+        Member[] members = t_trips.getActiveTripNew().getAllMembers();
         ListView list = fragmentView.findViewById(R.id.list_members);
         if (list != null) {
-            if (!allMembers.hasRows()) {
+            if (members.length == 0) {
                 Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
                 list.setAdapter(null);
             } else {
-                Member[] members = allMembers.getAllRows();
 
                 // сортируем так, что бы те, кто в текущей поездке отображались сверху
                 Arrays.sort(members, (m1, m2) -> {

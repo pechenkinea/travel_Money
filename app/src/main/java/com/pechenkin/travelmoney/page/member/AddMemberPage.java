@@ -10,6 +10,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.NamesHashMap;
 import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 
@@ -27,11 +28,18 @@ public class AddMemberPage extends BaseMemberPage {
         TextInputEditText etName = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
 
         String name = getTextInputEditText(etName);
-        if (t_members.isExist(name)) {
-            Help.message("Участник с таким именем уже добавлен");
-            Help.setActiveEditText(getFocusFieldId());
-            return;
+
+        String validateName = NamesHashMap.keyValidate(name);
+
+        Member[] existMembers = t_trips.getActiveTripNew().getAllMembers();
+        for (Member member : existMembers) {
+            if (validateName.equals(NamesHashMap.keyValidate(member.getName()))){
+                Help.message("Участник с таким именем уже добавлен");
+                Help.setActiveEditText(getFocusFieldId());
+                return;
+            }
         }
+
 
         if (name.length() > 0) {
             Button buttonColor = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
@@ -41,14 +49,10 @@ public class AddMemberPage extends BaseMemberPage {
                 color = ((ColorDrawable) background).getColor();
 
 
-            String icon = ((TextView)MainActivity.INSTANCE.findViewById(R.id.iconId)).getText().toString();
+            String icon = ((TextView) MainActivity.INSTANCE.findViewById(R.id.iconId)).getText().toString();
 
-            long m_id = t_members.add(name, color, (int) Help.StringToDouble(icon));
+            t_trips.getActiveTripNew().createMember(name, color, (int) Help.StringToDouble(icon));
             Help.message("Успешно");
-
-            Member member = t_members.getMemberById(m_id);
-            t_trips.getActiveTripNew().addMember(member);
-
 
             clickBackButton();
         } else {

@@ -18,8 +18,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.Base;
@@ -67,15 +66,14 @@ public class LineDiagram extends Base {
             }
 
 
-            long memberId = c.getMemberId();
-            MemberTableRow member = t_members.getMemberById(memberId);
+            Member member = c.getMember();
 
             legendEntries[legendEntriesIndex] = new LegendEntry();
-            legendEntries[legendEntriesIndex].label = member.name;
-            legendEntries[legendEntriesIndex].formColor = member.color;
+            legendEntries[legendEntriesIndex].label = member.getName();
+            legendEntries[legendEntriesIndex].formColor = member.getColor();
             legendEntriesIndex++;
 
-            pieColors[valuesIndex++] = member.color;
+            pieColors[valuesIndex++] = member.getColor();
             pieColors[valuesIndex++] = MainActivity.INSTANCE.getResources().getColor(android.R.color.transparent); // цвет отступа
         }
 
@@ -145,14 +143,14 @@ public class LineDiagram extends Base {
     }
 
     @Override
-    protected long getMemberIdByEntryAndHighlight(Entry e, Highlight h) {
+    protected Member getMemberByEntryAndHighlight(Entry e, Highlight h) {
 
         if (e instanceof BarEntry && ((BarEntry) e).getYVals().length > 1) {
             int valueIndex = h.getStackIndex();
             if (valueIndex % 2 == 0) {
-                return total[valueIndex / 2].getMemberId();
+                return total[valueIndex / 2].getMember();
             }
         }
-        return -1;
+        return null;
     }
 }

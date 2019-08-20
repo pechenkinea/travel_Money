@@ -16,8 +16,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 
@@ -44,13 +43,7 @@ public abstract class Base implements Diagram {
 
     public Base(double sum, Total.MemberSum[] total) {
         this.sum = sum;
-        Arrays.sort(total, (t1, t2) -> {
-
-            MemberTableRow t1Member = t_members.getMemberById(t1.getMemberId());
-            MemberTableRow t2Member = t_members.getMemberById(t2.getMemberId());
-
-            return Integer.compare(t1Member.color, t2Member.color);
-        });
+        Arrays.sort(total, (t1, t2) -> Integer.compare(t1.getMember().getColor(), t2.getMember().getColor()));
 
         this.total = total;
     }
@@ -77,9 +70,9 @@ public abstract class Base implements Diagram {
             diagram.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(final Entry e, Highlight h) {
-                    long memberId = getMemberIdByEntryAndHighlight(e, h);
-                    if (memberId > -1){
-                        onDiagramSelectItem.doOnSelect(memberId);
+                    Member member = getMemberByEntryAndHighlight(e, h);
+                    if (member != null){
+                        onDiagramSelectItem.doOnSelect(member);
                     }
 
                 }
@@ -91,13 +84,12 @@ public abstract class Base implements Diagram {
         }
     }
 
-    protected long getMemberIdByEntryAndHighlight(Entry e, Highlight h){
+    protected Member getMemberByEntryAndHighlight(Entry e, Highlight h){
 
-        Object memberId = e.getData();
-        if (memberId instanceof Long ) {
-            return (long) memberId;
+        if (e.getData() instanceof Member ) {
+            return (Member) e.getData();
         }
-        return -1;
+        return null;
     }
 
 

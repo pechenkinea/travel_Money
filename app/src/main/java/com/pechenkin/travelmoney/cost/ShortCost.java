@@ -4,8 +4,7 @@ import android.text.Html;
 import android.view.View;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 
@@ -23,27 +22,27 @@ public class ShortCost implements Cost, CostListItem {
 
     private boolean isChange = false;
 
-    public final long member;
-    private final long to_member;
+    public final Member member;
+    private final Member to_member;
     public double sum;
     private String comment = "";
     private int groupId = 0;
 
-    public ShortCost(long member, long to_member, double sum) {
+    public ShortCost(Member member, Member to_member, double sum) {
         this.member = member;
         this.to_member = to_member;
         this.sum = sum;
     }
 
     public ShortCost(String comment) {
-        this.member = -1;
-        this.to_member = -1;
+        this.member = null;
+        this.to_member = null;
         this.sum = 0f;
         this.comment = comment;
     }
 
     //Используется при составлении списка трат при добавелнии голосом
-    public ShortCost(long member, long to_member, double sum, String comment, int groupId) {
+    public ShortCost(Member member, Member to_member, double sum, String comment, int groupId) {
         this.member = member;
         this.to_member = to_member;
         this.sum = sum;
@@ -66,12 +65,12 @@ public class ShortCost implements Cost, CostListItem {
     }
 
     @Override
-    public long getMember() {
+    public Member getMember() {
         return member;
     }
 
     @Override
-    public long getToMember() {
+    public Member getToMember() {
         return to_member;
     }
 
@@ -128,18 +127,17 @@ public class ShortCost implements Cost, CostListItem {
         holder.getTo_member_one().setVisibility(View.VISIBLE);
         holder.getMember_icons_layout().setVisibility(View.GONE);
 
-        MemberTableRow member = t_members.getMemberById(getMember());
+        Member member = getMember();
         if (member != null) {
-            holder.getTitle().setText(member.name);
-            holder.getTitle().setTextColor(member.color);
+            holder.getTitle().setText(member.getName());
+            holder.getTitle().setTextColor(member.getColor());
         }
 
-        MemberTableRow to_member = t_members.getMemberById(getToMember());
+        Member to_member = getToMember();
         if (to_member != null) {
-            holder.getTo_member_one().setText(to_member.name);
-            holder.getTo_member_one().setTextColor(to_member.color);
+            holder.getTo_member_one().setText(to_member.getName());
+            holder.getTo_member_one().setTextColor(to_member.getColor());
         }
-
     }
 
     @Override

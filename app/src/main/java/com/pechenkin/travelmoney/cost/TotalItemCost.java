@@ -5,6 +5,7 @@ import android.widget.LinearLayout;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -15,7 +16,7 @@ import com.pechenkin.travelmoney.page.cost.add.Repayment;
  * Для того, что бы сделать кликабельными участников в итогах
  */
 public class TotalItemCost extends ShortCost {
-    public TotalItemCost(long member, long to_member, double sum) {
+    public TotalItemCost(Member member, Member to_member, double sum) {
         super(member, to_member, sum);
     }
 
@@ -32,8 +33,8 @@ public class TotalItemCost extends ShortCost {
 
         holder.getMainLayout().setOnClickListener(view -> {
             PageParam param = new PageParam.BuildingPageParam()
-                    .setId(getMember())
-                    .setToMemberId(getToMember())
+                    .setId(getMember().getId()) // TODO надо передавать не id а Member
+                    .setToMemberId(getToMember().getId())  // TODO надо передавать не id а Member
                     .setSum(getSum())
                     .getParam();
 

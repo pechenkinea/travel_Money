@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney.cost.processing.summary;
 
 import androidx.collection.LongSparseArray;
 
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 
@@ -30,21 +31,21 @@ public class Total implements CostIterable {
             return;
         }
 
-        if (!members.containsKey(cost.getToMember()))
-            members.put(cost.getToMember(), new MemberSum(cost.getToMember()));
+        if (!members.containsKey(cost.getToMember().getId()))
+            members.put(cost.getToMember().getId(), new MemberSum(cost.getToMember()));
 
-        if (!members.containsKey(cost.getMember()))
-            members.put(cost.getMember(), new MemberSum(cost.getMember()));
+        if (!members.containsKey(cost.getMember().getId()))
+            members.put(cost.getMember().getId(), new MemberSum(cost.getMember()));
 
 
         if (!cost.isRepayment()) {  //операции возврата не считаем тратой, поэтому не добавляем
-            Objects.requireNonNull(members.get(cost.getToMember())).addSumExpense(cost.getSum());
+            Objects.requireNonNull(members.get(cost.getToMember().getId())).addSumExpense(cost.getSum());
         } else {
             //но операция возврата уменьшает "дебет" того, кому отдали долг
-            Objects.requireNonNull(members.get(cost.getToMember())).removeSumPay(cost.getSum());
+            Objects.requireNonNull(members.get(cost.getToMember().getId())).removeSumPay(cost.getSum());
         }
 
-        Objects.requireNonNull(members.get(cost.getMember())).addSumPay(cost.getSum());
+        Objects.requireNonNull(members.get(cost.getMember().getId())).addSumPay(cost.getSum());
     }
 
     @Override
@@ -54,7 +55,7 @@ public class Total implements CostIterable {
             long key = members.keyAt(i);
             MemberSum value = members.get(key);
             if (value != null) {
-                result.add(new MemberSum(value.memberId, value.sumExpense, value.sumPay));
+                result.add(new MemberSum(value.member, value.sumExpense, value.sumPay));
             }
         }
     }
@@ -64,16 +65,16 @@ public class Total implements CostIterable {
     }
 
     public static class MemberSum {
-        final long memberId;
+        final Member member;
         double sumExpense = 0f;
         double sumPay = 0f;
 
-        private MemberSum(long memberId) {
-            this.memberId = memberId;
+        private MemberSum(Member member) {
+            this.member = member;
         }
 
-        MemberSum(long memberId, double sumExpense, double sumPay) {
-            this.memberId = memberId;
+        MemberSum(Member member, double sumExpense, double sumPay) {
+            this.member = member;
             this.sumExpense = sumExpense;
             this.sumPay = sumPay;
         }
@@ -90,8 +91,8 @@ public class Total implements CostIterable {
             this.sumPay -= sum;
         }
 
-        public long getMemberId() {
-            return memberId;
+        public Member getMember() {
+            return member;
         }
 
         public double getSumExpense() {

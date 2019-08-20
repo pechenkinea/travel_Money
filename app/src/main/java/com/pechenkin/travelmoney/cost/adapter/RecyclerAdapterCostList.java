@@ -90,7 +90,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         double allSum = 0;
         for (CostListItem c : data) {
             if (c instanceof ShortCost) {
-                if (((ShortCost) c).member > -1) {
+                if (((ShortCost) c).member != null) {
                     allSum += ((ShortCost) c).getSum();
                 }
             }

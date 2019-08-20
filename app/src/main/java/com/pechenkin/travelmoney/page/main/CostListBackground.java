@@ -89,7 +89,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                     diagram.setOnDiagramSelectItem(itemId -> {
 
                         PageParam param = new PageParam.BuildingPageParam()
-                                .setId(itemId)
+                                .setId(itemId.getId())
                                 .setBackPage(MainPage.class)
                                 .getParam();
                         PageOpener.INSTANCE.open(MasterCostInfo.class, param);

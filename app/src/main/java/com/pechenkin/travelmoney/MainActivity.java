@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     CostCreator cc = null;
 
                     for (int i = 0; i < matches.size(); i++) {
-                        cc = new CostCreator(matches.get(i));
+                        cc = new CostCreator(matches.get(i), "");
                         if (cc.hasCosts())
                             break;
                     }
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                                 })
                                 .setPositiveButton("Продолжить", (dialog, which) -> {
                                     dialog.cancel();
-                                    CostCreator cc1 = new CostCreator(matches.get(0));
+                                    CostCreator cc1 = new CostCreator(matches.get(0), "");
                                     PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc1).getParam();
                                     PageOpener.INSTANCE.open(AddCostsListPage.class, param);
                                 })
