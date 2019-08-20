@@ -5,7 +5,7 @@ import android.widget.Button;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.export.Export;
 import com.pechenkin.travelmoney.export.ExportFileTypes;
 import com.pechenkin.travelmoney.page.AboutPage;
@@ -47,7 +47,7 @@ public class OtherFragment extends BaseMainPageFragment {
             builder.setTitle("Выберите тип:");
 
             builder.setItems(fileTypes, (dialog, which) -> {
-                Export.export(t_trips.getActiveTrip(), ExportFileTypes.values()[which]);
+                Export.export(t_trips.getActiveTripNew(), ExportFileTypes.values()[which]);
                 dialog.dismiss();
             });
 

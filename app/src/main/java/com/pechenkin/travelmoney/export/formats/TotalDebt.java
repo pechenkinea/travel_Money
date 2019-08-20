@@ -3,15 +3,12 @@ package com.pechenkin.travelmoney.export.formats;
 import com.pechenkin.travelmoney.BuildConfig;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.TMConst;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
-import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
-import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_settings;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.t_settings;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
@@ -25,9 +22,9 @@ import com.pechenkin.travelmoney.cost.processing.summary.Total;
  */
 public class TotalDebt implements ExportFormat {
     @Override
-    public String getText(TripTableRow pageTrip) {
+    public String getText(Trip trip) {
 
-        QueryResult<CostTableRow> allCosts = t_costs.getAllByTripId(pageTrip.id);
+        Cost[] allCosts = trip.getAllCost();
 
         StringBuilder result = new StringBuilder();
 
@@ -36,14 +33,14 @@ public class TotalDebt implements ExportFormat {
         Total total = new Total();
         AllSum allSumIteration = new AllSum();
 
-        ProcessIterate.doIterate(allCosts.getAllRows(), new CostIterable[]{calc, total, allSumIteration});
+        ProcessIterate.doIterate(allCosts, new CostIterable[]{calc, total, allSumIteration});
         ShortCost[] calculateCosts = calc.getResult();
         Total.MemberSum[] totalResult = total.getResult();
         double allSum = allSumIteration.getSum();
 
 
-        result.append("Итоги по поездке \"").append(pageTrip.name).append("\" (");
-        result.append(Help.dateToDateStr(t_trips.getStartTripDate(pageTrip.id))).append(" - ").append(Help.dateToDateStr(t_trips.getEndTripDate(pageTrip.id))).append(")\n");
+        result.append("Итоги по поездке \"").append(trip.getName()).append("\" (");
+        result.append(Help.dateToDateStr(t_trips.getStartTripDate(trip.getId()))).append(" - ").append(Help.dateToDateStr(t_trips.getEndTripDate(trip.getId()))).append(")\n");
 
         result.append("\n\n");
         result.append("Всего потрачено: ").append(Help.doubleToString(allSum));

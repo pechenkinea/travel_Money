@@ -9,8 +9,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 
 
 /**
@@ -26,7 +27,7 @@ public class AddMemberPage extends BaseMemberPage {
         TextInputEditText etName = MainActivity.INSTANCE.findViewById(R.id.edit_member_Name);
 
         String name = getTextInputEditText(etName);
-        if (t_members.isAdded(name)) {
+        if (t_members.isExist(name)) {
             Help.message("Участник с таким именем уже добавлен");
             Help.setActiveEditText(getFocusFieldId());
             return;
@@ -44,7 +45,10 @@ public class AddMemberPage extends BaseMemberPage {
 
             long m_id = t_members.add(name, color, (int) Help.StringToDouble(icon));
             Help.message("Успешно");
-            t_trips.addMemberInTrip(t_trips.getActiveTrip().id, m_id);
+
+            Member member = t_members.getMemberById(m_id);
+            t_trips.getActiveTripNew().addMember(member);
+
 
             clickBackButton();
         } else {

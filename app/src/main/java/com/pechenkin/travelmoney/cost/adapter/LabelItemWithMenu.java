@@ -2,19 +2,16 @@ package com.pechenkin.travelmoney.cost.adapter;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
-import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.t_settings;
+import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.t_settings;
 
 /**
  * Created by pechenkin on 06.04.2018.

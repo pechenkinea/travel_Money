@@ -1,23 +1,24 @@
-package com.pechenkin.travelmoney.bd.table;
+package com.pechenkin.travelmoney.bd.local.table;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.IdTableRow;
-import com.pechenkin.travelmoney.bd.table.query.TableRow;
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
+import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.local.Namespace;
+import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
+import com.pechenkin.travelmoney.bd.local.table.query.IdTableRow;
+import com.pechenkin.travelmoney.bd.local.table.query.TableRow;
+import com.pechenkin.travelmoney.bd.local.table.query.row.TripTableRow;
 
 import java.util.Date;
 
 public class t_trips {
 
-    static private TripTableRow activeTrip = null;
+    static private Trip activeTrip = null;
 
-    public static TripTableRow getActiveTrip() {
+    public static Trip getActiveTripNew() {
         if (activeTrip == null) {
 
             String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_PROCESSED + " = '1'";
@@ -93,8 +94,6 @@ public class t_trips {
 
     static public void addMemberInTrip(long trip_id, long member_id) {
         removeMemberInTrip(trip_id, member_id);
-
-
 
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_TRIP, trip_id);

@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.export;
 
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
+import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.export.formats.CSV;
 import com.pechenkin.travelmoney.export.formats.ExportFormat;
 import com.pechenkin.travelmoney.export.formats.JSON;
@@ -29,7 +29,7 @@ public enum ExportFileTypes {
         this.sendType = sendType;
     }
 
-    public void send(TripTableRow pageTrip){
+    public void send(Trip pageTrip){
         sendType.send(pageTrip, exportFormat);
     }
 

@@ -1,10 +1,10 @@
 package com.pechenkin.travelmoney.export.formats;
 
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
+import com.pechenkin.travelmoney.bd.Trip;
 
 public interface ExportFormat {
 
-    String getText(TripTableRow pageTrip);
+    String getText(Trip pageTrip);
 
     String getMimeType();
     String getExpansionType();

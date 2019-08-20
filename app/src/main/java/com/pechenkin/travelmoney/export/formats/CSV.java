@@ -1,25 +1,23 @@
 package com.pechenkin.travelmoney.export.formats;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
-import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
-import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.cost.Cost;
 
 import java.util.ArrayList;
 
 public class CSV implements ExportFormat {
     @Override
-    public String getText(TripTableRow pageTrip) {
+    public String getText(Trip trip) {
 
         ArrayList<Long> membersList = new ArrayList<>();
-        QueryResult<CostTableRow> costs = t_costs.getAllByTripId(pageTrip.id);
+        Cost[] costs = trip.getAllCost();
         StringBuilder valueCosts = new StringBuilder("Операции\r\n");
         valueCosts.append("Дата;Кто;Кому;Сколько;Активно;Комментарий").append("\r\n");
-        if (costs.hasRows()) {
-            for (CostTableRow cost : costs.getAllRows()) {
+        if (costs.length > 0) {
+            for (Cost cost : costs) {
                 String line = ((cost.getDate() != null) ? Help.dateToDateTimeStr(cost.getDate()) : "") + ";"
                         + cost.getMember() + ";"
                         + cost.getToMember() + ";"

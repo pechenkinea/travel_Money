@@ -3,8 +3,8 @@ package com.pechenkin.travelmoney.diagram;
 import androidx.annotation.NonNull;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.t_settings;
+import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.impl.BarDiagram;
 import com.pechenkin.travelmoney.diagram.impl.DebitCreditDiagram;

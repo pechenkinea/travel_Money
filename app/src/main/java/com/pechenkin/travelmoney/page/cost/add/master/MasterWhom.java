@@ -9,11 +9,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -61,11 +59,6 @@ public class MasterWhom extends ListPage {
 
     @Override
     protected boolean fillFields() {
-        if (t_trips.getActiveTrip() == null)
-        {
-            Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
-            return false;
-        }
 
         if (!hasParam() || getParam().getSum() == 0 || getParam().getId() < 0 || getParam().getSum() < 0)
         {
@@ -76,16 +69,16 @@ public class MasterWhom extends ListPage {
         MainActivity.INSTANCE.findViewById(R.id.member_add_button)
                 .setVisibility(View.INVISIBLE);
 
-        QueryResult<MemberTableRow> tripMembers = t_members.getAllByTripId(t_trips.getActiveTrip().id);
+        Member[] tripMembers = t_trips.getActiveTripNew().getActiveMembers();
         ListView list1 =  MainActivity.INSTANCE.findViewById(getListViewId());
-        if (!tripMembers.hasRows())
+        if (tripMembers.length == 0)
         {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
             return false;
         }
         else
         {
-            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers.getAllRows(), getParam().getSum()), getParam().getSum());
+            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers, getParam().getSum()), getParam().getSum());
             list1.setAdapter(adapter);
 
             if (hasParam())
@@ -163,7 +156,7 @@ public class MasterWhom extends ListPage {
                 if (sbArray.get(key)) {
                     CostMember item = adapter.getItem(key);
                     if (item != null && item.getSum() > 0) {
-                        t_costs.add(getParam().getId(), item.getMemberId(), getParam().getName(), item.getSum(), getParam().getPhotoUrl(), t_trips.getActiveTrip().id, getParam().getSelectDate(), false);
+                        t_trips.getActiveTripNew().addCost(getParam().getId(), item.getMemberId(), getParam().getName(), item.getSum(), getParam().getPhotoUrl(), getParam().getSelectDate(), false);
                     }
                 }
             }

@@ -4,8 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
-import com.pechenkin.travelmoney.bd.table.t_colors;
+import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.table.t_colors;
 import com.pechenkin.travelmoney.list.AdapterColors;
 
 

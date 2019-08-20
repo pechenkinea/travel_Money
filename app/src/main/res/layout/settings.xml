@@ -15,12 +15,6 @@
             android:orientation="vertical">
 
             <CheckBox
-                android:id="@+id/checkBox_group_cost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/group_cost_on_off" />
-
-            <CheckBox
                 android:id="@+id/checkBox_group_by_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd.table;
+package com.pechenkin.travelmoney.bd.local.table;
 
 
 import android.content.ContentValues;
@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.row.SettingTableRow;
+import com.pechenkin.travelmoney.bd.local.Namespace;
+import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
+import com.pechenkin.travelmoney.bd.local.table.query.row.SettingTableRow;
 
 import java.util.HashMap;
 import java.util.Map;

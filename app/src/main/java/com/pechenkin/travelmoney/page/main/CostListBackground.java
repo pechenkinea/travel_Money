@@ -5,12 +5,10 @@ import android.os.AsyncTask;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
-import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_settings;
+import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.t_settings;
+import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.LabelItem;
@@ -23,21 +21,20 @@ import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.DefaultDiagram;
 import com.pechenkin.travelmoney.diagram.Diagram;
-import com.pechenkin.travelmoney.diagram.impl.TotalItemDiagram;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
 
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
-    private final TripTableRow trip;
+    private final Trip trip;
     private ProgressDialog processDialog;
     private CostListItem[] finalList = {};
     private boolean readOnly;
 
     private final DoOnPostExecute doOnPostExecute;
 
-    public CostListBackground(boolean readOnly, TripTableRow trip, DoOnPostExecute doOnPostExecute) {
+    public CostListBackground(boolean readOnly, Trip trip, DoOnPostExecute doOnPostExecute) {
         this.trip = trip;
         this.readOnly = readOnly;
         this.doOnPostExecute = doOnPostExecute;
@@ -55,19 +52,19 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
         if (this.trip != null) {
 
-            QueryResult<CostTableRow> costList = t_costs.getAllByTripId(this.trip.id);
+            Cost[] costList = this.trip.getAllCost();
 
             ShortCost[] calculationList;
             Total.MemberSum[] totalResult;
             double allSum = 0;
 
-            if (costList.hasRows()) {
+            if (costList.length > 0) {
 
                 Calculation calc = new Calculation(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
                 Total total = new Total();
                 AllSum allSumIteration = new AllSum();
 
-                ProcessIterate.doIterate(costList.getAllRows(), new CostIterable[]{calc, total, allSumIteration});
+                ProcessIterate.doIterate(costList, new CostIterable[]{calc, total, allSumIteration});
 
                 calculationList = calc.getResult();
                 totalResult = total.getResult();
@@ -84,7 +81,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                 finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Долгов нет")});
             }
 
-            if (costList.hasRows()) {
+            if (costList.length > 0) {
 
                 Diagram diagram = DefaultDiagram.createDefaultDiagram(allSum, totalResult);
 
@@ -105,14 +102,10 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                 finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Список всех операций")});
 
 
-                if (t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST)) {
-                    // Группировка
-                    GroupCost[] groupCostList = GroupCost.group(costList.getAllRows());
-                    finalList = Help.concat(finalList, groupCostList);
-                } else {
-                    // Если группировка не нужна выводим как есть
-                    finalList = Help.concat(finalList, costList.getAllRows());
-                }
+                // Группировка
+                GroupCost[] groupCostList = GroupCost.group(costList);
+                finalList = Help.concat(finalList, groupCostList);
+
             }
         }
 

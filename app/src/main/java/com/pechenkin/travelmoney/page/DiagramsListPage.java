@@ -6,12 +6,10 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.row.CostTableRow;
-import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_settings;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.t_settings;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.LabelItem;
@@ -20,10 +18,10 @@ import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.DiagramName;
+import com.pechenkin.travelmoney.diagram.OnDiagramSelect;
 import com.pechenkin.travelmoney.diagram.impl.BarDiagram;
 import com.pechenkin.travelmoney.diagram.impl.DebitCreditDiagram;
 import com.pechenkin.travelmoney.diagram.impl.LineDiagram;
-import com.pechenkin.travelmoney.diagram.OnDiagramSelect;
 import com.pechenkin.travelmoney.diagram.impl.TotalItemDiagram;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
@@ -47,21 +45,17 @@ public class DiagramsListPage extends ListPage {
 
     @Override
     protected String getTitleHeader() {
-        return MainActivity.INSTANCE.getString(R.string.diagrams) + "(" + t_trips.getActiveTrip().name + ")";
+        return MainActivity.INSTANCE.getString(R.string.diagrams) + "(" + t_trips.getActiveTripNew().getName() + ")";
     }
 
 
     @Override
     protected boolean fillFields() {
-        if (t_trips.getActiveTrip() == null) {
-            Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
-            return false;
-        }
 
 
-        QueryResult<CostTableRow> allCostTrip = t_costs.getAllByTripId(t_trips.getActiveTrip().id);
+        Cost[] allCostTrip = t_trips.getActiveTripNew().getAllCost();
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
-        if (!allCostTrip.hasRows()) {
+        if (allCostTrip.length == 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
             list1.setAdapter(null);
             return false;
@@ -69,7 +63,7 @@ public class DiagramsListPage extends ListPage {
             Total total = new Total();
             AllSum allSumIteration = new AllSum();
 
-            ProcessIterate.doIterate(allCostTrip.getAllRows(), new CostIterable[]{total, allSumIteration});
+            ProcessIterate.doIterate(allCostTrip, new CostIterable[]{total, allSumIteration});
 
             Total.MemberSum[] totalResult = total.getResult();
             double allSum = allSumIteration.getSum();
@@ -88,8 +82,7 @@ public class DiagramsListPage extends ListPage {
                             if (diagramName != null) {
                                 t_settings.INSTANCE.set(NamespaceSettings.LIKE_DIAGRAM_NAME, diagramName.name());
                                 Help.message("Успешно");
-                            }
-                            else {
+                            } else {
                                 Help.message("Ошибка");
                             }
 

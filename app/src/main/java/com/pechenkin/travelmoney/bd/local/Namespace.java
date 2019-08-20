@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd;
+package com.pechenkin.travelmoney.bd.local;
 
 /**
  * Created by pechenkin on 09.04.2018.

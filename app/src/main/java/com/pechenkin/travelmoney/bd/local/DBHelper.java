@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd;
+package com.pechenkin.travelmoney.bd.local;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -52,7 +52,6 @@ public class DBHelper extends SQLiteOpenHelper {
         addSettingTable(db);
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.DELETE_COST_SHOWED_HELP + "', '0');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_BY_COLOR + "', '0');");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '1');");
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
 
         createTableColors(db);
@@ -145,10 +144,6 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_BY_COLOR + "', '0');");
         }
 
-        //Добавлена настройка для группировки транзакций
-        if (oldVersion < 7) {
-            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.GROUP_COST + "', '1');");
-        }
 
         // Вынесено в настройки кол-во символов учатников в графе "Кому" при включенной группировке
         if (oldVersion < 8) {

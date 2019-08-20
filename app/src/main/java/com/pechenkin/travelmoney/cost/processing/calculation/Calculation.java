@@ -2,7 +2,7 @@ package com.pechenkin.travelmoney.cost.processing.calculation;
 
 import android.util.LongSparseArray;
 
-import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.TotalItemCost;

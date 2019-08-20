@@ -1,7 +1,7 @@
 package com.pechenkin.travelmoney.export;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
+import com.pechenkin.travelmoney.bd.Trip;
 
 /**
  * Created by pechenkin on 02.04.2018.
@@ -10,7 +10,7 @@ import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
 
 public class Export {
 
-    public static void export(TripTableRow pageTrip, ExportFileTypes type) {
+    public static void export(Trip pageTrip, ExportFileTypes type) {
         if (pageTrip == null) {
             Help.alert("Не найдена текущая поездка");
             return;

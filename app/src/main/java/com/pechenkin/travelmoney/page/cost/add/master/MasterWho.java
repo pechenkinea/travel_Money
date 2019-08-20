@@ -6,10 +6,8 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -34,11 +32,6 @@ public class MasterWho extends ListPage {
 
     @Override
     protected boolean fillFields() {
-        if (t_trips.getActiveTrip() == null)
-        {
-            Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
-            return false;
-        }
 
         MainActivity.INSTANCE.findViewById(R.id.member_add_button)
                 .setVisibility(View.INVISIBLE);
@@ -46,16 +39,16 @@ public class MasterWho extends ListPage {
          MainActivity.INSTANCE.findViewById(R.id.member_list_commit)
                 .setVisibility(View.INVISIBLE);
 
-        QueryResult<MemberTableRow> tripMembers = t_members.getAllByTripId(t_trips.getActiveTrip().id);
+        Member[] tripMembers = t_trips.getActiveTripNew().getActiveMembers();
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
-        if (!tripMembers.hasRows())
+        if (tripMembers.length == 0)
         {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
             return false;
         }
         else
         {
-            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers.getAllRows(), 0), false);
+            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers, 0), false);
             adapter.setShowCheckBox(false);
 
             list1.setAdapter(adapter);

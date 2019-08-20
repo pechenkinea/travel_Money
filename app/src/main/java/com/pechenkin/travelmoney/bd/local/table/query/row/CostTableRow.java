@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd.table.query.row;
+package com.pechenkin.travelmoney.bd.local.table.query.row;
 
 import android.database.Cursor;
 import android.view.View;
@@ -6,10 +6,10 @@ import android.view.View;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.IdTableRow;
-import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.local.Namespace;
+import com.pechenkin.travelmoney.bd.local.table.query.IdTableRow;
+import com.pechenkin.travelmoney.bd.local.table.t_costs;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;

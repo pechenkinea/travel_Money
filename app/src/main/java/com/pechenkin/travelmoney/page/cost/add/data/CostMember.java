@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.page.cost.add.data;
 
-import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
+import com.pechenkin.travelmoney.bd.Member;
 
 /**
  * Created by pechenkin on 04.06.2018.
@@ -36,12 +36,12 @@ public class CostMember {
         return memberId;
     }
 
-    public static CostMember[] createCostMemberBaseTableRow(MemberTableRow[] membersRows, double sum) {
-        double oneMemberSum = (sum > 0 && membersRows.length > 0) ? sum / membersRows.length : 0;
+    public static CostMember[] createCostMemberBaseTableRow(Member[] members, double sum) {
+        double oneMemberSum = (sum > 0 && members.length > 0) ? sum / members.length : 0;
 
-        CostMember[] result = new CostMember[membersRows.length];
-        for (int i = 0; i < membersRows.length; i++) {
-            result[i] = new CostMember(membersRows[i].id, oneMemberSum);
+        CostMember[] result = new CostMember[members.length];
+        for (int i = 0; i < members.length; i++) {
+            result[i] = new CostMember(members[i].getId(), oneMemberSum);
         }
 
         return result;

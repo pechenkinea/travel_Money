@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
 
 public class AdapterColors extends BaseAdapter {
 

@@ -13,9 +13,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_trips;
-import com.pechenkin.travelmoney.cost.OnlySumCostItem;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.LabelItem;
@@ -45,7 +43,7 @@ public class AddCostsListPage extends BasePage {
 
     @Override
     protected String getTitleHeader() {
-        return "Добавить траты" + "(" + t_trips.getActiveTrip().name + ")";
+        return "Добавить траты" + "(" + t_trips.getActiveTripNew().getName() + ")";
     }
 
     @Override
@@ -87,7 +85,7 @@ public class AddCostsListPage extends BasePage {
             for (CostListItem c : costs) {
                 if (c instanceof ShortCost) {
                     if (((ShortCost) c).getMember() > -1 && ((ShortCost) c).getSum() > 0) {
-                        t_costs.add(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", t_trips.getActiveTrip().id, addCostDate, false);
+                        t_trips.getActiveTripNew().addCost(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", addCostDate, false);
                         added = true;
                     }
                 }
@@ -120,10 +118,6 @@ public class AddCostsListPage extends BasePage {
 
     @Override
     protected boolean fillFields() {
-        if (t_trips.getActiveTrip() == null) {
-            Help.message(MainActivity.INSTANCE.getString(R.string.errorNoActiveTask));
-            return false;
-        }
 
         if (!hasParam() || getParam().getCostCreator() == null)
             return false;

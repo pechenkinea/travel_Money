@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd;
+package com.pechenkin.travelmoney.bd.local;
 
 /**
  * Created by pechenkin on 09.04.2018.
@@ -22,7 +22,7 @@ public interface NamespaceSettings {
     String GROUP_BY_COLOR = "GROUP_BY_COLOR";
 
     //Нужно ли группировать проводки в общем списке
-    String GROUP_COST = "GROUP_COST";
+    //String GROUP_COST = "GROUP_COST"; // БОЛЬШЕ НЕ ИСПОЛЗУЕТСЯ
     //String GROUP_COST_NEED_MESSAGE = "GROUP_COST_NEED_MESSAGE"; // БОЛЬШЕ НЕ ИСПОЛЗУЕТСЯ
 
     String TO_MEMBER_TEXT_LENGTH = "TO_MEMBER_TEXT_LENGTH";

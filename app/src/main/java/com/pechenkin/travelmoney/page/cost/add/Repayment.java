@@ -9,10 +9,9 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.TMConst;
-import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.table.t_costs;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.cost.add.listener.DateOnClickListener;
@@ -58,7 +57,7 @@ public class Repayment extends BasePage {
             return;
         }
 
-        t_costs.add(memberId, toMemberId, comment, Help.StringToDouble(sum), "", t_trips.getActiveTrip().id, selectDate, true);
+        t_trips.getActiveTripNew().addCost(memberId, toMemberId, comment, Help.StringToDouble(sum), "",selectDate, true);
         PageOpener.INSTANCE.open(MainPage.class);
 
     }

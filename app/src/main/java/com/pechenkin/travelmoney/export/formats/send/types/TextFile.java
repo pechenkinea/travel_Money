@@ -9,7 +9,7 @@ import androidx.core.content.FileProvider;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
+import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.export.formats.ExportFormat;
 
 import java.io.BufferedWriter;
@@ -21,7 +21,7 @@ public class TextFile implements SendType {
 
 
     @Override
-    public void send(TripTableRow pageTrip, ExportFormat exportFormat) {
+    public void send(Trip pageTrip, ExportFormat exportFormat) {
         String text = exportFormat.getText(pageTrip);
 
         File exportFile = getFile(text, exportFormat);

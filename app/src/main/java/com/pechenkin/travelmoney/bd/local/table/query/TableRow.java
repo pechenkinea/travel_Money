@@ -1,8 +1,6 @@
-package com.pechenkin.travelmoney.bd.table.query;
+package com.pechenkin.travelmoney.bd.local.table.query;
 
 import android.database.Cursor;
-
-import com.pechenkin.travelmoney.bd.Namespace;
 
 import java.util.Date;
 

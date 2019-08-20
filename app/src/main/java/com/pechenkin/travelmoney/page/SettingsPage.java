@@ -7,8 +7,8 @@ import android.widget.EditText;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.t_settings;
+import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
@@ -26,9 +26,6 @@ public class SettingsPage extends BasePage {
 
     @Override
     public void addEvents() {
-
-        CheckBox group_cost = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_cost);
-        group_cost.setOnCheckedChangeListener((buttonView, isChecked) -> t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_COST, isChecked));
 
         CheckBox group_by_color = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_by_color);
         group_by_color.setOnCheckedChangeListener((buttonView, isChecked) -> t_settings.INSTANCE.setActive(NamespaceSettings.GROUP_BY_COLOR, isChecked));
@@ -69,9 +66,6 @@ public class SettingsPage extends BasePage {
 
     @Override
     protected boolean fillFields() {
-
-        CheckBox group_cost = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_cost);
-        group_cost.setChecked(t_settings.INSTANCE.active(NamespaceSettings.GROUP_COST));
 
         CheckBox group_by_color = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_by_color);
         group_by_color.setChecked(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));

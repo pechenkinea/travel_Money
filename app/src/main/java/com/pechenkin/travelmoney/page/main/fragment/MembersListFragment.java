@@ -6,10 +6,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.table.t_members;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
+import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -37,12 +38,15 @@ public class MembersListFragment extends BaseMainPageFragment {
 
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
             long itemId = adapter.getItem(position).getMemberId();
+            Member member = t_members.getMemberById(itemId);
 
-            if (t_trips.isMemberInTrip(t_trips.getActiveTrip().id, itemId)) {
-                t_trips.removeMemberInTrip(t_trips.getActiveTrip().id, itemId);
+
+
+            if (t_trips.getActiveTripNew().memberIsActive(member)) {
+                t_trips.getActiveTripNew().removeMember(member);
                 list.setItemChecked(position, false);
             } else {
-                t_trips.addMemberInTrip(t_trips.getActiveTrip().id, itemId);
+                t_trips.getActiveTripNew().addMember(member);
                 list.setItemChecked(position, true);
             }
             list.invalidateViews();
@@ -67,13 +71,13 @@ public class MembersListFragment extends BaseMainPageFragment {
                 Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
                 list.setAdapter(null);
             } else {
-                MemberTableRow[] members = allMembers.getAllRows();
+                Member[] members = allMembers.getAllRows();
 
                 // сортируем так, что бы те, кто в текущей поездке отображались сверху
                 Arrays.sort(members, (m1, m2) -> {
 
-                    boolean m1InTRip = m1.inTrip(t_trips.getActiveTrip().id);
-                    boolean m2InTRip = m2.inTrip(t_trips.getActiveTrip().id);
+                    boolean m1InTRip = t_trips.getActiveTripNew().memberIsActive(m1);
+                    boolean m2InTRip = t_trips.getActiveTripNew().memberIsActive(m2);
 
                     if (m1InTRip && !m2InTRip){
                         return -1;
@@ -82,7 +86,7 @@ public class MembersListFragment extends BaseMainPageFragment {
                         return 1;
                     }
 
-                    return Long.compare(m1.id, m2.id);
+                    return Long.compare(m1.getId(), m2.getId());
                 });
 
                 AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(members, 0), true);
@@ -90,7 +94,9 @@ public class MembersListFragment extends BaseMainPageFragment {
 
                 for (int i = 0; i < adapter.getCount(); i++) {
                     long m_id = adapter.getItem(i).getMemberId();
-                    if (t_trips.isMemberInTrip(t_trips.getActiveTrip().id, m_id)) {
+                    Member member = t_members.getMemberById(m_id);
+
+                    if (t_trips.getActiveTripNew().memberIsActive(member)) {
                         list.setItemChecked(i, true);
                     }
                 }

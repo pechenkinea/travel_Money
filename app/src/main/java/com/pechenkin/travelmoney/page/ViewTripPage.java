@@ -4,8 +4,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.page.main.fragment.CostListFragment;
 
@@ -38,11 +38,11 @@ public class ViewTripPage extends BasePage {
         return "";
     }
 
-    private TripTableRow getPageTrip() {
+    private Trip getPageTrip() {
         return pageTrip;
     }
 
-    private TripTableRow pageTrip = t_trips.getActiveTrip();
+    private Trip pageTrip = t_trips.getActiveTripNew();
 
     @Override
     protected boolean fillFields() {
@@ -55,7 +55,7 @@ public class ViewTripPage extends BasePage {
         if (pageTrip == null)
             return false;
 
-        MainActivity.INSTANCE.setTitle(getPageTrip().name + " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")");
+        MainActivity.INSTANCE.setTitle(getPageTrip().getName() + " (" + MainActivity.INSTANCE.getString(R.string.readMode) + ")");
 
         FragmentManager manager = MainActivity.INSTANCE.getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.fragment, new CostListFragment(pageTrip)).commit();

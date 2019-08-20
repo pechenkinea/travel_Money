@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd.table;
+package com.pechenkin.travelmoney.bd.local.table;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,18 +6,18 @@ import android.graphics.Color;
 import android.util.LongSparseArray;
 
 import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.NamesHashMap;
-import com.pechenkin.travelmoney.bd.Namespace;
-import com.pechenkin.travelmoney.bd.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
-import com.pechenkin.travelmoney.bd.table.query.TableRow;
-import com.pechenkin.travelmoney.bd.table.query.row.MemberTableRow;
+import com.pechenkin.travelmoney.bd.local.Namespace;
+import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
+import com.pechenkin.travelmoney.bd.local.table.query.TableRow;
+import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
 
 import java.util.Map;
 
 public class t_members {
 
-    static public Boolean isAdded(String user_name) {
+    static public Boolean isExist(String user_name) {
         String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + user_name + "'";
         QueryResult result = new QueryResult<>(sql, TableRow.class);
         return result.hasRows();
@@ -69,41 +69,39 @@ public class t_members {
 
     }
 
-    static private final NamesHashMap<MemberTableRow> membersNamesCache = new NamesHashMap<>();
+    static private final NamesHashMap<Member> membersNamesCache = new NamesHashMap<>();
 
     static public void updateMembersCache() {
         membersNamesCache.clear();
 
-        QueryResult<MemberTableRow> allMembers = getAllByTripId(t_trips.getActiveTrip().id);
-        if (allMembers.hasRows()) {
-            for (MemberTableRow member : allMembers.getAllRows()) {
-                membersNamesCache.put(member.name, member);
-            }
+        Member[] allMembers = t_trips.getActiveTripNew().getAllMembers();
+        for (Member member : allMembers){
+            membersNamesCache.put(member.getName(), member);
         }
     }
 
     static public long getIdByName(String m_name) {
-        MemberTableRow row = membersNamesCache.get(m_name);
+        Member row = membersNamesCache.get(m_name);
         if (row == null) {
             String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + m_name + "'";
             QueryResult<MemberTableRow> result = new QueryResult<>(sql, MemberTableRow.class);
             row = result.getFirstRow();
             if (row != null) {
                 membersNamesCache.put(m_name, row);
-                return row.id;
+                return row.getId();
             }
             return -1;
         } else
-            return row.id;
+            return row.getId();
     }
 
 
     static public long getIdByNameCache(String m_name) {
-        IdAndNameTableRow row = membersNamesCache.get(m_name);
+        Member row = membersNamesCache.get(m_name);
         if (row == null) {
             return -1;
         } else
-            return row.id;
+            return row.getId();
     }
 
     static public long getMe() {
@@ -121,12 +119,12 @@ public class t_members {
     static public long getIdByNameCase(String m_name) {
 
         String nameCase = NamesHashMap.keyValidate(m_name);
-        MemberTableRow row = membersNamesCache.get(nameCase);
+        Member row = membersNamesCache.get(nameCase);
 
         while (row == null && nameCase.length() > 2 && nameCase.length() / m_name.length() > 0.7) {
             nameCase = nameCase.substring(0, nameCase.length() - 1);
 
-            for (Map.Entry<String, MemberTableRow> entry : membersNamesCache.entrySet()) {
+            for (Map.Entry<String, Member> entry : membersNamesCache.entrySet()) {
                 String rowCache = entry.getKey();
                 if (rowCache.startsWith(nameCase)) {
                     row = entry.getValue();
@@ -136,7 +134,7 @@ public class t_members {
         }
 
         if (row != null)
-            return row.id;
+            return row.getId();
         else
             return -1;
 
@@ -146,9 +144,9 @@ public class t_members {
     static private final LongSparseArray<MemberTableRow> memberCache = new LongSparseArray<>();
 
 
-    static public int getColorById(long _id){
+    static public int getColorById(long _id) {
         MemberTableRow member = getMemberById(_id);
-        if (member != null){
+        if (member != null) {
             return member.color;
         }
         return Color.BLACK;

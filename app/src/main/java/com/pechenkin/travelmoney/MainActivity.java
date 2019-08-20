@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.pechenkin.travelmoney.bd.DBHelper;
-import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.local.DBHelper;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.AddCostsListPage;

@@ -10,10 +10,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.table.query.row.TripTableRow;
-import com.pechenkin.travelmoney.bd.table.t_settings;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.query.row.TripTableRow;
+import com.pechenkin.travelmoney.bd.local.table.t_settings;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -26,16 +27,16 @@ public class CostListFragment extends BaseMainPageFragment {
 
     private long scrollPosition = 0;
 
-    private final TripTableRow selectTrip;
+    private final Trip selectTrip;
     private boolean readOnly = false;
 
-    public CostListFragment(TripTableRow trip) {
+    public CostListFragment(Trip trip) {
         this.selectTrip = trip;
         this.readOnly = true;
     }
 
     public CostListFragment() {
-        this.selectTrip = t_trips.getActiveTrip();
+        this.selectTrip = t_trips.getActiveTripNew();
     }
 
     @Override

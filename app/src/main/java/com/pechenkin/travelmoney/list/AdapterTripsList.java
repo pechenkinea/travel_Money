@@ -11,8 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.table.query.IdAndNameTableRow;
-import com.pechenkin.travelmoney.bd.table.t_trips;
+import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.ViewTripPage;
@@ -20,11 +19,11 @@ import com.pechenkin.travelmoney.page.trip.EditTripPage;
 
 public class AdapterTripsList extends BaseAdapter {
 
-    private final IdAndNameTableRow[] data;
+    private final Trip[] data;
     private static LayoutInflater inflater = null;
     private final boolean showEditButton;
 
-    public AdapterTripsList(Activity a, IdAndNameTableRow[] data, boolean showEditButton) {
+    public AdapterTripsList(Activity a, Trip[] data, boolean showEditButton) {
         this.data = data;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showEditButton = showEditButton;
@@ -34,19 +33,19 @@ public class AdapterTripsList extends BaseAdapter {
         return data.length;
     }
 
-    public IdAndNameTableRow getItem(int position) {
+    public Trip getItem(int position) {
         return data[position];
     }
 
     public long getItemId(int position) {
-        return data[position].id;
+        return data[position].getId();
     }
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
-        IdAndNameTableRow row = data[position];
+        Trip row = data[position];
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item, parent, false);
@@ -60,23 +59,23 @@ public class AdapterTripsList extends BaseAdapter {
         if (showEditButton) {
             holder.editButton.setVisibility(View.VISIBLE);
 
-            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam()));
+            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(row.getId()).getParam()));
 
         } else {
             holder.editButton.setVisibility(View.INVISIBLE);
         }
 
 
-        holder.viewButton.setOnClickListener(v -> PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setId(row.id).getParam()));
+        holder.viewButton.setOnClickListener(v -> PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setId(row.getId()).getParam()));
 
 
-        if (row != null && t_trips.getActiveTrip() != null && row.id == t_trips.getActiveTrip().id) {
+        if (row.isActive()) {
             holder.check.setImageResource(R.drawable.radio_button_checked_black_18dp);
         } else {
             holder.check.setImageResource(R.drawable.radio_button_unchecked_black_18dp);
         }
 
-        holder.name.setText(row != null ? row.name : "");
+        holder.name.setText(row.getName());
         return convertView;
     }
 

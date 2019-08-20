@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.test.calculation;
 
-import com.pechenkin.travelmoney.bd.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
