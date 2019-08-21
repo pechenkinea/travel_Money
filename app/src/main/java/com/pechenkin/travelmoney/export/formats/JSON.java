@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JSON implements ExportFormat {
     @Override
@@ -22,9 +23,9 @@ public class JSON implements ExportFormat {
 
             ArrayList<Member> membersList = new ArrayList<>();
 
-            Cost[] costs = trip.getAllCost();
+            List<Cost> costs = trip.getAllCost();
             JSONArray json_costs = new JSONArray();
-            if (costs.length > 0) {
+            if (costs.size() > 0) {
                 for (Cost cost : costs) {
                     JSONObject json_cost = new JSONObject();
                     json_cost.put("date", (cost.getDate() != null) ? cost.getDate().getTime() : "");

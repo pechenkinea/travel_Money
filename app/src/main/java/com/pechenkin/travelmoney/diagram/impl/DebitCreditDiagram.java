@@ -32,7 +32,7 @@ import java.util.List;
 public class DebitCreditDiagram extends Base {
     private boolean isAnimated = false;
 
-    public DebitCreditDiagram(double sum, Total.MemberSum[] total) {
+    public DebitCreditDiagram(double sum, List<Total.MemberSum> total) {
         super(sum, total);
     }
 
@@ -50,12 +50,12 @@ public class DebitCreditDiagram extends Base {
 
         horizontalBarChart.setLayoutParams(lp);
 
-        int[] pieColors = new int[this.total.length];
+        int[] pieColors = new int[this.total.size()];
 
         List<BarEntry> entries = new ArrayList<>();
-        LegendEntry[] legendEntries = new LegendEntry[this.total.length];
+        LegendEntry[] legendEntries = new LegendEntry[this.total.size()];
         int i = 0;
-        int legendIndex = this.total.length - 1;  //В горизонтальной диаграмме рисуется зеркально и легенду надо писать в обратном порядке
+        int legendIndex = this.total.size() - 1;  //В горизонтальной диаграмме рисуется зеркально и легенду надо писать в обратном порядке
         for (Total.MemberSum c : this.total) {
             Member member = c.getMember();
 

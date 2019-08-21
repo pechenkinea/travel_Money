@@ -25,11 +25,14 @@ import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
     private final Trip trip;
     private ProgressDialog processDialog;
-    private CostListItem[] finalList = {};
+    private List<CostListItem> finalList = new ArrayList<>();
     private boolean readOnly;
 
     private final DoOnPostExecute doOnPostExecute;
@@ -52,13 +55,13 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
         if (this.trip != null) {
 
-            Cost[] costList = this.trip.getAllCost();
+            List<Cost> costList = this.trip.getAllCost();
 
-            ShortCost[] calculationList;
-            Total.MemberSum[] totalResult;
+            List<ShortCost> calculationList;
+            List<Total.MemberSum> totalResult;
             double allSum = 0;
 
-            if (costList.length > 0) {
+            if (costList.size() > 0) {
 
                 Calculation calc = new Calculation(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
                 Total total = new Total();
@@ -70,18 +73,18 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                 totalResult = total.getResult();
                 allSum = allSumIteration.getSum();
             } else {
-                calculationList = new ShortCost[0];
-                totalResult = new Total.MemberSum[0];
+                calculationList = new ArrayList<>();
+                totalResult = new ArrayList<>();
             }
 
-            if (calculationList.length > 0) {
-                finalList = Help.concat(finalList, new CostListItem[]{new LabelItemWithMenu("Кто кому сколько должен")});
-                finalList = Help.concat(finalList, calculationList);
+            if (calculationList.size() > 0) {
+                finalList.add(new LabelItemWithMenu("Кто кому сколько должен"));
+                finalList.addAll(calculationList);
             } else {
-                finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Долгов нет")});
+                finalList.add(new LabelItemWithMenu("Долгов нет"));
             }
 
-            if (costList.length > 0) {
+            if (costList.size() > 0) {
 
                 Diagram diagram = DefaultDiagram.createDefaultDiagram(allSum, totalResult);
 
@@ -97,14 +100,15 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                     });
                 }
 
-                finalList = Help.concat(new CostListItem[]{diagram}, finalList);
 
-                finalList = Help.concat(finalList, new CostListItem[]{new LabelItem("Список всех операций")});
+                finalList.add(0, diagram); //TODO перенести наверх. добавлять в начало не очень
+
+                finalList.add(new LabelItem("Список всех операций"));
 
 
                 // Группировка
-                GroupCost[] groupCostList = GroupCost.group(costList);
-                finalList = Help.concat(finalList, groupCostList);
+                List<GroupCost> groupCostList = GroupCost.group(costList);
+                finalList.addAll(groupCostList);
 
             }
         }
@@ -123,7 +127,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
     }
 
     public interface DoOnPostExecute {
-        void onPostExecute(CostListItem[] finalList);
+        void onPostExecute(List<CostListItem> finalList);
     }
 
 

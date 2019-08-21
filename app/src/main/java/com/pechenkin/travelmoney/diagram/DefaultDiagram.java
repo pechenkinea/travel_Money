@@ -13,6 +13,7 @@ import com.pechenkin.travelmoney.diagram.impl.TotalItemDiagram;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ public class DefaultDiagram {
 
 
     @NonNull
-    public static Diagram createDefaultDiagram(double sum, Total.MemberSum[] total) {
+    public static Diagram createDefaultDiagram(double sum, List<Total.MemberSum> total) {
 
         String defaultDiagramName = Objects.requireNonNull(TotalItemDiagram.class.getAnnotation(DiagramName.class)).name();
         defaultDiagramName = t_settings.INSTANCE.get(NamespaceSettings.LIKE_DIAGRAM_NAME, defaultDiagramName);
@@ -28,7 +29,7 @@ public class DefaultDiagram {
         Class<? extends Diagram> dClass = getDiagramClassByName(defaultDiagramName);
         if (dClass != null) {
             try {
-                Constructor<? extends Diagram> constructor = dClass.getConstructor(double.class, Total.MemberSum[].class);
+                Constructor<? extends Diagram> constructor = dClass.getConstructor(double.class, List.class);
                 return constructor.newInstance(sum, total);
             } catch (NoSuchMethodException e) {
                 Help.alertError("Не найден конструктор для создания диаграммы " + defaultDiagramName);

@@ -8,27 +8,29 @@ import android.widget.BaseAdapter;
 
 import com.pechenkin.travelmoney.R;
 
+import java.util.List;
+
 
 public class AdapterCostList extends BaseAdapter {
 
-    private final CostListItem[] data;
+    private final List<CostListItem> data;
     private static LayoutInflater inflater = null;
 
 
 
-    public AdapterCostList(Context a, CostListItem[] data) {
+    public AdapterCostList(Context a, List<CostListItem> data) {
         this.data = data;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return (data != null) ? data.length : 0;
+        return (data != null) ? data.size() : 0;
     }
 
     @Override
     public CostListItem getItem(int position) {
-        return data[position];
+        return data.get(position);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class AdapterCostList extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        CostListItem item = data[position];
+        CostListItem item = data.get(position);
         return item != null && item.isClicked();
     }
 
@@ -50,7 +52,7 @@ public class AdapterCostList extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        CostListItem cost = data[position];
+        CostListItem cost = data.get(position);
 
         ListItemSummaryViewHolder holder;
         if (convertView == null) {

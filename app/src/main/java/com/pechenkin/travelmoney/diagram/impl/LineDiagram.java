@@ -36,7 +36,7 @@ public class LineDiagram extends Base {
 
     private boolean isAnimated = false;
 
-    public LineDiagram(double sum, Total.MemberSum[] total) {
+    public LineDiagram(double sum, List<Total.MemberSum> total) {
         super(sum, total);
     }
 
@@ -48,20 +48,20 @@ public class LineDiagram extends Base {
             return this.diagram;
 
 
-        int[] pieColors = new int[this.total.length * 2];
-        LegendEntry[] legendEntries = new LegendEntry[this.total.length];
+        int[] pieColors = new int[this.total.size() * 2];
+        LegendEntry[] legendEntries = new LegendEntry[this.total.size()];
 
 
         //String[] xValsLabels = new String[this.total.length * 2];
         int valuesIndex = 0;
         int legendEntriesIndex = 0;
-        float[] values = new float[(this.total.length * 2) - 1];
+        float[] values = new float[(this.total.size() * 2) - 1];
         float indent = (float) (this.sum / 80); // отступы
 
         for (Total.MemberSum c : this.total) {
             values[valuesIndex] = (float) c.getSumExpense();
 
-            if (valuesIndex < (this.total.length * 2) - 2) {
+            if (valuesIndex < (this.total.size() * 2) - 2) {
                 values[valuesIndex + 1] = indent; // отступ
             }
 
@@ -148,7 +148,7 @@ public class LineDiagram extends Base {
         if (e instanceof BarEntry && ((BarEntry) e).getYVals().length > 1) {
             int valueIndex = h.getStackIndex();
             if (valueIndex % 2 == 0) {
-                return total[valueIndex / 2].getMember();
+                return total.get(valueIndex / 2).getMember();
             }
         }
         return null;

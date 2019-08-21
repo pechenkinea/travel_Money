@@ -20,11 +20,12 @@ import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class Base implements Diagram {
 
-    protected Total.MemberSum[] total;
+    protected List<Total.MemberSum> total;
     protected double sum;
     protected Chart diagram = null;
     private OnDiagramSelect onDiagramSelect = null;
@@ -41,9 +42,9 @@ public abstract class Base implements Diagram {
         this.onDiagramSelectItem = onDiagramSelectItem;
     }
 
-    public Base(double sum, Total.MemberSum[] total) {
+    public Base(double sum, List<Total.MemberSum> total) {
         this.sum = sum;
-        Arrays.sort(total, (t1, t2) -> Integer.compare(t1.getMember().getColor(), t2.getMember().getColor()));
+        Collections.sort(total, (t1, t2) -> Integer.compare(t1.getMember().getColor(), t2.getMember().getColor()));
 
         this.total = total;
     }

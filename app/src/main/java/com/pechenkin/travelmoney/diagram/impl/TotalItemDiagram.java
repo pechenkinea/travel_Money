@@ -24,6 +24,7 @@ import com.pechenkin.travelmoney.diagram.Base;
 import com.pechenkin.travelmoney.diagram.DiagramName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -34,7 +35,7 @@ public class TotalItemDiagram extends Base {
 
     private boolean isAnimated = false;
 
-    public TotalItemDiagram(double sum, Total.MemberSum[] total) {
+    public TotalItemDiagram(double sum, List<Total.MemberSum> total) {
         super(sum, total);
     }
 
@@ -56,7 +57,7 @@ public class TotalItemDiagram extends Base {
 
         ArrayList<PieEntry> NoOfEmp = new ArrayList<>();
 
-        int[] pieColors = new int[this.total.length];
+        int[] pieColors = new int[this.total.size()];
 
         int i = 0;
         for (Total.MemberSum c : this.total) {

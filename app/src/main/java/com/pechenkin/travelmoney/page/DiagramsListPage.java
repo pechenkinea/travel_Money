@@ -25,6 +25,9 @@ import com.pechenkin.travelmoney.diagram.impl.LineDiagram;
 import com.pechenkin.travelmoney.diagram.impl.TotalItemDiagram;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by pechenkin on 19.04.2018.]
  * Страница "Статистика"
@@ -53,9 +56,9 @@ public class DiagramsListPage extends ListPage {
     protected boolean fillFields() {
 
 
-        Cost[] allCostTrip = t_trips.getActiveTrip().getAllCost();
+        List<Cost> allCostTrip = t_trips.getActiveTrip().getAllCost();
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
-        if (allCostTrip.length == 0) {
+        if (allCostTrip.size() == 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
             list1.setAdapter(null);
             return false;
@@ -65,7 +68,7 @@ public class DiagramsListPage extends ListPage {
 
             ProcessIterate.doIterate(allCostTrip, new CostIterable[]{total, allSumIteration});
 
-            Total.MemberSum[] totalResult = total.getResult();
+            List<Total.MemberSum> totalResult = total.getResult();
             double allSum = allSumIteration.getSum();
 
             OnDiagramSelect onDiagramSelect = diagram -> {
@@ -93,14 +96,15 @@ public class DiagramsListPage extends ListPage {
                 alert.show();
             };
 
-            CostListItem[] listItems = new CostListItem[]{
-                    new LabelItem("Траты"),
-                    new TotalItemDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect),
-                    new BarDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect),
-                    new LineDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect),
-                    new LabelItem("Долги"),
-                    new DebitCreditDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect)
-            };
+            List<CostListItem> listItems = new ArrayList<>();
+
+            listItems.add(new LabelItem("Траты"));
+            listItems.add(new TotalItemDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect));
+            listItems.add(new BarDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect));
+            listItems.add(new LineDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect));
+            listItems.add(new LabelItem("Долги"));
+            listItems.add(new DebitCreditDiagram(allSum, totalResult).setOnDiagramSelect(onDiagramSelect));
+
 
             AdapterCostList adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), listItems);
             list1.setAdapter(adapter);

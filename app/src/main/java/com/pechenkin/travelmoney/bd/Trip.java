@@ -39,7 +39,7 @@ public interface Trip {
 
 
 
-    Cost[] getAllCost();
+    List<Cost> getAllCost();
 
     void addCost(Member member, Member toMember, String comment, double sum, String image_dir, Date date, boolean isRepayment);
 

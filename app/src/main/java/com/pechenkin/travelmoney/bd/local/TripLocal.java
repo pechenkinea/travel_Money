@@ -106,8 +106,12 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
     }
 
     @Override
-    public Cost[] getAllCost() {
-        return t_costs.getAllByTripId(this.id).getAllRows();
+    public List<Cost> getAllCost() {
+        return new ArrayList<>(
+                Arrays.asList(
+                        t_costs.getAllByTripId(this.id).getAllRows()
+                ));
+
     }
 
     @Override

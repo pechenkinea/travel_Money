@@ -88,7 +88,7 @@ public class TripAdapter implements Trip {
     }
 
     @Override
-    public Cost[] getAllCost() {
+    public List<Cost> getAllCost() {
         return this.trip.getAllCost();
     }
 

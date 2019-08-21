@@ -17,7 +17,7 @@ public abstract class GroupCost implements CostListItem {
      *
      * @param costs отсортированный по дате массив трат
      */
-    public static GroupCost[] group(Cost[] costs) {
+    public static List<GroupCost> group(List<Cost> costs) {
         List<GroupCost> groupCostList = new ArrayList<>();
         String lastKey = "";
 
@@ -39,7 +39,7 @@ public abstract class GroupCost implements CostListItem {
             groupCostList.add(createGroupCost(listCosts.toArray(new Cost[0])));
         }
 
-        return groupCostList.toArray(new GroupCost[0]);
+        return groupCostList;
     }
 
     private static GroupCost createGroupCost(Cost[] listCosts) {

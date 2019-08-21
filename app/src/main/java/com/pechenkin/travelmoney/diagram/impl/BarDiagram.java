@@ -31,7 +31,7 @@ public class BarDiagram extends Base {
 
     private boolean isAnimated = false;
 
-    public BarDiagram(double sum, Total.MemberSum[] total) {
+    public BarDiagram(double sum, List<Total.MemberSum> total) {
         super(sum, total);
     }
 
@@ -51,10 +51,10 @@ public class BarDiagram extends Base {
         diagramBarChart.setLayoutParams(lp);
 
 
-        int[] pieColors = new int[this.total.length];
+        int[] pieColors = new int[this.total.size()];
 
         List<BarEntry> entries = new ArrayList<>();
-        LegendEntry[] legendEntries = new LegendEntry[this.total.length];
+        LegendEntry[] legendEntries = new LegendEntry[this.total.size()];
         int i = 0;
         for (Total.MemberSum c : this.total) {
             Member member = c.getMember();

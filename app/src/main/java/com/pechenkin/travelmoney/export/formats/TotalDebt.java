@@ -15,6 +15,8 @@ import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
 import com.pechenkin.travelmoney.cost.processing.summary.Total;
 
+import java.util.List;
+
 /**
  * Вернет итоги в виде текста
  */
@@ -22,7 +24,7 @@ public class TotalDebt implements ExportFormat {
     @Override
     public String getText(Trip trip) {
 
-        Cost[] allCosts = trip.getAllCost();
+        List<Cost> allCosts = trip.getAllCost();
 
         StringBuilder result = new StringBuilder();
 
@@ -32,8 +34,8 @@ public class TotalDebt implements ExportFormat {
         AllSum allSumIteration = new AllSum();
 
         ProcessIterate.doIterate(allCosts, new CostIterable[]{calc, total, allSumIteration});
-        ShortCost[] calculateCosts = calc.getResult();
-        Total.MemberSum[] totalResult = total.getResult();
+        List<ShortCost> calculateCosts = calc.getResult();
+        List<Total.MemberSum> totalResult = total.getResult();
         double allSum = allSumIteration.getSum();
 
 
@@ -44,7 +46,7 @@ public class TotalDebt implements ExportFormat {
         result.append("Всего потрачено: ").append(Help.doubleToString(allSum));
 
         result.append("\n\n");
-        if (calculateCosts.length == 0) {
+        if (calculateCosts.size() == 0) {
             return "Долгов нет";
         } else {
 
@@ -59,7 +61,7 @@ public class TotalDebt implements ExportFormat {
         }
 
 
-        if (totalResult.length > 0) {
+        if (totalResult.size() > 0) {
             result.append("\n\n");
             result.append("Кто сколько потратил:\n");
 

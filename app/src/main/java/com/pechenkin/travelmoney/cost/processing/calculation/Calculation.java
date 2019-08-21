@@ -11,6 +11,7 @@ import com.pechenkin.travelmoney.cost.processing.CostIterable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -23,7 +24,7 @@ public class Calculation implements CostIterable {
     private static final float deviation = 0.01f;
 
     private LongSparseArray<MemberSum> members;
-    private ShortCost[] result;
+    private List<ShortCost> result;
 
     //Нужно для того, что бы можно было считать не по id сотрудников а, например, по их цветам
 
@@ -148,12 +149,12 @@ public class Calculation implements CostIterable {
         }
 
 
-        result = resultList.toArray(new ShortCost[0]);
+        result = resultList;
 
     }
 
 
-    public ShortCost[] getResult() {
+    public List<ShortCost> getResult() {
         return result;
     }
 

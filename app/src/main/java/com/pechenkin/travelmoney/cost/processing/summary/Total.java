@@ -60,8 +60,8 @@ public class Total implements CostIterable {
         }
     }
 
-    public MemberSum[] getResult() {
-        return result.toArray(new MemberSum[0]);
+    public List<MemberSum> getResult() {
+        return result;
     }
 
     public static class MemberSum {
