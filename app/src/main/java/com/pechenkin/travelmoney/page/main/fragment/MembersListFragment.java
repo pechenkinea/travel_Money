@@ -34,22 +34,18 @@ public class MembersListFragment extends BaseMainPageFragment {
         list.setOnItemClickListener((parent, view, position, id) -> {
 
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-            Member member  = adapter.getItem(position).getMember();
+            Member member = adapter.getItem(position).getMember();
 
 
+            boolean isActive = t_trips.getActiveTrip().memberIsActive(member);
+            t_trips.getActiveTrip().setMemberActive(member, !isActive);
+            list.setItemChecked(position, !isActive);
 
-            if (t_trips.getActiveTrip().memberIsActive(member)) {
-                t_trips.getActiveTrip().removeMember(member);
-                list.setItemChecked(position, false);
-            } else {
-                t_trips.getActiveTrip().setMemberActive(member);
-                list.setItemChecked(position, true);
-            }
             list.invalidateViews();
         });
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-            Member member  = adapter.getItem(position).getMember();
+            Member member = adapter.getItem(position).getMember();
 
             PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setMember(member).getParam());
 
@@ -74,10 +70,9 @@ public class MembersListFragment extends BaseMainPageFragment {
                     boolean m1InTRip = t_trips.getActiveTrip().memberIsActive(m1);
                     boolean m2InTRip = t_trips.getActiveTrip().memberIsActive(m2);
 
-                    if (m1InTRip && !m2InTRip){
+                    if (m1InTRip && !m2InTRip) {
                         return -1;
-                    }
-                    else if (!m1InTRip && m2InTRip){
+                    } else if (!m1InTRip && m2InTRip) {
                         return 1;
                     }
 

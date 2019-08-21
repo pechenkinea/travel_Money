@@ -7,7 +7,6 @@ import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
@@ -39,7 +38,7 @@ public class TotalDebt implements ExportFormat {
 
 
         result.append("Итоги по поездке \"").append(trip.getName()).append("\" (");
-        result.append(Help.dateToDateStr(t_trips.getStartTripDate(trip.getId()))).append(" - ").append(Help.dateToDateStr(t_trips.getEndTripDate(trip.getId()))).append(")\n");
+        result.append(Help.dateToDateStr(trip.getStartDate())).append(" - ").append(Help.dateToDateStr(trip.getEndDate())).append(")\n");
 
         result.append("\n\n");
         result.append("Всего потрачено: ").append(Help.doubleToString(allSum));

@@ -14,13 +14,14 @@ import java.lang.reflect.Constructor;
  * Базовый запрос к БД
  */
 
-public class QueryResult<T extends TableRow>{
+public class QueryResult<T extends TableRow> {
 
 
+    //массив а не лист т.к. массивы ковариантны
     private T[] allRows;
 
     @SuppressWarnings("unchecked")
-    public QueryResult(String query, Class<T> tableRowClass){
+    public QueryResult(String query, Class<T> tableRowClass) {
 
         Constructor<T> tableRowConstructor;
         try {

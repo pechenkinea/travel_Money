@@ -50,7 +50,8 @@ public class AddMemberPage extends BaseMemberPage {
 
             String icon = ((TextView) MainActivity.INSTANCE.findViewById(R.id.iconId)).getText().toString();
 
-            t_trips.getActiveTrip().createMember(name, color, (int) Help.StringToDouble(icon));
+            Member member = t_trips.getActiveTrip().createMember(name, color, (int) Help.StringToDouble(icon));
+            t_trips.getActiveTrip().setMemberActive(member, true);
             Help.message("Успешно");
 
             clickBackButton();

@@ -76,13 +76,13 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
     }
 
     @Override
-    public void setMemberActive(Member member) {
-        t_trips.addMemberInTrip(this.id, member.getId());
-    }
-
-    @Override
-    public void removeMember(Member member) {
-        t_trips.removeMemberInTrip(this.id, member.getId());
+    public void setMemberActive(Member member, boolean active) {
+        if (active) {
+            t_trips.addMemberInTrip(this.id, member.getId());
+        }
+        else {
+            t_trips.removeMemberInTrip(this.id, member.getId());
+        }
     }
 
     @Override
@@ -102,10 +102,7 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
 
     @Override
     public Member createMember(String name, int color, int icon) {
-
-        Member member = t_members.add(name, color, icon);
-        setMemberActive(member);
-        return member;
+        return t_members.add(name, color, icon);
     }
 
     @Override
@@ -116,5 +113,15 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
     @Override
     public Member getMemberById(long id) {
         return t_members.getMemberById(id);
+    }
+
+    @Override
+    public Date getStartDate() {
+        return t_trips.getStartTripDate(this.id);
+    }
+
+    @Override
+    public Date getEndDate() {
+        return t_trips.getEndTripDate(this.id);
     }
 }
