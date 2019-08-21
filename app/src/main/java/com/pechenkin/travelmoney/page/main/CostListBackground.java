@@ -58,7 +58,6 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
             List<Cost> costList = this.trip.getAllCost();
 
             List<ShortCost> calculationList;
-            List<Total.MemberSum> totalResult;
             double allSum = 0;
 
             if (costList.size() > 0) {
@@ -70,21 +69,9 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                 ProcessIterate.doIterate(costList, new CostIterable[]{calc, total, allSumIteration});
 
                 calculationList = calc.getResult();
-                totalResult = total.getResult();
+                List<Total.MemberSum> totalResult = total.getResult();
                 allSum = allSumIteration.getSum();
-            } else {
-                calculationList = new ArrayList<>();
-                totalResult = new ArrayList<>();
-            }
 
-            if (calculationList.size() > 0) {
-                finalList.add(new LabelItemWithMenu("Кто кому сколько должен"));
-                finalList.addAll(calculationList);
-            } else {
-                finalList.add(new LabelItemWithMenu("Долгов нет"));
-            }
-
-            if (costList.size() > 0) {
 
                 Diagram diagram = DefaultDiagram.createDefaultDiagram(allSum, totalResult);
 
@@ -101,15 +88,26 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                 }
 
 
-                finalList.add(0, diagram); //TODO перенести наверх. добавлять в начало не очень
+                finalList.add(diagram);
+
+
+            } else {
+                calculationList = new ArrayList<>();
+            }
+
+            if (calculationList.size() > 0) {
+                finalList.add(new LabelItemWithMenu("Кто кому сколько должен"));
+                finalList.addAll(calculationList);
+            } else {
+                finalList.add(new LabelItemWithMenu("Долгов нет"));
+            }
+
+            if (costList.size() > 0) {
 
                 finalList.add(new LabelItem("Список всех операций"));
-
-
                 // Группировка
                 List<GroupCost> groupCostList = GroupCost.group(costList);
                 finalList.addAll(groupCostList);
-
             }
         }
 
