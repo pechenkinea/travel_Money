@@ -13,6 +13,8 @@ import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.NamesHashMap;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 
+import java.util.List;
+
 
 /**
  * Created by pechenkin on 19.04.2018.
@@ -30,7 +32,7 @@ public class AddMemberPage extends BaseMemberPage {
 
         String validateName = NamesHashMap.keyValidate(name);
 
-        Member[] existMembers = t_trips.getActiveTrip().getAllMembers();
+        List<Member> existMembers = t_trips.getActiveTrip().getAllMembers();
         for (Member member : existMembers) {
             if (validateName.equals(NamesHashMap.keyValidate(member.getName()))){
                 Help.message("Участник с таким именем уже добавлен");

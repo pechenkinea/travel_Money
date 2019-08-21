@@ -19,6 +19,7 @@ import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -68,9 +69,9 @@ public class MasterWhom extends ListPage {
         MainActivity.INSTANCE.findViewById(R.id.member_add_button)
                 .setVisibility(View.INVISIBLE);
 
-        Member[] tripMembers = t_trips.getActiveTrip().getActiveMembers();
+        List<Member> tripMembers = t_trips.getActiveTrip().getActiveMembers();
         ListView list1 =  MainActivity.INSTANCE.findViewById(getListViewId());
-        if (tripMembers.length == 0)
+        if (tripMembers.size() == 0)
         {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
             return false;

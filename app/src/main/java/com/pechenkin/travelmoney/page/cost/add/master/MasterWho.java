@@ -14,6 +14,8 @@ import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 
+import java.util.List;
+
 /**
  * Created by pechenkin on 15.05.2018.
  * Страница мастера добавления траты. Кто платил
@@ -39,9 +41,9 @@ public class MasterWho extends ListPage {
          MainActivity.INSTANCE.findViewById(R.id.member_list_commit)
                 .setVisibility(View.INVISIBLE);
 
-        Member[] tripMembers = t_trips.getActiveTrip().getActiveMembers();
+        List<Member> tripMembers = t_trips.getActiveTrip().getActiveMembers();
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
-        if (tripMembers.length == 0)
+        if (tripMembers.size() == 0)
         {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
             return false;

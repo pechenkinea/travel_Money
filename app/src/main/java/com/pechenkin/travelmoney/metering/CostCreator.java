@@ -11,6 +11,7 @@ import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 class CostCreator {
@@ -26,7 +27,7 @@ class CostCreator {
 
         Thread printCostThready = new Thread(() -> {
 
-            Member[] members = t_trips.getActiveTrip().getActiveMembers();
+            List<Member> members = t_trips.getActiveTrip().getActiveMembers();
 
 
             try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
@@ -38,7 +39,7 @@ class CostCreator {
 
                 for (int i = 0; i < 1000; i++) {
 
-                    Member member = members[memberRandom.nextInt(members.length)];
+                    Member member = members.get(memberRandom.nextInt(members.size()));
                     String comment = "comment " + i;
 
                     String dateStr = String.valueOf(date + i);
@@ -47,7 +48,7 @@ class CostCreator {
 
                         ContentValues cv = new ContentValues();
                         cv.put(Namespace.FIELD_MEMBER, member.getId());
-                        cv.put(Namespace.FIELD_TO_MEMBER, members[memberRandom.nextInt(members.length)].getId());
+                        cv.put(Namespace.FIELD_TO_MEMBER, members.get(memberRandom.nextInt(members.size())).getId());
                         cv.put(Namespace.FIELD_COMMENT, comment);
                         cv.put(Namespace.FIELD_SUM, String.valueOf(new Random().nextInt(300)));
                         cv.put(Namespace.FIELD_IMAGE_DIR, "");

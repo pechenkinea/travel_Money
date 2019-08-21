@@ -11,7 +11,10 @@ import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by pechenkin on 04.04.2018.
@@ -61,13 +64,21 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
     }
 
     @Override
-    public Member[] getAllMembers() {
-        return t_members.getAll().getAllRows();
+    public List<Member> getAllMembers() {
+        return new ArrayList<>(
+                Arrays.asList(
+                        t_members.getAll().getAllRows()
+                ));
     }
 
     @Override
-    public Member[] getActiveMembers() {
-        return t_members.getAllByTripId(this.id);
+    public List<Member> getActiveMembers() {
+
+        return new ArrayList<>(
+                Arrays.asList(
+                        t_members.getAllByTripId(this.id)
+                ));
+
     }
 
     @Override
@@ -79,8 +90,7 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
     public void setMemberActive(Member member, boolean active) {
         if (active) {
             t_trips.addMemberInTrip(this.id, member.getId());
-        }
-        else {
+        } else {
             t_trips.removeMemberInTrip(this.id, member.getId());
         }
     }

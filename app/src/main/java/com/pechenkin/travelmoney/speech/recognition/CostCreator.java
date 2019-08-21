@@ -132,7 +132,7 @@ public class CostCreator {
 
         //За всех
         if (text.equals(WordCollection.ALL)) {
-            Member[] membersTrip = t_trips.getActiveTrip().getActiveMembers();
+            List<Member> membersTrip = t_trips.getActiveTrip().getActiveMembers();
             for (Member toMember : membersTrip) {
                 addToMember(toMember);
             }
@@ -220,7 +220,7 @@ public class CostCreator {
 
         String nameCase = NamesHashMap.keyValidate(m_name);
 
-        Member[] members = t_trips.getActiveTrip().getActiveMembers();
+        List<Member> members = t_trips.getActiveTrip().getActiveMembers();
         for (Member member : members) {
             if (NamesHashMap.keyValidate(member.getName()).equals(nameCase)) {
                 return member;

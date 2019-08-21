@@ -23,9 +23,9 @@ public interface Trip {
 
 
 
-    Member[] getAllMembers();
+    List<Member> getAllMembers();
 
-    Member[] getActiveMembers();
+    List<Member> getActiveMembers();
 
     Member createMember(String name, int color, int icon);
 

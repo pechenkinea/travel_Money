@@ -15,7 +15,8 @@ import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.member.AddMemberPage;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class MembersListFragment extends BaseMainPageFragment {
 
@@ -56,16 +57,16 @@ public class MembersListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        Member[] members = t_trips.getActiveTrip().getAllMembers();
+        List<Member> members = t_trips.getActiveTrip().getAllMembers();
         ListView list = fragmentView.findViewById(R.id.list_members);
         if (list != null) {
-            if (members.length == 0) {
+            if (members.size() == 0) {
                 Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
                 list.setAdapter(null);
             } else {
 
                 // сортируем так, что бы те, кто в текущей поездке отображались сверху
-                Arrays.sort(members, (m1, m2) -> {
+                Collections.sort(members, (m1, m2) -> {
 
                     boolean m1InTRip = t_trips.getActiveTrip().memberIsActive(m1);
                     boolean m2InTRip = t_trips.getActiveTrip().memberIsActive(m2);
@@ -78,6 +79,8 @@ public class MembersListFragment extends BaseMainPageFragment {
 
                     return Long.compare(m1.getId(), m2.getId());
                 });
+
+
 
                 AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(members, 0), true);
                 list.setAdapter(adapter);

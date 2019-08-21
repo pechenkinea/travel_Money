@@ -2,6 +2,9 @@ package com.pechenkin.travelmoney.page.cost.add.data;
 
 import com.pechenkin.travelmoney.bd.Member;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by pechenkin on 04.06.2018.
  */
@@ -36,12 +39,12 @@ public class CostMember {
         return member;
     }
 
-    public static CostMember[] createCostMemberBaseTableRow(Member[] members, double sum) {
-        double oneMemberSum = (sum > 0 && members.length > 0) ? sum / members.length : 0;
+    public static List<CostMember> createCostMemberBaseTableRow(List<Member> members, double sum) {
+        double oneMemberSum = (sum > 0 && members.size() > 0) ? sum / members.size() : 0;
 
-        CostMember[] result = new CostMember[members.length];
-        for (int i = 0; i < members.length; i++) {
-            result[i] = new CostMember(members[i], oneMemberSum);
+        List<CostMember> result = new ArrayList<>();
+        for (Member member : members) {
+            result.add(new CostMember(member, oneMemberSum));
         }
 
         return result;

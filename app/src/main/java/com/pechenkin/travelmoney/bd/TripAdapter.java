@@ -3,6 +3,7 @@ package com.pechenkin.travelmoney.bd;
 import com.pechenkin.travelmoney.cost.Cost;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Адаптер для поездки. ничего не далет. просто вызвает методы из вложенного Trip
@@ -52,12 +53,12 @@ public class TripAdapter implements Trip {
     }
 
     @Override
-    public Member[] getAllMembers() {
+    public List<Member> getAllMembers() {
         return this.trip.getAllMembers();
     }
 
     @Override
-    public Member[] getActiveMembers() {
+    public List<Member> getActiveMembers() {
         return this.trip.getActiveMembers();
     }
 

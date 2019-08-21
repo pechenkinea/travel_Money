@@ -14,6 +14,8 @@ import com.pechenkin.travelmoney.page.main.fragment.MembersListFragment;
 import com.pechenkin.travelmoney.page.main.fragment.OtherFragment;
 import com.pechenkin.travelmoney.page.main.fragment.TripsListFragment;
 
+import java.util.List;
+
 public class MainPage extends BasePage {
     @Override
     protected int getPageId() {
@@ -45,9 +47,9 @@ public class MainPage extends BasePage {
                 renderFragment(new MembersListFragment());
             }
         } else {
-            Member[] membersByActiveTrip = t_trips.getActiveTrip().getActiveMembers();
+            List<Member> membersByActiveTrip = t_trips.getActiveTrip().getActiveMembers();
             //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
-            if (membersByActiveTrip.length < 2) {
+            if (membersByActiveTrip.size() < 2) {
                 navView.setSelectedItemId(R.id.navigation_members);
                 renderFragment(new MembersListFragment());
             } else {

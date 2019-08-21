@@ -30,9 +30,11 @@ import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 
+import java.util.List;
+
 public class AdapterMembersList extends BaseAdapter {
 
-    private final CostMember[] data;
+    private final List<CostMember> data;
     private static LayoutInflater inflater = null;
     private boolean showEditButton = false;
     private double sum = 0f;
@@ -43,13 +45,13 @@ public class AdapterMembersList extends BaseAdapter {
         this.showCheckBox = showCheckBox;
     }
 
-    public AdapterMembersList(Activity a, CostMember[] dataList, boolean showEditButton) {
+    public AdapterMembersList(Activity a, List<CostMember> dataList, boolean showEditButton) {
         data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showEditButton = showEditButton;
     }
 
-    public AdapterMembersList(Activity a, CostMember[] dataList, double sum) {
+    public AdapterMembersList(Activity a, List<CostMember> dataList, double sum) {
         data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.sum = sum;
@@ -57,13 +59,13 @@ public class AdapterMembersList extends BaseAdapter {
     }
 
     public int getCount() {
-        return data.length;
+        return data.size();
     }
 
 
     public CostMember getItem(int position) {
         try {
-            return data[position];
+            return data.get(position);
         } catch (Exception ex) {
             return null;
         }
@@ -71,7 +73,7 @@ public class AdapterMembersList extends BaseAdapter {
 
     public long getItemId(int position) {
         try {
-            return data[position].getMember().getId();
+            return data.get(position).getMember().getId();
         } catch (Exception ex) {
             return -1;
         }
@@ -80,7 +82,7 @@ public class AdapterMembersList extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        CostMember item = data[position];
+        CostMember item = data.get(position);
 
 
         ViewHolder holder;
@@ -192,8 +194,8 @@ public class AdapterMembersList extends BaseAdapter {
                 holder.check.setImageResource(R.drawable.ic_check_on_24);
 
                 if (showSum) {
-                    if (data[position].isChange()) {
-                        holder.memberSumText.setText(Html.fromHtml("<b>" + Help.doubleToString(data[position].getSum()) + "</b> "));
+                    if (data.get(position).isChange()) {
+                        holder.memberSumText.setText(Html.fromHtml("<b>" + Help.doubleToString(data.get(position).getSum()) + "</b> "));
                         holder.memberSumText.setVisibility(View.VISIBLE);
                         holder.editButton.setVisibility(View.VISIBLE);
                     } else {
@@ -203,8 +205,8 @@ public class AdapterMembersList extends BaseAdapter {
                             int key = sbArray.keyAt(i);
 
                             if (sbArray.get(key)) {
-                                if (data[key].isChange()) {
-                                    distributionSum = distributionSum - data[key].getSum();
+                                if (data.get(key).isChange()) {
+                                    distributionSum = distributionSum - data.get(key).getSum();
                                 } else {
                                     selectedCount++;
                                 }
@@ -213,7 +215,7 @@ public class AdapterMembersList extends BaseAdapter {
                         if (selectedCount > 0) {
                             double sumOne = distributionSum / selectedCount;
                             holder.memberSumText.setText(Help.doubleToString((sumOne > 0) ? sumOne : 0));
-                            data[position].setSum((sumOne > 0) ? sumOne : 0);
+                            data.get(position).setSum((sumOne > 0) ? sumOne : 0);
 
                             holder.memberSumText.setVisibility(View.VISIBLE);
                             holder.editButton.setVisibility(View.VISIBLE);

@@ -11,6 +11,8 @@ import com.pechenkin.travelmoney.bd.NamesHashMap;
 import com.pechenkin.travelmoney.bd.local.query.QueryResult;
 import com.pechenkin.travelmoney.bd.local.MemberLocal;
 
+import java.util.List;
+
 public class t_members {
 
     public static Member add(String name, int color, int icon) {
@@ -64,7 +66,7 @@ public class t_members {
     static public void updateMembersCache() {
         membersNamesCache.clear();
 
-        Member[] allMembers = t_trips.getActiveTrip().getAllMembers();
+        List<Member> allMembers = t_trips.getActiveTrip().getAllMembers();
         for (Member member : allMembers){
             membersNamesCache.put(member.getName(), member);
         }
