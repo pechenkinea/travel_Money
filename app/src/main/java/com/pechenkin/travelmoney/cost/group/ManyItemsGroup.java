@@ -12,8 +12,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.t_costs;
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
@@ -186,13 +185,11 @@ public class ManyItemsGroup extends GroupCost {
     public boolean onLongClick() {
         if (this.costs[0].isActive()) {
             for (Cost cost : this.costs) {
-                t_costs.disable_cost(cost.getId());
-                cost.setActive(0);
+                cost.setActive(false);
             }
         } else {
             for (Cost cost : this.costs) {
-                cost.setActive(1);
-                t_costs.enable_cost(cost.getId());
+                cost.setActive(true);
             }
         }
         updateSum();

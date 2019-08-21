@@ -70,11 +70,9 @@ public class OneItemGroup extends GroupCost {
     @Override
     public boolean onLongClick() {
         if (this.cost.isActive()) {
-            t_costs.disable_cost(cost.getId());
-            cost.setActive(0);
+            cost.setActive(false);
         } else {
-            cost.setActive(1);
-            t_costs.enable_cost(cost.getId());
+            cost.setActive(true);
         }
         return true;
     }

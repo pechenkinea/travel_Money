@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.ShortCost;
@@ -89,7 +89,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                     diagram.setOnDiagramSelectItem(itemId -> {
 
                         PageParam param = new PageParam.BuildingPageParam()
-                                .setId(itemId.getId())
+                                .setMember(itemId)
                                 .setBackPage(MainPage.class)
                                 .getParam();
                         PageOpener.INSTANCE.open(MasterCostInfo.class, param);

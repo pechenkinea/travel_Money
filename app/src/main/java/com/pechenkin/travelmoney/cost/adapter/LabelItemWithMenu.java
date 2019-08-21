@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
 
 /**

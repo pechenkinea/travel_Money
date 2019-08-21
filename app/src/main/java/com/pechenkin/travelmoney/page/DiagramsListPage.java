@@ -6,7 +6,7 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
@@ -35,7 +35,7 @@ public class DiagramsListPage extends ListPage {
 
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_more).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_more).getParam());
     }
 
     @Override
@@ -45,7 +45,7 @@ public class DiagramsListPage extends ListPage {
 
     @Override
     protected String getTitleHeader() {
-        return MainActivity.INSTANCE.getString(R.string.diagrams) + "(" + t_trips.getActiveTripNew().getName() + ")";
+        return MainActivity.INSTANCE.getString(R.string.diagrams) + "(" + t_trips.getActiveTrip().getName() + ")";
     }
 
 
@@ -53,7 +53,7 @@ public class DiagramsListPage extends ListPage {
     protected boolean fillFields() {
 
 
-        Cost[] allCostTrip = t_trips.getActiveTripNew().getAllCost();
+        Cost[] allCostTrip = t_trips.getActiveTrip().getAllCost();
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
         if (allCostTrip.length == 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));

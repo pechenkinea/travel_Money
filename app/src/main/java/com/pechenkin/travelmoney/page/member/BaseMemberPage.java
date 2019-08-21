@@ -17,9 +17,8 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.dialog.ColorDialog;
 import com.pechenkin.travelmoney.page.BasePage;
@@ -33,7 +32,7 @@ import java.util.Map;
 abstract class BaseMemberPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_members).getParam());
     }
 
 
@@ -93,9 +92,9 @@ abstract class BaseMemberPage extends BasePage {
 
         int activeIcon = 0;
         if (hasParam()) {
-            MemberTableRow member = t_members.getMemberById(getParam().getId());
+            Member member = getParam().getMember();
             if (member != null) {
-                activeIcon = member.icon;
+                activeIcon = member.getIcon();
             }
 
         }

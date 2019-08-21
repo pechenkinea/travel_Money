@@ -6,12 +6,12 @@ import com.pechenkin.travelmoney.bd.Member;
  * Created by pechenkin on 04.06.2018.
  */
 public class CostMember {
-    private final long memberId;
+    private final Member member;
     private boolean isChange = false;
     private double sum;
 
-    private CostMember(long memberId, double sum) {
-        this.memberId = memberId;
+    private CostMember(Member member, double sum) {
+        this.member = member;
         this.sum = sum;
     }
 
@@ -32,8 +32,8 @@ public class CostMember {
         isChange = value;
     }
 
-    public long getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
     public static CostMember[] createCostMemberBaseTableRow(Member[] members, double sum) {
@@ -41,7 +41,7 @@ public class CostMember {
 
         CostMember[] result = new CostMember[members.length];
         for (int i = 0; i < members.length; i++) {
-            result[i] = new CostMember(members[i].getId(), oneMemberSum);
+            result[i] = new CostMember(members[i], oneMemberSum);
         }
 
         return result;

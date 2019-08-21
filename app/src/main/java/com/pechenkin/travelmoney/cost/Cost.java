@@ -43,7 +43,7 @@ public interface Cost {
     /**
      * меняет статус проводке
      */
-    void setActive(int i);
+    void setActive(boolean value);
 
     /**
      * Возвращает путь к изображению привязанному к проводке

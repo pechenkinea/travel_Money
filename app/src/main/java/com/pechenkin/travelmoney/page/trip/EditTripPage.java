@@ -9,7 +9,6 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.table.query.row.TripTableRow;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -40,25 +39,25 @@ public class EditTripPage extends BaseTripPage {
             }
 
             if (t_trips.isAdded(strName)) {
-                if (getParam().getId() != t_trips.getIdByName(strName)) {
+                if (getParam().getTrip().getId() != t_trips.getIdByName(strName)) {
                     Help.message("Название занято");
                     Help.setActiveEditText(R.id.trip_name);
                     return;
                 }
             }
 
-            Trip trip = t_trips.getTripById(getParam().getId());
+            Trip trip = getParam().getTrip();
 
             if (trip != null) {
                 trip.edit(strName, getTextInputEditText(trComment));
                 CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
 
                 if (isActive.isChecked())
-                    t_trips.set_active(getParam().getId());
+                    t_trips.set_active(getParam().getTrip().getId());
 
                 Help.message("Сохранено");
 
-                PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
+                PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_members).getParam());
             } else {
                 Help.message("Ошибка");
             }
@@ -79,22 +78,22 @@ public class EditTripPage extends BaseTripPage {
             return false;
         }
 
-        TripTableRow trip = t_trips.getTripById(getParam().getId());
+        Trip trip = getParam().getTrip();
         if (trip == null) {
-            Help.message("Ошибка. Не найдена поездка с id " + getParam().getId());
+            Help.message("Ошибка. Не задана поездка");
             return false;
         }
 
         TextInputEditText t_name = MainActivity.INSTANCE.findViewById(R.id.trip_name);
-        t_name.setText(trip.name);
+        t_name.setText(trip.getName());
 
         TextInputEditText t_comment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
-        t_comment.setText(trip.comment);
+        t_comment.setText(trip.getComment());
 
         MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction).setVisibility(View.VISIBLE);
 
         CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
-        if (t_trips.isActive(trip.id))
+        if (trip.isActive())
             isActive.setChecked(true);
         else
             isActive.setChecked(false);

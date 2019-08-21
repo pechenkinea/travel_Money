@@ -1,9 +1,9 @@
-package com.pechenkin.travelmoney.bd.local.table.query.row;
+package com.pechenkin.travelmoney.bd.local.query;
 
 import android.database.Cursor;
 
-import com.pechenkin.travelmoney.bd.local.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.query.TableRow;
+import com.pechenkin.travelmoney.bd.local.table.Namespace;
+import com.pechenkin.travelmoney.bd.local.query.TableRow;
 
 /**
  * Created by pechenkin on 04.04.2018.

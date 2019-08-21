@@ -7,7 +7,7 @@ import android.widget.EditText;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
@@ -19,7 +19,7 @@ import com.pechenkin.travelmoney.page.main.MainPage;
 public class SettingsPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_more).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_more).getParam());
     }
 
 

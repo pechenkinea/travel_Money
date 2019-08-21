@@ -33,8 +33,8 @@ public class TotalItemCost extends ShortCost {
 
         holder.getMainLayout().setOnClickListener(view -> {
             PageParam param = new PageParam.BuildingPageParam()
-                    .setId(getMember().getId()) // TODO надо передавать не id а Member
-                    .setToMemberId(getToMember().getId())  // TODO надо передавать не id а Member
+                    .setMember(getMember())
+                    .setToMember(getToMember())
                     .setSum(getSum())
                     .getParam();
 

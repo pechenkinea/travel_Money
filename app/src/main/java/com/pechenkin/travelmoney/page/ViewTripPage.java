@@ -17,7 +17,7 @@ public class ViewTripPage extends BasePage {
 
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_trips).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_trips).getParam());
     }
 
 
@@ -42,14 +42,13 @@ public class ViewTripPage extends BasePage {
         return pageTrip;
     }
 
-    private Trip pageTrip = t_trips.getActiveTripNew();
+    private Trip pageTrip = t_trips.getActiveTrip();
 
     @Override
     protected boolean fillFields() {
 
-        if (hasParam() && getParam().getId() > -1) {
-            //Если режим просмотра поездки, не помеченной "по умолчанию"
-            pageTrip = t_trips.getTripById(getParam().getId());
+        if (hasParam() && getParam().getTrip() != null) {
+            pageTrip = getParam().getTrip();
         }
 
         if (pageTrip == null)

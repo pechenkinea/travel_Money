@@ -132,7 +132,7 @@ public class CostCreator {
 
         //За всех
         if (text.equals(WordCollection.ALL)) {
-            Member[] membersTrip = t_trips.getActiveTripNew().getActiveMembers();
+            Member[] membersTrip = t_trips.getActiveTrip().getActiveMembers();
             for (Member toMember : membersTrip) {
                 addToMember(toMember);
             }
@@ -145,7 +145,7 @@ public class CostCreator {
                 if (words.viewNext(i).equals(WordCollection.MASTER)) {
                     removeToMember(master);
                 } else if (words.viewNext(i).equals(WordCollection.ME)) {
-                    Member me = t_trips.getActiveTripNew().getMe();
+                    Member me = t_trips.getActiveTrip().getMe();
                     if (me != null) {
                         removeToMember(me);
                     } else
@@ -174,7 +174,7 @@ public class CostCreator {
 
         //За меня
         if (text.equals(WordCollection.ME)) {
-            Member toMember = t_trips.getActiveTripNew().getMe();
+            Member toMember = t_trips.getActiveTrip().getMe();
             if (toMember != null) {
                 addToMember(toMember);
                 return;
@@ -182,7 +182,7 @@ public class CostCreator {
         }
 
         if (text.equals(WordCollection.OWNER)) {
-            Member meMaster = t_trips.getActiveTripNew().getMe();
+            Member meMaster = t_trips.getActiveTrip().getMe();
             if (meMaster != null) {
                 setMaster(meMaster);
                 return;
@@ -220,7 +220,7 @@ public class CostCreator {
 
         String nameCase = NamesHashMap.keyValidate(m_name);
 
-        Member[] members = t_trips.getActiveTripNew().getActiveMembers();
+        Member[] members = t_trips.getActiveTrip().getActiveMembers();
         for (Member member : members) {
             if (NamesHashMap.keyValidate(member.getName()).equals(nameCase)) {
                 return member;

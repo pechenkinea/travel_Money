@@ -28,24 +28,24 @@ public class MainPage extends BasePage {
     @Override
     protected boolean fillFields() {
 
-        MainActivity.INSTANCE.setTitle(t_trips.getActiveTripNew().getName());
+        MainActivity.INSTANCE.setTitle(t_trips.getActiveTrip().getName());
 
         BottomNavigationView navView = MainActivity.INSTANCE.findViewById(R.id.nav_view);
 
         if (hasParam()) {
 
-            if (getParam().getId() == R.id.navigation_more) {
+            if (getParam().getPageId() == R.id.navigation_more) {
                 navView.setSelectedItemId(R.id.navigation_more);
                 renderFragment(new OtherFragment());
-            } else if (getParam().getId() == R.id.navigation_trips) {
+            } else if (getParam().getPageId() == R.id.navigation_trips) {
                 navView.setSelectedItemId(R.id.navigation_trips);
                 renderFragment(new TripsListFragment());
-            } else if (getParam().getId() == R.id.navigation_members) {
+            } else if (getParam().getPageId() == R.id.navigation_members) {
                 navView.setSelectedItemId(R.id.navigation_members);
                 renderFragment(new MembersListFragment());
             }
         } else {
-            Member[] membersByActiveTrip = t_trips.getActiveTripNew().getActiveMembers();
+            Member[] membersByActiveTrip = t_trips.getActiveTrip().getActiveMembers();
             //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
             if (membersByActiveTrip.length < 2) {
                 navView.setSelectedItemId(R.id.navigation_members);

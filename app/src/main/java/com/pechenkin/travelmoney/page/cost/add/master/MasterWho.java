@@ -39,7 +39,7 @@ public class MasterWho extends ListPage {
          MainActivity.INSTANCE.findViewById(R.id.member_list_commit)
                 .setVisibility(View.INVISIBLE);
 
-        Member[] tripMembers = t_trips.getActiveTripNew().getActiveMembers();
+        Member[] tripMembers = t_trips.getActiveTrip().getActiveMembers();
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
         if (tripMembers.length == 0)
         {
@@ -53,10 +53,10 @@ public class MasterWho extends ListPage {
 
             list1.setAdapter(adapter);
 
-            if (hasParam() && getParam().getId() > -1)
+            if (hasParam() && getParam().getMember() != null)
             {
                 for (int i = 0; i < adapter.getCount(); i++) {
-                    if (adapter.getItem(i).getMemberId() == getParam().getId()) {
+                    if (adapter.getItem(i).getMember().equals(getParam().getMember())) {
                         list1.setItemChecked(i, true);
                         break;
                     }
@@ -78,8 +78,8 @@ public class MasterWho extends ListPage {
     protected void onItemClick(ListView list, int position) {
 
         AdapterMembersList adapter =  (AdapterMembersList)list.getAdapter();
-        long itemId = adapter.getItem(position).getMemberId();
-        PageParam param = new PageParam.BuildingPageParam(getParam()).setId(itemId).getParam();
+        Member member = adapter.getItem(position).getMember();
+        PageParam param = new PageParam.BuildingPageParam(getParam()).setMember(member).getParam();
         PageOpener.INSTANCE.open(MasterCostInfo.class, param);
     }
 

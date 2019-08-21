@@ -1,11 +1,11 @@
-package com.pechenkin.travelmoney.bd.local.table.query.row;
+package com.pechenkin.travelmoney.bd.local;
 
 import android.database.Cursor;
 
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.t_costs;
 import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
@@ -18,25 +18,25 @@ import java.util.Date;
  * поездка
  */
 
-public class TripTableRow extends IdAndNameTableRow implements Trip {
+public class TripLocal extends IdAndNameTableRow implements Trip {
 
     //public final long processed;
     public final String comment;
 
-    public TripTableRow(Cursor c) {
+    public TripLocal(Cursor c) {
         super(c);
 
         this.comment = getStringColumnValue(Namespace.FIELD_COMMENT, c);
         //processed = getLongColumnValue(Namespace.FIELD_PROCESSED, c);
     }
 
-    private TripTableRow() {
+    private TripLocal() {
         super(null);
         this.comment = "";
     }
 
-    public static TripTableRow getEmpty() {
-        return new TripTableRow();
+    public static TripLocal getEmpty() {
+        return new TripLocal();
     }
 
 
@@ -67,7 +67,7 @@ public class TripTableRow extends IdAndNameTableRow implements Trip {
 
     @Override
     public Member[] getActiveMembers() {
-        return t_members.getAllByTripId(this.id).getAllRows();
+        return t_members.getAllByTripId(this.id);
     }
 
     @Override
@@ -86,8 +86,8 @@ public class TripTableRow extends IdAndNameTableRow implements Trip {
     }
 
     @Override
-    public void addCost(long member_id, long to_member_id, String comment, double sum, String image_dir, Date date, boolean isRepayment) {
-        t_costs.add(member_id, to_member_id, comment, sum, image_dir, this.id, date, isRepayment);
+    public void addCost(Member member, Member toMember, String comment, double sum, String image_dir, Date date, boolean isRepayment) {
+        t_costs.add(member.getId(), toMember.getId(), comment, sum, image_dir, this.id, date, isRepayment);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class TripTableRow extends IdAndNameTableRow implements Trip {
 
     @Override
     public Member getMe() {
-        return t_members.getMemberById(1);
+        return getMemberById(1);
     }
 
     @Override

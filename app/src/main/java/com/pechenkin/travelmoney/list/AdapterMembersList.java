@@ -24,8 +24,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
@@ -72,7 +71,7 @@ public class AdapterMembersList extends BaseAdapter {
 
     public long getItemId(int position) {
         try {
-            return data[position].getMemberId();
+            return data[position].getMember().getId();
         } catch (Exception ex) {
             return -1;
         }
@@ -96,7 +95,7 @@ public class AdapterMembersList extends BaseAdapter {
 
 
         if (showEditButton) {
-            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setId(item.getMemberId()).getParam()));
+            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setMember(item.getMember()).getParam()));
         }
 
         if (showSum) {
@@ -174,15 +173,15 @@ public class AdapterMembersList extends BaseAdapter {
         }
 
 
-        MemberTableRow row = t_members.getMemberById(item.getMemberId());
+        Member row = item.getMember();
         if (row != null) {
-            holder.name.setText(row.name);
+            holder.name.setText(row.getName());
 
-            holder.name.setTextColor(row.color);
+            holder.name.setTextColor(row.getColor());
 
             holder.icon.setVisibility(View.VISIBLE);
-            holder.icon.setImageDrawable(MemberIcons.getIconById(row.icon));
-            holder.icon.setColorFilter(row.color);
+            holder.icon.setImageDrawable(MemberIcons.getIconById(row.getIcon()));
+            holder.icon.setColorFilter(row.getColor());
 
 
             final ListView lv = (ListView) parent;

@@ -18,8 +18,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.TMConst;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -212,9 +211,9 @@ public class MasterCostInfo extends BasePage {
         if (hasParam()) {
 
             try {
-                MemberTableRow member = t_members.getMemberById(getParam().getId());
+                Member member = getParam().getMember();
                 if (member != null) {
-                    String memberCostInfoText = MainActivity.INSTANCE.getString(R.string.costMember) + " " + member.name;
+                    String memberCostInfoText = MainActivity.INSTANCE.getString(R.string.costMember) + " " + member.getName();
                     ((TextView) MainActivity.INSTANCE.findViewById(R.id.memberCostInfo))
                             .setText(memberCostInfoText);
                 }

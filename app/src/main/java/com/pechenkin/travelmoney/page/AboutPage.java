@@ -11,8 +11,6 @@ import com.pechenkin.travelmoney.SafeURLSpan;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
-import java.lang.invoke.ConstantCallSite;
-
 /**
  * Created by pechenkin on 11.05.2018.
  * О программе
@@ -21,7 +19,7 @@ import java.lang.invoke.ConstantCallSite;
 public class AboutPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_more).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_more).getParam());
     }
 
 

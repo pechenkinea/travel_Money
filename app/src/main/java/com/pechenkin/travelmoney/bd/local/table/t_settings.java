@@ -6,9 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.local.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.local.table.query.row.SettingTableRow;
+import com.pechenkin.travelmoney.bd.local.query.QueryResult;
+import com.pechenkin.travelmoney.bd.local.query.SettingTableRow;
 
 import java.util.HashMap;
 import java.util.Map;

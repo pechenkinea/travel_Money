@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd.local;
+package com.pechenkin.travelmoney.bd.local.table;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

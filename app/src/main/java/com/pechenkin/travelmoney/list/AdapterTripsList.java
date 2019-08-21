@@ -59,14 +59,14 @@ public class AdapterTripsList extends BaseAdapter {
         if (showEditButton) {
             holder.editButton.setVisibility(View.VISIBLE);
 
-            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(row.getId()).getParam()));
+            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setTrip(row).getParam()));
 
         } else {
             holder.editButton.setVisibility(View.INVISIBLE);
         }
 
 
-        holder.viewButton.setOnClickListener(v -> PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setId(row.getId()).getParam()));
+        holder.viewButton.setOnClickListener(v -> PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam.BuildingPageParam().setTrip(row).getParam()));
 
 
         if (row.isActive()) {

@@ -7,8 +7,8 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.local.table.query.row.TripTableRow;
+import com.pechenkin.travelmoney.bd.local.query.QueryResult;
+import com.pechenkin.travelmoney.bd.local.TripLocal;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterTripsList;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -44,7 +44,7 @@ public class TripsListFragment extends BaseMainPageFragment {
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AdapterTripsList tripAdapter = (AdapterTripsList) list.getAdapter();
             Trip trip = tripAdapter.getItem(position);
-            PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setId(trip.getId()).getParam());
+            PageOpener.INSTANCE.open(EditTripPage.class, new PageParam.BuildingPageParam().setTrip(trip).getParam());
             return true;
         });
 
@@ -53,7 +53,7 @@ public class TripsListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        QueryResult<TripTableRow> allTrips = t_trips.getAll();
+        QueryResult<TripLocal> allTrips = t_trips.getAll();
         ListView list = fragmentView.findViewById(R.id.catalog_trips_list);
 
         if (!allTrips.hasRows()) {

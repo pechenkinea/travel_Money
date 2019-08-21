@@ -11,7 +11,6 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.NamesHashMap;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 
 
@@ -31,7 +30,7 @@ public class AddMemberPage extends BaseMemberPage {
 
         String validateName = NamesHashMap.keyValidate(name);
 
-        Member[] existMembers = t_trips.getActiveTripNew().getAllMembers();
+        Member[] existMembers = t_trips.getActiveTrip().getAllMembers();
         for (Member member : existMembers) {
             if (validateName.equals(NamesHashMap.keyValidate(member.getName()))){
                 Help.message("Участник с таким именем уже добавлен");
@@ -51,7 +50,7 @@ public class AddMemberPage extends BaseMemberPage {
 
             String icon = ((TextView) MainActivity.INSTANCE.findViewById(R.id.iconId)).getText().toString();
 
-            t_trips.getActiveTripNew().createMember(name, color, (int) Help.StringToDouble(icon));
+            t_trips.getActiveTrip().createMember(name, color, (int) Help.StringToDouble(icon));
             Help.message("Успешно");
 
             clickBackButton();

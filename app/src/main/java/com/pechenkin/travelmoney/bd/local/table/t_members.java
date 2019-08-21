@@ -8,9 +8,8 @@ import android.util.LongSparseArray;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.NamesHashMap;
-import com.pechenkin.travelmoney.bd.local.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
+import com.pechenkin.travelmoney.bd.local.query.QueryResult;
+import com.pechenkin.travelmoney.bd.local.MemberLocal;
 
 public class t_members {
 
@@ -54,9 +53,9 @@ public class t_members {
         updateMembersCache();
     }
 
-    static public QueryResult<MemberTableRow> getAll() {
+    static public QueryResult<MemberLocal> getAll() {
         String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS;
-        return new QueryResult<>(sql, MemberTableRow.class);
+        return new QueryResult<>(sql, MemberLocal.class);
 
     }
 
@@ -65,7 +64,7 @@ public class t_members {
     static public void updateMembersCache() {
         membersNamesCache.clear();
 
-        Member[] allMembers = t_trips.getActiveTripNew().getAllMembers();
+        Member[] allMembers = t_trips.getActiveTrip().getAllMembers();
         for (Member member : allMembers){
             membersNamesCache.put(member.getName(), member);
         }
@@ -75,7 +74,7 @@ public class t_members {
         Member row = membersNamesCache.get(m_name);
         if (row == null) {
             String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + m_name + "'";
-            QueryResult<MemberTableRow> result = new QueryResult<>(sql, MemberTableRow.class);
+            QueryResult<MemberLocal> result = new QueryResult<>(sql, MemberLocal.class);
             row = result.getFirstRow();
             if (row != null) {
                 membersNamesCache.put(m_name, row);
@@ -91,36 +90,27 @@ public class t_members {
         return membersNamesCache.get(m_name);
     }
 
-    static private final LongSparseArray<MemberTableRow> memberCache = new LongSparseArray<>();
+    static private final LongSparseArray<Member> memberCache = new LongSparseArray<>();
 
 
-    //TODO убрать
-    static public int getColorById(long _id) {
-        MemberTableRow member = getMemberById(_id);
-        if (member != null) {
-            return member.color;
-        }
-        return Color.BLACK;
-    }
-
-    static public MemberTableRow getMemberById(long _id) {
-        MemberTableRow result = memberCache.get(_id);
+    public static Member getMemberById(long _id) {
+        Member result = memberCache.get(_id);
         if (result == null) {
             String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_ID + " = '" + _id + "'";
-            QueryResult<MemberTableRow> find = new QueryResult<>(sql, MemberTableRow.class);
+            QueryResult<MemberLocal> find = new QueryResult<>(sql, MemberLocal.class);
             result = find.getFirstRow();
             memberCache.put(_id, result);
         }
         return result;
     }
 
-    static public QueryResult<MemberTableRow> getAllByTripId(long t_id) {
+    static public Member[] getAllByTripId(long t_id) {
         String sql = "SELECT m." + Namespace.FIELD_ID + ", m." + Namespace.FIELD_NAME + ", m." + Namespace.FIELD_COLOR + ", m." + Namespace.FIELD_ICON
                 + " FROM " + Namespace.TABLE_TRIPS_MEMBERS + " as t"
                 + " inner join " + Namespace.TABLE_MEMBERS + " as m"
                 + " on t." + Namespace.FIELD_MEMBER + " = m." + Namespace.FIELD_ID + " and t." + Namespace.FIELD_TRIP + " = '" + t_id + "'";
 
-        return new QueryResult<>(sql, MemberTableRow.class);
+        return new QueryResult<>(sql, MemberLocal.class).getAllRows();
     }
 
 }

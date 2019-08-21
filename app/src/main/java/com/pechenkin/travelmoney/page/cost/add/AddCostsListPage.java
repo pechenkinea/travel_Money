@@ -43,7 +43,7 @@ public class AddCostsListPage extends BasePage {
 
     @Override
     protected String getTitleHeader() {
-        return "Добавить траты" + "(" + t_trips.getActiveTripNew().getName() + ")";
+        return "Добавить траты" + "(" + t_trips.getActiveTrip().getName() + ")";
     }
 
     @Override
@@ -86,7 +86,7 @@ public class AddCostsListPage extends BasePage {
                 if (c instanceof ShortCost) {
                     if (((ShortCost) c).getMember() != null && ((ShortCost) c).getSum() > 0) {
 
-                        t_trips.getActiveTripNew().addCost(((ShortCost) c).getMember().getId(), ((ShortCost) c).getToMember().getId(), comment, ((ShortCost) c).getSum(), "", addCostDate, false);
+                        t_trips.getActiveTrip().addCost(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", addCostDate, false);
                         added = true;
                     }
                 }

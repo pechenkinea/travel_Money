@@ -1,5 +1,7 @@
 package com.pechenkin.travelmoney.page;
 
+import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
 
 import java.util.Date;
@@ -16,20 +18,20 @@ public class PageParam {
 
     private PageParam(){}
 
-    private long id;
-    private long toMemberId;
+
+    private int pageId;
+    private Member member;
+    private Member toMember;
     private String photoUrl;
     private String name;
     private String description;
     private double sum = 0f;
     private Date selectDate;
-    private Set<Long> selectedIds;
+    private Set<Member> selectedMembers;
+    private Trip trip;
 
     private Class<? extends Page> backPage;
 
-    public long getId() {
-        return id;
-    }
 
     public String getPhotoUrl() {
         return photoUrl;
@@ -51,8 +53,8 @@ public class PageParam {
         return selectDate;
     }
 
-    public Set<Long> getSelectedIds() {
-        return selectedIds;
+    public Set<Member> getSelectedMembers() {
+        return selectedMembers;
     }
 
     public CostCreator getCostCreator() {
@@ -63,20 +65,34 @@ public class PageParam {
         return backPage;
     }
 
-    public long getToMemberId() {
-        return toMemberId;
+    public Member getToMember() {
+        return toMember;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+    public int getPageId() {
+        return pageId;
     }
 
     static public class BuildingPageParam
     {
-        private long id = -1;
-        private long toMemberId = -1;
+        private int pageId;
+        private Member member;
+        private Member toMember;
+        private Trip trip;
         private String photoUrl = "";
         private String name = "";
         private String description = "";
         private double sum = 0f;
         private Date selectDate = new Date();
-        private Set<Long> selectedIds = new HashSet<>();
+        private Set<Member> selectedMembers = new HashSet<>();
         private CostCreator costCreator = null;
         private Class<? extends Page> backPage = null;
 
@@ -86,41 +102,41 @@ public class PageParam {
 
         public BuildingPageParam(PageParam param)
         {
-            id = param.getId();
             photoUrl = param.photoUrl;
             name = param.getName();
             description = param.getDescription();
             sum = param.getSum();
             selectDate = param.getSelectDate();
-            selectedIds = param.getSelectedIds();
+            selectedMembers = param.getSelectedMembers();
             costCreator = param.getCostCreator();
             backPage = param.getBackPage();
-            toMemberId = param.getToMemberId();
+            member = param.getMember();
+            toMember = param.getToMember();
+            trip = param.getTrip();
+            pageId = param.getPageId();
         }
 
 
         public PageParam getParam()
         {
             PageParam pageParam = new PageParam();
-            pageParam.id = this.id;
             pageParam.photoUrl = this.photoUrl;
             pageParam.name = this.name;
             pageParam.description = this.description;
             pageParam.sum = this.sum;
             pageParam.selectDate = this.selectDate;
-            pageParam.selectedIds = this.selectedIds;
+            pageParam.selectedMembers = this.selectedMembers;
             pageParam.costCreator = this.costCreator;
             pageParam.backPage = this.backPage;
-            pageParam.toMemberId = this.toMemberId;
+            pageParam.toMember = this.toMember;
+            pageParam.member = this.member;
+            pageParam.trip = this.trip;
+            pageParam.pageId = this.pageId;
 
             return pageParam;
         }
 
-        public BuildingPageParam setId(long id)
-        {
-            this.id = id;
-            return this;
-        }
+
         public BuildingPageParam setPhotoUrl(String photoUrl)
         {
             this.photoUrl = photoUrl;
@@ -150,9 +166,9 @@ public class PageParam {
             this.selectDate = date;
             return this;
         }
-        public BuildingPageParam setSelectedIds(Set<Long> selectedIds)
+        public BuildingPageParam setSelectedMembers(Set<Member> selectedMembers)
         {
-            this.selectedIds = selectedIds;
+            this.selectedMembers = selectedMembers;
             return this;
         }
 
@@ -167,8 +183,22 @@ public class PageParam {
             return this;
         }
 
-        public BuildingPageParam setToMemberId(long toMemberId) {
-            this.toMemberId = toMemberId;
+        public BuildingPageParam setMember(Member member) {
+            this.member = member;
+            return this;
+        }
+        public BuildingPageParam setToMember(Member toMember) {
+            this.toMember = toMember;
+            return this;
+        }
+
+        public BuildingPageParam setTrip(Trip trip) {
+            this.trip = trip;
+            return this;
+        }
+
+        public BuildingPageParam setPageId(int pageId) {
+            this.pageId = pageId;
             return this;
         }
     }

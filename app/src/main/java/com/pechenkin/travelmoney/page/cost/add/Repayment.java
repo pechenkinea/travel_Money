@@ -9,8 +9,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.TMConst;
-import com.pechenkin.travelmoney.bd.local.table.query.row.MemberTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -23,8 +22,8 @@ public class Repayment extends BasePage {
 
 
     private Date selectDate = new Date();
-    private long memberId = -1;
-    private long toMemberId = -1;
+    private Member member = null;
+    private Member toMember = null;
 
     @Override
     public void clickBackButton() {
@@ -57,7 +56,7 @@ public class Repayment extends BasePage {
             return;
         }
 
-        t_trips.getActiveTripNew().addCost(memberId, toMemberId, comment, Help.StringToDouble(sum), "",selectDate, true);
+        t_trips.getActiveTrip().addCost(member, toMember, comment, Help.StringToDouble(sum), "",selectDate, true);
         PageOpener.INSTANCE.open(MainPage.class);
 
     }
@@ -66,14 +65,12 @@ public class Repayment extends BasePage {
     protected boolean fillFields() {
 
         if (hasParam()) {
-            memberId = getParam().getId();
-            toMemberId = getParam().getToMemberId();
+            member = getParam().getMember();
+            toMember = getParam().getToMember();
 
-            MemberTableRow member = t_members.getMemberById(memberId);
-            ((TextView) MainActivity.INSTANCE.findViewById(R.id.member)).setText(member.name);
+            ((TextView) MainActivity.INSTANCE.findViewById(R.id.member)).setText(member.getName());
 
-            MemberTableRow toMember = t_members.getMemberById(toMemberId);
-            ((TextView) MainActivity.INSTANCE.findViewById(R.id.to_member)).setText(toMember.name);
+            ((TextView) MainActivity.INSTANCE.findViewById(R.id.to_member)).setText(toMember.getName());
 
             final TextInputEditText cost_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
             cost_sum.setText(Help.doubleToString(getParam().getSum()).replaceAll(" ", ""));

@@ -90,7 +90,7 @@ public class ShortCost implements Cost, CostListItem {
     }
 
     @Override
-    public void setActive(int i) {
+    public void setActive(boolean i) {
 
     }
 

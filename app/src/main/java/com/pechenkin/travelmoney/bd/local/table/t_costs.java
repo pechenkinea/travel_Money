@@ -4,9 +4,8 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.local.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.local.table.query.row.CostTableRow;
+import com.pechenkin.travelmoney.bd.local.query.QueryResult;
+import com.pechenkin.travelmoney.bd.local.CostLocal;
 
 import java.util.Date;
 
@@ -32,21 +31,15 @@ public class t_costs {
         }
     }
 
-    static public QueryResult<CostTableRow> getAllByTripId(long t_id) {
+    static public QueryResult<CostLocal> getAllByTripId(long t_id) {
         String sql = "SELECT * FROM " + Namespace.TABLE_COSTS + " where " + Namespace.FIELD_TRIP + " = '" + t_id + "' ORDER BY " + Namespace.FIELD_DATE + " DESC";
-        return new QueryResult<>(sql, CostTableRow.class);
-    }
-
-    static public void disable_cost(long id) {
-        setCostState(id, false);
-    }
-
-    static public void enable_cost(long id) {
-        setCostState(id, true);
+        return new QueryResult<>(sql, CostLocal.class);
     }
 
 
-    static private void setCostState(long id, boolean active) {
+
+
+    static public void setCostState(long id, boolean active) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_ACTIVE, active ? 1 : 0);
 

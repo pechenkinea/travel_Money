@@ -10,7 +10,6 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.table.t_members;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
@@ -34,8 +33,9 @@ public class EditMemberPage extends BaseMemberPage {
             return;
         }
 
+        //TODO сделать проверку по другому
         long findId = t_members.getIdByName(getTextInputEditText(etName));
-        if (findId >= 0 && findId != getParam().getId()) {
+        if (findId >= 0 && findId != getParam().getMember().getId()) {
             Help.message("Имя занято другим участником");
             Help.setActiveEditText(getFocusFieldId());
             return;
@@ -48,11 +48,11 @@ public class EditMemberPage extends BaseMemberPage {
 
         int color = Help.getBackgroundColor(buttonColor);
 
-        Member member = t_trips.getActiveTripNew().getMemberById(getParam().getId());
+        Member member = getParam().getMember();
         if (member != null) {
             member.edit(name, color, (int) Help.StringToDouble(icon));
             Help.message("Успешно");
-            PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
+            PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_members).getParam());
         } else {
             Help.message("Ошибка");
         }
@@ -74,9 +74,9 @@ public class EditMemberPage extends BaseMemberPage {
             return false;
         }
 
-        Member member = t_trips.getActiveTripNew().getMemberById(getParam().getId());
+        Member member = getParam().getMember();
         if (member == null) {
-            Help.message("Ошибка. Не найден учатсяник с id " + getParam().getId());
+            Help.message("Ошибка. Не задан участник.");
             return false;
         }
 

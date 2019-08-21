@@ -6,11 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.local.table.query.IdTableRow;
-import com.pechenkin.travelmoney.bd.local.table.query.TableRow;
-import com.pechenkin.travelmoney.bd.local.table.query.row.TripTableRow;
+import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
+import com.pechenkin.travelmoney.bd.local.query.QueryResult;
+import com.pechenkin.travelmoney.bd.local.query.TableRow;
+import com.pechenkin.travelmoney.bd.local.TripLocal;
 
 import java.util.Date;
 
@@ -18,21 +17,19 @@ public class t_trips {
 
     static private Trip activeTrip = null;
 
-    public static Trip getActiveTripNew() {
+    public static Trip getActiveTrip() {
         if (activeTrip == null) {
 
             String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_PROCESSED + " = '1'";
 
-            QueryResult<TripTableRow> result = new QueryResult<>(sql, TripTableRow.class);
+            QueryResult<TripLocal> result = new QueryResult<>(sql, TripLocal.class);
 
             if (!result.hasRows())
-                return TripTableRow.getEmpty();
+                return TripLocal.getEmpty();
 
             activeTrip = result.getFirstRow();
         }
-
         return activeTrip;
-
     }
 
     static public void set_active(long t_id) {
@@ -104,9 +101,9 @@ public class t_trips {
         }
     }
 
-    static public QueryResult<TripTableRow> getAll() {
+    static public QueryResult<TripLocal> getAll() {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " ORDER BY " + Namespace.FIELD_ID + " DESC";
-        return new QueryResult<>(sql, TripTableRow.class);
+        return new QueryResult<>(sql, TripLocal.class);
     }
 
     static public long getIdByName(String t_name) {
@@ -119,18 +116,6 @@ public class t_trips {
             return row.id;
 
         return -1;
-    }
-
-    static public TripTableRow getTripById(long id) {
-        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_ID + " = " + id;
-
-        QueryResult<TripTableRow> result = new QueryResult<>(sql, TripTableRow.class);
-
-        TripTableRow row = result.getFirstRow();
-        if (row != null)
-            return row;
-
-        return null;
     }
 
     static public Boolean isMemberInTrip(long tripId, long memberId) {

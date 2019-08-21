@@ -8,16 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
 
 public class AdapterColors extends BaseAdapter {
 
-    private final IdAndNameTableRow[] data;
+    private final IdTableRow[] data;
     private static LayoutInflater inflater = null;
     private final String text;
 
 
-    public AdapterColors(Context a, IdAndNameTableRow[] data, String text) {
+    public AdapterColors(Context a, IdTableRow[] data, String text) {
         this.data = data;
         this.text = text;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -29,7 +29,7 @@ public class AdapterColors extends BaseAdapter {
     }
 
     @Override
-    public IdAndNameTableRow getItem(int position) {
+    public IdTableRow getItem(int position) {
         return data[position];
     }
 
@@ -50,7 +50,7 @@ public class AdapterColors extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        IdAndNameTableRow colorItem = data[position];
+        IdTableRow colorItem = data[position];
 
         holder.colorTextView.setText(text);
         holder.colorTextView.setTextColor((int)colorItem.id);

@@ -10,7 +10,6 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.ListPage;
@@ -33,7 +32,7 @@ public class MasterWhom extends ListPage {
     public void clickBackButton() {
 
         PageParam.BuildingPageParam param = new PageParam.BuildingPageParam(getParam());
-        param.setSelectedIds(getSelectedIds());
+        param.setSelectedMembers(getSelectedMembers());
         PageOpener.INSTANCE.open(MasterCostInfo.class, param.getParam());
     }
 
@@ -47,7 +46,7 @@ public class MasterWhom extends ListPage {
         String desc = "";
         try
         {
-            desc = " (" + t_members.getMemberById(getParam().getId()).name + " " + Help.doubleToString(getParam().getSum()) + ")";
+            desc = " (" + getParam().getMember().getName() + " " + Help.doubleToString(getParam().getSum()) + ")";
         }
         catch(Exception ex)
         {
@@ -60,7 +59,7 @@ public class MasterWhom extends ListPage {
     @Override
     protected boolean fillFields() {
 
-        if (!hasParam() || getParam().getSum() == 0 || getParam().getId() < 0 || getParam().getSum() < 0)
+        if (!hasParam() || getParam().getSum() == 0 || getParam().getMember() == null || getParam().getSum() < 0)
         {
             return false;
         }
@@ -69,7 +68,7 @@ public class MasterWhom extends ListPage {
         MainActivity.INSTANCE.findViewById(R.id.member_add_button)
                 .setVisibility(View.INVISIBLE);
 
-        Member[] tripMembers = t_trips.getActiveTripNew().getActiveMembers();
+        Member[] tripMembers = t_trips.getActiveTrip().getActiveMembers();
         ListView list1 =  MainActivity.INSTANCE.findViewById(getListViewId());
         if (tripMembers.length == 0)
         {
@@ -83,18 +82,18 @@ public class MasterWhom extends ListPage {
 
             if (hasParam())
             {
-                if (getParam().getSelectedIds().size() > 0)
+                if (getParam().getSelectedMembers().size() > 0)
                 {
                     for (int i = 0; i < adapter.getCount(); i++) {
-                        if (getParam().getSelectedIds().contains(adapter.getItem(i).getMemberId())) {
+                        if (getParam().getSelectedMembers().contains(adapter.getItem(i).getMember())) {
                             list1.setItemChecked(i, true);
                         }
                     }
                 }
-                else if (getParam().getId() > -1)
+                else if (getParam().getMember() != null)
                 {
                     for (int i = 0; i < adapter.getCount(); i++) {
-                        if (adapter.getItem(i).getMemberId() == getParam().getId()) {
+                        if (adapter.getItem(i).getMember().equals(getParam().getMember())) {
                             list1.setItemChecked(i, true);
                             break;
                         }
@@ -109,9 +108,9 @@ public class MasterWhom extends ListPage {
         return true;
     }
 
-    private Set<Long> getSelectedIds()
+    private Set<Member> getSelectedMembers()
     {
-        Set<Long> list_id = new HashSet<>();
+        Set<Member> list_id = new HashSet<>();
         ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
         SparseBooleanArray sbArray = list.getCheckedItemPositions();
 
@@ -120,8 +119,8 @@ public class MasterWhom extends ListPage {
         for (int i = 0; i < sbArray.size(); i++) {
             int key = sbArray.keyAt(i);
             if (sbArray.get(key)) {
-                long item = adapter.getItemId(key);
-                if (item >= 0) {
+                Member item = (Member) adapter.getItem(key);
+                if (item != null) {
                     list_id.add(item);
                 }
             }
@@ -137,9 +136,9 @@ public class MasterWhom extends ListPage {
         member_list_commit.setOnClickListener(v -> {
 
             //Кому
-            Set<Long> list_id = getSelectedIds();
+            Set<Member> list_members = getSelectedMembers();
 
-            if (list_id.size() == 0)
+            if (list_members.size() == 0)
             {
                 Help.message(MainActivity.INSTANCE.getString(R.string.errorFillMembers));
                 return;
@@ -156,7 +155,7 @@ public class MasterWhom extends ListPage {
                 if (sbArray.get(key)) {
                     CostMember item = adapter.getItem(key);
                     if (item != null && item.getSum() > 0) {
-                        t_trips.getActiveTripNew().addCost(getParam().getId(), item.getMemberId(), getParam().getName(), item.getSum(), getParam().getPhotoUrl(), getParam().getSelectDate(), false);
+                        t_trips.getActiveTrip().addCost(getParam().getMember(), item.getMember(), getParam().getName(), item.getSum(), getParam().getPhotoUrl(), getParam().getSelectDate(), false);
                     }
                 }
             }

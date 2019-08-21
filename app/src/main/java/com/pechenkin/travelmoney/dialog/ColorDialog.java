@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.local.table.t_colors;
 import com.pechenkin.travelmoney.list.AdapterColors;
 
@@ -23,12 +23,12 @@ public class ColorDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Выберите цвет");
 
-        IdAndNameTableRow[] colors = t_colors.getAll().getAllRows();
+        IdTableRow[] colors = t_colors.getAll();
 
         AdapterColors adapterColors = new AdapterColors(MainActivity.INSTANCE, colors, text);
 
         builder.setAdapter(adapterColors, (dialogInterface, i) -> {
-            IdAndNameTableRow selectItem = adapterColors.getItem(i);
+            IdTableRow selectItem = adapterColors.getItem(i);
             callBack.run((int)selectItem.id);
             dialogInterface.dismiss();
 

@@ -5,7 +5,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;

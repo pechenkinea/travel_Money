@@ -1,13 +1,12 @@
-package com.pechenkin.travelmoney.bd.local.table.query.row;
+package com.pechenkin.travelmoney.bd.local;
 
 import android.database.Cursor;
 import android.graphics.Color;
 
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.table.Namespace;
+import com.pechenkin.travelmoney.bd.local.query.IdAndNameTableRow;
 import com.pechenkin.travelmoney.bd.local.table.t_members;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
 
 
 /**
@@ -15,28 +14,25 @@ import com.pechenkin.travelmoney.bd.local.table.t_trips;
  * Участник
  */
 
-public class MemberTableRow extends IdAndNameTableRow implements Member {
+public class MemberLocal extends IdAndNameTableRow implements Member {
 
 
     public final int color;
     public final int icon;
 
-    public MemberTableRow(Cursor c) {
+    public MemberLocal(Cursor c) {
         super(c);
 
         int col = getIntColumnValue(Namespace.FIELD_COLOR, c);
-        if (col == -1 || col == 0)
-        {
+        if (col == -1 || col == 0) {
             col = Color.BLACK;
         }
         this.color = col;
 
-        this.icon  = getIntColumnValue(Namespace.FIELD_ICON, c);
+        this.icon = getIntColumnValue(Namespace.FIELD_ICON, c);
     }
 
-    public boolean inTrip(long tripId){
-        return t_trips.isMemberInTrip(tripId, this.id);
-    }
+
 
     @Override
     public long getId() {
@@ -61,6 +57,14 @@ public class MemberTableRow extends IdAndNameTableRow implements Member {
     @Override
     public void edit(String name, int color, int icon) {
         t_members.edit(this.id, name, color, icon);
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        return getId() == ((Member)obj).getId();
     }
 }

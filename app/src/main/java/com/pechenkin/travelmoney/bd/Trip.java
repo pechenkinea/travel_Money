@@ -24,7 +24,7 @@ public interface Trip {
 
     void removeMember(Member member);
 
-    void addCost(long member_id, long to_member_id, String comment, double sum, String image_dir, Date date, boolean isRepayment);
+    void addCost(Member member, Member toMember, String comment, double sum, String image_dir, Date date, boolean isRepayment);
 
     boolean isActive();
 

@@ -1,15 +1,14 @@
 package com.pechenkin.travelmoney.bd.local.table;
 
-import com.pechenkin.travelmoney.bd.local.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.query.QueryResult;
-import com.pechenkin.travelmoney.bd.local.table.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
+import com.pechenkin.travelmoney.bd.local.query.QueryResult;
 
 public class t_colors {
 
-	static public QueryResult<IdAndNameTableRow> getAll()
+	static public IdTableRow[] getAll()
 	{
 		String sql = "SELECT * FROM " + Namespace.TABLE_COLORS;
-		return new QueryResult<>(sql, IdAndNameTableRow.class);
+		return new QueryResult<>(sql, IdTableRow.class).getAllRows();
 	}
 
 	/*static public void updateColors(){

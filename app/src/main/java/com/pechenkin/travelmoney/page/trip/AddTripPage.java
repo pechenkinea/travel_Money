@@ -30,7 +30,7 @@ public class AddTripPage extends BaseTripPage {
 
                     long t_id = t_trips.add(strName, getTextInputEditText(trComment));
                     t_trips.set_active(t_id);
-                    PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setId(R.id.navigation_members).getParam());
+                    PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_members).getParam());
                 } else {
                     Help.message("Поездка с таким названием уже существует");
                     Help.setActiveEditText(R.id.trip_name);
