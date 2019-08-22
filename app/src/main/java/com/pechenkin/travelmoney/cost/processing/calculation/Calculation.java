@@ -27,7 +27,6 @@ public class Calculation implements CostIterable {
     private List<ShortCost> result;
 
     //Нужно для того, что бы можно было считать не по id сотрудников а, например, по их цветам
-
     private MemberUidGetter memberUidGetter;
 
 
@@ -56,8 +55,6 @@ public class Calculation implements CostIterable {
         }
 
         // если в мапе еще нет участника  cost.getMember() добавляем его с нулевой суммой
-
-
         if (members.get(memberUidGetter.getMemberUid(cost.getMember())) == null)
             members.put(memberUidGetter.getMemberUid(cost.getMember()), new MemberSum(cost.getMember()));
 
@@ -103,19 +100,31 @@ public class Calculation implements CostIterable {
         // перебираем участников с положительной суммой т.к. главное получить то что отдал а не отдать то, что получил
         for (MemberSum positive : positiveMember) {
 
+            boolean isClose = false;
+
+            //Смотрим, есть ли среди должников тот, кто должен ровно столько сколько надо positive
+            for (int i = negativeMember.size() - 1; i >= 0; i--) {
+                MemberSum negative = negativeMember.get(i);
+                if (negative.getSumRound() * -1 == positive.getSumRound()){
+                    resultList.add(new TotalItemCost(negative.member, positive.member, positive.sum));
+                    negativeMember.remove(i);
+                    positive.removeSum(positive.sum);
+                    isClose = true;
+                    break;
+                }
+            }
+
+            if (isClose) {
+                continue;
+            }
+
+
             // сумму positive закрываем суммами должников до тех пор пока не покроем всю сумму
             for (int i = negativeMember.size() - 1; i >= 0; i--) //  перебираем в обратном направлении, что бы была возможность удалять
             {
                 MemberSum negative = negativeMember.get(i);
 
-                if (negative.sum * -1 == positive.sum) {
-                    // Если долг negative равен сумме positive то добавлем в итог всю сумму и удаляем из списка negativeMember этого должника
-                    resultList.add(new TotalItemCost(negative.member, positive.member, positive.sum));
-                    negativeMember.remove(i);
-                    // обнуляем сумму positive т.к. есть значение для иога
-                    positive.removeSum(positive.sum);
-                    break; // сумма positive закрыта. выходим из цикла должников
-                } else if (negative.sum * -1 > positive.sum) {
+                if (negative.sum * -1 > positive.sum) {
                     // Если долг negative больше суммы positive то закрываем всю сумму positive и сокращаем долг negative на сумму positive
                     resultList.add(new TotalItemCost(negative.member, positive.member, positive.sum));
                     //добавляем т.к. сумма negative отрицательная
@@ -140,7 +149,7 @@ public class Calculation implements CostIterable {
 
             // Если поле обхода всех должников сумма positive сильно больше погрешности,
             // значит получилось так, что было много участников с долгом меньше погрешности и не получилось до конца закрыть сумму positive
-            // (если более 100 участников должны кому то по 0.01)
+            // (например если более 100 участников должны кому то по 0.01)
             // говорим об этом в приложении дополнительной строкой итога
             if (positive.sum > deviation * 100) {
                 //TODO заменить тут ShortCost на что то другое
@@ -164,6 +173,11 @@ public class Calculation implements CostIterable {
     private static class MemberSum {
         final Member member;
         double sum = 0f;
+
+        // округляет до 2х знаков после запятой
+        double getSumRound(){
+            return (double) Math.round(this.sum * 100.0) / 100.0;
+        }
 
         /**
          * Создает новый объект MemberSum с нулевой суммой
