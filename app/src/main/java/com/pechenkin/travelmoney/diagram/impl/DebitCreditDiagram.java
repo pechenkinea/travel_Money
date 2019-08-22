@@ -61,7 +61,7 @@ public class DebitCreditDiagram extends Base {
 
             double totalSum = c.getSumPay() - c.getSumExpense();
 
-            entries.add(new BarEntry(i, (float) totalSum, member.getId()));
+            entries.add(new BarEntry(i, (float) totalSum, member));
 
             legendEntries[legendIndex] = new LegendEntry();
             legendEntries[legendIndex].label = member.getName();
@@ -134,6 +134,12 @@ public class DebitCreditDiagram extends Base {
             this.diagram.invalidate();
         }
     }
+
+
+
+
+
+
 
     private static class MyHighlighter extends HorizontalBarHighlighter {
 
