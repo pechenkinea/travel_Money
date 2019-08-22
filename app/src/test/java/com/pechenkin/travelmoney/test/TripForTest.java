@@ -86,10 +86,6 @@ public class TripForTest implements Trip {
         return members.get(0);
     }
 
-    @Override
-    public Member getMemberById(long id) {
-        return null;
-    }
 
     @Override
     public Member getMemberByName(String name) {
