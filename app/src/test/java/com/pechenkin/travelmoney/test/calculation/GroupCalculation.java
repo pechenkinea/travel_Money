@@ -4,6 +4,9 @@ import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
+import com.pechenkin.travelmoney.test.CostForTest;
+import com.pechenkin.travelmoney.test.TestMembers;
+import com.pechenkin.travelmoney.test.TripForTest;
 
 import org.junit.Assert;
 import org.junit.Test;

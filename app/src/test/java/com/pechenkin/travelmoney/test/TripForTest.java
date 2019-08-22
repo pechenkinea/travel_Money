@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.test.calculation;
+package com.pechenkin.travelmoney.test;
 
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
