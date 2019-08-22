@@ -7,14 +7,15 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.query.QueryResult;
-import com.pechenkin.travelmoney.bd.local.TripLocal;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.list.AdapterTripsList;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.trip.AddTripPage;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
+
+import java.util.List;
 
 public class TripsListFragment extends BaseMainPageFragment {
 
@@ -53,14 +54,14 @@ public class TripsListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        QueryResult<TripLocal> allTrips = t_trips.getAll();
+        List<Trip> allTrips = TripManager.INSTANCE.getAll();
         ListView list = fragmentView.findViewById(R.id.catalog_trips_list);
 
-        if (!allTrips.hasRows()) {
+        if (allTrips.size() == 0) {
             Help.message("Нет данных");
             list.setAdapter(null);
         } else {
-            AdapterTripsList tripAdapter = new AdapterTripsList(MainActivity.INSTANCE, allTrips.getAllRows(), true);
+            AdapterTripsList tripAdapter = new AdapterTripsList(MainActivity.INSTANCE, allTrips, true);
             list.setAdapter(tripAdapter);
         }
     }

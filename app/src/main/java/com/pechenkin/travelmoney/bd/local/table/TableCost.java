@@ -9,12 +9,14 @@ import com.pechenkin.travelmoney.bd.local.CostLocal;
 
 import java.util.Date;
 
-public class t_costs {
+public class TableCost {
 
-    private t_costs() {
+    public static TableCost INSTANCE = new TableCost();
+
+    private TableCost() {
     }
 
-    static public void add(long member_id, long to_member_id, String comment, double sum, String image_dir, long tripId, Date date, boolean isRepayment) {
+    public void add(long member_id, long to_member_id, String comment, double sum, String image_dir, long tripId, Date date, boolean isRepayment) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_MEMBER, member_id);
         cv.put(Namespace.FIELD_TO_MEMBER, to_member_id);
@@ -31,15 +33,12 @@ public class t_costs {
         }
     }
 
-    static public QueryResult<CostLocal> getAllByTripId(long t_id) {
+    public QueryResult<CostLocal> getAllByTripId(long t_id) {
         String sql = "SELECT * FROM " + Namespace.TABLE_COSTS + " where " + Namespace.FIELD_TRIP + " = '" + t_id + "' ORDER BY " + Namespace.FIELD_DATE + " DESC";
         return new QueryResult<>(sql, CostLocal.class);
     }
 
-
-
-
-    static public void setCostState(long id, boolean active) {
+    public void setCostState(long id, boolean active) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_ACTIVE, active ? 1 : 0);
 

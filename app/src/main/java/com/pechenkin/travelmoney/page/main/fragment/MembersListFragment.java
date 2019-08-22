@@ -7,7 +7,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -38,8 +38,8 @@ public class MembersListFragment extends BaseMainPageFragment {
             Member member = adapter.getItem(position).getMember();
 
 
-            boolean isActive = t_trips.getActiveTrip().memberIsActive(member);
-            t_trips.getActiveTrip().setMemberActive(member, !isActive);
+            boolean isActive = TripManager.INSTANCE.getActiveTrip().memberIsActive(member);
+            TripManager.INSTANCE.getActiveTrip().setMemberActive(member, !isActive);
             list.setItemChecked(position, !isActive);
 
             list.invalidateViews();
@@ -57,7 +57,7 @@ public class MembersListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        List<Member> members = t_trips.getActiveTrip().getAllMembers();
+        List<Member> members = TripManager.INSTANCE.getActiveTrip().getAllMembers();
         ListView list = fragmentView.findViewById(R.id.list_members);
         if (list != null) {
             if (members.size() == 0) {
@@ -68,8 +68,8 @@ public class MembersListFragment extends BaseMainPageFragment {
                 // сортируем так, что бы те, кто в текущей поездке отображались сверху
                 Collections.sort(members, (m1, m2) -> {
 
-                    boolean m1InTRip = t_trips.getActiveTrip().memberIsActive(m1);
-                    boolean m2InTRip = t_trips.getActiveTrip().memberIsActive(m2);
+                    boolean m1InTRip = TripManager.INSTANCE.getActiveTrip().memberIsActive(m1);
+                    boolean m2InTRip = TripManager.INSTANCE.getActiveTrip().memberIsActive(m2);
 
                     if (m1InTRip && !m2InTRip) {
                         return -1;
@@ -88,7 +88,7 @@ public class MembersListFragment extends BaseMainPageFragment {
                 for (int i = 0; i < adapter.getCount(); i++) {
                     Member member = adapter.getItem(i).getMember();
 
-                    if (t_trips.getActiveTrip().memberIsActive(member)) {
+                    if (TripManager.INSTANCE.getActiveTrip().memberIsActive(member)) {
                         list.setItemChecked(i, true);
                     }
                 }

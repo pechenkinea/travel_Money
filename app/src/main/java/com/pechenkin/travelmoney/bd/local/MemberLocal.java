@@ -6,7 +6,7 @@ import android.graphics.Color;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.query.IdAndNameTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 
 
 /**
@@ -56,7 +56,7 @@ public class MemberLocal extends IdAndNameTableRow implements Member {
 
     @Override
     public void edit(String name, int color, int icon) {
-        t_members.edit(this.id, name, color, icon);
+        TableMembers.INSTANCE.edit(this.id, name, color, icon);
     }
 
     @Override

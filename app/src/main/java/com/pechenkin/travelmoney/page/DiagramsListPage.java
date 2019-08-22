@@ -6,9 +6,9 @@ import android.widget.ListView;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
@@ -48,7 +48,7 @@ public class DiagramsListPage extends ListPage {
 
     @Override
     protected String getTitleHeader() {
-        return MainActivity.INSTANCE.getString(R.string.diagrams) + "(" + t_trips.getActiveTrip().getName() + ")";
+        return MainActivity.INSTANCE.getString(R.string.diagrams) + "(" + TripManager.INSTANCE.getActiveTrip().getName() + ")";
     }
 
 
@@ -56,7 +56,7 @@ public class DiagramsListPage extends ListPage {
     protected boolean fillFields() {
 
 
-        List<Cost> allCostTrip = t_trips.getActiveTrip().getAllCost();
+        List<Cost> allCostTrip = TripManager.INSTANCE.getActiveTrip().getAllCost();
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
         if (allCostTrip.size() == 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));

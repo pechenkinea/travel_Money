@@ -4,9 +4,8 @@ import android.text.TextUtils;
 
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.NamesHashMap;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.NamesHashMap;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.cost.ShortCost;
 
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ public class CostCreator {
         this.comment = comment;
         this.text = text;
         this.words = new WordCollection(text);
-        t_members.updateMembersCache();
         execute();
     }
 
@@ -132,7 +130,7 @@ public class CostCreator {
 
         //За всех
         if (text.equals(WordCollection.ALL)) {
-            List<Member> membersTrip = t_trips.getActiveTrip().getActiveMembers();
+            List<Member> membersTrip = TripManager.INSTANCE.getActiveTrip().getActiveMembers();
             for (Member toMember : membersTrip) {
                 addToMember(toMember);
             }
@@ -145,14 +143,14 @@ public class CostCreator {
                 if (words.viewNext(i).equals(WordCollection.MASTER)) {
                     removeToMember(master);
                 } else if (words.viewNext(i).equals(WordCollection.ME)) {
-                    Member me = t_trips.getActiveTrip().getMe();
+                    Member me = TripManager.INSTANCE.getActiveTrip().getMe();
                     if (me != null) {
                         removeToMember(me);
                     } else
                         break;
                 } else {
                     //Поиск с учетом падежей
-                    Member toMember = getIdByNameCase(words.viewNext(i));
+                    Member toMember = getByNameCase(words.viewNext(i));
                     if (toMember != null) {
                         removeToMember(toMember);
                     } else {
@@ -174,30 +172,31 @@ public class CostCreator {
 
         //За меня
         if (text.equals(WordCollection.ME)) {
-            Member toMember = t_trips.getActiveTrip().getMe();
+            Member toMember = TripManager.INSTANCE.getActiveTrip().getMe();
             if (toMember != null) {
                 addToMember(toMember);
                 return;
             }
         }
 
+        //Я
         if (text.equals(WordCollection.OWNER)) {
-            Member meMaster = t_trips.getActiveTrip().getMe();
+            Member meMaster = TripManager.INSTANCE.getActiveTrip().getMe();
             if (meMaster != null) {
                 setMaster(meMaster);
                 return;
             }
         }
 
-        //TODO может оно и не надо и можно объединить со следующим блоком
-        Member master = t_members.getIdByNameCache(text);
+        // Если нашли по полному совпадению то это мастер
+        Member master = getByName(text);
         if (master != null) {
             setMaster(master);
             return;
         }
 
         //Поиск с учетом падежей
-        Member toMember = getIdByNameCase(text);
+        Member toMember = getByNameCase(text);
         if (toMember != null) {
             addToMember(toMember);
             return;
@@ -213,22 +212,17 @@ public class CostCreator {
      * Для этого пробует найти участника по переданному имени. Если не удалось найти убирает последнюю букву от переданного значения и ищет по совпадению парвых символов.
      * Так продолжается до тех пор пока не уменьшим переданное значение на 30% или оно не станет меньше 2х букв
      *
-     * @param m_name строка для поиска
+     * @param name строка для поиска
      * @return id сотудника или -1
      */
-    private Member getIdByNameCase(String m_name) {
+    private Member getByNameCase(String name) {
 
-        String nameCase = NamesHashMap.keyValidate(m_name);
+        String nameCase = NamesHashMap.keyValidate(name);
 
-        List<Member> members = t_trips.getActiveTrip().getActiveMembers();
-        for (Member member : members) {
-            if (NamesHashMap.keyValidate(member.getName()).equals(nameCase)) {
-                return member;
-            }
-        }
+        Member row = getByName(name);
+        List<Member> members = TripManager.INSTANCE.getActiveTrip().getActiveMembers();
 
-        Member row = null;
-        while (row == null && nameCase.length() > 2 && nameCase.length() / m_name.length() > 0.7) {
+        while (row == null && nameCase.length() > 2 && nameCase.length() / name.length() > 0.7) {
             nameCase = nameCase.substring(0, nameCase.length() - 1);
 
             for (Member member : members) {
@@ -242,6 +236,21 @@ public class CostCreator {
 
         return row;
 
+    }
+
+    /**
+     * Ищет участника по точному совпадению имени
+     */
+    private Member getByName(String name){
+        String nameCase = NamesHashMap.keyValidate(name);
+
+        List<Member> members = TripManager.INSTANCE.getActiveTrip().getActiveMembers();
+        for (Member member : members) {
+            if (NamesHashMap.keyValidate(member.getName()).equals(nameCase)) {
+                return member;
+            }
+        }
+        return null;
     }
 
 

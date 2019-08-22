@@ -7,7 +7,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -41,7 +41,7 @@ public class MasterWho extends ListPage {
          MainActivity.INSTANCE.findViewById(R.id.member_list_commit)
                 .setVisibility(View.INVISIBLE);
 
-        List<Member> tripMembers = t_trips.getActiveTrip().getActiveMembers();
+        List<Member> tripMembers = TripManager.INSTANCE.getActiveTrip().getActiveMembers();
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
         if (tripMembers.size() == 0)
         {

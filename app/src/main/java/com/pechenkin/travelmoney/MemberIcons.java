@@ -6,6 +6,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 public enum MemberIcons {
 
+
     MALE(0, R.drawable.ic_human_male_20x7),
     FEMALE(1, R.drawable.ic_human_female_20x9),
     MAN(2, R.drawable.ic_man_20x10),

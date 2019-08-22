@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +27,7 @@ class CostCreator {
 
         Thread printCostThready = new Thread(() -> {
 
-            List<Member> members = t_trips.getActiveTrip().getActiveMembers();
+            List<Member> members = TripManager.INSTANCE.getActiveTrip().getActiveMembers();
 
 
             try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
@@ -53,7 +53,7 @@ class CostCreator {
                         cv.put(Namespace.FIELD_SUM, String.valueOf(new Random().nextInt(300)));
                         cv.put(Namespace.FIELD_IMAGE_DIR, "");
                         cv.put(Namespace.FIELD_ACTIVE, 1);
-                        cv.put(Namespace.FIELD_TRIP, t_trips.getActiveTrip().getId());
+                        cv.put(Namespace.FIELD_TRIP, TripManager.INSTANCE.getActiveTrip().getId());
                         cv.put(Namespace.FIELD_DATE, dateStr);
                         cv.put(Namespace.FIELD_REPAYMENT, 0);
 

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pechenkin.travelmoney.bd.local.table.DBHelper;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.AddCostsListPage;
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         INSTANCE = this;
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getApplicationContext());
-        t_members.updateMembersCache();
 
         PageOpener.INSTANCE.open(MainPage.class);
 

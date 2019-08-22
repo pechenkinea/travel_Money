@@ -10,10 +10,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.NamesHashMap;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
-
-import java.util.List;
+import com.pechenkin.travelmoney.bd.TripManager;
 
 
 /**
@@ -30,15 +27,12 @@ public class AddMemberPage extends BaseMemberPage {
 
         String name = getTextInputEditText(etName);
 
-        String validateName = NamesHashMap.keyValidate(name);
 
-        List<Member> existMembers = t_trips.getActiveTrip().getAllMembers();
-        for (Member member : existMembers) {
-            if (validateName.equals(NamesHashMap.keyValidate(member.getName()))){
-                Help.message("Участник с таким именем уже добавлен");
-                Help.setActiveEditText(getFocusFieldId());
-                return;
-            }
+        Member existMember = TripManager.INSTANCE.getActiveTrip().getMemberByName(name);
+        if (existMember != null) {
+            Help.message("Участник с таким именем уже добавлен");
+            Help.setActiveEditText(getFocusFieldId());
+            return;
         }
 
 
@@ -52,8 +46,8 @@ public class AddMemberPage extends BaseMemberPage {
 
             String icon = ((TextView) MainActivity.INSTANCE.findViewById(R.id.iconId)).getText().toString();
 
-            Member member = t_trips.getActiveTrip().createMember(name, color, (int) Help.StringToDouble(icon));
-            t_trips.getActiveTrip().setMemberActive(member, true);
+            Member member = TripManager.INSTANCE.getActiveTrip().createMember(name, color, (int) Help.StringToDouble(icon));
+            TripManager.INSTANCE.getActiveTrip().setMemberActive(member, true);
             Help.message("Успешно");
 
             clickBackButton();

@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd;
+package com.pechenkin.travelmoney;
 
 import java.util.HashMap;
 
@@ -8,7 +8,6 @@ import java.util.HashMap;
  */
 
 public class NamesHashMap<V> extends HashMap<String, V> {
-
 
     public V put(String key, V value) {
         return super.put(keyValidate(key), value);

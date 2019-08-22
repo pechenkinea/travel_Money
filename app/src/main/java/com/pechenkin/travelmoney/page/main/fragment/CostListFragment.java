@@ -11,9 +11,9 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.t_settings;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -35,7 +35,7 @@ public class CostListFragment extends BaseMainPageFragment {
     }
 
     public CostListFragment() {
-        this.selectTrip = t_trips.getActiveTrip();
+        this.selectTrip = TripManager.INSTANCE.getActiveTrip();
     }
 
     @Override

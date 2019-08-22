@@ -5,14 +5,14 @@ import android.widget.Button;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.export.Export;
 import com.pechenkin.travelmoney.export.ExportFileTypes;
 import com.pechenkin.travelmoney.page.AboutPage;
+import com.pechenkin.travelmoney.page.DiagramsListPage;
 import com.pechenkin.travelmoney.page.FaqPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.SettingsPage;
-import com.pechenkin.travelmoney.page.DiagramsListPage;
 
 public class OtherFragment extends BaseMainPageFragment {
 
@@ -47,7 +47,7 @@ public class OtherFragment extends BaseMainPageFragment {
             builder.setTitle("Выберите тип:");
 
             builder.setItems(fileTypes, (dialog, which) -> {
-                Export.export(t_trips.getActiveTrip(), ExportFileTypes.values()[which]);
+                Export.export(TripManager.INSTANCE.getActiveTrip(), ExportFileTypes.values()[which]);
                 dialog.dismiss();
             });
 

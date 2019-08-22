@@ -17,35 +17,37 @@ import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.ViewTripPage;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
 
+import java.util.List;
+
 public class AdapterTripsList extends BaseAdapter {
 
-    private final Trip[] data;
+    private final List<Trip> data;
     private static LayoutInflater inflater = null;
     private final boolean showEditButton;
 
-    public AdapterTripsList(Activity a, Trip[] data, boolean showEditButton) {
+    public AdapterTripsList(Activity a, List<Trip> data, boolean showEditButton) {
         this.data = data;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showEditButton = showEditButton;
     }
 
     public int getCount() {
-        return data.length;
+        return data.size();
     }
 
     public Trip getItem(int position) {
-        return data[position];
+        return data.get(position);
     }
 
     public long getItemId(int position) {
-        return data[position].getId();
+        return data.get(position).getId();
     }
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
-        Trip row = data[position];
+        Trip row = data.get(position);
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.list_item, parent, false);

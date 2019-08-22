@@ -31,8 +31,6 @@ public interface Trip {
 
     Member getMe();
 
-    Member getMemberById(long id);
-
     Member getMemberByName(String name);
 
     boolean memberIsActive(Member member);

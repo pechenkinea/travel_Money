@@ -13,7 +13,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.adapter.CostListItem;
 import com.pechenkin.travelmoney.cost.adapter.LabelItem;
@@ -43,7 +43,7 @@ public class AddCostsListPage extends BasePage {
 
     @Override
     protected String getTitleHeader() {
-        return "Добавить траты" + "(" + t_trips.getActiveTrip().getName() + ")";
+        return "Добавить траты" + "(" + TripManager.INSTANCE.getActiveTrip().getName() + ")";
     }
 
     @Override
@@ -86,7 +86,7 @@ public class AddCostsListPage extends BasePage {
                 if (c instanceof ShortCost) {
                     if (((ShortCost) c).getMember() != null && ((ShortCost) c).getSum() > 0) {
 
-                        t_trips.getActiveTrip().addCost(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", addCostDate, false);
+                        TripManager.INSTANCE.getActiveTrip().addCost(((ShortCost) c).getMember(), ((ShortCost) c).getToMember(), comment, ((ShortCost) c).getSum(), "", addCostDate, false);
                         added = true;
                     }
                 }

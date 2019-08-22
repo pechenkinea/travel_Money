@@ -1,13 +1,10 @@
 package com.pechenkin.travelmoney.bd.local;
 
-import android.database.Cursor;
-
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.query.IdAndNameTableRow;
-import com.pechenkin.travelmoney.bd.local.table.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.t_costs;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
+import com.pechenkin.travelmoney.bd.local.table.TableCost;
+import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.cost.Cost;
 
@@ -18,28 +15,21 @@ import java.util.List;
 
 /**
  * Created by pechenkin on 04.04.2018.
- * поездка
+ * поездка, все данные по которой хранятся в локальной БД
  */
 
-public class TripLocal extends IdAndNameTableRow implements Trip {
+public class TripLocal implements Trip {
 
     //public final long processed;
-    public final String comment;
+    private final String comment;
+    private final long id;
+    private final String name;
 
-    public TripLocal(Cursor c) {
-        super(c);
+    public TripLocal(TripTableRow tripTableRow) {
 
-        this.comment = getStringColumnValue(Namespace.FIELD_COMMENT, c);
-        //processed = getLongColumnValue(Namespace.FIELD_PROCESSED, c);
-    }
-
-    private TripLocal() {
-        super(null);
-        this.comment = "";
-    }
-
-    public static TripLocal getEmpty() {
-        return new TripLocal();
+        this.id = tripTableRow.id;
+        this.comment = tripTableRow.comment;
+        this.name = tripTableRow.name;
     }
 
 
@@ -67,7 +57,7 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
     public List<Member> getAllMembers() {
         return new ArrayList<>(
                 Arrays.asList(
-                        t_members.getAll().getAllRows()
+                        TableMembers.INSTANCE.getAll().getAllRows()
                 ));
     }
 
@@ -76,7 +66,7 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
 
         return new ArrayList<>(
                 Arrays.asList(
-                        t_members.getAllByTripId(this.id)
+                        TableMembers.INSTANCE.getAllByTripId(this.id)
                 ));
 
     }
@@ -97,7 +87,7 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
 
     @Override
     public void addCost(Member member, Member toMember, String comment, double sum, String image_dir, Date date, boolean isRepayment) {
-        t_costs.add(member.getId(), toMember.getId(), comment, sum, image_dir, this.id, date, isRepayment);
+        TableCost.INSTANCE.add(member.getId(), toMember.getId(), comment, sum, image_dir, this.id, date, isRepayment);
     }
 
     @Override
@@ -109,33 +99,26 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
     public List<Cost> getAllCost() {
         return new ArrayList<>(
                 Arrays.asList(
-                        t_costs.getAllByTripId(this.id).getAllRows()
+                        TableCost.INSTANCE.getAllByTripId(this.id).getAllRows()
                 ));
 
     }
 
     @Override
     public Member createMember(String name, int color, int icon) {
-        return t_members.add(name, color, icon);
+        return TableMembers.INSTANCE.add(name, color, icon);
     }
 
     @Override
     public Member getMe() {
-        return getMemberById(1);
+        return TableMembers.INSTANCE.getMemberById(1);
     }
 
-    @Override
-    public Member getMemberById(long id) {
-        return t_members.getMemberById(id);
-    }
+
 
     @Override
     public Member getMemberByName(String name) {
-        long memberId = t_members.getIdByName(name);
-        if (memberId > 0){
-            return  getMemberById(memberId);
-        }
-        return null;
+        return TableMembers.INSTANCE.getMemberByName(name);
     }
 
     @Override

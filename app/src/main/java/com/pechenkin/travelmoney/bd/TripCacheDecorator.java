@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * Кеширование значений методов. Нужно, что бы лишний раз не лазить в базу (для удаленной БД особенно актуально).
- */
-public class TripCacheAdapter extends TripAdapter {
-    public TripCacheAdapter(Trip trip) {
+ */ //TODO доделать кэширование
+public class TripCacheDecorator extends TripDecorator {
+    public TripCacheDecorator(Trip trip) {
         super(trip);
     }
 
@@ -33,7 +33,7 @@ public class TripCacheAdapter extends TripAdapter {
     @Override
     public Member createMember(String name, int color, int icon) {
         Member createdMember = super.createMember(name, color, icon);
-        //allMembers.add(createdMember);
+        allMembers.add(createdMember);
         return createdMember;
     }
 }

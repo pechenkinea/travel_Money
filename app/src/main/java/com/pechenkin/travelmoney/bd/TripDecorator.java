@@ -6,14 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Адаптер для поездки. ничего не далет. просто вызвает методы из вложенного Trip
+ * Декоратор для поездки. ничего не далет. просто вызвает методы из вложенного Trip
  * Нужно для того, что бы в классе для кэширования не переопределять все методы. а только те, которые работают с кэшем
  */
-public class TripAdapter implements Trip {
+public class TripDecorator implements Trip {
 
     protected Trip trip;
 
-    TripAdapter(Trip trip) {
+    TripDecorator(Trip trip) {
         this.trip = trip;
     }
 
@@ -70,11 +70,6 @@ public class TripAdapter implements Trip {
     @Override
     public Member getMe() {
         return this.trip.getMe();
-    }
-
-    @Override
-    public Member getMemberById(long id) {
-        return this.trip.getMemberById(id);
     }
 
     @Override

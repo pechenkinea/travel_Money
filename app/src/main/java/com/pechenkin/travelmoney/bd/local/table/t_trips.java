@@ -5,31 +5,27 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.local.query.QueryResult;
 import com.pechenkin.travelmoney.bd.local.query.TableRow;
-import com.pechenkin.travelmoney.bd.local.TripLocal;
+import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 
 import java.util.Date;
 
 public class t_trips {
 
-    static private Trip activeTrip = null;
 
-    public static Trip getActiveTrip() {
-        if (activeTrip == null) {
+    public static TripTableRow getActiveTrip() {
 
             String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_PROCESSED + " = '1'";
 
-            QueryResult<TripLocal> result = new QueryResult<>(sql, TripLocal.class);
+            QueryResult<TripTableRow> result = new QueryResult<>(sql, TripTableRow.class);
 
-            if (!result.hasRows())
-                return TripLocal.getEmpty();
+            if (!result.hasRows()){
+                throw new RuntimeException("Не найдена поездка по умолчанию"); //TODO надо брать первую попавшуюся
+            }
 
-            activeTrip = result.getFirstRow();
-        }
-        return activeTrip;
+            return result.getFirstRow();
     }
 
     static public void set_active(long t_id) {
@@ -44,10 +40,10 @@ public class t_trips {
 
             db.update(Namespace.TABLE_TRIPS, cv2, Namespace.FIELD_ID + " = " + t_id, null);
         }
-        activeTrip = null;
     }
 
 
+    //TODO вынести в TripManager
     static public long add(String name, String comment) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);
@@ -101,9 +97,9 @@ public class t_trips {
         }
     }
 
-    static public QueryResult<TripLocal> getAll() {
+    static public TripTableRow[] getAll() {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " ORDER BY " + Namespace.FIELD_ID + " DESC";
-        return new QueryResult<>(sql, TripLocal.class);
+        return new QueryResult<>(sql, TripTableRow.class).getAllRows();
     }
 
     static public long getIdByName(String t_name) {
