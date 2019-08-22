@@ -25,20 +25,14 @@ public class AddTripPage extends BaseTripPage {
             TextInputEditText trName = MainActivity.INSTANCE.findViewById(R.id.trip_name);
             TextInputEditText trComment = MainActivity.INSTANCE.findViewById(R.id.trip_comment);
             String strName = getTextInputEditText(trName);
-            if (strName.length() > 0) {
-                if (t_trips.getIdByName(strName) == -1) {
-
-                    long t_id = t_trips.add(strName, getTextInputEditText(trComment));
-                    t_trips.set_active(t_id);
-                    PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_members).getParam());
-                } else {
-                    Help.message("Поездка с таким названием уже существует");
-                    Help.setActiveEditText(R.id.trip_name);
-                }
-            } else {
+            if (strName.length() == 0) {
                 Help.message("Введите название");
                 Help.setActiveEditText(R.id.trip_name);
             }
+
+            long t_id = t_trips.add(strName, getTextInputEditText(trComment));
+            t_trips.set_active(t_id);
+            PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_members).getParam());
         });
     }
 

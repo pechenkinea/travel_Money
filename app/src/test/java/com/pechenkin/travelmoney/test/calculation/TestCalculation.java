@@ -9,136 +9,151 @@ import com.pechenkin.travelmoney.cost.ShortCost;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
 public class TestCalculation {
 
 
     @Test
     public void calculate_1() {
-        Cost[] costs = new Cost[]{
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-        };
+
+
+        TripForTest tripForTest = new TripForTest();
+
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+
 
 
         Calculation calc = new Calculation(false);
-        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
-        Cost[] result = calc.getResult();
+        ProcessIterate.doIterate(tripForTest.getAllCost(), new CostIterable[]{calc});
+        List<ShortCost> result = calc.getResult();
 
 
-        Assert.assertEquals("в итоге должна быть 1 строка", 1, result.length);
+        Assert.assertEquals("в итоге должна быть 1 строка", 1, result.size());
 
-        Assert.assertEquals(TestMembers.MARINA, result[0].getMember());
-        Assert.assertEquals(TestMembers.EVGENIY, result[0].getToMember());
-        Assert.assertEquals(300, result[0].getSum(), 0);
+        Assert.assertEquals(TestMembers.MARINA.getMember(), result.get(0).getMember());
+        Assert.assertEquals(TestMembers.EVGENIY.getMember(), result.get(0).getToMember());
+        Assert.assertEquals(300, result.get(0).getSum(), 0);
 
     }
 
     @Test
     public void calculate_2() {
 
-        Cost[] costs = new Cost[]{
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.MARINA, TestMembers.VLAD, 100),
-                new ShortCost(TestMembers.VLAD, TestMembers.EVGENIY, 100),
-        };
+        TripForTest tripForTest = new TripForTest();
+
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+
+        tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.VLAD.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.EVGENIY.getMember(), 100));
+
+
 
         Calculation calc = new Calculation(false);
-        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
-        Cost[] result = calc.getResult();
+        ProcessIterate.doIterate(tripForTest.getAllCost(), new CostIterable[]{calc});
+        List<ShortCost> result = calc.getResult();
 
-        Assert.assertEquals("в итоге должна быть 1 строка", 1, result.length);
 
-        Assert.assertEquals(TestMembers.MARINA, result[0].getMember());
-        Assert.assertEquals(TestMembers.EVGENIY, result[0].getToMember());
-        Assert.assertEquals(200, result[0].getSum(), 0);
+        Assert.assertEquals("в итоге должна быть 1 строка", 1, result.size());
+
+        Assert.assertEquals(TestMembers.MARINA.getMember(), result.get(0).getMember());
+        Assert.assertEquals(TestMembers.EVGENIY.getMember(), result.get(0).getToMember());
+        Assert.assertEquals(200, result.get(0).getSum(), 0);
 
     }
 
     @Test
     public void calculate_3() {
 
-        Cost[] costs = new Cost[]{
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 200),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 300),
+        TripForTest tripForTest = new TripForTest();
 
-                new ShortCost(TestMembers.MARINA, TestMembers.VLAD, 100),
-                new ShortCost(TestMembers.MARINA, TestMembers.VLAD, 200),
-                new ShortCost(TestMembers.MARINA, TestMembers.VLAD, 300),
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 200));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 300));
 
-                new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 500),
+        tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.VLAD.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.VLAD.getMember(), 200));
+        tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.VLAD.getMember(), 300));
 
-                new ShortCost(TestMembers.VLAD, TestMembers.VLAD, 100),
-                new ShortCost(TestMembers.VLAD, TestMembers.VLAD, 100),
-                new ShortCost(TestMembers.VLAD, TestMembers.VLAD, 100),
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.MARINA.getMember(), 500));
 
-                new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 100),
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.VLAD.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.VLAD.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.VLAD.getMember(), 100));
 
-                new ShortCost(TestMembers.MARINA, TestMembers.VLAD, 200),
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.MARINA.getMember(), 100));
 
-        };
+        tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.VLAD.getMember(), 200));
+
+
 
         Calculation calc = new Calculation(false);
-        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
-        Cost[] result = calc.getResult();
+        ProcessIterate.doIterate(tripForTest.getAllCost(), new CostIterable[]{calc});
+        List<ShortCost> result = calc.getResult();
 
-        Assert.assertEquals("в итоге должна быть 1 строка", 1, result.length);
 
-        Assert.assertEquals(TestMembers.MARINA, result[0].getMember());
-        Assert.assertEquals(TestMembers.EVGENIY, result[0].getToMember());
-        Assert.assertEquals(600, result[0].getSum(), 0);
+        Assert.assertEquals("в итоге должна быть 1 строка", 1, result.size());
+
+        Assert.assertEquals(TestMembers.MARINA.getMember(), result.get(0).getMember());
+        Assert.assertEquals(TestMembers.EVGENIY.getMember(), result.get(0).getToMember());
+        Assert.assertEquals(600, result.get(0).getSum(), 0);
 
     }
 
     @Test
     public void calculate_4() {
 
-        Cost[] costs = new Cost[]{
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 200),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 300),
+        TripForTest tripForTest = new TripForTest();
 
-                new ShortCost(TestMembers.MARINA, TestMembers.VLAD, 100),
-                new ShortCost(TestMembers.MARINA, TestMembers.VLAD, 200),
-                new ShortCost(TestMembers.MARINA, TestMembers.VLAD, 300),
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 200));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 300));
 
-                new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 500),
+        tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.VLAD.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.VLAD.getMember(), 200));
+        tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.VLAD.getMember(), 300));
 
-                new ShortCost(TestMembers.VLAD, TestMembers.VLAD, 100),
-                new ShortCost(TestMembers.VLAD, TestMembers.VLAD, 100),
-                new ShortCost(TestMembers.VLAD, TestMembers.VLAD, 100),
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.MARINA.getMember(), 500));
 
-                new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 100),
-        };
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.VLAD.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.VLAD.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.VLAD.getMember(), 100));
+
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.MARINA.getMember(), 100));
+
 
         Calculation calc = new Calculation(false);
-        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
-        Cost[] result = calc.getResult();
+        ProcessIterate.doIterate(tripForTest.getAllCost(), new CostIterable[]{calc});
+        List<ShortCost> result = calc.getResult();
 
-        Assert.assertEquals("в итоге должна быть 2 строки", 2, result.length);
-        Assert.assertEquals(800, result[0].getSum() + result[1].getSum(), 0);
+
+        Assert.assertEquals("в итоге должна быть 2 строки", 2, result.size());
+        Assert.assertEquals(800, result.get(0).getSum() + result.get(1).getSum(), 0);
     }
 
     @Test
     public void calculate_5() {
+        TripForTest tripForTest = new TripForTest();
 
         Cost[] costs = new Cost[1000];
         for (int i = 0; i < 1000; i = i + 2) {
-            costs[i] = new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, i);
-            costs[i + 1] = new ShortCost(TestMembers.MARINA, TestMembers.EVGENIY, i);
+
+            tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), i));
+            tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.EVGENIY.getMember(), i));
         }
 
         Calculation calc = new Calculation(false);
-        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
-        Cost[] result = calc.getResult();
+        ProcessIterate.doIterate(tripForTest.getAllCost(), new CostIterable[]{calc});
+        List<ShortCost> result = calc.getResult();
 
-        Assert.assertEquals("в итоге должна быть 0 строк", 0, result.length);
+        Assert.assertEquals("в итоге должна быть 0 строк", 0, result.size());
     }
 }

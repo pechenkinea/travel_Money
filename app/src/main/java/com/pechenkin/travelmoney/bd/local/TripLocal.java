@@ -130,6 +130,15 @@ public class TripLocal extends IdAndNameTableRow implements Trip {
     }
 
     @Override
+    public Member getMemberByName(String name) {
+        long memberId = t_members.getIdByName(name);
+        if (memberId > 0){
+            return  getMemberById(memberId);
+        }
+        return null;
+    }
+
+    @Override
     public Date getStartDate() {
         return t_trips.getStartTripDate(this.id);
     }

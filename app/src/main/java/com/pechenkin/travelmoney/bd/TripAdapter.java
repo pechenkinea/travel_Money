@@ -78,6 +78,11 @@ public class TripAdapter implements Trip {
     }
 
     @Override
+    public Member getMemberByName(String name) {
+        return this.trip.getMemberByName(name);
+    }
+
+    @Override
     public boolean memberIsActive(Member member) {
         return this.trip.memberIsActive(member);
     }

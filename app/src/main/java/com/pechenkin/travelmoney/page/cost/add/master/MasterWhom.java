@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney.page.cost.add.master;
 
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +27,10 @@ import java.util.Set;
  */
 
 public class MasterWhom extends ListPage {
+
+
+    private AdapterMembersList adapter = null;
+    private ListView list = null;
 
     @Override
     public void clickBackButton() {
@@ -70,7 +73,7 @@ public class MasterWhom extends ListPage {
                 .setVisibility(View.INVISIBLE);
 
         List<Member> tripMembers = t_trips.getActiveTrip().getActiveMembers();
-        ListView list1 =  MainActivity.INSTANCE.findViewById(getListViewId());
+        list =  MainActivity.INSTANCE.findViewById(getListViewId());
         if (tripMembers.size() == 0)
         {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
@@ -78,8 +81,8 @@ public class MasterWhom extends ListPage {
         }
         else
         {
-            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers, getParam().getSum()), getParam().getSum());
-            list1.setAdapter(adapter);
+            this.adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers, getParam().getSum()), getParam().getSum());
+            list.setAdapter(adapter);
 
             if (hasParam())
             {
@@ -87,7 +90,7 @@ public class MasterWhom extends ListPage {
                 {
                     for (int i = 0; i < adapter.getCount(); i++) {
                         if (getParam().getSelectedMembers().contains(adapter.getItem(i).getMember())) {
-                            list1.setItemChecked(i, true);
+                            list.setItemChecked(i, true);
                         }
                     }
                 }
@@ -95,7 +98,7 @@ public class MasterWhom extends ListPage {
                 {
                     for (int i = 0; i < adapter.getCount(); i++) {
                         if (adapter.getItem(i).getMember().equals(getParam().getMember())) {
-                            list1.setItemChecked(i, true);
+                            list.setItemChecked(i, true);
                             break;
                         }
                     }
@@ -112,15 +115,13 @@ public class MasterWhom extends ListPage {
     private Set<Member> getSelectedMembers()
     {
         Set<Member> list_id = new HashSet<>();
-        ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
         SparseBooleanArray sbArray = list.getCheckedItemPositions();
 
-        ListAdapter adapter = list.getAdapter();
 
         for (int i = 0; i < sbArray.size(); i++) {
             int key = sbArray.keyAt(i);
             if (sbArray.get(key)) {
-                Member item = (Member) adapter.getItem(key);
+                Member item = this.adapter.getItem(key).getMember();
                 if (item != null) {
                     list_id.add(item);
                 }

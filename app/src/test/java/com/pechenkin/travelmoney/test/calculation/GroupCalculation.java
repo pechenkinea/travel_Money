@@ -1,81 +1,65 @@
 package com.pechenkin.travelmoney.test.calculation;
 
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.cost.ShortCost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
 import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.ShortCost;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.List;
 
 
-@RunWith(PowerMockRunner.class)
 public class GroupCalculation {
 
-    @PrepareForTest({t_members.class})
     @Test
     public void calculate_1() {
-        Cost[] costs = new Cost[]{
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.MARINA, 100),
 
-                new ShortCost(TestMembers.MARINA, TestMembers.EVGENIY, 200),
+        TripForTest tripForTest = new TripForTest();
 
-                new ShortCost(TestMembers.VLAD, TestMembers.MARINA, 200),
-                new ShortCost(TestMembers.VLAD, TestMembers.EVGENIY, 200),
-        };
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.MARINA.getMember(), 100));
 
-        //Заглушка. EVGENIY и MARINA одного цвета а VLAD другого
-        PowerMockito.mockStatic(t_members.class);
-        PowerMockito.when(t_members.getColorById(TestMembers.EVGENIY)).thenReturn(1);
-        PowerMockito.when(t_members.getColorById(TestMembers.MARINA)).thenReturn(1);
-        PowerMockito.when(t_members.getColorById(TestMembers.VLAD)).thenReturn(2);
+        tripForTest.addCost(new CostForTest(TestMembers.MARINA.getMember(), TestMembers.EVGENIY.getMember(), 200));
+
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.MARINA.getMember(), 200));
+        tripForTest.addCost(new CostForTest(TestMembers.VLAD.getMember(), TestMembers.EVGENIY.getMember(), 200));
 
 
         Calculation calc = new Calculation(true);
-        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
-        Cost[] groupResult = calc.getResult();
+        ProcessIterate.doIterate(tripForTest.getAllCost(), new CostIterable[]{calc});
+        List<ShortCost> groupResult = calc.getResult();
 
 
-        Assert.assertEquals("в итоге должна быть 1 строка", 1, groupResult.length);
+        Assert.assertEquals("в итоге должна быть 1 строка", 1, groupResult.size());
 
-        Assert.assertEquals(TestMembers.VLAD, groupResult[0].getToMember());
-        Assert.assertEquals(400, groupResult[0].getSum(), 0);
+        Assert.assertEquals(TestMembers.VLAD.getMember(), groupResult.get(0).getToMember());
+        Assert.assertEquals(400, groupResult.get(0).getSum(), 0);
 
     }
 
-    @PrepareForTest({t_members.class})
     @Test
     public void calculate_2() {
-        Cost[] costs = new Cost[]{
-                new ShortCost(TestMembers.EVGENIY, TestMembers.GREEN, 100),
-                new ShortCost(TestMembers.EVGENIY, TestMembers.GREEN, 100),
 
-                new ShortCost(TestMembers.SVETA, TestMembers.MARINA, 50),
-                new ShortCost(TestMembers.SVETA, TestMembers.MARINA, 50),
-                new ShortCost(TestMembers.SVETA, TestMembers.MARINA, 50),
-                new ShortCost(TestMembers.SVETA, TestMembers.MARINA, 50),
-        };
+        TripForTest tripForTest = new TripForTest();
 
-        PowerMockito.mockStatic(t_members.class);
-        PowerMockito.when(t_members.getColorById(TestMembers.EVGENIY)).thenReturn(1);
-        PowerMockito.when(t_members.getColorById(TestMembers.MARINA)).thenReturn(1);
-        PowerMockito.when(t_members.getColorById(TestMembers.GREEN)).thenReturn(2);
-        PowerMockito.when(t_members.getColorById(TestMembers.SVETA)).thenReturn(2);
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.GREEN.getMember(), 100));
+        tripForTest.addCost(new CostForTest(TestMembers.EVGENIY.getMember(), TestMembers.GREEN.getMember(), 100));
+
+        tripForTest.addCost(new CostForTest(TestMembers.SVETA.getMember(), TestMembers.MARINA.getMember(), 50));
+        tripForTest.addCost(new CostForTest(TestMembers.SVETA.getMember(), TestMembers.MARINA.getMember(), 50));
+        tripForTest.addCost(new CostForTest(TestMembers.SVETA.getMember(), TestMembers.MARINA.getMember(), 50));
+        tripForTest.addCost(new CostForTest(TestMembers.SVETA.getMember(), TestMembers.MARINA.getMember(), 50));
 
 
         Calculation calc = new Calculation(true);
-        ProcessIterate.doIterate(costs, new CostIterable[]{calc});
-        Cost[] groupResult = calc.getResult();
+        ProcessIterate.doIterate(tripForTest.getAllCost(), new CostIterable[]{calc});
+        List<ShortCost> groupResult = calc.getResult();
 
-        Assert.assertEquals("в итоге должна быть 0 строк", 0, groupResult.length);
+
+        Assert.assertEquals("в итоге должна быть 0 строк", 0, groupResult.size());
     }
 
 }

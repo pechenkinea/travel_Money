@@ -9,7 +9,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.table.t_members;
+import com.pechenkin.travelmoney.bd.local.table.t_trips;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
@@ -33,9 +33,9 @@ public class EditMemberPage extends BaseMemberPage {
             return;
         }
 
-        //TODO сделать проверку по другому
-        long findId = t_members.getIdByName(getTextInputEditText(etName));
-        if (findId >= 0 && findId != getParam().getMember().getId()) {
+
+        Member findMember = t_trips.getActiveTrip().getMemberByName(name);
+        if (findMember != null && !findMember.equals(getParam().getMember())){
             Help.message("Имя занято другим участником");
             Help.setActiveEditText(getFocusFieldId());
             return;
