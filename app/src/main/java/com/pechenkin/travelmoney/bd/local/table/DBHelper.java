@@ -1,6 +1,8 @@
 package com.pechenkin.travelmoney.bd.local.table;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
@@ -8,11 +10,13 @@ import android.graphics.Color;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 
+import java.lang.reflect.Array;
+
 public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 16);
+        super(context, Namespace.DB_NAME, null, 19);
     }
 
     @Override
@@ -40,8 +44,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS + " VALUES (1, 'Отпуск', '1', 'Создана по умолчанию');");
 
         db.execSQL("create table " + Namespace.TABLE_TRIPS_MEMBERS + " ("
-                + "trip text not null,"
-                + "member text not null"
+                + "trip text not null,"  //TODO надо int
+                + "member text not null" //TODO надо int
                 + ");");
 
         db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " VALUES ('1', '1');");
@@ -65,6 +69,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "to_member integer, "
                 + "comment text, "
                 + "sum text, "
+                + Namespace.FIELD_SUM + " integer, "
                 + "image_dir text, "
                 + "active integer, "
                 + Namespace.FIELD_REPAYMENT + " integer, "
@@ -166,9 +171,35 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         //Добавлен параметр для операций возврата долга
-        if (oldVersion < 16){
+        if (oldVersion < 16) {
             db.execSQL("ALTER TABLE " + Namespace.TABLE_COSTS + " ADD COLUMN " + Namespace.FIELD_REPAYMENT + " integer default 0;");
         }
+
+        //Перевод сумм на int  и хранение суммы в копейках
+        if (oldVersion < 17) {
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_COSTS + " ADD COLUMN " + Namespace.FIELD_SUM + " integer default 0;");
+        }
+
+        //перенос старых данных в новое поле
+        if (oldVersion < 19) {
+
+            try (Cursor sqlResult = db.rawQuery("Select " + Namespace.FIELD_ID + ", " + Namespace.FIELD_OLD_SUM + " FROM " + Namespace.TABLE_COSTS + ";", null)) {
+                if (sqlResult.moveToFirst()) {
+                    do {
+                        long id = sqlResult.getLong(0);
+                        double oldSum = sqlResult.getDouble(1);
+
+                        ContentValues cv = new ContentValues();
+                        cv.put(Namespace.FIELD_SUM, (int) (oldSum * 100));
+
+                        db.update(Namespace.TABLE_COSTS, cv, Namespace.FIELD_ID + " = " + id, null);
+                    }
+                    while (sqlResult.moveToNext());
+                }
+            }
+
+        }
+
 
     }
 }

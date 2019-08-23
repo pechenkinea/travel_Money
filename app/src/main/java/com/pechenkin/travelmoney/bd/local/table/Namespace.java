@@ -26,7 +26,8 @@ public interface Namespace {
     String FIELD_TRIP = "trip";
     String FIELD_MEMBER = "member";
     String FIELD_TO_MEMBER = "to_member";
-    String FIELD_SUM = "sum";
+    String FIELD_OLD_SUM = "sum";
+    String FIELD_SUM = "sum_int";
     String FIELD_IMAGE_DIR = "image_dir";
     String FIELD_DATE = "date";
     String FIELD_ACTIVE = "active";

@@ -41,6 +41,6 @@ public interface Trip {
 
     List<Cost> getAllCost();
 
-    void addCost(Member member, Member toMember, String comment, double sum, String image_dir, Date date, boolean isRepayment);
+    void addCost(Member member, Member toMember, String comment, int sum, String image_dir, Date date, boolean isRepayment);
 
 }

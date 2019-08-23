@@ -53,9 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
         PageOpener.INSTANCE.open(MainPage.class);
 
-        /*CostCreator c = new CostCreator("Я за всех 500 магазин");
+        /*
+        CostCreator c = new CostCreator("Я за всех 100 магазин", "");
         PageParam param = new PageParam.BuildingPageParam().setCostCreator(c).getParam();
-        PageOpener.INSTANCE.open(AddCostsListPage.class, param);*/
+        PageOpener.INSTANCE.open(AddCostsListPage.class, param);
+        */
     }
 
     @Override

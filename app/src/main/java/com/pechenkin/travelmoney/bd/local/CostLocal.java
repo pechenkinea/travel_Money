@@ -30,14 +30,14 @@ public class CostLocal extends IdTableRow implements Cost {
     private long repayment;
     //public final int trip;
 
-    private final double sum;
+    private final int sum;
 
 
     public CostLocal(Cursor c) {
         super(c);
 
         this.comment = getStringColumnValue(Namespace.FIELD_COMMENT, c);
-        this.sum = getDoubleColumnValue(Namespace.FIELD_SUM, c);
+        this.sum = getIntColumnValue(Namespace.FIELD_SUM, c);
         this.image_dir = getStringColumnValue(Namespace.FIELD_IMAGE_DIR, c);
         this.date = getDateColumnValue(Namespace.FIELD_DATE, c);
 
@@ -66,7 +66,7 @@ public class CostLocal extends IdTableRow implements Cost {
     }
 
     @Override
-    public double getSum() {
+    public int getSum() {
         return sum;
     }
 

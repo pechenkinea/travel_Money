@@ -36,7 +36,7 @@ public class LineDiagram extends Base {
 
     private boolean isAnimated = false;
 
-    public LineDiagram(double sum, List<Total.MemberSum> total) {
+    public LineDiagram(int sum, List<Total.MemberSum> total) {
         super(sum, total);
     }
 

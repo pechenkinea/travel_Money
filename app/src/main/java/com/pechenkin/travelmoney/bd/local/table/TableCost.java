@@ -16,7 +16,7 @@ public class TableCost {
     private TableCost() {
     }
 
-    public void add(long member_id, long to_member_id, String comment, double sum, String image_dir, long tripId, Date date, boolean isRepayment) {
+    public void add(long member_id, long to_member_id, String comment, int sum, String image_dir, long tripId, Date date, boolean isRepayment) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_MEMBER, member_id);
         cv.put(Namespace.FIELD_TO_MEMBER, to_member_id);

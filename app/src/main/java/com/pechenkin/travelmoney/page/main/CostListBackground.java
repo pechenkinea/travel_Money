@@ -58,7 +58,6 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
             List<Cost> costList = this.trip.getAllCost();
 
             List<ShortCost> calculationList;
-            double allSum = 0;
 
             if (costList.size() > 0) {
 
@@ -70,7 +69,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
                 calculationList = calc.getResult();
                 List<Total.MemberSum> totalResult = total.getResult();
-                allSum = allSumIteration.getSum();
+                int allSum = allSumIteration.getSum();
 
 
                 Diagram diagram = DefaultDiagram.createDefaultDiagram(allSum, totalResult);

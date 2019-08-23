@@ -26,7 +26,7 @@ import java.util.List;
 public abstract class Base implements Diagram {
 
     protected List<Total.MemberSum> total;
-    protected double sum;
+    protected int sum;
     protected Chart diagram = null;
     private OnDiagramSelect onDiagramSelect = null;
 
@@ -42,7 +42,7 @@ public abstract class Base implements Diagram {
         this.onDiagramSelectItem = onDiagramSelectItem;
     }
 
-    public Base(double sum, List<Total.MemberSum> total) {
+    public Base(int sum, List<Total.MemberSum> total) {
         this.sum = sum;
         Collections.sort(total, (t1, t2) -> Integer.compare(t1.getMember().getColor(), t2.getMember().getColor()));
 
@@ -122,7 +122,7 @@ public abstract class Base implements Diagram {
         RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textView.setLayoutParams(lp2);
 
-        String textTotal = "Всего потрачено " + Help.doubleToString(this.sum);
+        String textTotal = "Всего потрачено " + Help.kopToTextRub(this.sum);
         textView.setText(textTotal);
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
         textView.setTextColor(Color.BLACK);

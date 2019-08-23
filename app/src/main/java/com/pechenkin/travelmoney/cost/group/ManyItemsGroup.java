@@ -32,7 +32,7 @@ public class ManyItemsGroup extends GroupCost {
 
     private final Cost[] costs;
 
-    private double sum = 0;
+    private int sum = 0;
     private final String comment;
     private final Date date;
     private final String image_dir;
@@ -78,7 +78,7 @@ public class ManyItemsGroup extends GroupCost {
         holder.getMainLayout().setBackgroundResource(R.drawable.background_main_layout_list_view);  //добавляем анимацию клика
         holder.setListenerOpenAdditionalInfo();
 
-        holder.getSum_group_sum().setText(Help.doubleToString(this.sum));
+        holder.getSum_group_sum().setText(Help.kopToTextRub(this.sum));
         Member member = this.costs[0].getMember();
 
         String dateText = "";
@@ -100,7 +100,7 @@ public class ManyItemsGroup extends GroupCost {
 
             int to_memberColor = to_member.getColor();
 
-            String s = Help.doubleToString(costInGroup.getSum());
+            String s = Help.kopToTextRub(costInGroup.getSum());
             if (costInGroup.isActive()) {
                 sumText.append(s);
             } else {

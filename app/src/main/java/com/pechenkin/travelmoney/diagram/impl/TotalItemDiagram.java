@@ -35,7 +35,7 @@ public class TotalItemDiagram extends Base {
 
     private boolean isAnimated = false;
 
-    public TotalItemDiagram(double sum, List<Total.MemberSum> total) {
+    public TotalItemDiagram(int sum, List<Total.MemberSum> total) {
         super(sum, total);
     }
 

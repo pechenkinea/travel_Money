@@ -172,7 +172,7 @@ public class Calculation implements CostIterable {
      */
     private static class MemberSum {
         final Member member;
-        double sum = 0f;
+        int sum = 0;
 
         /**
          * Создает новый объект MemberSum с нулевой суммой
@@ -187,7 +187,7 @@ public class Calculation implements CostIterable {
          *
          * @param sum сумма проводки
          */
-        void addSum(double sum) {
+        void addSum(int sum) {
             this.sum += sum;
         }
 
@@ -197,7 +197,7 @@ public class Calculation implements CostIterable {
          *
          * @param sum сумма проводки
          */
-        void removeSum(double sum) {
+        void removeSum(int sum) {
             this.sum -= sum;
         }
     }

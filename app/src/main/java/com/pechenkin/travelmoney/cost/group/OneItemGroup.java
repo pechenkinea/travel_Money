@@ -44,7 +44,7 @@ public class OneItemGroup extends GroupCost {
 
 
         if (cost.isActive()) {
-            holder.getSum_group_sum().setText(Help.doubleToString(this.cost.getSum()));
+            holder.getSum_group_sum().setText(Help.kopToTextRub(this.cost.getSum()));
             holder.getTitle().setTextColor(member.getColor());
             holder.getTo_member_one().setTextColor(toMember.getColor());
 

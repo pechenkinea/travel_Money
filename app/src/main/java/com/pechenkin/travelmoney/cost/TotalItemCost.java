@@ -16,7 +16,7 @@ import com.pechenkin.travelmoney.page.cost.add.Repayment;
  * Для того, что бы сделать кликабельными участников в итогах
  */
 public class TotalItemCost extends ShortCost {
-    public TotalItemCost(Member member, Member to_member, double sum) {
+    public TotalItemCost(Member member, Member to_member, int sum) {
         super(member, to_member, sum);
     }
 

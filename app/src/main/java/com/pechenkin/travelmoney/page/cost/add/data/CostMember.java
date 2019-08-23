@@ -1,5 +1,6 @@
 package com.pechenkin.travelmoney.page.cost.add.data;
 
+import com.pechenkin.travelmoney.Division;
 import com.pechenkin.travelmoney.bd.Member;
 
 import java.util.ArrayList;
@@ -11,18 +12,18 @@ import java.util.List;
 public class CostMember {
     private final Member member;
     private boolean isChange = false;
-    private double sum;
+    private int sum;
 
-    private CostMember(Member member, double sum) {
+    private CostMember(Member member, int sum) {
         this.member = member;
         this.sum = sum;
     }
 
-    public double getSum() {
+    public int getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(int sum) {
         this.sum = sum;
 
     }
@@ -39,12 +40,12 @@ public class CostMember {
         return member;
     }
 
-    public static List<CostMember> createCostMemberBaseTableRow(List<Member> members, double sum) {
-        double oneMemberSum = (sum > 0 && members.size() > 0) ? sum / members.size() : 0;
+    public static List<CostMember> createCostMemberBaseTableRow(List<Member> members, int sum) {
 
+        Division division = new Division(sum, members.size());
         List<CostMember> result = new ArrayList<>();
         for (Member member : members) {
-            result.add(new CostMember(member, oneMemberSum));
+            result.add(new CostMember(member, division.getNext()));
         }
 
         return result;

@@ -31,7 +31,7 @@ public class BarDiagram extends Base {
 
     private boolean isAnimated = false;
 
-    public BarDiagram(double sum, List<Total.MemberSum> total) {
+    public BarDiagram(int sum, List<Total.MemberSum> total) {
         super(sum, total);
     }
 

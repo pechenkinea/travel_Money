@@ -57,7 +57,7 @@ public class MasterCostInfo extends BasePage {
 
         TextInputEditText et_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
         String sum = getTextInputEditText(et_sum);
-        buildParam.setSum(Help.StringToDouble(sum));
+        buildParam.setSum(Help.textRubToIntKop(sum));
 
         TextView tv_dir = MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView);
         String image_dir = tv_dir.getText().toString();
@@ -80,15 +80,15 @@ public class MasterCostInfo extends BasePage {
 
         TextInputEditText et_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
         String sum = getTextInputEditText(et_sum);
-        if (sum.length() == 0 || Help.StringToDouble(sum) <= 0) {
+        if (sum.length() == 0 || Help.textRubToIntKop(sum) <= 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorFillSum));
             Help.setActiveEditText(R.id.cost_sum, true);
             return;
         }
 
 
-        if (Help.StringToDouble(sum) > TMConst.ERROR_SUM) {
-            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.doubleToString(TMConst.ERROR_SUM)));
+        if (Help.textRubToIntKop(sum) > TMConst.ERROR_SUM) {
+            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.kopToTextRub(TMConst.ERROR_SUM)));
             Help.setActiveEditText(R.id.cost_sum);
             return;
         }
@@ -223,7 +223,7 @@ public class MasterCostInfo extends BasePage {
 
                 if (getParam().getSum() > 0) {
                     ((TextInputEditText) MainActivity.INSTANCE.findViewById(R.id.cost_sum))
-                            .setText(Help.doubleToString(getParam().getSum()).replaceAll(" ", ""));
+                            .setText(Help.kopToTextRub(getParam().getSum()).replaceAll(" ", ""));
                 }
 
                 if (getParam().getPhotoUrl().length() > 0) {

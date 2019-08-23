@@ -24,11 +24,11 @@ public class ShortCost implements Cost, CostListItem {
 
     public final Member member;
     private final Member to_member;
-    public double sum;
+    public int sum;
     private String comment = "";
     private int groupId = 0;
 
-    public ShortCost(Member member, Member to_member, double sum) {
+    public ShortCost(Member member, Member to_member, int sum) {
         this.member = member;
         this.to_member = to_member;
         this.sum = sum;
@@ -37,12 +37,12 @@ public class ShortCost implements Cost, CostListItem {
     public ShortCost(String comment) {
         this.member = null;
         this.to_member = null;
-        this.sum = 0f;
+        this.sum = 0;
         this.comment = comment;
     }
 
     //Используется при составлении списка трат при добавелнии голосом
-    public ShortCost(Member member, Member to_member, double sum, String comment, int groupId) {
+    public ShortCost(Member member, Member to_member, int sum, String comment, int groupId) {
         this.member = member;
         this.to_member = to_member;
         this.sum = sum;
@@ -75,7 +75,7 @@ public class ShortCost implements Cost, CostListItem {
     }
 
     @Override
-    public double getSum() {
+    public int getSum() {
         return sum;
     }
 
@@ -116,7 +116,7 @@ public class ShortCost implements Cost, CostListItem {
     @Override
     public void render(ListItemSummaryViewHolder holder) {
 
-        String sum = Help.doubleToString(getSum());
+        String sum = Help.kopToTextRub(getSum());
 
         if (isChange()) {
             holder.getSum_group_sum().setText(Html.fromHtml("<b>" + sum + "</b> "));

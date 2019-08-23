@@ -37,7 +37,7 @@ public class AdapterMembersList extends BaseAdapter {
     private final List<CostMember> data;
     private static LayoutInflater inflater = null;
     private boolean showEditButton = false;
-    private double sum = 0f;
+    private int sum = 0;
     private boolean showSum = false;
     private boolean showCheckBox = true;
 
@@ -51,7 +51,7 @@ public class AdapterMembersList extends BaseAdapter {
         this.showEditButton = showEditButton;
     }
 
-    public AdapterMembersList(Activity a, List<CostMember> dataList, double sum) {
+    public AdapterMembersList(Activity a, List<CostMember> dataList, int sum) {
         data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.sum = sum;
@@ -112,7 +112,7 @@ public class AdapterMembersList extends BaseAdapter {
 
                 final EditText input = new EditText(MainActivity.INSTANCE);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                input.setText(Help.doubleToString(item.getSum()));
+                input.setText(Help.kopToTextRub(item.getSum()));
 
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -123,7 +123,7 @@ public class AdapterMembersList extends BaseAdapter {
                         .setCancelable(false)
                         .setPositiveButton("Ок", (dialog, which) -> {
                             //((TextView) v).setText(input.getText());
-                            item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
+                            item.setSum(Help.textRubToIntKop(String.valueOf(input.getText())));
                             item.setChange(true);
                             dialog.cancel();
                             listView.invalidateViews();
@@ -144,7 +144,7 @@ public class AdapterMembersList extends BaseAdapter {
 
                 input.setOnEditorActionListener((v1, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        item.setSum(Help.StringToDouble(String.valueOf(input.getText())));
+                        item.setSum(Help.textRubToIntKop(String.valueOf(input.getText())));
                         item.setChange(true);
                         alert.cancel();
                         listView.invalidateViews();
@@ -194,13 +194,17 @@ public class AdapterMembersList extends BaseAdapter {
                 holder.check.setImageResource(R.drawable.ic_check_on_24);
 
                 if (showSum) {
+                    holder.memberSumText.setVisibility(View.VISIBLE);
+                    holder.editButton.setVisibility(View.VISIBLE);
+
                     if (data.get(position).isChange()) {
-                        holder.memberSumText.setText(Html.fromHtml("<b>" + Help.doubleToString(data.get(position).getSum()) + "</b> "));
-                        holder.memberSumText.setVisibility(View.VISIBLE);
-                        holder.editButton.setVisibility(View.VISIBLE);
+                        holder.memberSumText.setText(Html.fromHtml("<b>" + Help.kopToTextRub(data.get(position).getSum()) + "</b> "));
+
                     } else {
+                        //holder.memberSumText.setText(Help.kopToTextRub(data.get(position).getSum()));
+
                         int selectedCount = 0;
-                        double distributionSum = sum;
+                        int distributionSum = sum;
                         for (int i = 0; i < sbArray.size(); i++) {
                             int key = sbArray.keyAt(i);
 
@@ -213,12 +217,11 @@ public class AdapterMembersList extends BaseAdapter {
                             }
                         }
                         if (selectedCount > 0) {
-                            double sumOne = distributionSum / selectedCount;
-                            holder.memberSumText.setText(Help.doubleToString((sumOne > 0) ? sumOne : 0));
+                            int sumOne = distributionSum / selectedCount; // TODO делить без отстатка
+
+                            holder.memberSumText.setText(Help.kopToTextRub((sumOne > 0) ? sumOne : 0));
                             data.get(position).setSum((sumOne > 0) ? sumOne : 0);
 
-                            holder.memberSumText.setVisibility(View.VISIBLE);
-                            holder.editButton.setVisibility(View.VISIBLE);
 
                         }
                     }

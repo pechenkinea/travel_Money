@@ -36,14 +36,14 @@ public class TotalDebt implements ExportFormat {
         ProcessIterate.doIterate(allCosts, new CostIterable[]{calc, total, allSumIteration});
         List<ShortCost> calculateCosts = calc.getResult();
         List<Total.MemberSum> totalResult = total.getResult();
-        double allSum = allSumIteration.getSum();
+        int allSum = allSumIteration.getSum();
 
 
         result.append("Итоги по поездке \"").append(trip.getName()).append("\" (");
         result.append(Help.dateToDateStr(trip.getStartDate())).append(" - ").append(Help.dateToDateStr(trip.getEndDate())).append(")\n");
 
         result.append("\n\n");
-        result.append("Всего потрачено: ").append(Help.doubleToString(allSum));
+        result.append("Всего потрачено: ").append(Help.kopToTextRub(allSum));
 
         result.append("\n\n");
         if (calculateCosts.size() == 0) {
@@ -56,7 +56,7 @@ public class TotalDebt implements ExportFormat {
                 Member member = cost.getMember();
                 Member toMember =  cost.getToMember();
 
-                result.append(member.getName()).append(" --> ").append(toMember.getName()).append(" ").append(Help.doubleToString(cost.getSum())).append("\n");
+                result.append(member.getName()).append(" --> ").append(toMember.getName()).append(" ").append(Help.kopToTextRub(cost.getSum())).append("\n");
             }
         }
 
@@ -67,7 +67,7 @@ public class TotalDebt implements ExportFormat {
 
             for (Total.MemberSum mSum : totalResult) {
                 Member member = mSum.getMember();
-                result.append(member.getName()).append(": ").append(Help.doubleToString(mSum.getSumExpense())).append("\n");
+                result.append(member.getName()).append(": ").append(Help.kopToTextRub(mSum.getSumExpense())).append("\n");
             }
         }
 

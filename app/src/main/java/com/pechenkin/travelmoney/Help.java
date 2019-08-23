@@ -119,6 +119,30 @@ public class Help {
         }
     }
 
+    /**
+     * преобразует текстовое значение рублей в кол-во копеек.
+     * Если в дробной части больше 2х знаком то просто отбрасывем их.
+     *
+     * @param value 123 456,54
+     * @return 12345654
+     */
+    public static int textRubToIntKop(String value) {
+        if (value == null || value.length() == 0)
+            return 0;
+
+        double val = StringToDouble(value);
+        return (int)(val * 100);
+    }
+
+    /**
+     * Показывает пользователю число копеек в рублях
+     * @param kop 12345
+     * @return 123.45
+     */
+    public static String kopToTextRub(int kop){
+        return doubleToString((double) kop / 100); // TODO надо как то проще сделать
+    }
+
 
     public static double StringToDouble(String value) {
         if (value == null || value.length() == 0)
@@ -129,6 +153,7 @@ public class Help {
             return 0;
         }
     }
+
 
     public static String doubleToString(double value) {
         if (value == 0)
@@ -185,6 +210,7 @@ public class Help {
         }
         return dateFormat.format(date) + " " + timeFormat.format(date);
     }
+
     public static String dateToDateStr(Date date) {
         if (date == null) {
             return "";

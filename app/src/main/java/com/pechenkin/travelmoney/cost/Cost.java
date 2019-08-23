@@ -26,9 +26,9 @@ public interface Cost {
     Member getToMember();
 
     /**
-     * Сколько дал денег
+     * Сколько дал денег (в копейках)
      */
-    double getSum();
+    int getSum();
 
     /**
      * возвращает статус проводки

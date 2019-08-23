@@ -69,7 +69,7 @@ public class DiagramsListPage extends ListPage {
             ProcessIterate.doIterate(allCostTrip, new CostIterable[]{total, allSumIteration});
 
             List<Total.MemberSum> totalResult = total.getResult();
-            double allSum = allSumIteration.getSum();
+            int allSum = allSumIteration.getSum();
 
             OnDiagramSelect onDiagramSelect = diagram -> {
 

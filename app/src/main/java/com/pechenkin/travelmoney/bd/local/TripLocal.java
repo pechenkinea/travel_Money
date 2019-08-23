@@ -86,7 +86,7 @@ public class TripLocal implements Trip {
     }
 
     @Override
-    public void addCost(Member member, Member toMember, String comment, double sum, String image_dir, Date date, boolean isRepayment) {
+    public void addCost(Member member, Member toMember, String comment, int sum, String image_dir, Date date, boolean isRepayment) {
         TableCost.INSTANCE.add(member.getId(), toMember.getId(), comment, sum, image_dir, this.id, date, isRepayment);
     }
 

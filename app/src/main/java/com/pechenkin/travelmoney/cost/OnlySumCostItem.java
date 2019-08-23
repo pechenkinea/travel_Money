@@ -12,15 +12,15 @@ import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
 
 public class OnlySumCostItem implements CostListItem {
 
-    private double sum;
+    private int sum;
 
-    public OnlySumCostItem(double sum) {
+    public OnlySumCostItem(int sum) {
         this.sum = sum;
     }
 
     @Override
     public void render(ListItemSummaryViewHolder holder) {
-        String sum = Help.doubleToString(this.sum);
+        String sum = Help.kopToTextRub(this.sum);
         holder.getSum_line().setVisibility(View.INVISIBLE);
         holder.getSum_group_sum().setText(sum);
     }
@@ -35,7 +35,7 @@ public class OnlySumCostItem implements CostListItem {
         return false;
     }
 
-    public void setSum(double sum) {
+    public void setSum(int sum) {
         this.sum = sum;
     }
 

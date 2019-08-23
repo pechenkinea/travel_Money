@@ -169,13 +169,13 @@ public class WordCollection {
         }
 
         static String multiplied(String text) {
-            double result = 0;
+            int result = 0;
             String[] numeric = text.split("\\*");
             for (String s : numeric) {
 
                 if (s.equals(HALF)) {
 
-                    String resultStr = Help.doubleToString(result)
+                    String resultStr = Help.kopToTextRub(result)
                             .replaceAll(" ", "")
                             .replaceAll("(.+)?([1-9]\\d{0,2})((000)+)?$", "$1$2")
                             .replaceAll("null", "");
@@ -189,7 +189,7 @@ public class WordCollection {
                 }
 
                 try {
-                    double m = Double.parseDouble(s);
+                    int m = Integer.parseInt(s);
                     if (result == 0)
                         result = m;
                     else
@@ -200,7 +200,7 @@ public class WordCollection {
 
             }
 
-            return Help.doubleToString(result).replaceAll(" ", "");
+            return Help.kopToTextRub(result).replaceAll(" ", "");
         }
 
         String[] splitSpace() {

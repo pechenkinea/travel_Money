@@ -12,9 +12,9 @@ public class CostForTest implements Cost {
 
     private Member member;
     private Member toMember;
-    private double sum;
+    private int sum;
 
-    public CostForTest(Member member, Member toMember, double sum){
+    public CostForTest(Member member, Member toMember, int sum){
         this.member = member;
         this.toMember = toMember;
         this.sum = sum;
@@ -36,7 +36,7 @@ public class CostForTest implements Cost {
     }
 
     @Override
-    public double getSum() {
+    public int getSum() {
         return sum;
     }
 

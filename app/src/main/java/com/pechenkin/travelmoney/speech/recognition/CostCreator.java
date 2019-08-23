@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney.speech.recognition;
 
 import android.text.TextUtils;
 
+import com.pechenkin.travelmoney.Division;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.NamesHashMap;
@@ -21,7 +22,7 @@ public class CostCreator {
     private final String text;
 
     private Member master = null;
-    private double sums = 0;
+    private int sums = 0;
     private final List<Member> toMembers = new ArrayList<>();
     private final List<String> commentsList = new ArrayList<>();
 
@@ -74,14 +75,18 @@ public class CostCreator {
 
     private void createCosts() {
         if (master != null && sums > 0) {
+
+            sums = sums * 100;
             if (sums > TMConst.ERROR_SUM) {
                 sums = TMConst.ERROR_SUM;
             }
 
             groupCost++;
+            Division division = new Division(sums, toMembers.size());
             for (Member toMember : toMembers) {
                 Member to = (toMember == null) ? master : toMember; //Для случаев когда мастер идет не первом в фразе
-                costs.add(new ShortCost(master, to, sums / toMembers.size(), getComment(), groupCost));
+
+                costs.add(new ShortCost(master, to, division.getNext(), getComment(), groupCost));
             }
 
 

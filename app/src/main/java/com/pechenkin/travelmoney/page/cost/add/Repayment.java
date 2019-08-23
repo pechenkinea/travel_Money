@@ -43,20 +43,20 @@ public class Repayment extends BasePage {
 
         TextInputEditText et_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
         String sum = getTextInputEditText(et_sum);
-        if (sum.length() == 0 || Help.StringToDouble(sum) <= 0) {
+        if (sum.length() == 0 || Help.textRubToIntKop(sum) <= 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorFillSum));
             Help.setActiveEditText(R.id.cost_sum, true);
             return;
         }
 
 
-        if (Help.StringToDouble(sum) > TMConst.ERROR_SUM) {
-            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.doubleToString(TMConst.ERROR_SUM)));
+        if (Help.textRubToIntKop(sum) > TMConst.ERROR_SUM) {
+            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.kopToTextRub(TMConst.ERROR_SUM)));
             Help.setActiveEditText(R.id.cost_sum);
             return;
         }
 
-        TripManager.INSTANCE.getActiveTrip().addCost(member, toMember, comment, Help.StringToDouble(sum), "",selectDate, true);
+        TripManager.INSTANCE.getActiveTrip().addCost(member, toMember, comment, Help.textRubToIntKop(sum), "",selectDate, true);
         PageOpener.INSTANCE.open(MainPage.class);
 
     }
@@ -73,7 +73,7 @@ public class Repayment extends BasePage {
             ((TextView) MainActivity.INSTANCE.findViewById(R.id.to_member)).setText(toMember.getName());
 
             final TextInputEditText cost_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
-            cost_sum.setText(Help.doubleToString(getParam().getSum()).replaceAll(" ", ""));
+            cost_sum.setText(Help.kopToTextRub(getParam().getSum()).replaceAll(" ", ""));
 
             ((TextView) MainActivity.INSTANCE.findViewById(R.id.textDate)).setText(Help.dateToDateTimeStr(selectDate));
 

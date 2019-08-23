@@ -21,7 +21,7 @@ public class DefaultDiagram {
 
 
     @NonNull
-    public static Diagram createDefaultDiagram(double sum, List<Total.MemberSum> total) {
+    public static Diagram createDefaultDiagram(int sum, List<Total.MemberSum> total) {
 
         String defaultDiagramName = Objects.requireNonNull(TotalItemDiagram.class.getAnnotation(DiagramName.class)).name();
         defaultDiagramName = t_settings.INSTANCE.get(NamespaceSettings.LIKE_DIAGRAM_NAME, defaultDiagramName);
@@ -29,7 +29,7 @@ public class DefaultDiagram {
         Class<? extends Diagram> dClass = getDiagramClassByName(defaultDiagramName);
         if (dClass != null) {
             try {
-                Constructor<? extends Diagram> constructor = dClass.getConstructor(double.class, List.class);
+                Constructor<? extends Diagram> constructor = dClass.getConstructor(int.class, List.class);
                 return constructor.newInstance(sum, total);
             } catch (NoSuchMethodException e) {
                 Help.alertError("Не найден конструктор для создания диаграммы " + defaultDiagramName);

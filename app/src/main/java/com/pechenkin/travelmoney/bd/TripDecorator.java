@@ -93,7 +93,7 @@ public class TripDecorator implements Trip {
     }
 
     @Override
-    public void addCost(Member member, Member toMember, String comment, double sum, String image_dir, Date date, boolean isRepayment) {
+    public void addCost(Member member, Member toMember, String comment, int sum, String image_dir, Date date, boolean isRepayment) {
         this.trip.addCost(member, toMember, comment, sum, image_dir, date, isRepayment);
     }
 

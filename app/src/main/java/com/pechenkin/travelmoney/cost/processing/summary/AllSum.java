@@ -4,7 +4,7 @@ import com.pechenkin.travelmoney.cost.Cost;
 import com.pechenkin.travelmoney.cost.processing.CostIterable;
 
 public class AllSum implements CostIterable {
-    private double sum = 0;
+    private int sum = 0;
 
     @Override
     public void iterate(Cost cost) {
@@ -18,7 +18,7 @@ public class AllSum implements CostIterable {
 
     }
 
-    public double getSum() {
+    public int getSum() {
         return sum;
     }
 }

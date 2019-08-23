@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pechenkin.travelmoney.Division;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -35,7 +36,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
 
     private final List<CostListItem> data;
     private boolean isCanEditAllSum = false;
-    private double totalSum;
+    private int totalSum;
     private static LayoutInflater inflater = null;
     private final RecyclerView listView;
 
@@ -46,7 +47,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.data = data;
 
-        double sum = 0f;
+        int sum = 0;
         Set<Integer> groups = new HashSet<>();
 
         for (CostListItem c : data) {
@@ -87,7 +88,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
      * Обновление общий суммы трат
      */
     private void updateTotalSum(){
-        double allSum = 0;
+        int allSum = 0;
         for (CostListItem c : data) {
             if (c instanceof ShortCost) {
                 if (((ShortCost) c).member != null) {
@@ -117,7 +118,7 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
         if (item instanceof ShortCost){
             int groupId = ((ShortCost) item).getGroupId();
 
-            double sumGroup = 0;
+            int sumGroup = 0;
 
 
             if (((ShortCost) item).isChange()) {
@@ -144,8 +145,9 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             data.remove(position);
             notifyItemRemoved(position);
 
+            Division division = new Division(sumGroup, costGroup.size());
             for (ShortCost c : costGroup) {
-                c.sum = sumGroup / costGroup.size();
+                c.sum = division.getNext();
             }
 
             updateTotalSum();
@@ -242,8 +244,8 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
      */
     private void commitEditSum(final EditText input, final CostListItem item, DialogInterface dialog, boolean toDefault) {
 
-        double editSum = Help.StringToDouble(String.valueOf(input.getText()));
-        double sumGroup = 0;
+        int editSum = Help.textRubToIntKop(String.valueOf(input.getText()));
+        int sumGroup = 0;
 
         List<ShortCost> costGroup = new ArrayList<>();
         int groupId = 1;
@@ -295,8 +297,9 @@ public class RecyclerAdapterCostList extends RecyclerView.Adapter {
             sumGroup = 0;
 
 
+        Division division = new Division(sumGroup, costGroup.size());
         for (ShortCost c : costGroup) {
-            c.sum = sumGroup / costGroup.size();
+            c.sum = division.getNext();
         }
 
         updateTotalSum();

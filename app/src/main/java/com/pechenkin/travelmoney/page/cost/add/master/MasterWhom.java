@@ -50,7 +50,7 @@ public class MasterWhom extends ListPage {
         String desc = "";
         try
         {
-            desc = " (" + getParam().getMember().getName() + " " + Help.doubleToString(getParam().getSum()) + ")";
+            desc = " (" + getParam().getMember().getName() + " " + Help.kopToTextRub(getParam().getSum()) + ")";
         }
         catch(Exception ex)
         {

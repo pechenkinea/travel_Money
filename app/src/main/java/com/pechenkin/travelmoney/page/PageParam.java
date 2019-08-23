@@ -25,7 +25,7 @@ public class PageParam {
     private String photoUrl;
     private String name;
     private String description;
-    private double sum = 0f;
+    private int sum = 0;
     private Date selectDate;
     private Set<Member> selectedMembers;
     private Trip trip;
@@ -45,7 +45,7 @@ public class PageParam {
         return description;
     }
 
-    public double getSum() {
+    public int getSum() {
         return sum;
     }
 
@@ -90,7 +90,7 @@ public class PageParam {
         private String photoUrl = "";
         private String name = "";
         private String description = "";
-        private double sum = 0f;
+        private int sum = 0;
         private Date selectDate = new Date();
         private Set<Member> selectedMembers = new HashSet<>();
         private CostCreator costCreator = null;
@@ -155,7 +155,7 @@ public class PageParam {
             return this;
         }
 
-        public BuildingPageParam setSum(double sum)
+        public BuildingPageParam setSum(int sum)
         {
             this.sum = sum;
             return this;

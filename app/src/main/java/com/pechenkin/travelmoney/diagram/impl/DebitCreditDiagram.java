@@ -32,7 +32,7 @@ import java.util.List;
 public class DebitCreditDiagram extends Base {
     private boolean isAnimated = false;
 
-    public DebitCreditDiagram(double sum, List<Total.MemberSum> total) {
+    public DebitCreditDiagram(int sum, List<Total.MemberSum> total) {
         super(sum, total);
     }
 

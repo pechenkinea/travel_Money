@@ -66,14 +66,14 @@ public class Total implements CostIterable {
 
     public static class MemberSum {
         final Member member;
-        double sumExpense = 0f;
-        double sumPay = 0f;
+        int sumExpense = 0;
+        int sumPay = 0;
 
         private MemberSum(Member member) {
             this.member = member;
         }
 
-        MemberSum(Member member, double sumExpense, double sumPay) {
+        MemberSum(Member member, int sumExpense, int sumPay) {
             this.member = member;
             this.sumExpense = sumExpense;
             this.sumPay = sumPay;
@@ -95,11 +95,11 @@ public class Total implements CostIterable {
             return member;
         }
 
-        public double getSumExpense() {
+        public int getSumExpense() {
             return sumExpense;
         }
 
-        public double getSumPay() {
+        public int getSumPay() {
             return sumPay;
         }
     }
