@@ -105,7 +105,7 @@ public class Calculation implements CostIterable {
             //Смотрим, есть ли среди должников тот, кто должен ровно столько сколько надо positive
             for (int i = negativeMember.size() - 1; i >= 0; i--) {
                 MemberSum negative = negativeMember.get(i);
-                if (negative.getSumRound() * -1 == positive.getSumRound()){
+                if (negative.sum * -1 == positive.sum){
                     resultList.add(new TotalItemCost(negative.member, positive.member, positive.sum));
                     negativeMember.remove(i);
                     positive.removeSum(positive.sum);
@@ -173,11 +173,6 @@ public class Calculation implements CostIterable {
     private static class MemberSum {
         final Member member;
         double sum = 0f;
-
-        // округляет до 2х знаков после запятой
-        double getSumRound(){
-            return (double) Math.round(this.sum * 100.0) / 100.0;
-        }
 
         /**
          * Создает новый объект MemberSum с нулевой суммой
