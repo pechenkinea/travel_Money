@@ -54,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
         PageOpener.INSTANCE.open(MainPage.class);
 
-        /*
-        CostCreator c = new CostCreator("Я за всех 100 магазин", "");
-        PageParam param = new PageParam().setCostCreator(c).getParam();
-        PageOpener.INSTANCE.open(AddCostsListPage.class, param);
-        */
+
+        /*CostCreator c = new CostCreator("Я за всех 100 магазин", "");
+        PageParam param = new PageParam().setDraftTransaction(c.getDraftTransaction()).setBackPage(MainPage.class);
+        PageOpener.INSTANCE.open(MasterWhom.class, param);*/
+
     }
 
     @Override
