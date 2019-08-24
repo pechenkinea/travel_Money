@@ -2,7 +2,7 @@ package com.pechenkin.travelmoney.transaction;
 
 import android.view.View;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
 import com.pechenkin.travelmoney.transaction.adapter.ListItemSummaryViewHolder;
 

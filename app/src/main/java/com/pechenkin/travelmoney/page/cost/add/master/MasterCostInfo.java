@@ -14,15 +14,16 @@ import androidx.core.content.FileProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.listener.DateOnClickListener;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.utils.Help;
 
 import java.io.File;
 import java.util.Date;
@@ -50,22 +51,24 @@ public class MasterCostInfo extends BasePage {
     private Date selectDate = new Date();
 
     private void setParam() {
-        PageParam.BuildingPageParam buildParam = new PageParam.BuildingPageParam(getParam());
+
 
         TextInputEditText et_comment = MainActivity.INSTANCE.findViewById(R.id.cost_comment);
-        buildParam.setName(getTextInputEditText(et_comment));
 
         TextInputEditText et_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
         String sum = getTextInputEditText(et_sum);
-        buildParam.setSum(Help.textRubToIntKop(sum));
 
         TextView tv_dir = MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView);
         String image_dir = tv_dir.getText().toString();
-        buildParam.setPhotoUrl(image_dir);
 
-        buildParam.setSelectDate(selectDate);
+        DraftTransaction draftTransaction = getParam().getDraftTransaction()
+                .setComment(getTextInputEditText(et_comment))
+                .setImageUrl(image_dir)
+                .setDate(selectDate);
 
-        setParam(buildParam.getParam());
+        DraftTransactionItem draftTransactionItem = (DraftTransactionItem) draftTransaction.getCreditItems().get(0);
+        draftTransactionItem.setCredit(Help.textRubToIntKop(sum));
+
     }
 
 
@@ -208,42 +211,37 @@ public class MasterCostInfo extends BasePage {
     @Override
     protected boolean fillFields() {
 
-        if (hasParam()) {
-
-            try {
-                Member member = getParam().getMember();
-                if (member != null) {
-                    String memberCostInfoText = MainActivity.INSTANCE.getString(R.string.costMember) + " " + member.getName();
-                    ((TextView) MainActivity.INSTANCE.findViewById(R.id.memberCostInfo))
-                            .setText(memberCostInfoText);
-                }
-
-                ((TextInputEditText) MainActivity.INSTANCE.findViewById(R.id.cost_comment))
-                        .setText(getParam().getName());
-
-                if (getParam().getSum() > 0) {
-                    ((TextInputEditText) MainActivity.INSTANCE.findViewById(R.id.cost_sum))
-                            .setText(Help.kopToTextRub(getParam().getSum()).replaceAll(" ", ""));
-                }
-
-                if (getParam().getPhotoUrl().length() > 0) {
-                    ((TextView) MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView))
-                            .setText(getParam().getPhotoUrl());
-
-                    MainActivity.INSTANCE.findViewById(R.id.hasPhoto).setVisibility(View.VISIBLE);
-                }
-
-
-                selectDate = getParam().getSelectDate();
-                ((TextView) MainActivity.INSTANCE.findViewById(R.id.textDate))
-                        .setText(Help.dateToDateTimeStr(selectDate));
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-
+        if (!hasParam() || getParam().getDraftTransaction().getCreditItems().size() == 0) {
+            return false;
         }
+
+
+        Member member = getParam().getDraftTransaction().getCreditItems().get(0).getMember();
+
+        String memberCostInfoText = MainActivity.INSTANCE.getString(R.string.costMember) + " " + member.getName();
+        ((TextView) MainActivity.INSTANCE.findViewById(R.id.memberCostInfo))
+                .setText(memberCostInfoText);
+
+        ((TextInputEditText) MainActivity.INSTANCE.findViewById(R.id.cost_comment))
+                .setText(getParam().getDraftTransaction().getComment());
+
+        if (getParam().getDraftTransaction().getSum() > 0) {
+            ((TextInputEditText) MainActivity.INSTANCE.findViewById(R.id.cost_sum))
+                    .setText(Help.kopToTextRub(getParam().getDraftTransaction().getSum()).replaceAll(" ", ""));
+        }
+
+        if (getParam().getDraftTransaction().getImageUrl().length() > 0) {
+            ((TextView) MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView))
+                    .setText(getParam().getDraftTransaction().getImageUrl());
+
+            MainActivity.INSTANCE.findViewById(R.id.hasPhoto).setVisibility(View.VISIBLE);
+        }
+
+
+        selectDate = getParam().getDraftTransaction().getDate();
+        ((TextView) MainActivity.INSTANCE.findViewById(R.id.textDate))
+                .setText(Help.dateToDateTimeStr(selectDate));
+
 
         return true;
     }

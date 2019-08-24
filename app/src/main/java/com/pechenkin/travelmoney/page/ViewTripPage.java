@@ -17,7 +17,7 @@ public class ViewTripPage extends BasePage {
 
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_trips).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_trips));
     }
 
 

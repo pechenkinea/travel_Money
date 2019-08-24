@@ -13,9 +13,9 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.MemberIcons;
+import com.pechenkin.travelmoney.utils.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
@@ -32,7 +32,7 @@ import java.util.Map;
 abstract class BaseMemberPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_members).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members));
     }
 
 

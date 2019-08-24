@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney;
+package com.pechenkin.travelmoney.utils;
 
 import java.util.HashMap;
 

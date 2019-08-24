@@ -2,7 +2,7 @@ package com.pechenkin.travelmoney.diagram;
 
 import androidx.annotation.NonNull;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
 import com.pechenkin.travelmoney.transaction.processing.summary.Total;

@@ -1,8 +1,11 @@
 package com.pechenkin.travelmoney.export.formats;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.TransactionItem;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,25 +15,34 @@ public class CSV implements ExportFormat {
     public String getText(Trip trip) {
 
         ArrayList<Member> membersList = new ArrayList<>();
-        List<Cost> costs = trip.getAllCost();
+        List<Transaction> transactions = trip.getTransactions();
         StringBuilder valueCosts = new StringBuilder("Операции\r\n");
-        valueCosts.append("Дата;Кто;Кому;Сколько;Активно;Комментарий").append("\r\n");
-        if (costs.size() > 0) {
-            for (Cost cost : costs) {
-                String line = ((cost.getDate() != null) ? Help.dateToDateTimeStr(cost.getDate()) : "") + ";"
-                        + cost.getMember() + ";"
-                        + cost.getToMember() + ";"
-                        + String.valueOf(cost.getSum()).replace('.', ',') + ";"
-                        + cost.isActive() + ";"
-                        + cost.getComment();
-                line = line.replaceAll("\n|\n\r", " ");
-                valueCosts.append(line).append("\r\n");
+        valueCosts.append("Дата;Кто;Дебет;Кредит;Активно;Возврат долга;Комментарий").append("\r\n");
+        if (transactions.size() > 0) {
+            for (Transaction transaction : transactions) {
 
-                if (!membersList.contains(cost.getMember()))
-                    membersList.add(cost.getMember());
+                StreamList.ForEach<TransactionItem> transactionItemForEach = transactionItem -> {
 
-                if (!membersList.contains(cost.getToMember()))
-                    membersList.add(cost.getToMember());
+                    String line = ((transaction.getDate() != null) ? Help.dateToDateTimeStr(transaction.getDate()) : "") + ";"
+                            + transactionItem.getMember().getId() + ";"
+                            + transactionItem.getDebit() + ";"
+                            + transactionItem.getCredit() + ";"
+                            + transaction.isActive() + ";"
+                            + transaction.isRepayment() + ";"
+                            + transaction.getComment();
+
+
+                    line = line.replaceAll("\n|\n\r", " ");
+                    valueCosts.append(line).append("\r\n");
+
+                    if (!membersList.contains(transactionItem.getMember()))
+                        membersList.add(transactionItem.getMember());
+
+                };
+
+                transaction.getCreditItems().ForEach(transactionItemForEach);
+                transaction.getDebitItems().ForEach(transactionItemForEach);
+
             }
         }
 

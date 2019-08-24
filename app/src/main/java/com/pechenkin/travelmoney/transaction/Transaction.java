@@ -1,7 +1,8 @@
 package com.pechenkin.travelmoney.transaction;
 
+import com.pechenkin.travelmoney.utils.stream.StreamList;
+
 import java.util.Date;
-import java.util.List;
 
 public interface Transaction {
 
@@ -11,9 +12,9 @@ public interface Transaction {
 
     String getComment();
 
-    List<TransactionItem> getDebitItems();
+    StreamList<TransactionItem> getDebitItems();
 
-    List<TransactionItem> getCreditItems();
+    StreamList<TransactionItem> getCreditItems();
 
     String getImageUrl();
 

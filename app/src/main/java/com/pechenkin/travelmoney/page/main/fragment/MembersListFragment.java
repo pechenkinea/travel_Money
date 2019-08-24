@@ -3,7 +3,7 @@ package com.pechenkin.travelmoney.page.main.fragment;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
@@ -48,7 +48,7 @@ public class MembersListFragment extends BaseMainPageFragment {
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
             Member member = adapter.getItem(position).getMember();
 
-            PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setMember(member).getParam());
+            PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam().setMember(member));
 
             return true;
         });

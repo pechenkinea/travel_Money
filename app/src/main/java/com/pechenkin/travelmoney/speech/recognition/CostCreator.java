@@ -2,10 +2,12 @@ package com.pechenkin.travelmoney.speech.recognition;
 
 import android.text.TextUtils;
 
-import com.pechenkin.travelmoney.Division;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.utils.Division;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.NamesHashMap;
+import com.pechenkin.travelmoney.utils.NamesHashMap;
 import com.pechenkin.travelmoney.bd.TripManager;
 
 import java.util.ArrayList;
@@ -37,16 +39,11 @@ public class CostCreator {
     }
 
 
-    private final List<ShortCost> costs = new ArrayList<>();
+    private DraftTransaction draftTransaction = new DraftTransaction();
 
-    public ShortCost[] getCosts() {
-        return costs.toArray(new ShortCost[0]);
+    public DraftTransaction getDraftTransaction() {
+        return draftTransaction;
     }
-
-    public boolean hasCosts() {
-        return costs.size() > 0;
-    }
-
 
     public String getComment() {
         if (comment.length() == 0) {
@@ -70,8 +67,6 @@ public class CostCreator {
         createCosts();
     }
 
-    private int groupCost = 0;
-
     private void createCosts() {
         if (master != null && sums > 0) {
 
@@ -80,12 +75,15 @@ public class CostCreator {
                 sums = TMConst.ERROR_SUM;
             }
 
-            groupCost++;
+            draftTransaction.addTransactionItem(new DraftTransactionItem(master, 0 , sums));
+
             Division division = new Division(sums, toMembers.size());
+
+
             for (Member toMember : toMembers) {
                 Member to = (toMember == null) ? master : toMember; //Для случаев когда мастер идет не первом в фразе
 
-                costs.add(new ShortCost(master, to, division.getNext(), getComment(), groupCost));
+                draftTransaction.addTransactionItem(new DraftTransactionItem(to, division.getNext(), 0));
             }
 
 

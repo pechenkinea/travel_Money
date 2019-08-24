@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.FileProvider;
 
-import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.ListAnimation;
+import com.pechenkin.travelmoney.utils.Help;
+import com.pechenkin.travelmoney.utils.ListAnimation;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 

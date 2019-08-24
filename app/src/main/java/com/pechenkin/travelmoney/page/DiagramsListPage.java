@@ -3,7 +3,7 @@ package com.pechenkin.travelmoney.page;
 import android.app.AlertDialog;
 import android.widget.ListView;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.TripManager;
@@ -38,7 +38,7 @@ public class DiagramsListPage extends ListPage {
 
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_more).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_more));
     }
 
     @Override

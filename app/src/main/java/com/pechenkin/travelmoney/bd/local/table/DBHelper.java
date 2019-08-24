@@ -1,16 +1,12 @@
 package com.pechenkin.travelmoney.bd.local.table;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-
-import java.lang.reflect.Array;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -175,30 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + Namespace.TABLE_COSTS + " ADD COLUMN " + Namespace.FIELD_REPAYMENT + " integer default 0;");
         }
 
-        //Перевод сумм на int  и хранение суммы в копейках
-        if (oldVersion < 17) {
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_COSTS + " ADD COLUMN " + Namespace.FIELD_SUM + " integer default 0;");
-        }
 
-        //перенос старых данных в новое поле
-        if (oldVersion < 19) {
-
-            try (Cursor sqlResult = db.rawQuery("Select " + Namespace.FIELD_ID + ", " + Namespace.FIELD_OLD_SUM + " FROM " + Namespace.TABLE_COSTS + ";", null)) {
-                if (sqlResult.moveToFirst()) {
-                    do {
-                        long id = sqlResult.getLong(0);
-                        double oldSum = sqlResult.getDouble(1);
-
-                        ContentValues cv = new ContentValues();
-                        cv.put(Namespace.FIELD_SUM, (int) (oldSum * 100));
-
-                        db.update(Namespace.TABLE_COSTS, cv, Namespace.FIELD_ID + " = " + id, null);
-                    }
-                    while (sqlResult.moveToNext());
-                }
-            }
-
-        }
 
 
     }

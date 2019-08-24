@@ -6,7 +6,7 @@ import android.os.Environment;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;

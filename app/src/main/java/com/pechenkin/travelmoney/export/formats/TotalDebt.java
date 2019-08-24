@@ -1,7 +1,7 @@
 package com.pechenkin.travelmoney.export.formats;
 
 import com.pechenkin.travelmoney.BuildConfig;
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;

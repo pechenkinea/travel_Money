@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.speech.RecognizerIntent;
 import android.widget.Toast;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 
 import java.util.List;

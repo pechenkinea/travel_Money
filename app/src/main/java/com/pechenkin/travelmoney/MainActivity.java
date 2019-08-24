@@ -13,6 +13,7 @@ import com.pechenkin.travelmoney.bd.local.table.DBHelper;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.AddCostsListPage;
+import com.pechenkin.travelmoney.page.cost.add.master.MasterWhom;
 import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*
         CostCreator c = new CostCreator("Я за всех 100 магазин", "");
-        PageParam param = new PageParam.BuildingPageParam().setCostCreator(c).getParam();
+        PageParam param = new PageParam().setCostCreator(c).getParam();
         PageOpener.INSTANCE.open(AddCostsListPage.class, param);
         */
     }
@@ -99,28 +100,22 @@ public class MainActivity extends AppCompatActivity {
 
                     for (int i = 0; i < matches.size(); i++) {
                         cc = new CostCreator(matches.get(i), "");
-                        if (cc.hasCosts())
+                        if (cc.getDraftTransaction().getCreditItems().size() > 0)
                             break;
                     }
 
-                    if (cc.hasCosts()) {
-                        PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc).getParam();
-                        PageOpener.INSTANCE.open(AddCostsListPage.class, param);
+                    if (cc.getDraftTransaction().getCreditItems().size() > 0) {
+                        PageParam param = new PageParam().setDraftTransaction(cc.getDraftTransaction()).setBackPage(MainPage.class);
+                        PageOpener.INSTANCE.open(MasterWhom.class, param);
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
                         builder.setTitle("")
                                 .setMessage(String.format("Не удалось разобрать\n%s", matches.get(0)))
                                 .setCancelable(false)
 
-                                .setNeutralButton("Повторить", (dialog, which) -> {
+                                .setPositiveButton("Повторить", (dialog, which) -> {
                                     dialog.cancel();
                                     SpeechRecognitionHelper.run(MainActivity.INSTANCE);
-                                })
-                                .setPositiveButton("Продолжить", (dialog, which) -> {
-                                    dialog.cancel();
-                                    CostCreator cc1 = new CostCreator(matches.get(0), "");
-                                    PageParam param = new PageParam.BuildingPageParam().setCostCreator(cc1).getParam();
-                                    PageOpener.INSTANCE.open(AddCostsListPage.class, param);
                                 })
                                 .setNegativeButton("Отмена",
                                         (dialog, id) -> dialog.cancel());

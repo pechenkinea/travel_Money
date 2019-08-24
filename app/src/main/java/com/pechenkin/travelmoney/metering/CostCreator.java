@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.TripManager;
@@ -50,7 +50,7 @@ class CostCreator {
                         cv.put(Namespace.FIELD_MEMBER, member.getId());
                         cv.put(Namespace.FIELD_TO_MEMBER, members.get(memberRandom.nextInt(members.size())).getId());
                         cv.put(Namespace.FIELD_COMMENT, comment);
-                        cv.put(Namespace.FIELD_OLD_SUM, String.valueOf(new Random().nextInt(300)));
+                        cv.put(Namespace.FIELD_SUM, String.valueOf(new Random().nextInt(300)));
                         cv.put(Namespace.FIELD_IMAGE_DIR, "");
                         cv.put(Namespace.FIELD_ACTIVE, 1);
                         cv.put(Namespace.FIELD_TRIP, TripManager.INSTANCE.getActiveTrip().getId());

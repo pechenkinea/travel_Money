@@ -36,13 +36,13 @@ public class MainPage extends BasePage {
 
         if (hasParam()) {
 
-            if (getParam().getPageId() == R.id.navigation_more) {
+            if (getParam().getFragmentId() == R.id.navigation_more) {
                 navView.setSelectedItemId(R.id.navigation_more);
                 renderFragment(new OtherFragment());
-            } else if (getParam().getPageId() == R.id.navigation_trips) {
+            } else if (getParam().getFragmentId() == R.id.navigation_trips) {
                 navView.setSelectedItemId(R.id.navigation_trips);
                 renderFragment(new TripsListFragment());
-            } else if (getParam().getPageId() == R.id.navigation_members) {
+            } else if (getParam().getFragmentId() == R.id.navigation_members) {
                 navView.setSelectedItemId(R.id.navigation_members);
                 renderFragment(new MembersListFragment());
             }

@@ -5,7 +5,9 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.TMConst;
@@ -22,8 +24,6 @@ public class Repayment extends BasePage {
 
 
     private Date selectDate = new Date();
-    private Member member = null;
-    private Member toMember = null;
 
     @Override
     public void clickBackButton() {
@@ -49,14 +49,23 @@ public class Repayment extends BasePage {
             return;
         }
 
+        int sumInt = Help.textRubToIntKop(sum);
 
-        if (Help.textRubToIntKop(sum) > TMConst.ERROR_SUM) {
+        if (sumInt > TMConst.ERROR_SUM) {
             Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.kopToTextRub(TMConst.ERROR_SUM)));
             Help.setActiveEditText(R.id.cost_sum);
             return;
         }
 
-        TripManager.INSTANCE.getActiveTrip().addCost(member, toMember, comment, Help.textRubToIntKop(sum), "",selectDate, true);
+        DraftTransaction draftTransaction = getParam().getDraftTransaction();
+        draftTransaction.setDate(selectDate)
+                .setComment(comment);
+
+        if (sumInt != draftTransaction.getSum()) {
+            ((DraftTransactionItem) draftTransaction.getCreditItems().get(0)).setCredit(sumInt);
+        }
+
+        TripManager.INSTANCE.getActiveTrip().addTransaction(draftTransaction);
         PageOpener.INSTANCE.open(MainPage.class);
 
     }
@@ -65,15 +74,15 @@ public class Repayment extends BasePage {
     protected boolean fillFields() {
 
         if (hasParam()) {
-            member = getParam().getMember();
-            toMember = getParam().getToMember();
+            Member member = getParam().getDraftTransaction().getCreditItems().get(0).getMember();
+            Member toMember = getParam().getDraftTransaction().getDebitItems().get(0).getMember();
 
             ((TextView) MainActivity.INSTANCE.findViewById(R.id.member)).setText(member.getName());
 
             ((TextView) MainActivity.INSTANCE.findViewById(R.id.to_member)).setText(toMember.getName());
 
             final TextInputEditText cost_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
-            cost_sum.setText(Help.kopToTextRub(getParam().getSum()).replaceAll(" ", ""));
+            cost_sum.setText(Help.kopToTextRub(getParam().getDraftTransaction().getSum()).replaceAll(" ", ""));
 
             ((TextView) MainActivity.INSTANCE.findViewById(R.id.textDate)).setText(Help.dateToDateTimeStr(selectDate));
 

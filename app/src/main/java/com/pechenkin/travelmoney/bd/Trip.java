@@ -1,7 +1,9 @@
 package com.pechenkin.travelmoney.bd;
 
 import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 
+import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +44,6 @@ public interface Trip {
 
     List<Transaction> getTransactions();
 
-    void addCost(Member member, Member toMember, String comment, int sum, String image_dir, Date date, boolean isRepayment);
+    void addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException;
 
 }

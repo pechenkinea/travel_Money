@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 
-public class DaftTransactionItem implements TransactionItem {
+public class DraftTransactionItem implements TransactionItem {
 
     private Member member;
     int debit;
@@ -14,7 +14,7 @@ public class DaftTransactionItem implements TransactionItem {
     private DraftUpdateListener updateListener = null;
 
 
-    public DaftTransactionItem(Member member, int debit, int credit) {
+    public DraftTransactionItem(Member member, int debit, int credit) {
         this.member = member;
         this.debit = debit;
         this.credit = credit;
@@ -23,6 +23,24 @@ public class DaftTransactionItem implements TransactionItem {
     public void setDebit(int debit) {
         this.debit = debit;
         isChange = true;
+        if (updateListener != null) {
+            updateListener.update();
+        }
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setChange(boolean change) {
+        isChange = change;
+        if (updateListener != null) {
+            updateListener.update();
+        }
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
         if (updateListener != null) {
             updateListener.update();
         }
@@ -52,7 +70,7 @@ public class DaftTransactionItem implements TransactionItem {
         return this.credit;
     }
 
-    public DaftTransactionItem setUpdateListener(DraftUpdateListener draftUpdateListener) {
+    public DraftTransactionItem setUpdateListener(DraftUpdateListener draftUpdateListener) {
         this.updateListener = draftUpdateListener;
         return this;
     }

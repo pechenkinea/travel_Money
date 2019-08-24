@@ -5,7 +5,11 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.list.TransactionList;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
+import com.pechenkin.travelmoney.transaction.draft.ValidateException;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
@@ -16,6 +20,7 @@ import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.util.HashSet;
 import java.util.List;
@@ -29,15 +34,17 @@ import java.util.Set;
 public class MasterWhom extends ListPage {
 
 
-    private AdapterMembersList adapter = null;
+    private TransactionList adapter = null;
     private ListView list = null;
 
     @Override
     public void clickBackButton() {
+        if (getParam().getBackPage() != null) {
+            PageOpener.INSTANCE.open(getParam().getBackPage());
+            return;
+        }
 
-        PageParam.BuildingPageParam param = new PageParam.BuildingPageParam(getParam());
-        param.setSelectedMembers(getSelectedMembers());
-        PageOpener.INSTANCE.open(MasterCostInfo.class, param.getParam());
+        PageOpener.INSTANCE.open(MasterCostInfo.class, getParam());
     }
 
     @Override
@@ -48,12 +55,9 @@ public class MasterWhom extends ListPage {
     @Override
     protected String getTitleHeader() {
         String desc = "";
-        try
-        {
-            desc = " (" + getParam().getMember().getName() + " " + Help.kopToTextRub(getParam().getSum()) + ")";
-        }
-        catch(Exception ex)
-        {
+        try {
+            desc = " (" + getParam().getDraftTransaction().getCreditItems().get(0).getMember().getName() + ")";
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -63,72 +67,38 @@ public class MasterWhom extends ListPage {
     @Override
     protected boolean fillFields() {
 
-        if (!hasParam() || getParam().getSum() == 0 || getParam().getMember() == null || getParam().getSum() < 0)
-        {
+        DraftTransaction draftTransaction = getParam().getDraftTransaction();
+
+        if (draftTransaction.getCreditItems().size() == 0) {
             return false;
         }
 
+        MainActivity.INSTANCE.findViewById(R.id.member_add_button).setVisibility(View.INVISIBLE);
 
-        MainActivity.INSTANCE.findViewById(R.id.member_add_button)
-                .setVisibility(View.INVISIBLE);
+        if (draftTransaction.getDebitItems().size() == 0) {
 
-        List<Member> tripMembers = TripManager.INSTANCE.getActiveTrip().getActiveMembers();
-        list =  MainActivity.INSTANCE.findViewById(getListViewId());
-        if (tripMembers.size() == 0)
-        {
-            Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
-            return false;
-        }
-        else
-        {
-            this.adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers, getParam().getSum()), getParam().getSum());
-            list.setAdapter(adapter);
+            StreamList<Member> tripMembers = new StreamList<>(TripManager.INSTANCE.getActiveTrip().getActiveMembers());
 
-            if (hasParam())
-            {
-                if (getParam().getSelectedMembers().size() > 0)
-                {
-                    for (int i = 0; i < adapter.getCount(); i++) {
-                        if (getParam().getSelectedMembers().contains(adapter.getItem(i).getMember())) {
-                            list.setItemChecked(i, true);
-                        }
-                    }
-                }
-                else if (getParam().getMember() != null)
-                {
-                    for (int i = 0; i < adapter.getCount(); i++) {
-                        if (adapter.getItem(i).getMember().equals(getParam().getMember())) {
-                            list.setItemChecked(i, true);
-                            break;
-                        }
-                    }
-                }
-            }
+            tripMembers.ForEach(member ->
+                    draftTransaction.addTransactionItem(new DraftTransactionItem(member, 0, 0))
+            );
+
+            draftTransaction.updateSum();
 
         }
+
+
+
+
+        this.list = MainActivity.INSTANCE.findViewById(getListViewId());
+        this.adapter = new TransactionList(MainActivity.INSTANCE, getParam().getDraftTransaction());
+        this.list.setAdapter(adapter);
 
         MainActivity.INSTANCE.findViewById(R.id.member_checkAll_button).setVisibility(View.VISIBLE);
 
         return true;
     }
 
-    private Set<Member> getSelectedMembers()
-    {
-        Set<Member> list_id = new HashSet<>();
-        SparseBooleanArray sbArray = list.getCheckedItemPositions();
-
-
-        for (int i = 0; i < sbArray.size(); i++) {
-            int key = sbArray.keyAt(i);
-            if (sbArray.get(key)) {
-                Member item = this.adapter.getItem(key).getMember();
-                if (item != null) {
-                    list_id.add(item);
-                }
-            }
-        }
-        return  list_id;
-    }
 
     @Override
     public void addEvents() {
@@ -137,30 +107,14 @@ public class MasterWhom extends ListPage {
         FloatingActionButton member_list_commit = MainActivity.INSTANCE.findViewById(R.id.member_list_commit);
         member_list_commit.setOnClickListener(v -> {
 
-            //Кому
-            Set<Member> list_members = getSelectedMembers();
-
-            if (list_members.size() == 0)
-            {
-                Help.message(MainActivity.INSTANCE.getString(R.string.errorFillMembers));
+            try {
+                getParam().getDraftTransaction().validate();
+            } catch (ValidateException e) {
+                Help.message(e.getMessage());
                 return;
             }
 
-
-
-            ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
-            SparseBooleanArray sbArray = list.getCheckedItemPositions();
-            AdapterMembersList adapter = (AdapterMembersList)list.getAdapter();
-
-            for (int i = 0; i < sbArray.size(); i++) {
-                int key = sbArray.keyAt(i);
-                if (sbArray.get(key)) {
-                    CostMember item = adapter.getItem(key);
-                    if (item != null && item.getSum() > 0) {
-                        TripManager.INSTANCE.getActiveTrip().addCost(getParam().getMember(), item.getMember(), getParam().getName(), item.getSum(), getParam().getPhotoUrl(), getParam().getSelectDate(), false);
-                    }
-                }
-            }
+            TripManager.INSTANCE.getActiveTrip().addTransaction(getParam().getDraftTransaction());
 
             Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
             PageOpener.INSTANCE.open(MainPage.class);
@@ -168,35 +122,13 @@ public class MasterWhom extends ListPage {
         });
 
 
-
-
         FloatingActionButton member_checkAll_button = MainActivity.INSTANCE.findViewById(R.id.member_checkAll_button);
 
         member_checkAll_button.setOnClickListener(v -> {
 
-            ListView list = MainActivity.INSTANCE.findViewById(getListViewId());
-            AdapterMembersList adapter = (AdapterMembersList)list.getAdapter();
-
-            SparseBooleanArray sbArray = list.getCheckedItemPositions();
-
-            boolean hasUnchecked = sbArray.size() == adapter.getCount();
-            if (hasUnchecked) {
-                for (int i = 0; i < sbArray.size(); i++) {
-                    int key = sbArray.keyAt(i);
-                    if (!sbArray.get(key)) {
-                        hasUnchecked = false;
-                        break;
-                    }
-                }
-            }
-
-            for (int i = 0; i < adapter.getCount(); i++)
-            {
-                list.setItemChecked(i, !hasUnchecked);
-            }
+            Help.alert("не реализовано");
 
         });
-
 
 
     }
@@ -210,17 +142,17 @@ public class MasterWhom extends ListPage {
     @Override
     protected void onItemClick(ListView list, int position) {
 
-        SparseBooleanArray sbArray = list.getCheckedItemPositions();
-        AdapterMembersList adapter = (AdapterMembersList)list.getAdapter();
-        if (sbArray.get(position, false))
-        {
-            list.setItemChecked(position, true);
-            adapter.getItem(position).setChange(false);
+        DraftTransactionItem item = this.adapter.getItem(position);
+        if (item != null) {
+
+            if (item.getDebit() == 0 && item.isChange()) {
+                item.setChange(false);
+            } else {
+                item.setDebit(0);
+            }
+
         }
-        else
-        {
-            list.setItemChecked(position, false);
-        }
+
         list.invalidateViews();
     }
 

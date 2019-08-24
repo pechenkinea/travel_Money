@@ -1,8 +1,9 @@
 package com.pechenkin.travelmoney.export.formats;
 
-import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.utils.Help;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,28 +23,59 @@ public class JSON implements ExportFormat {
 
             ArrayList<Member> membersList = new ArrayList<>();
 
-            List<Cost> costs = trip.getAllCost();
-            JSONArray json_costs = new JSONArray();
-            if (costs.size() > 0) {
-                for (Cost cost : costs) {
-                    JSONObject json_cost = new JSONObject();
-                    json_cost.put("date", (cost.getDate() != null) ? cost.getDate().getTime() : "");
-                    json_cost.put("member", cost.getMember());
-                    json_cost.put("to_member", cost.getToMember());
-                    json_cost.put("sum", cost.getSum());
-                    json_cost.put("comment", cost.getComment());
-                    json_cost.put("active", cost.isActive());
-                    json_costs.put(json_cost);
+            List<Transaction> transactions = trip.getTransactions();
+            JSONArray json_transactions = new JSONArray();
+            if (transactions.size() > 0) {
+                for (Transaction transaction : transactions) {
+                    JSONObject json_transaction = new JSONObject();
+                    json_transaction.put("date", (transaction.getDate() != null) ? transaction.getDate().getTime() : "");
+                    json_transaction.put("sum", transaction.getSum());
+                    json_transaction.put("comment", transaction.getComment());
+                    json_transaction.put("active", transaction.isActive());
 
-                    if (!membersList.contains(cost.getMember()))
-                        membersList.add(cost.getMember());
 
-                    if (!membersList.contains(cost.getToMember()))
-                        membersList.add(cost.getToMember());
+                    JSONArray creditItems = new JSONArray();
+                    transaction.getCreditItems().ForEach(transactionItem -> {
+                        JSONObject item = new JSONObject();
+                        try {
+                            item.put("member", transactionItem.getMember().getId());
+                            item.put("sum", transactionItem.getCredit());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (!membersList.contains(transactionItem.getMember()))
+                            membersList.add(transactionItem.getMember());
+
+                        creditItems.put(item);
+                    });
+                    json_transaction.put("creditItems", creditItems);
+
+
+                    JSONArray debitItems = new JSONArray();
+                    transaction.getDebitItems().ForEach(transactionItem -> {
+                        JSONObject item = new JSONObject();
+                        try {
+                            item.put("member", transactionItem.getMember().getId());
+                            item.put("sum", transactionItem.getCredit());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (!membersList.contains(transactionItem.getMember()))
+                            membersList.add(transactionItem.getMember());
+
+                        debitItems.put(item);
+                    });
+                    json_transaction.put("debitItems", debitItems);
+
+
+                    json_transactions.put(json_transaction);
+
 
                 }
             }
-            exportJson.put("costs", json_costs);
+            exportJson.put("transactions", json_transactions);
 
 
             JSONArray members = new JSONArray();
@@ -58,7 +90,7 @@ public class JSON implements ExportFormat {
 
 
         } catch (JSONException e) {
-            Help.alert("Ошибка формирования json. " + e.getMessage());
+            Help.alertError("Ошибка формирования json. " + e.getMessage());
             return "";
         }
 

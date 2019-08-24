@@ -8,7 +8,9 @@ import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 import com.pechenkin.travelmoney.bd.local.table.TransactionTable;
 import com.pechenkin.travelmoney.bd.local.table.TripsTable;
 import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -86,10 +88,7 @@ public class TripLocal implements Trip {
         }
     }
 
-    @Override
-    public void addCost(Member member, Member toMember, String comment, int sum, String image_dir, Date date, boolean isRepayment) {
-        CostTable.INSTANCE.add(member.getId(), toMember.getId(), comment, sum, image_dir, this.id, date, isRepayment);
-    }
+
 
     @Override
     public boolean isActive() {
@@ -103,6 +102,11 @@ public class TripLocal implements Trip {
                 Arrays.asList(
                         TransactionTable.INSTANCE.getTransactionsByTrip(this.id)
                 ));
+    }
+
+    @Override
+    public void addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
+        TransactionTable.addTransaction(this.id, draftTransaction);
     }
 
     @Override

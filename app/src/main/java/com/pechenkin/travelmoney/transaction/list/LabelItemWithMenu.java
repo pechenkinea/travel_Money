@@ -7,7 +7,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;

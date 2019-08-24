@@ -2,7 +2,7 @@ package com.pechenkin.travelmoney.page;
 
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 
 /**
@@ -29,7 +29,7 @@ public abstract class BasePage implements Page {
 
     protected PageParam getParam() {
         if (param == null)
-            return new PageParam.BuildingPageParam().getParam();
+            param = new PageParam();
 
         return param;
     }

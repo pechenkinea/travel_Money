@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.page.cost.add.data;
 
-import com.pechenkin.travelmoney.Division;
+import com.pechenkin.travelmoney.utils.Division;
 import com.pechenkin.travelmoney.bd.Member;
 
 import java.util.ArrayList;

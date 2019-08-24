@@ -3,7 +3,9 @@ package com.pechenkin.travelmoney.page.main;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
@@ -77,10 +79,10 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                 if (!this.readOnly) {
                     diagram.setOnDiagramSelectItem(itemId -> {
 
-                        PageParam param = new PageParam.BuildingPageParam()
-                                .setMember(itemId)
-                                .setBackPage(MainPage.class)
-                                .getParam();
+                        DraftTransaction draftTransaction = new DraftTransaction()
+                                .addTransactionItem(new DraftTransactionItem(itemId, 0, 1));
+
+                        PageParam param = new PageParam().setDraftTransaction(draftTransaction);
                         PageOpener.INSTANCE.open(MasterCostInfo.class, param);
 
                     });

@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.speech.recognition;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

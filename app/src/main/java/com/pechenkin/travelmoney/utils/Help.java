@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney;
+package com.pechenkin.travelmoney.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.R;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;

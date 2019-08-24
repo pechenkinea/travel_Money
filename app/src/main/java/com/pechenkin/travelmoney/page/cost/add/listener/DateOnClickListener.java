@@ -5,7 +5,7 @@ import android.app.TimePickerDialog;
 import android.view.View;
 import android.widget.TextView;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 

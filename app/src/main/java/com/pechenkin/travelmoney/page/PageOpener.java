@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.page;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.page.main.MainPage;
 

@@ -1,7 +1,9 @@
 package com.pechenkin.travelmoney.bd;
 
 import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 
+import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.List;
 
@@ -92,10 +94,9 @@ public class TripDecorator implements Trip {
         return this.trip.getTransactions();
     }
 
-
     @Override
-    public void addCost(Member member, Member toMember, String comment, int sum, String image_dir, Date date, boolean isRepayment) {
-        this.trip.addCost(member, toMember, comment, sum, image_dir, date, isRepayment);
+    public void addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
+        this.trip.addTransaction(draftTransaction);
     }
 
 

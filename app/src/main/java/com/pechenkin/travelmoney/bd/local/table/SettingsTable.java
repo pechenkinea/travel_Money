@@ -4,7 +4,7 @@ package com.pechenkin.travelmoney.bd.local.table;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.pechenkin.travelmoney.Help;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.local.query.QueryResult;
 import com.pechenkin.travelmoney.bd.local.query.SettingTableRow;

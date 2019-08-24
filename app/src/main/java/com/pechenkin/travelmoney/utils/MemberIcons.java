@@ -1,8 +1,11 @@
-package com.pechenkin.travelmoney;
+package com.pechenkin.travelmoney.utils;
 
 import android.graphics.drawable.Drawable;
 
 import androidx.appcompat.content.res.AppCompatResources;
+
+import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.R;
 
 public enum MemberIcons {
 

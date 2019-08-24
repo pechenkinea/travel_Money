@@ -20,15 +20,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
-import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
+import com.pechenkin.travelmoney.utils.Help;
+import com.pechenkin.travelmoney.utils.MemberIcons;
 
 import java.util.List;
 
@@ -97,7 +97,9 @@ public class AdapterMembersList extends BaseAdapter {
 
 
         if (showEditButton) {
-            holder.editButton.setOnClickListener(v -> PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam.BuildingPageParam().setMember(item.getMember()).getParam()));
+            holder.editButton.setOnClickListener(v ->
+                    PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam().setMember(item.getMember()))
+            );
         }
 
         if (showSum) {

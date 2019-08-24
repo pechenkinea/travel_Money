@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.pechenkin.travelmoney.BuildConfig;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.SafeURLSpan;
+import com.pechenkin.travelmoney.utils.SafeURLSpan;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
@@ -19,7 +19,7 @@ import com.pechenkin.travelmoney.page.main.MainPage;
 public class AboutPage extends BasePage {
     @Override
     public void clickBackButton() {
-        PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_more).getParam());
+        PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_more));
     }
 
 
