@@ -1,10 +1,11 @@
-package com.pechenkin.travelmoney.cost.processing.summary;
+package com.pechenkin.travelmoney.transaction.processing.summary;
 
 import androidx.collection.LongSparseArray;
 
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.processing.CostIterable;
+import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.TransactionItem;
+import com.pechenkin.travelmoney.transaction.processing.CostIterable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,26 +27,35 @@ public class Total implements CostIterable {
 
 
     @Override
-    public void iterate(Cost cost) {
-        if (!cost.isActive()) {
+    public void iterate(Transaction transaction) {
+        if (!transaction.isActive()) {
             return;
         }
 
-        if (!members.containsKey(cost.getToMember().getId()))
-            members.put(cost.getToMember().getId(), new MemberSum(cost.getToMember()));
+        for (TransactionItem item : transaction.getDebitItems()) {
 
-        if (!members.containsKey(cost.getMember().getId()))
-            members.put(cost.getMember().getId(), new MemberSum(cost.getMember()));
+            if (!members.containsKey(item.getMember().getId()))
+                members.put(item.getMember().getId(), new MemberSum(item.getMember()));
 
 
-        if (!cost.isRepayment()) {  //операции возврата не считаем тратой, поэтому не добавляем
-            Objects.requireNonNull(members.get(cost.getToMember().getId())).addSumExpense(cost.getSum());
-        } else {
-            //но операция возврата уменьшает "дебет" того, кому отдали долг
-            Objects.requireNonNull(members.get(cost.getToMember().getId())).removeSumPay(cost.getSum());
+            if (!transaction.isRepayment()) {  //операции возврата не считаем тратой, поэтому не добавляем
+                Objects.requireNonNull(members.get(item.getMember().getId())).addSumExpense(item.getDebit());
+            } else {
+                //но операция возврата уменьшает "дебет" того, кому отдали долг
+                Objects.requireNonNull(members.get(item.getMember().getId())).removeSumPay(item.getDebit());
+            }
         }
 
-        Objects.requireNonNull(members.get(cost.getMember().getId())).addSumPay(cost.getSum());
+
+        for (TransactionItem item : transaction.getCreditItems()) {
+
+            if (!members.containsKey(item.getMember().getId()))
+                members.put(item.getMember().getId(), new MemberSum(item.getMember()));
+
+            Objects.requireNonNull(members.get(item.getMember().getId())).addSumPay(item.getCredit());
+        }
+
+
     }
 
     @Override

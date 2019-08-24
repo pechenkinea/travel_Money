@@ -12,7 +12,7 @@ import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 
 import java.util.Date;
 
-public class t_trips {
+public class TripsTable {
 
 
     public static TripTableRow getActiveTrip() {

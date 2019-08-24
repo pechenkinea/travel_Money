@@ -18,8 +18,8 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
-import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.transaction.adapter.ListItemSummaryViewHolder;
+import com.pechenkin.travelmoney.transaction.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.Base;
 import com.pechenkin.travelmoney.diagram.DiagramName;
 

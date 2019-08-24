@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.cost.group;
+package com.pechenkin.travelmoney.transaction.list;
 
 import android.os.Build;
 import android.text.Html;
@@ -12,65 +12,17 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.t_settings;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
+import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.TransactionItem;
+import com.pechenkin.travelmoney.transaction.adapter.ListItemSummaryViewHolder;
 
-import java.util.Date;
+public class ManyItems extends TransactionListItem {
 
-public class ManyItemsGroup extends GroupCost {
 
-    private static int to_member_text_length;
-
-    static {
-        to_member_text_length = Integer.parseInt(t_settings.INSTANCE.get(NamespaceSettings.TO_MEMBER_TEXT_LENGTH));
-        if (to_member_text_length < 4) {
-            to_member_text_length = 4;
-        }
+    ManyItems(Transaction transaction) {
+        super(transaction);
     }
 
-    private final Cost[] costs;
-
-    private int sum = 0;
-    private final String comment;
-    private final Date date;
-    private final String image_dir;
-
-
-    private void updateSum() {
-        this.sum = 0;
-        for (Cost cost : costs) {
-            if (cost.isActive()) {
-                this.sum += cost.getSum();
-            }
-        }
-    }
-
-    ManyItemsGroup(Cost[] costs) {
-
-        if (costs.length < 2) {
-            throw new RuntimeException("ManyItemsGroup предполагает работу с колическтвом трат > 1");
-        }
-
-        this.costs = costs;
-
-        this.comment = costs[0].getComment();
-        this.date = costs[0].getDate();
-        this.image_dir = costs[0].getImageDir();
-
-        for (Cost cost : costs) {
-
-            if (this.date.getTime() != cost.getDate().getTime() || !this.comment.equals(cost.getComment())) {
-                throw new RuntimeException("В группу пробует добавится проводка, которая к ней не относится");
-            }
-
-            if (cost.isActive()) {
-                this.sum += cost.getSum();
-            }
-        }
-
-    }
 
     @Override
     public void render(ListItemSummaryViewHolder holder) {
@@ -78,14 +30,12 @@ public class ManyItemsGroup extends GroupCost {
         holder.getMainLayout().setBackgroundResource(R.drawable.background_main_layout_list_view);  //добавляем анимацию клика
         holder.setListenerOpenAdditionalInfo();
 
-        holder.getSum_group_sum().setText(Help.kopToTextRub(this.sum));
-        Member member = this.costs[0].getMember();
+        holder.getSum_group_sum().setText(Help.kopToTextRub(this.transaction.getSum()));
+        Member member = this.transaction.getCreditItems().get(0).getMember(); //TODO в перспективе может быть несколько
 
         String dateText = "";
-        if (this.date != null) {
-            dateText = Help.dateToDateTimeStr(this.date);
-        }
-        String comment = dateText + "  " + this.comment;
+        dateText = Help.dateToDateTimeStr(this.transaction.getDate());
+        String comment = dateText + "  " + this.transaction.getComment();
         holder.setComment(comment);
 
         holder.getTitle().setText(member.getName());
@@ -93,32 +43,25 @@ public class ManyItemsGroup extends GroupCost {
         StringBuilder to_memberText = new StringBuilder();
         StringBuilder sumText = new StringBuilder();
 
-        for (int i = 0; i < this.costs.length; i++) {
+        for (int i = 0; i < this.transaction.getDebitItems().size(); i++) {
 
-            Cost costInGroup = this.costs[i];
-            Member to_member = costInGroup.getToMember();
+            TransactionItem costInGroup = this.transaction.getDebitItems().get(i);
+            Member to_member = costInGroup.getMember();
 
             int to_memberColor = to_member.getColor();
 
-            String s = Help.kopToTextRub(costInGroup.getSum());
-            if (costInGroup.isActive()) {
-                sumText.append(s);
-            } else {
-                sumText.append("<font color='").append(DISABLE_COLOR_STR).append("'>").append(s).append("</font>");
-                to_memberColor = DISABLE_COLOR;
-            }
+            String s = Help.kopToTextRub(costInGroup.getDebit());
+
+            sumText.append(s);
 
             String to_memberName = to_member.getName();
-            if (to_memberName.length() > to_member_text_length) {
-                to_memberName = to_memberName.substring(0, to_member_text_length - 3).trim() + "...";
-            }
 
             String strColor = String.format("#%06X", 0xFFFFFF & to_memberColor);
             String to_memberLine = "<font color='" + strColor + "'>" + to_memberName + "</font>";
 
             to_memberText.append(to_memberLine);
 
-            if (i < this.costs.length - 1) {
+            if (i < this.transaction.getDebitItems().size() - 1) {
                 to_memberText.append("<br>");
                 sumText.append("<br>");
             }
@@ -142,15 +85,10 @@ public class ManyItemsGroup extends GroupCost {
 
             } else if (i == 5) { //Если в поле "кому" много участников всех не надо показывать. просто добавляем цифру сколько не влезло
                 TextView moreMembers = new TextView(MainActivity.INSTANCE);
-                String moreMembersCount = "+" + (costs.length - i);
+                String moreMembersCount = "+" + (this.transaction.getDebitItems().size() - i);
                 moreMembers.setText(moreMembersCount);
                 holder.getMember_icons_layout().addView(moreMembers);
-
-                if (this.sum == 0) {
-                    moreMembers.setTextColor(DISABLE_COLOR);
-                }
             }
-
 
         }
 
@@ -162,10 +100,10 @@ public class ManyItemsGroup extends GroupCost {
             holder.getSum_sum().setText(Html.fromHtml(sumText.toString()), TextView.BufferType.SPANNABLE);
         }
 
-        holder.photoImage(image_dir);
+        holder.photoImage(this.transaction.getImageUrl());
 
 
-        if (this.sum == 0) {
+        if (this.transaction.getSum() == 0) {
             holder.getTitle().setTextColor(DISABLE_COLOR);
             holder.getSum_line().setColorFilter(DISABLE_COLOR);
             holder.getComment().setTextColor(DISABLE_COLOR);
@@ -180,19 +118,4 @@ public class ManyItemsGroup extends GroupCost {
 
 
 
-
-    @Override
-    public boolean onLongClick() {
-        if (this.costs[0].isActive()) {
-            for (Cost cost : this.costs) {
-                cost.setActive(false);
-            }
-        } else {
-            for (Cost cost : this.costs) {
-                cost.setActive(true);
-            }
-        }
-        updateSum();
-        return true;
-    }
 }

@@ -12,16 +12,16 @@ import com.pechenkin.travelmoney.bd.local.query.SettingTableRow;
 import java.util.HashMap;
 import java.util.Map;
 
-public class t_settings {
+public class SettingsTable {
 
-    private t_settings() {
+    private SettingsTable() {
         getSettings();
     }
 
-    static public final t_settings INSTANCE;
+    static public final SettingsTable INSTANCE;
 
     static {
-        INSTANCE = new t_settings();
+        INSTANCE = new SettingsTable();
     }
 
     private final Map<String, String> settings = new HashMap<>();

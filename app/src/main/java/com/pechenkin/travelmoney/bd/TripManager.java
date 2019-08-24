@@ -2,7 +2,7 @@ package com.pechenkin.travelmoney.bd;
 
 import com.pechenkin.travelmoney.bd.local.TripLocal;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.bd.local.table.TripsTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +15,14 @@ public class TripManager {
     public static TripManager INSTANCE = new TripManager();
 
     public Trip getActiveTrip() {
-        TripTableRow activeTrip = t_trips.getActiveTrip();
+        TripTableRow activeTrip = TripsTable.getActiveTrip();
 
         return new TripLocal(activeTrip);
     }
 
     public List<Trip> getAll() {
 
-        TripTableRow[] allTrips = t_trips.getAll();
+        TripTableRow[] allTrips = TripsTable.getAll();
         List<Trip> result = new ArrayList<>(allTrips.length);
 
         for (TripTableRow row : allTrips) {

@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.cost.adapter;
+package com.pechenkin.travelmoney.transaction.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,8 +20,7 @@ import com.pechenkin.travelmoney.Division;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.cost.OnlySumCostItem;
-import com.pechenkin.travelmoney.cost.ShortCost;
+import com.pechenkin.travelmoney.transaction.OnlySumCostItem;
 
 import java.util.ArrayList;
 import java.util.HashSet;

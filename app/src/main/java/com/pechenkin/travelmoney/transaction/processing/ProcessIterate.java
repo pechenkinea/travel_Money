@@ -1,6 +1,6 @@
-package com.pechenkin.travelmoney.cost.processing;
+package com.pechenkin.travelmoney.transaction.processing;
 
-import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.transaction.Transaction;
 
 import java.util.List;
 
@@ -10,10 +10,10 @@ import java.util.List;
  *
  */
 public class ProcessIterate {
-    public static void doIterate(List<Cost> list, CostIterable[] costIterables) {
-        for (Cost cost : list) {
+    public static void doIterate(List<Transaction> list, CostIterable[] costIterables) {
+        for (Transaction transaction : list) {
             for (CostIterable costIterable : costIterables) {
-                costIterable.iterate(cost);
+                costIterable.iterate(transaction);
             }
         }
 

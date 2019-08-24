@@ -9,11 +9,11 @@ import com.pechenkin.travelmoney.bd.local.CostLocal;
 
 import java.util.Date;
 
-public class TableCost {
+public class CostTable {
 
-    public static TableCost INSTANCE = new TableCost();
+    public static CostTable INSTANCE = new CostTable();
 
-    private TableCost() {
+    private CostTable() {
     }
 
     public void add(long member_id, long to_member_id, String comment, int sum, String image_dir, long tripId, Date date, boolean isRepayment) {

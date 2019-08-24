@@ -9,7 +9,7 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.bd.local.table.TripsTable;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
@@ -38,8 +38,8 @@ public class EditTripPage extends BaseTripPage {
                 return;
             }
 
-            if (t_trips.isAdded(strName)) {
-                if (getParam().getTrip().getId() != t_trips.getIdByName(strName)) {
+            if (TripsTable.isAdded(strName)) {
+                if (getParam().getTrip().getId() != TripsTable.getIdByName(strName)) {
                     Help.message("Название занято");
                     Help.setActiveEditText(R.id.trip_name);
                     return;
@@ -53,7 +53,7 @@ public class EditTripPage extends BaseTripPage {
                 CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
 
                 if (isActive.isChecked())
-                    t_trips.set_active(getParam().getTrip().getId());
+                    TripsTable.set_active(getParam().getTrip().getId());
 
                 Help.message("Сохранено");
 

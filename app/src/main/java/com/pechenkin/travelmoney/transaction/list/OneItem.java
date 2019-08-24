@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.cost.group;
+package com.pechenkin.travelmoney.transaction.list;
 
 import android.view.View;
 
@@ -6,15 +6,14 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
+import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.adapter.ListItemSummaryViewHolder;
 
-public class OneItemGroup extends GroupCost {
+public class OneItem extends TransactionListItem {
 
-    private Cost cost;
 
-    OneItemGroup(Cost cost) {
-        this.cost = cost;
+    public OneItem(Transaction transaction) {
+        super(transaction);
     }
 
     @Override
@@ -25,14 +24,13 @@ public class OneItemGroup extends GroupCost {
         holder.getTo_member_one().setVisibility(View.VISIBLE);
         holder.getMember_icons_layout().setVisibility(View.GONE);
 
-        Member member = this.cost.getMember();
-        Member toMember = this.cost.getToMember();
+        Member member = this.transaction.getCreditItems().get(0).getMember();
+        Member toMember = this.transaction.getDebitItems().get(0).getMember();
 
         String dateText = "";
-        if (this.cost.getDate() != null) {
-            dateText = Help.dateToDateTimeStr(this.cost.getDate());
-        }
-        String comment = dateText + "  " + this.cost.getComment();
+        dateText = Help.dateToDateTimeStr(this.transaction.getDate());
+
+        String comment = dateText + "  " + this.transaction.getComment();
         holder.setComment(comment);
 
         holder.getTitle().setText(member.getName());
@@ -40,15 +38,15 @@ public class OneItemGroup extends GroupCost {
 
         holder.getTo_member_one().setText(toMember.getName());
 
-        holder.photoImage(this.cost.getImageDir());
+        holder.photoImage(this.transaction.getImageUrl());
 
 
-        if (cost.isActive()) {
-            holder.getSum_group_sum().setText(Help.kopToTextRub(this.cost.getSum()));
+        if (transaction.isActive()) {
+            holder.getSum_group_sum().setText(Help.kopToTextRub(this.transaction.getSum()));
             holder.getTitle().setTextColor(member.getColor());
             holder.getTo_member_one().setTextColor(toMember.getColor());
 
-            if (cost.isRepayment()) {
+            if (transaction.isRepayment()) {
                 int color = MainActivity.INSTANCE.getResources().getColor(R.color.colorPrimary);
                 holder.getSum_group_sum().setTextColor(color);
             }
@@ -66,13 +64,5 @@ public class OneItemGroup extends GroupCost {
         }
     }
 
-    @Override
-    public boolean onLongClick() {
-        if (this.cost.isActive()) {
-            cost.setActive(false);
-        } else {
-            cost.setActive(true);
-        }
-        return true;
-    }
+
 }

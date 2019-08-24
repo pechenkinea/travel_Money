@@ -3,7 +3,6 @@ package com.pechenkin.travelmoney.export.formats;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.cost.Cost;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.cost.adapter;
+package com.pechenkin.travelmoney.transaction.adapter;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -220,7 +220,7 @@ public class ListItemSummaryViewHolder {
         return have_photo;
     }
 
-    void setHeader(String text) {
+    public void setHeader(String text) {
         this.labelHeader.setVisibility(View.VISIBLE);
         this.mainLayout.setVisibility(View.GONE);
         this.costSeparator.setVisibility(View.INVISIBLE);
@@ -243,7 +243,7 @@ public class ListItemSummaryViewHolder {
         return diagram;
     }
 
-    AppCompatImageView getMiniMenu() {
+    public AppCompatImageView getMiniMenu() {
         return miniMenu;
     }
 

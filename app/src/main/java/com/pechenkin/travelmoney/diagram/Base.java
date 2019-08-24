@@ -17,8 +17,8 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
-import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.transaction.adapter.ListItemSummaryViewHolder;
+import com.pechenkin.travelmoney.transaction.processing.summary.Total;
 
 import java.util.Collections;
 import java.util.List;

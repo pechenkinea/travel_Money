@@ -1,12 +1,8 @@
 package com.pechenkin.travelmoney.test;
 
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.cost.Cost;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class CostForTest implements Cost {
 

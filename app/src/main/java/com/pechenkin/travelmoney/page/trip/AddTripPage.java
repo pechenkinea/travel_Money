@@ -5,7 +5,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.bd.local.table.TripsTable;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
@@ -30,8 +30,8 @@ public class AddTripPage extends BaseTripPage {
                 Help.setActiveEditText(R.id.trip_name);
             }
 
-            long t_id = t_trips.add(strName, getTextInputEditText(trComment));
-            t_trips.set_active(t_id);
+            long t_id = TripsTable.add(strName, getTextInputEditText(trComment));
+            TripsTable.set_active(t_id);
             PageOpener.INSTANCE.open(MainPage.class, new PageParam.BuildingPageParam().setPageId(R.id.navigation_members).getParam());
         });
     }

@@ -3,10 +3,11 @@ package com.pechenkin.travelmoney.bd.local;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
-import com.pechenkin.travelmoney.bd.local.table.TableCost;
+import com.pechenkin.travelmoney.bd.local.table.CostTable;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
-import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.bd.local.table.TransactionTable;
+import com.pechenkin.travelmoney.bd.local.table.TripsTable;
+import com.pechenkin.travelmoney.transaction.Transaction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,7 +51,7 @@ public class TripLocal implements Trip {
 
     @Override
     public void edit(String name, String comment) {
-        t_trips.edit(this.id, name, comment);
+        TripsTable.edit(this.id, name, comment);
     }
 
     @Override
@@ -73,35 +74,35 @@ public class TripLocal implements Trip {
 
     @Override
     public boolean memberIsActive(Member member) {
-        return t_trips.isMemberInTrip(this.id, member.getId());
+        return TripsTable.isMemberInTrip(this.id, member.getId());
     }
 
     @Override
     public void setMemberActive(Member member, boolean active) {
         if (active) {
-            t_trips.addMemberInTrip(this.id, member.getId());
+            TripsTable.addMemberInTrip(this.id, member.getId());
         } else {
-            t_trips.removeMemberInTrip(this.id, member.getId());
+            TripsTable.removeMemberInTrip(this.id, member.getId());
         }
     }
 
     @Override
     public void addCost(Member member, Member toMember, String comment, int sum, String image_dir, Date date, boolean isRepayment) {
-        TableCost.INSTANCE.add(member.getId(), toMember.getId(), comment, sum, image_dir, this.id, date, isRepayment);
+        CostTable.INSTANCE.add(member.getId(), toMember.getId(), comment, sum, image_dir, this.id, date, isRepayment);
     }
 
     @Override
     public boolean isActive() {
-        return t_trips.isActive(this.id);
+        return TripsTable.isActive(this.id);
     }
 
+
     @Override
-    public List<Cost> getAllCost() {
+    public List<Transaction> getTransactions() {
         return new ArrayList<>(
                 Arrays.asList(
-                        TableCost.INSTANCE.getAllByTripId(this.id).getAllRows()
+                        TransactionTable.INSTANCE.getTransactionsByTrip(this.id)
                 ));
-
     }
 
     @Override
@@ -115,7 +116,6 @@ public class TripLocal implements Trip {
     }
 
 
-
     @Override
     public Member getMemberByName(String name) {
         return TableMembers.INSTANCE.getMemberByName(name);
@@ -123,11 +123,11 @@ public class TripLocal implements Trip {
 
     @Override
     public Date getStartDate() {
-        return t_trips.getStartTripDate(this.id);
+        return TripsTable.getStartTripDate(this.id);
     }
 
     @Override
     public Date getEndDate() {
-        return t_trips.getEndTripDate(this.id);
+        return TripsTable.getEndTripDate(this.id);
     }
 }

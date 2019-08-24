@@ -13,9 +13,9 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.t_settings;
-import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
-import com.pechenkin.travelmoney.cost.adapter.CostListItem;
+import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.transaction.adapter.AdapterCostList;
+import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterWho;
 import com.pechenkin.travelmoney.page.main.CostListBackground;
@@ -142,10 +142,10 @@ public class CostListFragment extends BaseMainPageFragment {
             AdapterCostList adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), finalList);
             listViewCosts.setAdapter(adapter);
 
-            if (adapter.getCount() > 5 && !t_settings.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)) {
+            if (adapter.getCount() > 5 && !SettingsTable.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)) {
                 Help.alertHelp(MainActivity.INSTANCE.getString(R.string.deleteCostHelp));
 
-                t_settings.INSTANCE.setActive(NamespaceSettings.DELETE_COST_SHOWED_HELP, true);
+                SettingsTable.INSTANCE.setActive(NamespaceSettings.DELETE_COST_SHOWED_HELP, true);
             }
 
         });

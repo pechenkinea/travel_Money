@@ -1,10 +1,10 @@
-package com.pechenkin.travelmoney.cost;
+package com.pechenkin.travelmoney.transaction;
 
 import android.view.View;
 
 import com.pechenkin.travelmoney.Help;
-import com.pechenkin.travelmoney.cost.adapter.CostListItem;
-import com.pechenkin.travelmoney.cost.adapter.ListItemSummaryViewHolder;
+import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
+import com.pechenkin.travelmoney.transaction.adapter.ListItemSummaryViewHolder;
 
 /**
  * Created by pechenkin on 06.04.2018.

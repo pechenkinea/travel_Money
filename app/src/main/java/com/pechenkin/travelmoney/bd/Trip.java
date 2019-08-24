@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.bd;
 
-import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.transaction.Transaction;
 
 import java.util.Date;
 import java.util.List;
@@ -39,7 +39,8 @@ public interface Trip {
 
 
 
-    List<Cost> getAllCost();
+
+    List<Transaction> getTransactions();
 
     void addCost(Member member, Member toMember, String comment, int sum, String image_dir, Date date, boolean isRepayment);
 

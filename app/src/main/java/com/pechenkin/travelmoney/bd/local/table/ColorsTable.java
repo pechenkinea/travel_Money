@@ -3,7 +3,7 @@ package com.pechenkin.travelmoney.bd.local.table;
 import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.local.query.QueryResult;
 
-public class t_colors {
+public class ColorsTable {
 
 	static public IdTableRow[] getAll()
 	{

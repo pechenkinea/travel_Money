@@ -8,15 +8,15 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.t_settings;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.adapter.AdapterCostList;
-import com.pechenkin.travelmoney.cost.adapter.CostListItem;
-import com.pechenkin.travelmoney.cost.adapter.LabelItem;
-import com.pechenkin.travelmoney.cost.processing.CostIterable;
-import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
-import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
-import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.adapter.AdapterCostList;
+import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
+import com.pechenkin.travelmoney.transaction.list.LabelItem;
+import com.pechenkin.travelmoney.transaction.processing.CostIterable;
+import com.pechenkin.travelmoney.transaction.processing.ProcessIterate;
+import com.pechenkin.travelmoney.transaction.processing.summary.AllSum;
+import com.pechenkin.travelmoney.transaction.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.DiagramName;
 import com.pechenkin.travelmoney.diagram.OnDiagramSelect;
 import com.pechenkin.travelmoney.diagram.impl.BarDiagram;
@@ -56,9 +56,9 @@ public class DiagramsListPage extends ListPage {
     protected boolean fillFields() {
 
 
-        List<Cost> allCostTrip = TripManager.INSTANCE.getActiveTrip().getAllCost();
+        List<Transaction> allTransactionsTrip = TripManager.INSTANCE.getActiveTrip().getTransactions();
         ListView list1 = MainActivity.INSTANCE.findViewById(getListViewId());
-        if (allCostTrip.size() == 0) {
+        if (allTransactionsTrip.size() == 0) {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
             list1.setAdapter(null);
             return false;
@@ -66,7 +66,7 @@ public class DiagramsListPage extends ListPage {
             Total total = new Total();
             AllSum allSumIteration = new AllSum();
 
-            ProcessIterate.doIterate(allCostTrip, new CostIterable[]{total, allSumIteration});
+            ProcessIterate.doIterate(allTransactionsTrip, new CostIterable[]{total, allSumIteration});
 
             List<Total.MemberSum> totalResult = total.getResult();
             int allSum = allSumIteration.getSum();
@@ -83,7 +83,7 @@ public class DiagramsListPage extends ListPage {
 
                             DiagramName diagramName = diagram.getClass().getAnnotation(DiagramName.class);
                             if (diagramName != null) {
-                                t_settings.INSTANCE.set(NamespaceSettings.LIKE_DIAGRAM_NAME, diagramName.name());
+                                SettingsTable.INSTANCE.set(NamespaceSettings.LIKE_DIAGRAM_NAME, diagramName.name());
                                 Help.message("Успешно");
                             } else {
                                 Help.message("Ошибка");

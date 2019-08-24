@@ -3,6 +3,6 @@
   <component name="Encoding" addBOMForNewFiles="with NO BOM">
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/pechenkin/travelmoney/MainActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/pechenkin/travelmoney/bd/local/table/DBHelper.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/pechenkin/travelmoney/cost/adapter/AdapterCostList.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/pechenkin/travelmoney/transaction/adapter/AdapterCostList.java" charset="UTF-8" />
   </component>
 </project>

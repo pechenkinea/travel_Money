@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.bd;
 
-import com.pechenkin.travelmoney.cost.Cost;
+import com.pechenkin.travelmoney.transaction.Transaction;
 
 import java.util.Date;
 import java.util.List;
@@ -88,9 +88,10 @@ public class TripDecorator implements Trip {
     }
 
     @Override
-    public List<Cost> getAllCost() {
-        return this.trip.getAllCost();
+    public List<Transaction> getTransactions() {
+        return this.trip.getTransactions();
     }
+
 
     @Override
     public void addCost(Member member, Member toMember, String comment, int sum, String image_dir, Date date, boolean isRepayment) {

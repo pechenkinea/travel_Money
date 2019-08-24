@@ -1,10 +1,8 @@
 package com.pechenkin.travelmoney.test.calculation;
 
-import com.pechenkin.travelmoney.cost.processing.CostIterable;
-import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
-import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.ShortCost;
+import com.pechenkin.travelmoney.transaction.processing.CostIterable;
+import com.pechenkin.travelmoney.transaction.processing.ProcessIterate;
+import com.pechenkin.travelmoney.transaction.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.test.CostForTest;
 import com.pechenkin.travelmoney.test.TestMembers;
 import com.pechenkin.travelmoney.test.TripForTest;

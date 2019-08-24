@@ -5,9 +5,8 @@ import android.database.Cursor;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
-import com.pechenkin.travelmoney.bd.local.table.TableCost;
+import com.pechenkin.travelmoney.bd.local.table.CostTable;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
-import com.pechenkin.travelmoney.cost.Cost;
 
 import java.util.Date;
 
@@ -83,7 +82,7 @@ public class CostLocal extends IdTableRow implements Cost {
 
     @Override
     public void setActive(boolean value) {
-        TableCost.INSTANCE.setCostState(this.id, value);
+        CostTable.INSTANCE.setCostState(this.id, value);
         active = value ? 1 : 0;
     }
 

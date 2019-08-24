@@ -6,14 +6,14 @@ import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.t_settings;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.ShortCost;
-import com.pechenkin.travelmoney.cost.processing.CostIterable;
-import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
-import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
-import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
-import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.list.TotalItem;
+import com.pechenkin.travelmoney.transaction.processing.CostIterable;
+import com.pechenkin.travelmoney.transaction.processing.ProcessIterate;
+import com.pechenkin.travelmoney.transaction.processing.calculation.Calculation;
+import com.pechenkin.travelmoney.transaction.processing.summary.AllSum;
+import com.pechenkin.travelmoney.transaction.processing.summary.Total;
 
 import java.util.List;
 
@@ -24,17 +24,17 @@ public class TotalDebt implements ExportFormat {
     @Override
     public String getText(Trip trip) {
 
-        List<Cost> allCosts = trip.getAllCost();
+        List<Transaction> allTransactions = trip.getTransactions();
 
         StringBuilder result = new StringBuilder();
 
 
-        Calculation calc = new Calculation(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
+        Calculation calc = new Calculation(SettingsTable.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
         Total total = new Total();
         AllSum allSumIteration = new AllSum();
 
-        ProcessIterate.doIterate(allCosts, new CostIterable[]{calc, total, allSumIteration});
-        List<ShortCost> calculateCosts = calc.getResult();
+        ProcessIterate.doIterate(allTransactions, new CostIterable[]{calc, total, allSumIteration});
+        List<TotalItem> calculateCosts = calc.getResult();
         List<Total.MemberSum> totalResult = total.getResult();
         int allSum = allSumIteration.getSum();
 
@@ -52,11 +52,11 @@ public class TotalDebt implements ExportFormat {
 
             result.append("Кто кому сколько должен:\n");
 
-            for (Cost cost : calculateCosts) {
-                Member member = cost.getMember();
-                Member toMember =  cost.getToMember();
+            for (TotalItem totalItem : calculateCosts) {
+                Member member = totalItem.getTransaction().getCreditItems().get(0).getMember();
+                Member toMember =  totalItem.getTransaction().getDebitItems().get(0).getMember();
 
-                result.append(member.getName()).append(" --> ").append(toMember.getName()).append(" ").append(Help.kopToTextRub(cost.getSum())).append("\n");
+                result.append(member.getName()).append(" --> ").append(toMember.getName()).append(" ").append(Help.kopToTextRub(totalItem.getTransaction().getSum())).append("\n");
             }
         }
 

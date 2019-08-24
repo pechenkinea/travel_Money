@@ -3,7 +3,6 @@ package com.pechenkin.travelmoney.export.formats;
 import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.cost.Cost;
 
 import org.json.JSONArray;
 import org.json.JSONException;

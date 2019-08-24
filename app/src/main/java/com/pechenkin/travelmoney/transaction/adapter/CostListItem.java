@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.cost.adapter;
+package com.pechenkin.travelmoney.transaction.adapter;
 
 import android.graphics.Color;
 

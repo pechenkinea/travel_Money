@@ -8,7 +8,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.TripManager;
-import com.pechenkin.travelmoney.bd.local.table.t_trips;
+import com.pechenkin.travelmoney.bd.local.table.TripsTable;
 import com.pechenkin.travelmoney.list.AdapterTripsList;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -35,7 +35,7 @@ public class TripsListFragment extends BaseMainPageFragment {
 
             AdapterTripsList adapter = (AdapterTripsList) list.getAdapter();
             Trip item = adapter.getItem(position);
-            t_trips.set_active(item.getId());
+            TripsTable.set_active(item.getId());
 
             MainActivity.INSTANCE.setTitle(item.getName());
 

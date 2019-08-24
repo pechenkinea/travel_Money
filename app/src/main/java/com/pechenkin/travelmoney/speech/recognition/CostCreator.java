@@ -7,7 +7,6 @@ import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.NamesHashMap;
 import com.pechenkin.travelmoney.bd.TripManager;
-import com.pechenkin.travelmoney.cost.ShortCost;
 
 import java.util.ArrayList;
 import java.util.List;

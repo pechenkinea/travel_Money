@@ -1,12 +1,12 @@
-package com.pechenkin.travelmoney.cost.processing.calculation;
+package com.pechenkin.travelmoney.transaction.processing.calculation;
 
 import android.util.LongSparseArray;
 
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.ShortCost;
-import com.pechenkin.travelmoney.cost.TotalItemCost;
-import com.pechenkin.travelmoney.cost.processing.CostIterable;
+import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.TransactionItem;
+import com.pechenkin.travelmoney.transaction.list.TotalItem;
+import com.pechenkin.travelmoney.transaction.processing.CostIterable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,10 +24,10 @@ public class Calculation implements CostIterable {
     private static final float deviation = 0.01f;
 
     private LongSparseArray<MemberSum> members;
-    private List<ShortCost> result;
+    private List<TotalItem> result;
 
     //Нужно для того, что бы можно было считать не по id сотрудников а, например, по их цветам
-    private MemberUidGetter memberUidGetter;
+    private MemberUidGetterID memberUidGetter;
 
 
     public Calculation(boolean needGroupByColor) {
@@ -35,7 +35,7 @@ public class Calculation implements CostIterable {
         if (needGroupByColor) {
             this.memberUidGetter = new MemberUidGetterColor();
         } else {
-            this.memberUidGetter = new MemberUidGetter();
+            this.memberUidGetter = new MemberUidGetterID();
         }
 
         this.members = new LongSparseArray<>();
@@ -47,26 +47,27 @@ public class Calculation implements CostIterable {
      * Кому дали денег - отнимаем сумму
      */
     @Override
-    public void iterate(Cost cost) {
+    public void iterate(Transaction transaction) {
 
-        // если проводка помечена как удаленная или участник дал сам себе то не учитываем такую проводку
-        if (!cost.isActive() || cost.getMember() == cost.getToMember()) {
+        // если проводка помечена как удаленная то не учитываем такую проводку
+        if (!transaction.isActive()) {
             return;
         }
 
-        // если в мапе еще нет участника  cost.getMember() добавляем его с нулевой суммой
-        if (members.get(memberUidGetter.getMemberUid(cost.getMember())) == null)
-            members.put(memberUidGetter.getMemberUid(cost.getMember()), new MemberSum(cost.getMember()));
+        for (TransactionItem item : transaction.getCreditItems()) {
+            // если в мапе еще нет участника  item.getMember() добавляем его с нулевой суммой
+            if (members.get(memberUidGetter.getMemberUid(item.getMember())) == null)
+                members.put(memberUidGetter.getMemberUid(item.getMember()), new MemberSum(item.getMember()));
 
+            members.get(memberUidGetter.getMemberUid(item.getMember())).addSum(item.getCredit()); // Добавляем сумму
+        }
 
-        members.get(memberUidGetter.getMemberUid(cost.getMember())).addSum(cost.getSum()); // Добавляем сумму
+        for (TransactionItem item : transaction.getDebitItems()) {
+            if (members.get(memberUidGetter.getMemberUid(item.getMember())) == null)
+                members.put(memberUidGetter.getMemberUid(item.getMember()), new MemberSum(item.getMember()));
 
-
-        // если в мапе еще нет участника  cost.getToMember() добавляем его с нулевой суммой
-        if (members.get(memberUidGetter.getMemberUid(cost.getToMember())) == null)
-            members.put(memberUidGetter.getMemberUid(cost.getToMember()), new MemberSum(cost.getToMember()));
-
-        members.get(memberUidGetter.getMemberUid(cost.getToMember())).removeSum(cost.getSum()); // Отнимаем сумму
+            members.get(memberUidGetter.getMemberUid(item.getMember())).removeSum(item.getDebit()); // Отнимаем сумму
+        }
 
     }
 
@@ -95,7 +96,7 @@ public class Calculation implements CostIterable {
         // Формируем итоговый список
         // т.к. при добавлении суммы одному у другого такую же сумму отнимаем сумма положительных будет равна сумме отрицательных
         // остается только распределить эти суммы
-        ArrayList<ShortCost> resultList = new ArrayList<>();
+        ArrayList<TotalItem> resultList = new ArrayList<>();
 
         // перебираем участников с положительной суммой т.к. главное получить то что отдал а не отдать то, что получил
         for (MemberSum positive : positiveMember) {
@@ -105,8 +106,8 @@ public class Calculation implements CostIterable {
             //Смотрим, есть ли среди должников тот, кто должен ровно столько сколько надо positive
             for (int i = negativeMember.size() - 1; i >= 0; i--) {
                 MemberSum negative = negativeMember.get(i);
-                if (negative.sum * -1 == positive.sum){
-                    resultList.add(new TotalItemCost(negative.member, positive.member, positive.sum));
+                if (negative.sum * -1 == positive.sum) {
+                    resultList.add(new TotalItem(negative.member, positive.member, positive.sum));
                     negativeMember.remove(i);
                     positive.removeSum(positive.sum);
                     isClose = true;
@@ -126,7 +127,7 @@ public class Calculation implements CostIterable {
 
                 if (negative.sum * -1 > positive.sum) {
                     // Если долг negative больше суммы positive то закрываем всю сумму positive и сокращаем долг negative на сумму positive
-                    resultList.add(new TotalItemCost(negative.member, positive.member, positive.sum));
+                    resultList.add(new TotalItem(negative.member, positive.member, positive.sum));
                     //добавляем т.к. сумма negative отрицательная
                     negative.addSum(positive.sum);
                     // обнуляем сумму positive т.к. есть значение для иога
@@ -134,7 +135,7 @@ public class Calculation implements CostIterable {
                     break; // сумма positive закрыта. выходим из цикла должников
                 } else {
                     // Если долг negative меньше суммы positive то закрываем сумму positive на весь долг negative и удаляем из списка negativeMember этого должника
-                    resultList.add(new TotalItemCost(negative.member, positive.member, negative.sum * -1));
+                    resultList.add(new TotalItem(negative.member, positive.member, negative.sum * -1));
                     // сокращаем сумму positive т.к. на эту сумму есть значение для иога
                     positive.removeSum(negative.sum * -1);
                     negativeMember.remove(i);
@@ -144,7 +145,7 @@ public class Calculation implements CostIterable {
             // Если поле обхода всех должников сумма positive меньше нуля, значит где то был косяк и об этом говорим в приложении дополнительной строкой итога
             if (positive.sum < 0) {
                 //TODO заменить тут ShortCost на что то другое
-                resultList.add(new ShortCost(positive.member.getName() + " (отрицательная сумма)"));
+                //resultList.add(new ShortCost(positive.member.getName() + " (отрицательная сумма)"));
             }
 
             // Если поле обхода всех должников сумма positive сильно больше погрешности,
@@ -153,7 +154,7 @@ public class Calculation implements CostIterable {
             // говорим об этом в приложении дополнительной строкой итога
             if (positive.sum > deviation * 100) {
                 //TODO заменить тут ShortCost на что то другое
-                resultList.add(new ShortCost(positive.member.getName() + " (Остаток " + positive.sum + ")"));
+                //resultList.add(new ShortCost(positive.member.getName() + " (Остаток " + positive.sum + ")"));
             }
         }
 
@@ -163,7 +164,7 @@ public class Calculation implements CostIterable {
     }
 
 
-    public List<ShortCost> getResult() {
+    public List<TotalItem> getResult() {
         return result;
     }
 
@@ -209,13 +210,13 @@ public class Calculation implements CostIterable {
     }
 
 
-    private class MemberUidGetter {
+    private class MemberUidGetterID {
         long getMemberUid(Member member) {
             return member.getId();
         }
     }
 
-    private class MemberUidGetterColor extends MemberUidGetter {
+    private class MemberUidGetterColor extends MemberUidGetterID {
         @Override
         long getMemberUid(Member member) {
             return member.getColor();

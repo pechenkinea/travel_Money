@@ -7,18 +7,18 @@ import com.pechenkin.travelmoney.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.t_settings;
-import com.pechenkin.travelmoney.cost.Cost;
-import com.pechenkin.travelmoney.cost.ShortCost;
-import com.pechenkin.travelmoney.cost.adapter.CostListItem;
-import com.pechenkin.travelmoney.cost.adapter.LabelItem;
-import com.pechenkin.travelmoney.cost.adapter.LabelItemWithMenu;
-import com.pechenkin.travelmoney.cost.group.GroupCost;
-import com.pechenkin.travelmoney.cost.processing.CostIterable;
-import com.pechenkin.travelmoney.cost.processing.ProcessIterate;
-import com.pechenkin.travelmoney.cost.processing.calculation.Calculation;
-import com.pechenkin.travelmoney.cost.processing.summary.AllSum;
-import com.pechenkin.travelmoney.cost.processing.summary.Total;
+import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
+import com.pechenkin.travelmoney.transaction.list.LabelItem;
+import com.pechenkin.travelmoney.transaction.list.LabelItemWithMenu;
+import com.pechenkin.travelmoney.transaction.list.TotalItem;
+import com.pechenkin.travelmoney.transaction.list.TransactionListItem;
+import com.pechenkin.travelmoney.transaction.processing.CostIterable;
+import com.pechenkin.travelmoney.transaction.processing.ProcessIterate;
+import com.pechenkin.travelmoney.transaction.processing.calculation.Calculation;
+import com.pechenkin.travelmoney.transaction.processing.summary.AllSum;
+import com.pechenkin.travelmoney.transaction.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.DefaultDiagram;
 import com.pechenkin.travelmoney.diagram.Diagram;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -55,13 +55,13 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
         if (this.trip != null) {
 
-            List<Cost> costList = this.trip.getAllCost();
+            List<Transaction> costList = this.trip.getTransactions();
 
-            List<ShortCost> calculationList;
+            List<TotalItem> calculationList;
 
             if (costList.size() > 0) {
 
-                Calculation calc = new Calculation(t_settings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
+                Calculation calc = new Calculation(SettingsTable.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
                 Total total = new Total();
                 AllSum allSumIteration = new AllSum();
 
@@ -104,8 +104,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
             if (costList.size() > 0) {
 
                 finalList.add(new LabelItem("Список всех операций"));
-                // Группировка
-                List<GroupCost> groupCostList = GroupCost.group(costList);
+                List<TransactionListItem> groupCostList = TransactionListItem.create(costList);
                 finalList.addAll(groupCostList);
             }
         }
