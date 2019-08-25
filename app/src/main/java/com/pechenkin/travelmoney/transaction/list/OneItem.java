@@ -24,8 +24,8 @@ public class OneItem extends TransactionListItem {
         holder.getTo_member_one().setVisibility(View.VISIBLE);
         holder.getMember_icons_layout().setVisibility(View.GONE);
 
-        Member member = this.transaction.getCreditItems().get(0).getMember();
-        Member toMember = this.transaction.getDebitItems().get(0).getMember();
+        Member member = this.transaction.getCreditItems().First().getMember();
+        Member toMember = this.transaction.getDebitItems().First().getMember();
 
         String dateText = "";
         dateText = Help.dateToDateTimeStr(this.transaction.getDate());

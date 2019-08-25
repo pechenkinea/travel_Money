@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Кеширование значений методов. Нужно, что бы лишний раз не лазить в базу (для удаленной БД особенно актуально).
- */ //TODO доделать кэширование
+ */ //TODO доделать кэширование  и оборачивать поездку при создании в это декоратор
 public class TripCacheDecorator extends TripDecorator {
     public TripCacheDecorator(Trip trip) {
         super(trip);

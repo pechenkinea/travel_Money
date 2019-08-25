@@ -12,7 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 19);
+        super(context, Namespace.DB_NAME, null, 20);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " VALUES ('1', '1');");
 
 
-        createTableCost(db);
+        //createTableCost(db);
 
         addSettingTable(db);
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.DELETE_COST_SHOWED_HELP + "', '0');");
@@ -55,6 +55,35 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TO_MEMBER_TEXT_LENGTH + "', '12');");
 
         createTableColors(db);
+
+        createTableTransaction(db);
+    }
+
+    private void createTableTransaction(SQLiteDatabase db) {
+
+        db.execSQL("create table " + Namespace.TABLE_TRANSACTION + " ("
+                + Namespace.FIELD_ID + " integer primary key autoincrement, "
+                + Namespace.FIELD_COMMENT + " text, "
+                + Namespace.FIELD_IMAGE_DIR + " text, "
+                + Namespace.FIELD_ACTIVE + " integer, "
+                + Namespace.FIELD_REPAYMENT + " integer, "
+                + Namespace.FIELD_TRIP + " integer, "
+                + Namespace.FIELD_DATE + " integer, "
+                + "FOREIGN KEY(trip) REFERENCES trips(_id)"
+                + ");");
+
+        db.execSQL("create table " + Namespace.TABLE_TRANSACTION_ITEMS + " ("
+                + Namespace.FIELD_ID + " integer primary key autoincrement, "
+                + Namespace.FIELD_MEMBER + " integer, "
+                + Namespace.FIELD_CREDIT + " integer, "
+                + Namespace.FIELD_DEBIT + " integer, "
+                + Namespace.FIELD_REPAYMENT + " integer, "
+                + Namespace.FIELD_TRANSACTION + " integer, "
+                + "FOREIGN KEY(" + Namespace.FIELD_MEMBER + ") REFERENCES " + Namespace.TABLE_MEMBERS + "(_id),"
+                + "FOREIGN KEY(" + Namespace.FIELD_TRANSACTION + ") REFERENCES " + Namespace.TABLE_TRANSACTION + "(_id)"
+                + ");");
+
+
     }
 
     private void createTableCost(SQLiteDatabase db) {
@@ -171,7 +200,10 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + Namespace.TABLE_COSTS + " ADD COLUMN " + Namespace.FIELD_REPAYMENT + " integer default 0;");
         }
 
-
+        //перевод на трпнзакции
+        if (oldVersion < 20) {
+            createTableTransaction(db);
+        }
 
 
     }

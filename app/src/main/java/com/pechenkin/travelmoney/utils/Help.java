@@ -142,7 +142,7 @@ public class Help {
      * @return 123.45
      */
     public static String kopToTextRub(int kop){
-        return doubleToString((double) kop / 100); // TODO надо как то проще сделать
+        return doubleToString((double) kop / 100);
     }
 
 

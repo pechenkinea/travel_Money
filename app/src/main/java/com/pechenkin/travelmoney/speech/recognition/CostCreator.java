@@ -75,7 +75,7 @@ public class CostCreator {
                 sums = TMConst.ERROR_SUM;
             }
 
-            draftTransaction.addTransactionItem(new DraftTransactionItem(master, 0 , sums));
+            draftTransaction.addCreditItem(new DraftTransactionItem(master, 0 , sums));
 
             Division division = new Division(sums, toMembers.size());
 
@@ -83,7 +83,7 @@ public class CostCreator {
             for (Member toMember : toMembers) {
                 Member to = (toMember == null) ? master : toMember; //Для случаев когда мастер идет не первом в фразе
 
-                draftTransaction.addTransactionItem(new DraftTransactionItem(to, division.getNext(), 0));
+                draftTransaction.addDebitItem(new DraftTransactionItem(to, division.getNext(), 0));
             }
 
 

@@ -80,10 +80,10 @@ public class MasterWho extends ListPage {
 
         DraftTransaction draftTransaction = getParam().getDraftTransaction();
         if (draftTransaction.getCreditItems().size() == 0) {
-            draftTransaction.addTransactionItem(new DraftTransactionItem(member, 0, 0));
+            draftTransaction.addCreditItem(new DraftTransactionItem(member, 0, 0));
         }
         else {
-            DraftTransactionItem draftTransactionItem = (DraftTransactionItem) draftTransaction.getCreditItems().get(0);
+            DraftTransactionItem draftTransactionItem = (DraftTransactionItem) draftTransaction.getCreditItems().First();
             draftTransactionItem.setMember(member);
         }
 

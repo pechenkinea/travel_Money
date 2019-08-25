@@ -56,7 +56,7 @@ public class MasterWhom extends ListPage {
     protected String getTitleHeader() {
         String desc = "";
         try {
-            desc = " (" + getParam().getDraftTransaction().getCreditItems().get(0).getMember().getName() + ")";
+            desc = " (" + getParam().getDraftTransaction().getCreditItems().First().getMember().getName() + ")";
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -80,7 +80,7 @@ public class MasterWhom extends ListPage {
             StreamList<Member> tripMembers = new StreamList<>(TripManager.INSTANCE.getActiveTrip().getActiveMembers());
 
             tripMembers.ForEach(member ->
-                    draftTransaction.addTransactionItem(new DraftTransactionItem(member, 0, 0))
+                    draftTransaction.addDebitItem(new DraftTransactionItem(member, 0, 0))
             );
 
             draftTransaction.updateSum();

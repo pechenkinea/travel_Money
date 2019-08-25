@@ -74,8 +74,8 @@ public class Repayment extends BasePage {
     protected boolean fillFields() {
 
         if (hasParam()) {
-            Member member = getParam().getDraftTransaction().getCreditItems().get(0).getMember();
-            Member toMember = getParam().getDraftTransaction().getDebitItems().get(0).getMember();
+            Member member = getParam().getDraftTransaction().getCreditItems().First().getMember();
+            Member toMember = getParam().getDraftTransaction().getDebitItems().First().getMember();
 
             ((TextView) MainActivity.INSTANCE.findViewById(R.id.member)).setText(member.getName());
 

@@ -53,8 +53,8 @@ public class TotalDebt implements ExportFormat {
             result.append("Кто кому сколько должен:\n");
 
             for (TotalItem totalItem : calculateCosts) {
-                Member member = totalItem.getTransaction().getCreditItems().get(0).getMember();
-                Member toMember =  totalItem.getTransaction().getDebitItems().get(0).getMember();
+                Member member = totalItem.getTransaction().getCreditItems().First().getMember();
+                Member toMember =  totalItem.getTransaction().getDebitItems().First().getMember();
 
                 result.append(member.getName()).append(" --> ").append(toMember.getName()).append(" ").append(Help.kopToTextRub(totalItem.getTransaction().getSum())).append("\n");
             }

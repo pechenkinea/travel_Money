@@ -15,14 +15,15 @@ public class DraftTransaction implements Transaction {
     private Date date = new Date();
     private String imageUrl = "";
     private boolean repayment = false;
-    private StreamList<TransactionItem> transactionItems = new StreamList<>(new ArrayList<>());
+    private StreamList<TransactionItem> creditItems = new StreamList<>(new ArrayList<>());
+    private StreamList<TransactionItem> debitItems = new StreamList<>(new ArrayList<>());
 
     public void validate() throws ValidateException {
 
         int[] debitSum = new int[]{0};
         getDebitItems().ForEach(transactionItem -> debitSum[0] += transactionItem.getDebit());
 
-        if (debitSum[0] == 0){
+        if (debitSum[0] == 0) {
             throw new ValidateException("Выберите участников");
         }
 
@@ -31,7 +32,7 @@ public class DraftTransaction implements Transaction {
         getCreditItems().ForEach(transactionItem -> creditSum[0] += transactionItem.getCredit());
 
 
-        if (creditSum[0] != debitSum[0]){
+        if (creditSum[0] != debitSum[0]) {
             throw new ValidateException("Кредит и дебет имеют разные суммы");
         }
 
@@ -48,24 +49,26 @@ public class DraftTransaction implements Transaction {
             return;
         }
 
-        int creditSum = 0;
-        for (TransactionItem transactionItem : getCreditItems()) {
-            creditSum += transactionItem.getCredit();
-        }
+        final int[] creditSum = new int[]{0};
+
+        getCreditItems().ForEach(transactionItem -> {
+            creditSum[0] += transactionItem.getCredit();
+        });
+
 
         List<DraftTransactionItem> noChangeItems = new ArrayList<>();
 
-        for (TransactionItem transactionItem : getDebitItems()) {
-
+        getDebitItems().ForEach(transactionItem -> {
             if (((DraftTransactionItem) transactionItem).isChange()) {
-                creditSum -= transactionItem.getDebit();
+                creditSum[0] -= transactionItem.getDebit();
             } else {
                 noChangeItems.add((DraftTransactionItem) transactionItem);
             }
-        }
+        });
 
-        if (creditSum < 0) {
-            ((DraftTransactionItem) getCreditItems().get(0)).addCredit(creditSum * -1);
+
+        if (creditSum[0] < 0) {
+            ((DraftTransactionItem) getCreditItems().get(0)).addCredit(creditSum[0] * -1);
             for (DraftTransactionItem draftTransactionItem : noChangeItems) {
                 draftTransactionItem.debit = 0;
             }
@@ -73,27 +76,38 @@ public class DraftTransaction implements Transaction {
         }
 
         if (noChangeItems.size() > 0) {
-            Division division = new Division(creditSum, noChangeItems.size());
+            Division division = new Division(creditSum[0], noChangeItems.size());
             for (DraftTransactionItem draftTransactionItem : noChangeItems) {
                 draftTransactionItem.debit = division.getNext();
             }
             return;
         }
 
-        if (creditSum > 0) {
+        if (creditSum[0] > 0) {
 
             DraftTransactionItem creditItem = (DraftTransactionItem) getCreditItems().get(0);
 
-            if (creditItem.getCredit() > creditSum) {
-                creditItem.addCredit(creditSum * -1);
+            if (creditItem.getCredit() > creditSum[0]) {
+                creditItem.addCredit(creditSum[0] * -1);
             }
         }
 
 
     }
 
-    public DraftTransaction addTransactionItem(DraftTransactionItem transactionItem) {
-        transactionItems.add(transactionItem);
+    public DraftTransaction addCreditItem(DraftTransactionItem transactionItem) {
+        if (transactionItem.getDebit() > 0)
+            throw new IllegalArgumentException("Нельзя в кредит добавлять дебетовые элементы");
+
+        creditItems.add(transactionItem);
+        transactionItem.setUpdateListener(this::updateSum);
+        return this;
+    }
+    public DraftTransaction addDebitItem(DraftTransactionItem transactionItem) {
+        if (transactionItem.getCredit() > 0)
+            throw new IllegalArgumentException("Нельзя в дебет добавлять кредитовые элементы");
+
+        debitItems.add(transactionItem);
         transactionItem.setUpdateListener(this::updateSum);
         return this;
     }
@@ -116,23 +130,12 @@ public class DraftTransaction implements Transaction {
 
     @Override
     public StreamList<TransactionItem> getDebitItems() {
-        return transactionItems.Filter(transactionItem ->
-                transactionItem.getDebit() >= 0 && transactionItem.getCredit() == 0
-        );
+        return debitItems;
     }
 
     @Override
     public StreamList<TransactionItem> getCreditItems() {
-
-        if (transactionItems.size() == 1 && transactionItems.get(0).getDebit() == 0) {
-            StreamList<TransactionItem> result = new StreamList<>(new ArrayList<>(1));
-            result.add(transactionItems.get(0));
-            return result;
-        }
-
-        return transactionItems.Filter(transactionItem ->
-                transactionItem.getCredit() > 0
-        );
+        return creditItems;
     }
 
     @Override

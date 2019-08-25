@@ -152,10 +152,9 @@ public class TransactionList extends BaseAdapter {
 
         if (draftTransactionItem.getDebit() > 0 || !draftTransactionItem.isChange()) {
             holder.memberSumText.setVisibility(View.VISIBLE);
+            holder.editButton.setVisibility(View.VISIBLE);
 
             holder.check.setImageResource(R.drawable.ic_check_on_24);
-
-            holder.editButton.setVisibility(View.VISIBLE);
 
             if (draftTransactionItem.isChange()) {
                 holder.memberSumText.setText(Html.fromHtml("<b>" + Help.kopToTextRub(draftTransactionItem.getDebit()) + "</b> "));
@@ -190,7 +189,7 @@ public class TransactionList extends BaseAdapter {
         void toDefault() {
             this.name.setVisibility(View.VISIBLE);
             this.check.setVisibility(View.VISIBLE);
-            this.editButton.setVisibility(View.VISIBLE);
+            this.editButton.setVisibility(View.INVISIBLE);
             this.icon.setVisibility(View.VISIBLE);
             this.memberSumText.setVisibility(View.INVISIBLE);
         }

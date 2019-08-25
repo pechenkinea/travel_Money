@@ -80,9 +80,9 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                     diagram.setOnDiagramSelectItem(itemId -> {
 
                         DraftTransaction draftTransaction = new DraftTransaction()
-                                .addTransactionItem(new DraftTransactionItem(itemId, 0, 1));
+                                .addCreditItem(new DraftTransactionItem(itemId, 0, 0));
 
-                        PageParam param = new PageParam().setDraftTransaction(draftTransaction);
+                        PageParam param = new PageParam().setDraftTransaction(draftTransaction).setBackPage(MainPage.class);
                         PageOpener.INSTANCE.open(MasterCostInfo.class, param);
 
                     });

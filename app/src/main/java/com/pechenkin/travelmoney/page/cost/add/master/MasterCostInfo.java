@@ -216,7 +216,7 @@ public class MasterCostInfo extends BasePage {
         }
 
 
-        Member member = getParam().getDraftTransaction().getCreditItems().get(0).getMember();
+        Member member = getParam().getDraftTransaction().getCreditItems().First().getMember();
 
         String memberCostInfoText = MainActivity.INSTANCE.getString(R.string.costMember) + " " + member.getName();
         ((TextView) MainActivity.INSTANCE.findViewById(R.id.memberCostInfo))

@@ -23,7 +23,7 @@ public abstract class TransactionListItem implements CostListItem {
         List<TransactionListItem> transactionListItems = new ArrayList<>(transactions.size());
 
         for (Transaction transaction : transactions) {
-            if (transaction.getCreditItems().size() == 1 && transaction.getCreditItems().size() == 1) {
+            if (transaction.getCreditItems().size() == 1 && transaction.getDebitItems().size() == 1) {
                 transactionListItems.add(new OneItem(transaction));
             } else {
                 transactionListItems.add(new ManyItems(transaction));

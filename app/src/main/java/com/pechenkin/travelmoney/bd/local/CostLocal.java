@@ -15,7 +15,7 @@ import java.util.Date;
  * Трата из локальной БД
  */
 
-//TODO пока надо оставить, может через эти объекты будем миграция данных в новую структуру
+//TODO пока надо оставить, может через эти объекты будет миграция данных в новую структуру
 public class CostLocal extends IdTableRow {
 
     public final String comment;

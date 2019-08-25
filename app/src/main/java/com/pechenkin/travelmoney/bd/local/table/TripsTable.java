@@ -43,7 +43,6 @@ public class TripsTable {
     }
 
 
-    //TODO вынести в TripManager
     static public long add(String name, String comment) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);

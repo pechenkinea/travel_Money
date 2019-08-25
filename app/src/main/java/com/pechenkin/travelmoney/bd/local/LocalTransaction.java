@@ -78,7 +78,8 @@ public class LocalTransaction extends IdTableRow implements Transaction {
 
     @Override
     public void setActive(boolean value) {
-
+        TransactionTable.INSTANCE.setTransactionState(this.id, value);
+        this.active = value;
     }
 
     @Override

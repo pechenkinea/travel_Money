@@ -22,7 +22,6 @@ public interface Transaction {
 
     void setActive(boolean value);
 
-    //TODO оно тут надо?
     int getSum();
 
     /**

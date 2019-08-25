@@ -62,7 +62,7 @@ public class TotalItemDiagram extends Base {
         int i = 0;
         for (Total.MemberSum c : this.total) {
             Member member = c.getMember();
-            NoOfEmp.add(new PieEntry((float) c.getSumExpense(), member.getName(), member));
+            NoOfEmp.add(new PieEntry((float) c.getSumExpense()/100, member.getName(), member));
             pieColors[i++] = member.getColor();
         }
 
@@ -110,7 +110,7 @@ public class TotalItemDiagram extends Base {
 
         textView.setBackgroundResource(R.drawable.background_pie_center);
 
-        String text = "Всего\nпотрачено\n" + Help.doubleToString(this.sum);
+        String text = "Всего\nпотрачено\n" + Help.kopToTextRub(this.sum);
         textView.setText(text);
         textView.setOnClickListener(null); // перехват клика
         textView.setTextColor(Color.BLACK);

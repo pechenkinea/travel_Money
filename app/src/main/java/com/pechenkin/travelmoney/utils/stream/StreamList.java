@@ -36,6 +36,13 @@ public class StreamList<E> implements List<E> {
         return new StreamList<>(result);
     }
 
+    public E First(){
+        if (list.size() > 0){
+            return list.get(0);
+        }
+        return null;
+    }
+
     public interface ForEach<E> {
         void execute(E e);
     }

@@ -17,7 +17,12 @@ public class TripManager {
     public Trip getActiveTrip() {
         TripTableRow activeTrip = TripsTable.getActiveTrip();
 
-        return new TripLocal(activeTrip);
+        return createTripByTripRow(activeTrip);
+    }
+
+    public long add(String name, String comment){
+        return TripsTable.add(name, comment);
+
     }
 
     public List<Trip> getAll() {
@@ -37,5 +42,6 @@ public class TripManager {
     private Trip createTripByTripRow(TripTableRow trip) {
         return new TripLocal(trip);
     }
+
 
 }

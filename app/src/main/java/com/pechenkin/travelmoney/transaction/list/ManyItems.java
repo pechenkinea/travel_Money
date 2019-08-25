@@ -31,7 +31,8 @@ public class ManyItems extends TransactionListItem {
         holder.setListenerOpenAdditionalInfo();
 
         holder.getSum_group_sum().setText(Help.kopToTextRub(this.transaction.getSum()));
-        Member member = this.transaction.getCreditItems().get(0).getMember(); //TODO в перспективе может быть несколько
+
+        Member member = this.transaction.getCreditItems().First().getMember();
 
         String dateText = "";
         dateText = Help.dateToDateTimeStr(this.transaction.getDate());
@@ -49,6 +50,10 @@ public class ManyItems extends TransactionListItem {
             Member to_member = costInGroup.getMember();
 
             int to_memberColor = to_member.getColor();
+
+            if (!this.transaction.isActive()) {
+                to_memberColor = DISABLE_COLOR;
+            }
 
             String s = Help.kopToTextRub(costInGroup.getDebit());
 
@@ -87,6 +92,9 @@ public class ManyItems extends TransactionListItem {
                 TextView moreMembers = new TextView(MainActivity.INSTANCE);
                 String moreMembersCount = "+" + (this.transaction.getDebitItems().size() - i);
                 moreMembers.setText(moreMembersCount);
+                if (!this.transaction.isActive()) {
+                    moreMembers.setTextColor(DISABLE_COLOR);
+                }
                 holder.getMember_icons_layout().addView(moreMembers);
             }
 
@@ -103,7 +111,7 @@ public class ManyItems extends TransactionListItem {
         holder.photoImage(this.transaction.getImageUrl());
 
 
-        if (this.transaction.getSum() == 0) {
+        if (!this.transaction.isActive()) {
             holder.getTitle().setTextColor(DISABLE_COLOR);
             holder.getSum_line().setColorFilter(DISABLE_COLOR);
             holder.getComment().setTextColor(DISABLE_COLOR);
@@ -115,7 +123,6 @@ public class ManyItems extends TransactionListItem {
         }
 
     }
-
 
 
 }

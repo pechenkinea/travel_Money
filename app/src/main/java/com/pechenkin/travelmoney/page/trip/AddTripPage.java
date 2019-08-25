@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney.page.trip;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -30,7 +31,7 @@ public class AddTripPage extends BaseTripPage {
                 Help.setActiveEditText(R.id.trip_name);
             }
 
-            long t_id = TripsTable.add(strName, getTextInputEditText(trComment));
+            long t_id = TripManager.INSTANCE.add(strName, getTextInputEditText(trComment));
             TripsTable.set_active(t_id);
             PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members));
         });

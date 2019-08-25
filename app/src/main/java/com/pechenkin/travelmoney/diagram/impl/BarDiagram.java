@@ -58,7 +58,7 @@ public class BarDiagram extends Base {
         int i = 0;
         for (Total.MemberSum c : this.total) {
             Member member = c.getMember();
-            entries.add(new BarEntry(i, (float) c.getSumExpense(), member));
+            entries.add(new BarEntry(i, (float) c.getSumExpense()/100, member));
 
             legendEntries[i] = new LegendEntry();
             legendEntries[i].label = member.getName();

@@ -61,7 +61,7 @@ public class DebitCreditDiagram extends Base {
 
             double totalSum = c.getSumPay() - c.getSumExpense();
 
-            entries.add(new BarEntry(i, (float) totalSum, member));
+            entries.add(new BarEntry(i, (float) totalSum/100, member));
 
             legendEntries[legendIndex] = new LegendEntry();
             legendEntries[legendIndex].label = member.getName();
