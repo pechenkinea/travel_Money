@@ -3,17 +3,16 @@ package com.pechenkin.travelmoney.page.main.fragment;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.TripManager;
-import com.pechenkin.travelmoney.bd.local.table.TripsTable;
 import com.pechenkin.travelmoney.list.AdapterTripsList;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.trip.AddTripPage;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
+import com.pechenkin.travelmoney.utils.Help;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class TripsListFragment extends BaseMainPageFragment {
 
             AdapterTripsList adapter = (AdapterTripsList) list.getAdapter();
             Trip item = adapter.getItem(position);
-            TripsTable.set_active(item.getId());
+            TripManager.INSTANCE.setActive(item);
 
             MainActivity.INSTANCE.setTitle(item.getName());
 

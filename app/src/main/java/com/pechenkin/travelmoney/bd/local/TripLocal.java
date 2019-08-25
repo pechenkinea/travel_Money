@@ -3,7 +3,6 @@ package com.pechenkin.travelmoney.bd.local;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
-import com.pechenkin.travelmoney.bd.local.table.CostTable;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 import com.pechenkin.travelmoney.bd.local.table.TransactionTable;
 import com.pechenkin.travelmoney.bd.local.table.TripsTable;
@@ -53,7 +52,7 @@ public class TripLocal implements Trip {
 
     @Override
     public void edit(String name, String comment) {
-        TripsTable.edit(this.id, name, comment);
+        TripsTable.INSTANCE.edit(this.id, name, comment);
     }
 
     @Override
@@ -76,23 +75,22 @@ public class TripLocal implements Trip {
 
     @Override
     public boolean memberIsActive(Member member) {
-        return TripsTable.isMemberInTrip(this.id, member.getId());
+        return TripsTable.INSTANCE.isMemberInTrip(this.id, member.getId());
     }
 
     @Override
     public void setMemberActive(Member member, boolean active) {
         if (active) {
-            TripsTable.addMemberInTrip(this.id, member.getId());
+            TripsTable.INSTANCE.addMemberInTrip(this.id, member.getId());
         } else {
-            TripsTable.removeMemberInTrip(this.id, member.getId());
+            TripsTable.INSTANCE.removeMemberInTrip(this.id, member.getId());
         }
     }
 
 
-
     @Override
     public boolean isActive() {
-        return TripsTable.isActive(this.id);
+        return TripsTable.INSTANCE.isActive(this.id);
     }
 
 
@@ -127,11 +125,11 @@ public class TripLocal implements Trip {
 
     @Override
     public Date getStartDate() {
-        return TripsTable.getStartTripDate(this.id);
+        return TripsTable.INSTANCE.getStartTripDate(this.id);
     }
 
     @Override
     public Date getEndDate() {
-        return TripsTable.getEndTripDate(this.id);
+        return TripsTable.INSTANCE.getEndTripDate(this.id);
     }
 }

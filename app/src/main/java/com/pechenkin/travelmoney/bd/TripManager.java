@@ -14,20 +14,33 @@ public class TripManager {
 
     public static TripManager INSTANCE = new TripManager();
 
-    public Trip getActiveTrip() {
-        TripTableRow activeTrip = TripsTable.getActiveTrip();
+    private Trip activeTrip = null;
 
-        return createTripByTripRow(activeTrip);
+    public Trip getActiveTrip() {
+        if (activeTrip == null) {
+            TripTableRow activeTripRow = TripsTable.INSTANCE.getActiveTrip();
+
+            activeTrip = createTripByTripRow(activeTripRow);
+        }
+        return activeTrip;
     }
 
-    public long add(String name, String comment){
-        return TripsTable.add(name, comment);
+    public Trip add(String name, String comment) {
+        long id = TripsTable.INSTANCE.add(name, comment);
+        TripTableRow tripRow = TripsTable.INSTANCE.getById(id);
+        return createTripByTripRow(tripRow);
+    }
+
+    public void setActive(Trip trip) {
+
+        TripsTable.INSTANCE.set_active(trip.getId());
+        activeTrip = trip;
 
     }
 
     public List<Trip> getAll() {
 
-        TripTableRow[] allTrips = TripsTable.getAll();
+        TripTableRow[] allTrips = TripsTable.INSTANCE.getAll();
         List<Trip> result = new ArrayList<>(allTrips.length);
 
         for (TripTableRow row : allTrips) {

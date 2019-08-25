@@ -2,14 +2,14 @@ package com.pechenkin.travelmoney.page.trip;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.pechenkin.travelmoney.bd.TripManager;
-import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.local.table.TripsTable;
+import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.utils.Help;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -31,8 +31,8 @@ public class AddTripPage extends BaseTripPage {
                 Help.setActiveEditText(R.id.trip_name);
             }
 
-            long t_id = TripManager.INSTANCE.add(strName, getTextInputEditText(trComment));
-            TripsTable.set_active(t_id);
+            Trip t = TripManager.INSTANCE.add(strName, getTextInputEditText(trComment));
+            TripManager.INSTANCE .setActive(t);
             PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members));
         });
     }

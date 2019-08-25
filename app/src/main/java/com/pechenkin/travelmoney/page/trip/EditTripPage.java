@@ -5,14 +5,14 @@ import android.widget.CheckBox;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
-import com.pechenkin.travelmoney.bd.local.table.TripsTable;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.utils.Help;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -38,13 +38,7 @@ public class EditTripPage extends BaseTripPage {
                 return;
             }
 
-            if (TripsTable.isAdded(strName)) {
-                if (getParam().getTrip().getId() != TripsTable.getIdByName(strName)) {
-                    Help.message("Название занято");
-                    Help.setActiveEditText(R.id.trip_name);
-                    return;
-                }
-            }
+
 
             Trip trip = getParam().getTrip();
 
@@ -53,7 +47,7 @@ public class EditTripPage extends BaseTripPage {
                 CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
 
                 if (isActive.isChecked())
-                    TripsTable.set_active(getParam().getTrip().getId());
+                    TripManager.INSTANCE.setActive(getParam().getTrip());
 
                 Help.message("Сохранено");
 
