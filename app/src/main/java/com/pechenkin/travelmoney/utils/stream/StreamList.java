@@ -29,16 +29,23 @@ public class StreamList<E> implements List<E> {
         List<E> result = new ArrayList<>();
 
         for (E e : list) {
-            if (filter.filter(e)){
+            if (filter.filter(e)) {
                 result.add(e);
             }
         }
         return new StreamList<>(result);
     }
 
-    public E First(){
-        if (list.size() > 0){
+    public E First() {
+        if (list.size() > 0) {
             return list.get(0);
+        }
+        return null;
+    }
+
+    public E Last() {
+        if (list.size() > 0) {
+            return list.get(list.size() - 1);
         }
         return null;
     }
@@ -46,6 +53,7 @@ public class StreamList<E> implements List<E> {
     public interface ForEach<E> {
         void execute(E e);
     }
+
     public interface Filter<E> {
         boolean filter(E e);
     }

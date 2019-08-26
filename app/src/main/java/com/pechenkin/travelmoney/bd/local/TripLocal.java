@@ -5,7 +5,7 @@ import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 import com.pechenkin.travelmoney.bd.local.table.TransactionTable;
-import com.pechenkin.travelmoney.bd.local.table.TripsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableTrip;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 
@@ -52,7 +52,7 @@ public class TripLocal implements Trip {
 
     @Override
     public void edit(String name, String comment) {
-        TripsTable.INSTANCE.edit(this.id, name, comment);
+        TableTrip.INSTANCE.edit(this.id, name, comment);
     }
 
     @Override
@@ -75,22 +75,22 @@ public class TripLocal implements Trip {
 
     @Override
     public boolean memberIsActive(Member member) {
-        return TripsTable.INSTANCE.isMemberInTrip(this.id, member.getId());
+        return TableTrip.INSTANCE.isMemberInTrip(this.id, member.getId());
     }
 
     @Override
     public void setMemberActive(Member member, boolean active) {
         if (active) {
-            TripsTable.INSTANCE.addMemberInTrip(this.id, member.getId());
+            TableTrip.INSTANCE.addMemberInTrip(this.id, member.getId());
         } else {
-            TripsTable.INSTANCE.removeMemberInTrip(this.id, member.getId());
+            TableTrip.INSTANCE.removeMemberInTrip(this.id, member.getId());
         }
     }
 
 
     @Override
     public boolean isActive() {
-        return TripsTable.INSTANCE.isActive(this.id);
+        return TableTrip.INSTANCE.isActive(this.id);
     }
 
 
@@ -125,11 +125,11 @@ public class TripLocal implements Trip {
 
     @Override
     public Date getStartDate() {
-        return TripsTable.INSTANCE.getStartTripDate(this.id);
+        return TableTrip.INSTANCE.getStartTripDate(this.id);
     }
 
     @Override
     public Date getEndDate() {
-        return TripsTable.INSTANCE.getEndTripDate(this.id);
+        return TableTrip.INSTANCE.getEndTripDate(this.id);
     }
 }

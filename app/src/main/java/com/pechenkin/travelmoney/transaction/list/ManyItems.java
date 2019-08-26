@@ -59,6 +59,7 @@ public class ManyItems extends TransactionListItem {
 
             sumText.append(s);
 
+            //TODO Вернуть TO_MEMBER_TEXT_LENGTH
             String to_memberName = to_member.getName();
 
             String strColor = String.format("#%06X", 0xFFFFFF & to_memberColor);

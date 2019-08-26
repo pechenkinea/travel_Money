@@ -11,11 +11,11 @@ import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 
 import java.util.Date;
 
-public class TripsTable {
+public class TableTrip {
 
-    public static TripsTable INSTANCE = new TripsTable();
+    public static TableTrip INSTANCE = new TableTrip();
 
-    private TripsTable() {
+    private TableTrip() {
 
     }
 

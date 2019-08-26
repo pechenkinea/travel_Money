@@ -25,6 +25,7 @@ public interface NamespaceSettings {
     //String GROUP_COST = "GROUP_COST"; // БОЛЬШЕ НЕ ИСПОЛЗУЕТСЯ
     //String GROUP_COST_NEED_MESSAGE = "GROUP_COST_NEED_MESSAGE"; // БОЛЬШЕ НЕ ИСПОЛЗУЕТСЯ
 
+
     String TO_MEMBER_TEXT_LENGTH = "TO_MEMBER_TEXT_LENGTH";
 
 

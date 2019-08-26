@@ -2,7 +2,7 @@ package com.pechenkin.travelmoney.bd;
 
 import com.pechenkin.travelmoney.bd.local.TripLocal;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
-import com.pechenkin.travelmoney.bd.local.table.TripsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableTrip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class TripManager {
 
     public Trip getActiveTrip() {
         if (activeTrip == null) {
-            TripTableRow activeTripRow = TripsTable.INSTANCE.getActiveTrip();
+            TripTableRow activeTripRow = TableTrip.INSTANCE.getActiveTrip();
 
             activeTrip = createTripByTripRow(activeTripRow);
         }
@@ -26,21 +26,21 @@ public class TripManager {
     }
 
     public Trip add(String name, String comment) {
-        long id = TripsTable.INSTANCE.add(name, comment);
-        TripTableRow tripRow = TripsTable.INSTANCE.getById(id);
+        long id = TableTrip.INSTANCE.add(name, comment);
+        TripTableRow tripRow = TableTrip.INSTANCE.getById(id);
         return createTripByTripRow(tripRow);
     }
 
     public void setActive(Trip trip) {
 
-        TripsTable.INSTANCE.set_active(trip.getId());
+        TableTrip.INSTANCE.set_active(trip.getId());
         activeTrip = trip;
 
     }
 
     public List<Trip> getAll() {
 
-        TripTableRow[] allTrips = TripsTable.INSTANCE.getAll();
+        TripTableRow[] allTrips = TableTrip.INSTANCE.getAll();
         List<Trip> result = new ArrayList<>(allTrips.length);
 
         for (TripTableRow row : allTrips) {

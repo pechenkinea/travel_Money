@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd.local.table;
+package com.pechenkin.travelmoney.bd.local.table.helper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,12 +7,15 @@ import android.graphics.Color;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.local.table.Namespace;
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.helper.migrate.Migrate;
 
 public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 20);
+        super(context, Namespace.DB_NAME, null, 21);
     }
 
     @Override
@@ -203,6 +206,9 @@ public class DBHelper extends SQLiteOpenHelper {
         //перевод на трпнзакции
         if (oldVersion < 20) {
             createTableTransaction(db);
+        }
+        if (oldVersion < 21) {
+            Migrate.costToTransaction(db);
         }
 
 

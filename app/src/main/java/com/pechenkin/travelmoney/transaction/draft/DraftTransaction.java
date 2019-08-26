@@ -12,6 +12,7 @@ import java.util.List;
 public class DraftTransaction implements Transaction {
 
     private String comment;
+    boolean isActive = true;
     private Date date = new Date();
     private String imageUrl = "";
     private boolean repayment = false;
@@ -145,12 +146,12 @@ public class DraftTransaction implements Transaction {
 
     @Override
     public boolean isActive() {
-        return true;
+        return isActive;
     }
 
     @Override
     public void setActive(boolean value) {
-
+        isActive = value;
     }
 
     @Override

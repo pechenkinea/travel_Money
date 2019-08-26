@@ -23,8 +23,8 @@ public class CostLocal extends IdTableRow {
     public final Date date;
     public final Member member;
     public final Member to_member;
-    public long active;
-    public long repayment;
+    public boolean active;
+    public boolean repayment;
 
     public final double sum;
 
@@ -39,8 +39,8 @@ public class CostLocal extends IdTableRow {
 
         this.member = TableMembers.INSTANCE.getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
         this.to_member = TableMembers.INSTANCE.getMemberById(getLongColumnValue(Namespace.FIELD_TO_MEMBER, c));
-        this.active = getLongColumnValue(Namespace.FIELD_ACTIVE, c);
-        this.repayment = getLongColumnValue(Namespace.FIELD_REPAYMENT, c);
+        this.active = getLongColumnValue(Namespace.FIELD_ACTIVE, c) == 1;
+        this.repayment = getLongColumnValue(Namespace.FIELD_REPAYMENT, c) == 1;
     }
 
 

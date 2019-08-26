@@ -9,10 +9,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.pechenkin.travelmoney.bd.local.table.DBHelper;
+import com.pechenkin.travelmoney.bd.local.table.helper.DBHelper;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.cost.add.AddCostsListPage;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterWhom;
 import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
