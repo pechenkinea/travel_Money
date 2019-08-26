@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pechenkin.travelmoney.bd.local.table.helper.DBHelper;
+import com.pechenkin.travelmoney.bd.local.table.helper.migrate.Migrate;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterWhom;
@@ -29,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         this.refreshActon = refreshActon;
     }
 
-    public void refresh(){
-        if (refreshActon != null){
+    public void refresh() {
+        if (refreshActon != null) {
             refreshActon.refresh();
         }
     }
@@ -51,7 +53,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getApplicationContext());
 
-        PageOpener.INSTANCE.open(MainPage.class);
+        Migrate.costToTransaction();
+
+        finish();
+
+        //PageOpener.INSTANCE.open(MainPage.class);
 
 
         /*CostCreator c = new CostCreator("Я за всех 100 магазин", "");
@@ -74,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        
+
         if (resultCode == RESULT_OK) {
 
             // если это результаты отправки на получение фото
@@ -133,8 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public interface RefreshActon{
+    public interface RefreshActon {
         void refresh();
     }
 }

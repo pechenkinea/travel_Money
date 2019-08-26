@@ -208,7 +208,7 @@ public class DBHelper extends SQLiteOpenHelper {
             createTableTransaction(db);
         }
         if (oldVersion < 21) {
-            Migrate.costToTransaction(db);
+            //Migrate.costToTransaction();
         }
 
 

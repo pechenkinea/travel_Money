@@ -1,31 +1,46 @@
 package com.pechenkin.travelmoney.bd.local.table.helper.migrate;
 
-import android.database.sqlite.SQLiteDatabase;
-
-import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.CostLocal;
-import com.pechenkin.travelmoney.bd.local.query.QueryResult;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 import com.pechenkin.travelmoney.bd.local.table.CostTable;
-import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 import com.pechenkin.travelmoney.bd.local.table.TableTrip;
-import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Migrate {
 
-    public static void costToTransaction(SQLiteDatabase db) {
+    public static void costToTransaction() {
 
         TripTableRow[] trips = TableTrip.INSTANCE.getAll();
         for (TripTableRow trip : trips) {
             CostLocal[] tripCosts = CostTable.INSTANCE.getAllByTripId(trip.id).getAllRows();
 
-            List<DraftTransaction> transaction = group(tripCosts);
+            StreamList<DraftTransaction> transaction = new StreamList<>(group(tripCosts));
+
+            transaction.ForEach(draftTransaction -> {
+
+                int credit = draftTransaction.getCreditItems().First().getCredit();
+
+                System.out.print(credit + " = ");
+
+                draftTransaction.getDebitItems().ForEach(transactionItem -> {
+                    System.out.print(transactionItem.getDebit() + " ");
+                });
+
+                System.out.println();
+                System.out.println("------");
+
+            });
+            System.out.println();
+            System.out.println("=============");
+
+
             //TODO Записывать в БД
 
         }
@@ -42,17 +57,31 @@ public class Migrate {
         StreamList<DraftTransaction> groupCostList = new StreamList<>(new ArrayList<>());
         String lastKey = "";
 
+        Map<String, Sumator> sumatorMap = new HashMap<>();
         for (CostLocal cost : costs) {
+
+            if (cost.sum == 0) {
+                continue;
+            }
 
             String key = cost.date.getTime() + cost.comment;
             if (!key.equals(lastKey)) {
-                if (groupCostList.size() > 0) {
-                    groupCostList.add(createDraftTransactionByCost(cost));
-                }
+
+                groupCostList.add(createDraftTransactionByCost(cost));
+                sumatorMap = new HashMap<>();
+
                 lastKey = key;
             }
 
-            DraftTransactionItem draftTransactionItem = new DraftTransactionItem(cost.member, (int) (cost.sum * 100), 0);
+            double s = (double) ((int) (cost.sum * 100_000)) / 100_000;
+            Sumator sumator = sumatorMap.get("" + s);
+            if (sumator == null) {
+
+                sumator = new Sumator(s);
+                sumatorMap.put("" + s, sumator);
+            }
+
+            DraftTransactionItem draftTransactionItem = new DraftTransactionItem(cost.member, sumator.getNext(), 0);
             groupCostList.Last().addDebitItem(draftTransactionItem);
             draftTransactionItem.setChange(true); // setChange надо обязательно после addDebitItem, что бы назначился листенер изменений и пересчитался кредит
 
@@ -83,12 +112,12 @@ public class Migrate {
         public Sumator(double sumOne) {
             this.sumOne = sumOne;
 
-            double allSum = sumOne;
-            while (allSum % 1 != 0) {
-                allSum = sumOne * ++minGroupCount;
+            double allSum = this.sumOne;
+            while (allSum % 1 !=0 && allSum % 1 < 0.99) {
+                allSum = this.sumOne * ++minGroupCount;
             }
 
-            addOneCountInGroup = ((int) allSum) - (((int) sumOne) * minGroupCount);
+            addOneCountInGroup = ((int) Math.round(allSum)) - (((int) this.sumOne) * minGroupCount);
         }
 
         public int getNext() {

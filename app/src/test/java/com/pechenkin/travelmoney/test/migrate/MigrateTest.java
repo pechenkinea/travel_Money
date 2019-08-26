@@ -15,6 +15,7 @@ public class MigrateTest {
         summatorTest(42,8);
         summatorTest(46,14);
         summatorTest(46,28);
+        summatorTest(568,3);
 
         summatorTest(153456,7);
 
