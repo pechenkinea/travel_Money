@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.transaction.processing.summary.Total;
 import com.pechenkin.travelmoney.diagram.impl.BarDiagram;
 import com.pechenkin.travelmoney.diagram.impl.DebitCreditDiagram;
@@ -24,7 +24,7 @@ public class DefaultDiagram {
     public static Diagram createDefaultDiagram(int sum, List<Total.MemberSum> total) {
 
         String defaultDiagramName = Objects.requireNonNull(TotalItemDiagram.class.getAnnotation(DiagramName.class)).name();
-        defaultDiagramName = SettingsTable.INSTANCE.get(NamespaceSettings.LIKE_DIAGRAM_NAME, defaultDiagramName);
+        defaultDiagramName = TableSettings.INSTANCE.get(NamespaceSettings.LIKE_DIAGRAM_NAME, defaultDiagramName);
 
         Class<? extends Diagram> dClass = getDiagramClassByName(defaultDiagramName);
         if (dClass != null) {

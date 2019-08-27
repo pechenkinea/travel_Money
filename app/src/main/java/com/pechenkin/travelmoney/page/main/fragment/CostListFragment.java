@@ -13,7 +13,7 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.transaction.adapter.AdapterCostList;
 import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -142,10 +142,10 @@ public class CostListFragment extends BaseMainPageFragment {
             AdapterCostList adapter = new AdapterCostList(MainActivity.INSTANCE.getApplicationContext(), finalList);
             listViewCosts.setAdapter(adapter);
 
-            if (adapter.getCount() > 5 && !SettingsTable.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)) {
+            if (adapter.getCount() > 5 && !TableSettings.INSTANCE.active(NamespaceSettings.DELETE_COST_SHOWED_HELP)) {
                 Help.alertHelp(MainActivity.INSTANCE.getString(R.string.deleteCostHelp));
 
-                SettingsTable.INSTANCE.setActive(NamespaceSettings.DELETE_COST_SHOWED_HELP, true);
+                TableSettings.INSTANCE.setActive(NamespaceSettings.DELETE_COST_SHOWED_HELP, true);
             }
 
         });

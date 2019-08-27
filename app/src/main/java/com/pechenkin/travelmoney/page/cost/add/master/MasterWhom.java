@@ -6,6 +6,7 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pechenkin.travelmoney.list.TransactionList;
+import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
 import com.pechenkin.travelmoney.transaction.draft.ValidateException;
@@ -91,7 +92,7 @@ public class MasterWhom extends ListPage {
 
 
         this.list = MainActivity.INSTANCE.findViewById(getListViewId());
-        this.adapter = new TransactionList(MainActivity.INSTANCE, getParam().getDraftTransaction());
+        this.adapter = new TransactionList(MainActivity.INSTANCE, getParam().getDraftTransaction(), list);
         this.list.setAdapter(adapter);
 
         MainActivity.INSTANCE.findViewById(R.id.member_checkAll_button).setVisibility(View.VISIBLE);
@@ -126,7 +127,28 @@ public class MasterWhom extends ListPage {
 
         member_checkAll_button.setOnClickListener(v -> {
 
-            Help.alert("не реализовано");
+            DraftTransaction draftTransaction = getParam().getDraftTransaction();
+            StreamList<TransactionItem> selectDebit = draftTransaction.getDebitItems().Filter(
+                    transactionItem -> transactionItem.getDebit() > 0 || !((DraftTransactionItem)transactionItem).isChange()
+            );
+
+            if (selectDebit.size() == 0){
+                draftTransaction.getDebitItems().ForEach(transactionItem -> ((DraftTransactionItem)transactionItem).setChange(false));
+
+            } else if (selectDebit.size() == draftTransaction.getDebitItems().size()){
+                draftTransaction.getDebitItems().ForEach(transactionItem -> ((DraftTransactionItem)transactionItem).setDebit(0));
+
+            } else {
+
+                draftTransaction.getDebitItems().ForEach(transactionItem -> {
+                    if (transactionItem.getDebit() == 0) {
+                        ((DraftTransactionItem) transactionItem).setChange(false);
+                    }
+                });
+            }
+
+            list.invalidateViews();
+
 
         });
 

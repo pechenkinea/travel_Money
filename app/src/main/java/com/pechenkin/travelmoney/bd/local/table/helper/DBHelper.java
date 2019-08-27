@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 21);
+        super(context, Namespace.DB_NAME, null, 23);
     }
 
     @Override
@@ -207,8 +207,8 @@ public class DBHelper extends SQLiteOpenHelper {
         if (oldVersion < 20) {
             createTableTransaction(db);
         }
-        if (oldVersion < 21) {
-            //Migrate.costToTransaction();
+        if (oldVersion < 23) {
+            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MIGRATION_COMPLETE + "', '0');");
         }
 
 

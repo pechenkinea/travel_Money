@@ -8,7 +8,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.adapter.AdapterCostList;
 import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
@@ -83,7 +83,7 @@ public class DiagramsListPage extends ListPage {
 
                             DiagramName diagramName = diagram.getClass().getAnnotation(DiagramName.class);
                             if (diagramName != null) {
-                                SettingsTable.INSTANCE.set(NamespaceSettings.LIKE_DIAGRAM_NAME, diagramName.name());
+                                TableSettings.INSTANCE.set(NamespaceSettings.LIKE_DIAGRAM_NAME, diagramName.name());
                                 Help.message("Успешно");
                             } else {
                                 Help.message("Ошибка");

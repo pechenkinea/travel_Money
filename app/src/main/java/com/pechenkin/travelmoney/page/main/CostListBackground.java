@@ -9,7 +9,7 @@ import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
 import com.pechenkin.travelmoney.transaction.list.LabelItem;
@@ -63,7 +63,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
             if (costList.size() > 0) {
 
-                Calculation calc = new Calculation(SettingsTable.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
+                Calculation calc = new Calculation(TableSettings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
                 Total total = new Total();
                 AllSum allSumIteration = new AllSum();
 

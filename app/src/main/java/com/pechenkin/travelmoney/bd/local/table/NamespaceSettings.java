@@ -28,6 +28,8 @@ public interface NamespaceSettings {
 
     String TO_MEMBER_TEXT_LENGTH = "TO_MEMBER_TEXT_LENGTH";
 
+    String MIGRATION_COMPLETE = "MIGRATION_COMPLETE";
+
 
 
     String LIKE_DIAGRAM_NAME = "LIKE_DIAGRAM_NAME";

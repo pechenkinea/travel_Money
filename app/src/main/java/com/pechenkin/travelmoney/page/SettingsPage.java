@@ -8,7 +8,7 @@ import android.widget.EditText;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.page.main.MainPage;
 
 /**
@@ -28,7 +28,7 @@ public class SettingsPage extends BasePage {
     public void addEvents() {
 
         CheckBox group_by_color = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_by_color);
-        group_by_color.setOnCheckedChangeListener((buttonView, isChecked) -> SettingsTable.INSTANCE.setActive(NamespaceSettings.GROUP_BY_COLOR, isChecked));
+        group_by_color.setOnCheckedChangeListener((buttonView, isChecked) -> TableSettings.INSTANCE.setActive(NamespaceSettings.GROUP_BY_COLOR, isChecked));
 
 
         final EditText to_member_text_length = MainActivity.INSTANCE.findViewById(R.id.to_member_text_length);
@@ -42,7 +42,7 @@ public class SettingsPage extends BasePage {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String length = to_member_text_length.getText().toString();
-                SettingsTable.INSTANCE.set(NamespaceSettings.TO_MEMBER_TEXT_LENGTH, length);
+                TableSettings.INSTANCE.set(NamespaceSettings.TO_MEMBER_TEXT_LENGTH, length);
             }
 
             @Override
@@ -68,10 +68,10 @@ public class SettingsPage extends BasePage {
     protected boolean fillFields() {
 
         CheckBox group_by_color = MainActivity.INSTANCE.findViewById(R.id.checkBox_group_by_color);
-        group_by_color.setChecked(SettingsTable.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
+        group_by_color.setChecked(TableSettings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
 
         EditText to_member_text_length = MainActivity.INSTANCE.findViewById(R.id.to_member_text_length);
-        to_member_text_length.setText(SettingsTable.INSTANCE.get(NamespaceSettings.TO_MEMBER_TEXT_LENGTH));
+        to_member_text_length.setText(TableSettings.INSTANCE.get(NamespaceSettings.TO_MEMBER_TEXT_LENGTH));
 
         return true;
     }

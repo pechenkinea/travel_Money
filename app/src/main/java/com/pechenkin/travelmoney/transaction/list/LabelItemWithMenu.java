@@ -11,7 +11,7 @@ import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.transaction.adapter.ListItemSummaryViewHolder;
 
 /**
@@ -36,7 +36,7 @@ public class LabelItemWithMenu extends LabelItem {
 
         holder.getMiniMenu().setOnClickListener(view -> {
 
-            boolean currentCheckValue = SettingsTable.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR);
+            boolean currentCheckValue = TableSettings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR);
 
             final CheckBox input = new CheckBox(MainActivity.INSTANCE);
 
@@ -65,12 +65,12 @@ public class LabelItemWithMenu extends LabelItem {
             }
 
 
-            input.setOnCheckedChangeListener((compoundButton, checked) -> SettingsTable.INSTANCE.setActive(NamespaceSettings.GROUP_BY_COLOR, checked));
+            input.setOnCheckedChangeListener((compoundButton, checked) -> TableSettings.INSTANCE.setActive(NamespaceSettings.GROUP_BY_COLOR, checked));
 
             alert.setCanceledOnTouchOutside(true);
             alert.setOnCancelListener(dialogInterface -> {
 
-                if (currentCheckValue != SettingsTable.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)){
+                if (currentCheckValue != TableSettings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)){
                     MainActivity.INSTANCE.refresh();
                 }
 

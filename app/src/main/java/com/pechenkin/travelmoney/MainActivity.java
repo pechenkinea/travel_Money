@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.bd.local.table.helper.DBHelper;
 import com.pechenkin.travelmoney.bd.local.table.helper.migrate.Migrate;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -53,11 +55,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getApplicationContext());
 
-        Migrate.costToTransaction();
+        if (!TableSettings.INSTANCE.active(NamespaceSettings.MIGRATION_COMPLETE)){
+            Migrate.costToTransaction();
+            TableSettings.INSTANCE.setActive(NamespaceSettings.MIGRATION_COMPLETE, true);
+        }
 
-        finish();
-
-        //PageOpener.INSTANCE.open(MainPage.class);
+        PageOpener.INSTANCE.open(MainPage.class);
 
 
         /*CostCreator c = new CostCreator("Я за всех 100 магазин", "");

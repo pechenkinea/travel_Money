@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.bd.local.table.helper.migrate;
 
 import com.pechenkin.travelmoney.bd.local.CostLocal;
+import com.pechenkin.travelmoney.bd.local.TripLocal;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 import com.pechenkin.travelmoney.bd.local.table.CostTable;
 import com.pechenkin.travelmoney.bd.local.table.TableTrip;
@@ -23,26 +24,9 @@ public class Migrate {
 
             StreamList<DraftTransaction> transaction = new StreamList<>(group(tripCosts));
 
-            transaction.ForEach(draftTransaction -> {
+            TripLocal tripLocal = new TripLocal(trip);
 
-                int credit = draftTransaction.getCreditItems().First().getCredit();
-
-                System.out.print(credit + " = ");
-
-                draftTransaction.getDebitItems().ForEach(transactionItem -> {
-                    System.out.print(transactionItem.getDebit() + " ");
-                });
-
-                System.out.println();
-                System.out.println("------");
-
-            });
-            System.out.println();
-            System.out.println("=============");
-
-
-            //TODO Записывать в БД
-
+            transaction.ForEach(tripLocal::addTransaction);
         }
 
     }
@@ -53,7 +37,7 @@ public class Migrate {
      *
      * @param costs отсортированный по дате массив трат
      */
-    public static List<DraftTransaction> group(CostLocal[] costs) {
+    private static List<DraftTransaction> group(CostLocal[] costs) {
         StreamList<DraftTransaction> groupCostList = new StreamList<>(new ArrayList<>());
         String lastKey = "";
 
@@ -73,7 +57,8 @@ public class Migrate {
                 lastKey = key;
             }
 
-            double s = (double) ((int) (cost.sum * 100_000)) / 100_000;
+            //перевод в копейки и округление
+            double s = (double) ((long) (cost.sum * 100 * 100_000)) / 100_000;
             Sumator sumator = sumatorMap.get("" + s);
             if (sumator == null) {
 
@@ -81,14 +66,13 @@ public class Migrate {
                 sumatorMap.put("" + s, sumator);
             }
 
-            DraftTransactionItem draftTransactionItem = new DraftTransactionItem(cost.member, sumator.getNext(), 0);
+            DraftTransactionItem draftTransactionItem = new DraftTransactionItem(cost.to_member, sumator.getNext(), 0);
             groupCostList.Last().addDebitItem(draftTransactionItem);
             draftTransactionItem.setChange(true); // setChange надо обязательно после addDebitItem, что бы назначился листенер изменений и пересчитался кредит
 
         }
         return groupCostList;
     }
-
 
     private static DraftTransaction createDraftTransactionByCost(CostLocal cost) {
         DraftTransaction result = new DraftTransaction()
@@ -113,7 +97,7 @@ public class Migrate {
             this.sumOne = sumOne;
 
             double allSum = this.sumOne;
-            while (allSum % 1 !=0 && allSum % 1 < 0.99) {
+            while (allSum % 1 != 0 && allSum % 1 < 0.99 && minGroupCount < 100) {
                 allSum = this.sumOne * ++minGroupCount;
             }
 

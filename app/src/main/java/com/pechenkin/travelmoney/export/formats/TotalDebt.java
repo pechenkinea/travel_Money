@@ -6,7 +6,7 @@ import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.list.TotalItem;
 import com.pechenkin.travelmoney.transaction.processing.CostIterable;
@@ -29,7 +29,7 @@ public class TotalDebt implements ExportFormat {
         StringBuilder result = new StringBuilder();
 
 
-        Calculation calc = new Calculation(SettingsTable.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
+        Calculation calc = new Calculation(TableSettings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR));
         Total total = new Total();
         AllSum allSumIteration = new AllSum();
 

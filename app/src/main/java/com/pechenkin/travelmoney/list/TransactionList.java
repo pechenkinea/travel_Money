@@ -22,18 +22,24 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.dialog.EditSumDialog;
+import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
 import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.utils.MemberIcons;
+import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 public class TransactionList extends BaseAdapter {
 
-    private final DraftTransaction draftTransaction;
     private static LayoutInflater inflater = null;
 
-    public TransactionList(Activity a, DraftTransaction draftTransaction) {
+    private final DraftTransaction draftTransaction;
+    private final ListView list;
+
+    public TransactionList(Activity a, DraftTransaction draftTransaction, ListView list) {
         this.draftTransaction = draftTransaction;
+        this.list = list;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -75,6 +81,16 @@ public class TransactionList extends BaseAdapter {
         if (draftTransactionItem == null) {
             holder.onlySum();
             holder.memberSumText.setText(Help.kopToTextRub(this.draftTransaction.getSum()));
+
+            StreamList<TransactionItem> noChangeItems = this.draftTransaction.getDebitItems().Filter(transactionItem -> !((DraftTransactionItem) transactionItem).isChange());
+
+            if (noChangeItems.size() > 0) {
+                holder.editButton.setVisibility(View.VISIBLE);
+                holder.editButton.setOnClickListener(view -> new EditSumDialog(this.draftTransaction.getSum(), sum -> {
+                    ((DraftTransactionItem) this.draftTransaction.getCreditItems().First()).setCredit(sum);
+                    this.list.invalidateViews();
+                }));
+            }
             return convertView;
         }
 
@@ -82,58 +98,11 @@ public class TransactionList extends BaseAdapter {
 
 
         View.OnClickListener editClickListener = v -> {
-            final ListView listView;
-            try {
-                listView = (ListView) v.getParent().getParent();
-            } catch (Exception ex) {
-                Help.alert(ex.getMessage());
-                return;
-            }
 
-            final EditText input = new EditText(MainActivity.INSTANCE);
-            input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            input.setText(Help.kopToTextRub(draftTransactionItem.getDebit()));
-
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            input.setLayoutParams(lp);
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
-            builder.setTitle("")
-                    .setCancelable(false)
-                    .setPositiveButton("Ок", (dialog, which) -> {
-                        //((TextView) v).setText(input.getText());
-                        draftTransactionItem.setDebit(Help.textRubToIntKop(String.valueOf(input.getText())));
-                        dialog.cancel();
-                        listView.invalidateViews();
-                    })
-                    .setNegativeButton("Отмена",
-                            (dialog, id) -> dialog.cancel())
-                    .setNeutralButton("По умолчанию", (dialog, which) -> {
-                        draftTransactionItem.setChange(false);
-                        dialog.cancel();
-                        listView.invalidateViews();
-                    });
-
-
-            final AlertDialog alert = builder.create();
-            alert.setView(input);
-            if (alert.getWindow() != null)
-                alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-            input.setOnEditorActionListener((v1, actionId, event) -> {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    draftTransactionItem.setDebit(Help.textRubToIntKop(String.valueOf(input.getText())));
-                    alert.cancel();
-                    listView.invalidateViews();
-                    return true;
-                }
-                return false;
+            new EditSumDialog(draftTransactionItem.getDebit(), sum -> {
+                draftTransactionItem.setDebit(sum);
+                this.list.invalidateViews();
             });
-
-            alert.show();
-
-            Help.setActiveEditText(input, true);
 
         };
 

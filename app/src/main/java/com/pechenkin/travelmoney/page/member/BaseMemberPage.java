@@ -19,7 +19,7 @@ import com.pechenkin.travelmoney.utils.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.SettingsTable;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.dialog.ColorDialog;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -156,7 +156,7 @@ abstract class BaseMemberPage extends BasePage {
     @Override
     protected boolean fillFields() {
 
-        if (!SettingsTable.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)) {
+        if (!TableSettings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)) {
             MainActivity.INSTANCE.findViewById(R.id.colorHelpMessage).setVisibility(View.VISIBLE);
         }
 
