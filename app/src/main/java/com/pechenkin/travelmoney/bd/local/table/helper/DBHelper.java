@@ -9,7 +9,6 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
-import com.pechenkin.travelmoney.bd.local.table.helper.migrate.Migrate;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -115,10 +114,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Namespace.FIELD_VALUE + " text not null"
                 + ");");
 
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MAIN_PAGE_HELP_ADD_COST_BUTTON + "', '1');");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MAIN_PAGE_HELP_ADD_MEMBERS + "', '1');");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MEMBERS_LIST_HELP + "', '1');");
-        db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.TRIPS_LIST_HELP + "', '1');");
 
     }
 

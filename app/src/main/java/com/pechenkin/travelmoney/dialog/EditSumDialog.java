@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.dialog;
 
 import android.app.AlertDialog;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.utils.DecimalDigitsInputFilter;
 import com.pechenkin.travelmoney.utils.Help;
 
 public class EditSumDialog {
@@ -19,6 +21,8 @@ public class EditSumDialog {
         final EditText input = new EditText(MainActivity.INSTANCE);
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         input.setText(Help.kopToTextRub(sum));
+
+        input.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -31,7 +35,10 @@ public class EditSumDialog {
                 .setPositiveButton("Ок", (dialog, which) -> {
                     positiveButtonSelect.select(Help.textRubToIntKop(String.valueOf(input.getText())));
                     dialog.cancel();
-                });
+                })
+                .setNegativeButton("Отмена", (dialogInterface, i) ->
+                        dialogInterface.cancel()
+                );
 
 
         final AlertDialog alert = builder.create();

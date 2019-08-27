@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DraftTransaction implements Transaction {
 
-    private String comment;
+    private String comment = "";
     boolean isActive = true;
     private Date date = new Date();
     private String imageUrl = "";
@@ -19,7 +19,17 @@ public class DraftTransaction implements Transaction {
     private StreamList<TransactionItem> creditItems = new StreamList<>(new ArrayList<>());
     private StreamList<TransactionItem> debitItems = new StreamList<>(new ArrayList<>());
 
+    private DraftUpdateListener draftUpdateListener = null;
+
+    public void setDraftUpdateListener(DraftUpdateListener draftUpdateListener) {
+        this.draftUpdateListener = draftUpdateListener;
+    }
+
     public void validate() throws ValidateException {
+
+        if (getSum() == 0) {
+            throw new ValidateException("Введите сумму");
+        }
 
         int[] debitSum = new int[]{0};
         getDebitItems().ForEach(transactionItem -> debitSum[0] += transactionItem.getDebit());
@@ -44,12 +54,6 @@ public class DraftTransaction implements Transaction {
      * Уравнивает дебеты и кредиты
      */
     public void updateSum() {
-
-
-        if (getDebitItems().size() == 0) { //На момент, пока внесен только кредит пересчет не нужен
-            return;
-        }
-
         final int[] creditSum = new int[]{0};
 
         getCreditItems().ForEach(transactionItem -> {
@@ -92,6 +96,19 @@ public class DraftTransaction implements Transaction {
                 creditItem.addCredit(creditSum[0] * -1);
             }
         }
+    }
+
+    public void update() {
+
+        updateSum();
+        if (getDebitItems().size() == 0) { //На момент, пока внесен только кредит пересчет не нужен
+            return;
+        }
+
+
+        if (draftUpdateListener != null) {
+            draftUpdateListener.update();
+        }
 
 
     }
@@ -101,15 +118,16 @@ public class DraftTransaction implements Transaction {
             throw new IllegalArgumentException("Нельзя в кредит добавлять дебетовые элементы");
 
         creditItems.add(transactionItem);
-        transactionItem.setUpdateListener(this::updateSum);
+        transactionItem.setUpdateListener(this::update);
         return this;
     }
+
     public DraftTransaction addDebitItem(DraftTransactionItem transactionItem) {
         if (transactionItem.getCredit() > 0)
             throw new IllegalArgumentException("Нельзя в дебет добавлять кредитовые элементы");
 
         debitItems.add(transactionItem);
-        transactionItem.setUpdateListener(this::updateSum);
+        transactionItem.setUpdateListener(this::update);
         return this;
     }
 

@@ -88,7 +88,7 @@ public class MasterWho extends ListPage {
         }
 
 
-        PageOpener.INSTANCE.open(MasterCostInfo.class, getParam());
+        PageOpener.INSTANCE.open(MasterWhom.class, getParam());
     }
 
 

@@ -3,15 +3,19 @@ package com.pechenkin.travelmoney.page.main;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
-import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
-import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.TableSettings;
+import com.pechenkin.travelmoney.diagram.DefaultDiagram;
+import com.pechenkin.travelmoney.diagram.Diagram;
+import com.pechenkin.travelmoney.page.PageOpener;
+import com.pechenkin.travelmoney.page.PageParam;
+import com.pechenkin.travelmoney.page.cost.add.master.MasterWhom;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
 import com.pechenkin.travelmoney.transaction.list.LabelItem;
 import com.pechenkin.travelmoney.transaction.list.LabelItemWithMenu;
 import com.pechenkin.travelmoney.transaction.list.TotalItem;
@@ -21,11 +25,7 @@ import com.pechenkin.travelmoney.transaction.processing.ProcessIterate;
 import com.pechenkin.travelmoney.transaction.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.transaction.processing.summary.AllSum;
 import com.pechenkin.travelmoney.transaction.processing.summary.Total;
-import com.pechenkin.travelmoney.diagram.DefaultDiagram;
-import com.pechenkin.travelmoney.diagram.Diagram;
-import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.cost.add.master.MasterCostInfo;
+import com.pechenkin.travelmoney.utils.Help;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +83,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                                 .addCreditItem(new DraftTransactionItem(itemId, 0, 0));
 
                         PageParam param = new PageParam().setDraftTransaction(draftTransaction).setBackPage(MainPage.class);
-                        PageOpener.INSTANCE.open(MasterCostInfo.class, param);
+                        PageOpener.INSTANCE.open(MasterWhom.class, param);
 
                     });
                 }

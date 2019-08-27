@@ -103,53 +103,6 @@ public class MasterCostInfo extends BasePage {
 
     @Override
     public void addEvents() {
-        FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.cost_info_commit_button);
-        commitButton.setOnClickListener(v -> commitForm());
-
-        //Завершение работы с описанием
-        TextInputEditText commentText = MainActivity.INSTANCE.findViewById(R.id.cost_comment);
-        commentText.setOnEditorActionListener((v, actionId, event) -> {
-
-            if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                Help.setActiveEditText(R.id.cost_sum, true);
-                return true;
-            }
-            return false;
-        });
-
-        //Кнопка "готово" на сумме
-        final TextInputEditText cost_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
-        cost_sum.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                commitForm();
-                return true;
-            }
-            return false;
-        });
-
-
-        cost_sum.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String sum = getTextInputEditText(cost_sum);
-                if (Help.StringToDouble(sum) > TMConst.ERROR_SUM) {
-                    cost_sum.setText(String.valueOf(TMConst.ERROR_SUM));
-                    cost_sum.setSelection(getTextInputEditText(cost_sum).length());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
 
         //Кнопка для фотографии
         FloatingActionButton photoButton = MainActivity.INSTANCE.findViewById(R.id.buttonPhoto);

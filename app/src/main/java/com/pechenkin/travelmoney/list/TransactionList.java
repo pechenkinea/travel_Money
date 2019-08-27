@@ -44,9 +44,8 @@ public class TransactionList extends BaseAdapter {
     }
 
 
-    // +1 т.к. есть строка итогов
     public int getCount() {
-        return this.draftTransaction.getDebitItems().size() + 1;
+        return this.draftTransaction.getDebitItems().size();
     }
 
 
@@ -79,32 +78,17 @@ public class TransactionList extends BaseAdapter {
         DraftTransactionItem draftTransactionItem = getItem(position);
 
         if (draftTransactionItem == null) {
-            holder.onlySum();
-            holder.memberSumText.setText(Help.kopToTextRub(this.draftTransaction.getSum()));
-
-            StreamList<TransactionItem> noChangeItems = this.draftTransaction.getDebitItems().Filter(transactionItem -> !((DraftTransactionItem) transactionItem).isChange());
-
-            if (noChangeItems.size() > 0) {
-                holder.editButton.setVisibility(View.VISIBLE);
-                holder.editButton.setOnClickListener(view -> new EditSumDialog(this.draftTransaction.getSum(), sum -> {
-                    ((DraftTransactionItem) this.draftTransaction.getCreditItems().First()).setCredit(sum);
-                    this.list.invalidateViews();
-                }));
-            }
             return convertView;
         }
 
         holder.toDefault();
 
 
-        View.OnClickListener editClickListener = v -> {
-
-            new EditSumDialog(draftTransactionItem.getDebit(), sum -> {
-                draftTransactionItem.setDebit(sum);
-                this.list.invalidateViews();
-            });
-
-        };
+        View.OnClickListener editClickListener = v ->
+                new EditSumDialog(draftTransactionItem.getDebit(), sum -> {
+                    draftTransactionItem.setDebit(sum);
+                    this.list.invalidateViews();
+                });
 
         holder.memberSumText.setOnClickListener(editClickListener);
         holder.editButton.setOnClickListener(editClickListener);
@@ -162,15 +146,6 @@ public class TransactionList extends BaseAdapter {
             this.icon.setVisibility(View.VISIBLE);
             this.memberSumText.setVisibility(View.INVISIBLE);
         }
-
-        void onlySum() {
-            this.name.setVisibility(View.INVISIBLE);
-            this.check.setVisibility(View.INVISIBLE);
-            this.editButton.setVisibility(View.INVISIBLE);
-            this.icon.setVisibility(View.INVISIBLE);
-            this.memberSumText.setVisibility(View.VISIBLE);
-        }
-
 
     }
 }
