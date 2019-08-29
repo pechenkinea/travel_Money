@@ -95,8 +95,8 @@ public class TripDecorator implements Trip {
     }
 
     @Override
-    public void addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
-        this.trip.addTransaction(draftTransaction);
+    public Transaction addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
+        return this.trip.addTransaction(draftTransaction);
     }
 
 

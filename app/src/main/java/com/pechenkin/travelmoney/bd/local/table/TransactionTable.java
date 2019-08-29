@@ -20,8 +20,9 @@ public class TransactionTable {
 
     }
 
-    public static void addTransaction(long tripId, DraftTransaction draftTransaction) {
+    public Transaction addTransaction(long tripId, DraftTransaction draftTransaction) {
 
+        long transactionId;
 
         ContentValues transaction = new ContentValues();
         transaction.put(Namespace.FIELD_COMMENT, draftTransaction.getComment());
@@ -37,7 +38,7 @@ public class TransactionTable {
             db.beginTransaction();
 
             try {
-                long transactionId = db.insert(Namespace.TABLE_TRANSACTION, null, transaction);
+                transactionId = db.insert(Namespace.TABLE_TRANSACTION, null, transaction);
 
                 StreamList.ForEach<TransactionItem> transactionItemForEach = transactionItem -> {
 
@@ -62,7 +63,16 @@ public class TransactionTable {
 
         }
 
+        return getTransactionById(transactionId);
 
+
+    }
+
+    private Transaction getTransactionById(long transactionId) {
+        String sql = "SELECT * FROM " + Namespace.TABLE_TRANSACTION +
+                " WHERE " + Namespace.FIELD_ID + " = '" + transactionId + "';";
+
+        return new QueryResult<>(sql, LocalTransaction.class).getFirstRow();
     }
 
     public Transaction[] getTransactionsByTrip(long tripId) {

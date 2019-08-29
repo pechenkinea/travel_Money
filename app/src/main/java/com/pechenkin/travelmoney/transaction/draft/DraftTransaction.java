@@ -12,7 +12,7 @@ import java.util.List;
 public class DraftTransaction implements Transaction {
 
     private String comment = "";
-    boolean isActive = true;
+    private boolean isActive = true;
     private Date date = new Date();
     private String imageUrl = "";
     private boolean repayment = false;

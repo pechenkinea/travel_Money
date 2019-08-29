@@ -103,8 +103,8 @@ public class TripLocal implements Trip {
     }
 
     @Override
-    public void addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
-        TransactionTable.addTransaction(this.id, draftTransaction);
+    public Transaction addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
+        return TransactionTable.INSTANCE.addTransaction(this.id, draftTransaction);
     }
 
     @Override

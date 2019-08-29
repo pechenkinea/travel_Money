@@ -44,6 +44,6 @@ public interface Trip {
 
     List<Transaction> getTransactions();
 
-    void addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException;
+    Transaction addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException;
 
 }
