@@ -1,10 +1,13 @@
 package com.pechenkin.travelmoney.page.cost.add.master;
 
+import android.graphics.Color;
 import android.text.InputFilter;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -12,6 +15,7 @@ import com.pechenkin.travelmoney.list.TransactionList;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
+import com.pechenkin.travelmoney.transaction.draft.DraftUpdateListener;
 import com.pechenkin.travelmoney.transaction.draft.ValidateException;
 import com.pechenkin.travelmoney.utils.AfterTextWatcher;
 import com.pechenkin.travelmoney.utils.DecimalDigitsInputFilter;
@@ -187,9 +191,28 @@ public class MasterWhom extends ListPage {
         });
 
         cost_sum.addTextChangedListener(new AfterTextWatcher(editable -> {
+            DraftUpdateListener updateListener = getParam().getDraftTransaction().getDraftUpdateListener();
+
+            getParam().getDraftTransaction().setDraftUpdateListener(null);
+
             int sum = Help.textRubToIntKop(editable.toString());
+
+            int[] changeSum = new int[]{0};
+            getParam().getDraftTransaction().getDebitItems()
+                    .Filter(t -> ((DraftTransactionItem) t).isChange())
+                    .ForEach(t -> changeSum[0] += t.getDebit());
+
+            if (changeSum[0] > sum) {
+                cost_sum.setTextColor(Color.RED);
+            }
+            else {
+                cost_sum.setTextColor(Color.BLACK);
+            }
+
             ((DraftTransactionItem) getParam().getDraftTransaction().getCreditItems().First()).setCredit(sum);
             this.list.invalidateViews();
+
+            getParam().getDraftTransaction().setDraftUpdateListener(updateListener);
         }));
 
         getParam().getDraftTransaction().setDraftUpdateListener(() -> {
@@ -206,7 +229,7 @@ public class MasterWhom extends ListPage {
 
 
         //Кнопка для фотографии
-        FloatingActionButton photoButton = MainActivity.INSTANCE.findViewById(R.id.buttonPhoto);
+        AppCompatImageView photoButton = MainActivity.INSTANCE.findViewById(R.id.buttonPhoto);
         photoButton.setOnClickListener(view -> {
             Help.alert("Не реализовано");
         });

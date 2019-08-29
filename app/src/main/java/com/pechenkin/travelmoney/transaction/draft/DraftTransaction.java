@@ -25,10 +25,17 @@ public class DraftTransaction implements Transaction {
         this.draftUpdateListener = draftUpdateListener;
     }
 
+    public DraftUpdateListener getDraftUpdateListener() {
+        return draftUpdateListener;
+    }
+
     public void validate() throws ValidateException {
 
         if (getSum() == 0) {
             throw new ValidateException("Введите сумму");
+        }
+        if (getComment().length() == 0) {
+            throw new ValidateException("Введите комментарий");
         }
 
         int[] debitSum = new int[]{0};

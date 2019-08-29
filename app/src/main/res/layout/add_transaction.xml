@@ -46,24 +46,43 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/cost_sum"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/Sum"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberDecimal"
-                    tools:text="234.56" />
+                    android:layout_weight="5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/cost_sum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/Sum"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        tools:text="234.56" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/buttonPhoto"
+                    style="@style/listImageButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_button_background"
+                    android:padding="12dp"
+                    app:srcCompat="@drawable/ic_camera_24" />
+
+            </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/hasPhoto"
@@ -107,10 +126,6 @@
             app:srcCompat="@drawable/ic_list_24dp" />
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/buttonPhoto"
-            style="@style/thirdFab"
-            app:srcCompat="@drawable/ic_camera_24" />
 
     </FrameLayout>
 
