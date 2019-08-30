@@ -53,7 +53,7 @@ class CostCreator {
                         cv.put(Namespace.FIELD_SUM, String.valueOf(new Random().nextInt(300)));
                         cv.put(Namespace.FIELD_IMAGE_DIR, "");
                         cv.put(Namespace.FIELD_ACTIVE, 1);
-                        cv.put(Namespace.FIELD_TRIP, TripManager.INSTANCE.getActiveTrip().getId());
+                        cv.put(Namespace.FIELD_TRIP, TripManager.INSTANCE.getActiveTrip().getUUID());
                         cv.put(Namespace.FIELD_DATE, dateStr);
                         cv.put(Namespace.FIELD_REPAYMENT, 0);
 

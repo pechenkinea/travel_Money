@@ -3,6 +3,7 @@ package com.pechenkin.travelmoney.bd.local;
 import android.database.Cursor;
 
 import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
@@ -14,8 +15,7 @@ import java.util.Date;
  * Created by pechenkin on 04.04.2018.
  * Трата из локальной БД
  */
-
-//TODO пока надо оставить, может через эти объекты будет миграция данных в новую структуру
+@Deprecated
 public class CostLocal extends IdTableRow {
 
     public final String comment;
@@ -37,8 +37,9 @@ public class CostLocal extends IdTableRow {
         this.image_dir = getStringColumnValue(Namespace.FIELD_IMAGE_DIR, c);
         this.date = getDateColumnValue(Namespace.FIELD_DATE, c);
 
-        this.member = TableMembers.INSTANCE.getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
-        this.to_member = TableMembers.INSTANCE.getMemberById(getLongColumnValue(Namespace.FIELD_TO_MEMBER, c));
+        this.member = TripManager.INSTANCE.getActiveTrip().getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
+        this.to_member = TripManager.INSTANCE.getActiveTrip().getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
+
         this.active = getLongColumnValue(Namespace.FIELD_ACTIVE, c) == 1;
         this.repayment = getLongColumnValue(Namespace.FIELD_REPAYMENT, c) == 1;
     }

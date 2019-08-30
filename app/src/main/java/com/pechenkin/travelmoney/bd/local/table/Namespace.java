@@ -20,6 +20,7 @@ public interface Namespace {
     String TABLE_COLORS = "colors";
 
     String FIELD_ID = "_id";
+    String FIELD_UUID = "uuid";
     String FIELD_NAME = "name";
     String FIELD_COLOR = "color";
     String FIELD_ICON = "icon";

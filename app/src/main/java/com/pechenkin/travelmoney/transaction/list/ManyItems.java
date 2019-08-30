@@ -7,17 +7,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.utils.MemberIcons;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
+import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.adapter.ListItemSummaryViewHolder;
+import com.pechenkin.travelmoney.utils.Help;
+import com.pechenkin.travelmoney.utils.MemberIcons;
 
 public class ManyItems extends TransactionListItem {
 
+    private static int to_member_text_length;
+
+    static {
+        to_member_text_length = Integer.parseInt(TableSettings.INSTANCE.get(NamespaceSettings.TO_MEMBER_TEXT_LENGTH));
+        if (to_member_text_length < 4) {
+            to_member_text_length = 4;
+        }
+    }
 
     ManyItems(Transaction transaction) {
         super(transaction);
@@ -34,8 +44,7 @@ public class ManyItems extends TransactionListItem {
 
         Member member = this.transaction.getCreditItems().First().getMember();
 
-        String dateText = "";
-        dateText = Help.dateToDateTimeStr(this.transaction.getDate());
+        String dateText = Help.dateToDateTimeStr(this.transaction.getDate());
         String comment = dateText + "  " + this.transaction.getComment();
         holder.setComment(comment);
 
@@ -59,8 +68,11 @@ public class ManyItems extends TransactionListItem {
 
             sumText.append(s);
 
-            //TODO Вернуть TO_MEMBER_TEXT_LENGTH
             String to_memberName = to_member.getName();
+            if (to_memberName.length() > to_member_text_length) {
+                to_memberName = to_memberName.substring(0, to_member_text_length - 3).trim() + "...";
+            }
+
 
             String strColor = String.format("#%06X", 0xFFFFFF & to_memberColor);
             String to_memberLine = "<font color='" + strColor + "'>" + to_memberName + "</font>";

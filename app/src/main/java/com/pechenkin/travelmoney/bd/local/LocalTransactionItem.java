@@ -5,6 +5,7 @@ import android.database.Cursor;
 import androidx.annotation.NonNull;
 
 import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
@@ -21,7 +22,7 @@ public class LocalTransactionItem extends IdTableRow implements TransactionItem 
     public LocalTransactionItem(Cursor c) {
         super(c);
 
-        this.member = TableMembers.INSTANCE.getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
+        this.member = TripManager.INSTANCE.getActiveTrip().getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
         this.debit = getIntColumnValue(Namespace.FIELD_DEBIT, c);
         this.credit = getIntColumnValue(Namespace.FIELD_CREDIT, c);
 

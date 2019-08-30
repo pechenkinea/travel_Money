@@ -2,7 +2,6 @@ package com.pechenkin.travelmoney;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
@@ -10,10 +9,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.pechenkin.travelmoney.bd.local.helper.migrate.TripsUpdate;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.TableSettings;
-import com.pechenkin.travelmoney.bd.local.table.helper.DBHelper;
-import com.pechenkin.travelmoney.bd.local.table.helper.migrate.Migrate;
+import com.pechenkin.travelmoney.bd.local.helper.DBHelper;
+import com.pechenkin.travelmoney.bd.local.helper.migrate.Migrate;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterWhom;
@@ -55,18 +55,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getApplicationContext());
 
-        if (!TableSettings.INSTANCE.active(NamespaceSettings.MIGRATION_COMPLETE)){
+        if (TableSettings.INSTANCE.active(NamespaceSettings.NEED_MIGRATION)) {
             Migrate.costToTransaction();
-            TableSettings.INSTANCE.setActive(NamespaceSettings.MIGRATION_COMPLETE, true);
+            TableSettings.INSTANCE.setActive(NamespaceSettings.NEED_MIGRATION, false);
         }
 
+        if (TableSettings.INSTANCE.active(NamespaceSettings.NEED_ADD_TRIPS_UUID)) {
+            TripsUpdate.updateUUID();
+            TableSettings.INSTANCE.setActive(NamespaceSettings.NEED_ADD_TRIPS_UUID, false);
+        }
         PageOpener.INSTANCE.open(MainPage.class);
 
 
         /*CostCreator c = new CostCreator("Я за всех 100 магазин", "");
         PageParam param = new PageParam().setDraftTransaction(c.getDraftTransaction()).setBackPage(MainPage.class);
-        PageOpener.INSTANCE.open(MasterWhom.class, param);*/
-
+        PageOpener.INSTANCE.open(MasterWhom.class, param);
+*/
     }
 
     @Override

@@ -87,7 +87,7 @@ public class EditTripPage extends BaseTripPage {
         MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction).setVisibility(View.VISIBLE);
 
         CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
-        if (trip.isActive())
+        if (TripManager.INSTANCE.isActive(trip))
             isActive.setChecked(true);
         else
             isActive.setChecked(false);

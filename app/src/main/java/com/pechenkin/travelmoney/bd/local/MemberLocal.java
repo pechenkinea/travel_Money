@@ -4,8 +4,8 @@ import android.database.Cursor;
 import android.graphics.Color;
 
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.query.IdAndNameTableRow;
+import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 
 
@@ -17,8 +17,8 @@ import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 public class MemberLocal extends IdAndNameTableRow implements Member {
 
 
-    public final int color;
-    public final int icon;
+    private int color;
+    private int icon;
 
     public MemberLocal(Cursor c) {
         super(c);
@@ -57,14 +57,17 @@ public class MemberLocal extends IdAndNameTableRow implements Member {
     @Override
     public void edit(String name, int color, int icon) {
         TableMembers.INSTANCE.edit(this.id, name, color, icon);
+        this.color = color;
+        this.icon = icon;
+
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-
-        return getId() == ((Member)obj).getId();
+        if (obj instanceof Member) {
+            return getId() == ((Member) obj).getId();
+        }
+        return false;
     }
 }

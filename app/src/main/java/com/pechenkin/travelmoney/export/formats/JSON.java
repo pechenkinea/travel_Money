@@ -17,7 +17,7 @@ public class JSON implements ExportFormat {
     public String getText(Trip trip) {
         JSONObject exportJson = new JSONObject();
         try {
-            exportJson.put("tripId", trip.getId());
+            exportJson.put("tripId", trip.getUUID());
             exportJson.put("tripName", trip.getName());
 
 

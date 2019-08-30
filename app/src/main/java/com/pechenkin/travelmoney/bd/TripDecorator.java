@@ -2,10 +2,10 @@ package com.pechenkin.travelmoney.bd;
 
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.security.InvalidParameterException;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Декоратор для поездки. ничего не далет. просто вызвает методы из вложенного Trip
@@ -20,8 +20,8 @@ public class TripDecorator implements Trip {
     }
 
     @Override
-    public long getId() {
-        return this.trip.getId();
+    public String getUUID() {
+        return this.trip.getUUID();
     }
 
     @Override
@@ -39,10 +39,6 @@ public class TripDecorator implements Trip {
         this.trip.edit(name, comment);
     }
 
-    @Override
-    public boolean isActive() {
-        return this.trip.isActive();
-    }
 
     @Override
     public Date getStartDate() {
@@ -55,12 +51,12 @@ public class TripDecorator implements Trip {
     }
 
     @Override
-    public List<Member> getAllMembers() {
+    public StreamList<Member> getAllMembers() {
         return this.trip.getAllMembers();
     }
 
     @Override
-    public List<Member> getActiveMembers() {
+    public StreamList<Member> getActiveMembers() {
         return this.trip.getActiveMembers();
     }
 
@@ -80,6 +76,11 @@ public class TripDecorator implements Trip {
     }
 
     @Override
+    public Member getMemberById(long id) {
+        return this.trip.getMemberById(id);
+    }
+
+    @Override
     public boolean memberIsActive(Member member) {
         return this.trip.memberIsActive(member);
     }
@@ -90,7 +91,7 @@ public class TripDecorator implements Trip {
     }
 
     @Override
-    public List<Transaction> getTransactions() {
+    public StreamList<Transaction> getTransactions() {
         return this.trip.getTransactions();
     }
 
@@ -100,4 +101,9 @@ public class TripDecorator implements Trip {
     }
 
 
+    @SuppressWarnings("all")
+    @Override
+    public boolean equals(Object obj) {
+        return this.trip.equals(obj);
+    }
 }

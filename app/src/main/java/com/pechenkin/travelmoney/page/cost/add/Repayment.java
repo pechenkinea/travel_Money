@@ -1,29 +1,26 @@
 package com.pechenkin.travelmoney.page.cost.add;
 
+import android.text.InputFilter;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
-import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
-import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.cost.add.listener.DateOnClickListener;
 import com.pechenkin.travelmoney.page.main.MainPage;
-
-import java.util.Date;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
+import com.pechenkin.travelmoney.utils.AfterTextWatcher;
+import com.pechenkin.travelmoney.utils.DecimalDigitsInputFilter;
+import com.pechenkin.travelmoney.utils.Help;
 
 public class Repayment extends BasePage {
 
-
-    private Date selectDate = new Date();
 
     @Override
     public void clickBackButton() {
@@ -51,15 +48,8 @@ public class Repayment extends BasePage {
 
         int sumInt = Help.textRubToIntKop(sum);
 
-        if (sumInt > TMConst.ERROR_SUM) {
-            Help.message(String.format(MainActivity.INSTANCE.getString(R.string.errorBigSum) + "", Help.kopToTextRub(TMConst.ERROR_SUM)));
-            Help.setActiveEditText(R.id.cost_sum);
-            return;
-        }
 
         DraftTransaction draftTransaction = getParam().getDraftTransaction();
-        draftTransaction.setDate(selectDate)
-                .setComment(comment);
 
         if (sumInt != draftTransaction.getSum()) {
             ((DraftTransactionItem) draftTransaction.getCreditItems().get(0)).setCredit(sumInt);
@@ -84,7 +74,6 @@ public class Repayment extends BasePage {
             final TextInputEditText cost_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
             cost_sum.setText(Help.kopToTextRub(getParam().getDraftTransaction().getSum()).replaceAll(" ", ""));
 
-            ((TextView) MainActivity.INSTANCE.findViewById(R.id.textDate)).setText(Help.dateToDateTimeStr(selectDate));
 
             return true;
         }
@@ -112,6 +101,8 @@ public class Repayment extends BasePage {
 
         //Кнопка "готово" на сумме
         final TextInputEditText cost_sum = MainActivity.INSTANCE.findViewById(R.id.cost_sum);
+        cost_sum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(6, 2)});
+
         cost_sum.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 commitForm();
@@ -120,9 +111,12 @@ public class Repayment extends BasePage {
             return false;
         });
 
+        cost_sum.addTextChangedListener(new AfterTextWatcher(editable -> {
+            int sum = Help.textRubToIntKop(editable.toString());
+            ((DraftTransactionItem) getParam().getDraftTransaction().getCreditItems().First()).setCredit(sum);
+        }));
 
-        TextInputEditText textDate = MainActivity.INSTANCE.findViewById(R.id.textDate);
-        textDate.setOnClickListener(new DateOnClickListener(selectDate, v -> this.selectDate = v));
+
     }
 
 

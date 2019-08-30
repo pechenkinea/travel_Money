@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.ViewTripPage;
@@ -40,7 +41,7 @@ public class AdapterTripsList extends BaseAdapter {
     }
 
     public long getItemId(int position) {
-        return data.get(position).getId();
+        return position;
     }
 
 
@@ -71,7 +72,7 @@ public class AdapterTripsList extends BaseAdapter {
         holder.viewButton.setOnClickListener(v -> PageOpener.INSTANCE.open(ViewTripPage.class, new PageParam().setTrip(row)));
 
 
-        if (row.isActive()) {
+        if (TripManager.INSTANCE.isActive(row)) {
             holder.check.setImageResource(R.drawable.radio_button_checked_black_18dp);
         } else {
             holder.check.setImageResource(R.drawable.radio_button_unchecked_black_18dp);

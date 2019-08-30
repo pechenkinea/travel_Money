@@ -9,18 +9,31 @@ import java.util.regex.Pattern;
 public class DecimalDigitsInputFilter implements InputFilter {
 
 
-    Pattern mPattern;
+    private Pattern mPattern;
 
     public DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
-        mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
+        String regexp = "^\\d{1," + (digitsBeforeZero) + "}((\\.\\d{0," + digitsAfterZero + "})?|(\\.)?)";
+        mPattern = Pattern.compile(regexp);
     }
 
     @Override
     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
 
-        Matcher matcher = mPattern.matcher(dest);
-        if (!matcher.matches())
-            return "";
+        String futureText = dest.toString().substring(0, dstart) + source + dest.toString().substring(dend);
+
+        if (futureText.length() == 0){
+            return null;
+        }
+
+        Matcher matcher = mPattern.matcher(futureText);
+        if (!matcher.matches()) {
+            if (source.toString().length() == 0) {
+                return dest.toString().substring(dstart, dend);
+            } else {
+                return "";
+            }
+        }
+
         return null;
     }
 

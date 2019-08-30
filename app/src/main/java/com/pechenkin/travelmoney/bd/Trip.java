@@ -2,14 +2,14 @@ package com.pechenkin.travelmoney.bd;
 
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.security.InvalidParameterException;
 import java.util.Date;
-import java.util.List;
 
 public interface Trip {
 
-    long getId();
+    String getUUID();
 
     String getName();
 
@@ -17,23 +17,23 @@ public interface Trip {
 
     void edit(String name, String comment);
 
-    boolean isActive();
-
     Date getStartDate();
 
     Date getEndDate();
 
 
 
-    List<Member> getAllMembers();
+    StreamList<Member> getAllMembers();
 
-    List<Member> getActiveMembers();
+    StreamList<Member> getActiveMembers();
 
     Member createMember(String name, int color, int icon);
 
     Member getMe();
 
     Member getMemberByName(String name);
+
+    Member getMemberById(long id);
 
     boolean memberIsActive(Member member);
 
@@ -42,7 +42,7 @@ public interface Trip {
 
 
 
-    List<Transaction> getTransactions();
+    StreamList<Transaction> getTransactions();
 
     Transaction addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException;
 

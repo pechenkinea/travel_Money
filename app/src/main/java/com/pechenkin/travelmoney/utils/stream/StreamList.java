@@ -9,6 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Класс декоратор для облегчения работы со списками
+ * Все дополнительные методы с большой буквы, что бы не совпадало со стандартными методами
+ */
 public class StreamList<E> implements List<E> {
     private final List<E> list;
 
@@ -18,11 +22,10 @@ public class StreamList<E> implements List<E> {
     }
 
 
-    public StreamList<E> ForEach(ForEach<E> forEach) {
+    public void ForEach(ForEach<E> forEach) {
         for (E e : list) {
             forEach.execute(e);
         }
-        return this;
     }
 
     public StreamList<E> Filter(Filter<E> filter) {
@@ -43,12 +46,31 @@ public class StreamList<E> implements List<E> {
         return null;
     }
 
+    public E First(Filter<E> filter) {
+        for (E e : list) {
+            if (filter.filter(e)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
     public E Last() {
         if (list.size() > 0) {
             return list.get(list.size() - 1);
         }
         return null;
     }
+
+    public void Remove(Filter<E> filter) {
+        for (int i = list.size() - 1; i > 0; i--) {
+            if (filter.filter(list.get(i))) {
+                list.remove(i);
+            }
+        }
+    }
+
+
 
     public interface ForEach<E> {
         void execute(E e);
@@ -58,6 +80,8 @@ public class StreamList<E> implements List<E> {
         boolean filter(E e);
     }
 
+
+    //Ниже все стандартные методы
 
     @Override
     public int size() {

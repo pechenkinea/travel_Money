@@ -33,9 +33,13 @@ public class TripManager {
 
     public void setActive(Trip trip) {
 
-        TableTrip.INSTANCE.set_active(trip.getId());
+        TableTrip.INSTANCE.set_active(trip.getUUID());
         activeTrip = trip;
 
+    }
+
+    public boolean isActive(Trip trip) {
+        return activeTrip.equals(trip);
     }
 
     public List<Trip> getAll() {
@@ -53,7 +57,7 @@ public class TripManager {
      * Тут должны быть все проверки. Локальная или удаленная поездка
      */
     private Trip createTripByTripRow(TripTableRow trip) {
-        return new TripLocal(trip);
+        return new TripCacheDecorator(new TripLocal(trip));
     }
 
 

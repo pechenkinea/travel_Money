@@ -231,7 +231,7 @@ public class MasterWhom extends ListPage {
         //Кнопка для фотографии
         AppCompatImageView photoButton = MainActivity.INSTANCE.findViewById(R.id.buttonPhoto);
         photoButton.setOnClickListener(view -> {
-            Help.alert("Не реализовано");
+            Help.alert("Не реализовано"); //TODO сделать фото
         });
 
     }

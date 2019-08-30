@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd.local.table.helper;
+package com.pechenkin.travelmoney.bd.local.helper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,11 +10,13 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 
+import java.util.UUID;
+
 public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 23);
+        super(context, Namespace.DB_NAME, null, 24);
     }
 
     @Override
@@ -34,12 +36,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("create table " + Namespace.TABLE_TRIPS + " ("
                 + Namespace.FIELD_ID + " integer primary key autoincrement,"
+                + Namespace.FIELD_UUID + " text,"
                 + Namespace.FIELD_NAME + " text,"
                 + Namespace.FIELD_PROCESSED + " integer,"
                 + Namespace.FIELD_COMMENT + " text"
                 + ");");
 
-        db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS + " VALUES (1, 'Отпуск', '1', 'Создана по умолчанию');");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS + " VALUES (1, '" + UUID.randomUUID().toString() + "','Отпуск', '1', 'Создана по умолчанию');");
 
         db.execSQL("create table " + Namespace.TABLE_TRIPS_MEMBERS + " ("
                 + "trip text not null,"  //TODO надо int
@@ -202,8 +205,15 @@ public class DBHelper extends SQLiteOpenHelper {
         if (oldVersion < 20) {
             createTableTransaction(db);
         }
-        if (oldVersion < 23) {
-            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.MIGRATION_COMPLETE + "', '0');");
+
+
+        //миграция на новую структуру бд и подготовка к работе с удаленной базой
+        if (oldVersion < 24) {
+
+            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.NEED_MIGRATION + "', '1');");
+            db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.NEED_ADD_TRIPS_UUID + "', '1');");
+
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRIPS + " ADD COLUMN " + Namespace.FIELD_UUID + " text;");
         }
 
 

@@ -1,29 +1,29 @@
 package com.pechenkin.travelmoney.bd;
 
 
+import androidx.collection.LongSparseArray;
+
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Кеширование значений методов. Нужно, что бы лишний раз не лазить в базу (для удаленной БД особенно актуально).
- */ //TODO доделать кэширование  и оборачивать поездку при создании в это декоратор
+ */
 public class TripCacheDecorator extends TripDecorator {
 
     public TripCacheDecorator(Trip trip) {
         super(trip);
     }
 
-    private List<Member> allMembers = null;
-    private List<Member> activeMembers = null;
-    private List<Transaction> cacheTransactions = null;
+    private StreamList<Member> allMembers = null;
+    private StreamList<Member> activeMembers = null;
+
 
     @Override
-    public List<Member> getAllMembers() {
+    public StreamList<Member> getAllMembers() {
         if (allMembers == null) {
             allMembers = super.getAllMembers();
         }
@@ -31,7 +31,7 @@ public class TripCacheDecorator extends TripDecorator {
     }
 
     @Override
-    public List<Member> getActiveMembers() {
+    public StreamList<Member> getActiveMembers() {
         if (activeMembers == null) {
             activeMembers = super.getActiveMembers();
         }
@@ -48,36 +48,43 @@ public class TripCacheDecorator extends TripDecorator {
         return createdMember;
     }
 
-    @Override
-    public boolean memberIsActive(Member member) {
-        return super.memberIsActive(member);
-    }
+    private LongSparseArray<Member> memberByIdCache = new LongSparseArray<>();
 
     @Override
-    public void setMemberActive(Member member, boolean active) {
-
-        super.setMemberActive(member, active);
-
-        for (int i = 0; i < getActiveMembers().size(); i++) {
-            Member existMember = getActiveMembers().get(i);
-            if (existMember.equals(member)) {
-                if (!active) {
-                    activeMembers.remove(i);
-                }
-
-                return;
+    public Member getMemberById(long id) {
+        Member result = memberByIdCache.get(id);
+        if (result == null) {
+            result = getAllMembers().First(member -> member.getId() == id);
+            if (result != null) {
+                memberByIdCache.put(id, result);
             }
         }
+        return result;
+    }
 
-        if (active) {
-            activeMembers.add(member);
+    @Override
+    public boolean memberIsActive(Member member) {
+        return getActiveMembers().First(m -> m.equals(member)) != null;
+    }
+
+    @Override
+    public void setMemberActive(Member memberForDelete, boolean active) {
+
+        super.setMemberActive(memberForDelete, active);
+
+        if (!active) {
+            getActiveMembers().Remove(m -> m.equals(memberForDelete));
+        } else if (!memberIsActive(memberForDelete)) {
+            activeMembers.add(memberForDelete);
         }
 
     }
 
 
+    private StreamList<Transaction> cacheTransactions = null;
+
     @Override
-    public List<Transaction> getTransactions() {
+    public StreamList<Transaction> getTransactions() {
         if (cacheTransactions == null) {
             cacheTransactions = super.getTransactions();
         }
@@ -92,5 +99,13 @@ public class TripCacheDecorator extends TripDecorator {
     }
 
 
+    private Member me = null;
 
+    @Override
+    public Member getMe() {
+        if (me == null) {
+            me = super.getMe();
+        }
+        return me;
+    }
 }

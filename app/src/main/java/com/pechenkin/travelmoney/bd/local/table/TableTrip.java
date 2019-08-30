@@ -10,6 +10,7 @@ import com.pechenkin.travelmoney.bd.local.query.TableRow;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class TableTrip {
 
@@ -27,13 +28,14 @@ public class TableTrip {
         QueryResult<TripTableRow> result = new QueryResult<>(sql, TripTableRow.class);
 
         if (!result.hasRows()) {
-            throw new RuntimeException("Не найдена поездка по умолчанию"); //TODO надо брать первую попавшуюся
+            sql = "SELECT * FROM " + Namespace.TABLE_TRIPS;
+            result = new QueryResult<>(sql, TripTableRow.class);
         }
 
         return result.getFirstRow();
     }
 
-    public void set_active(long t_id) {
+    public void set_active(String uuid) {
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
 
             ContentValues cv = new ContentValues();
@@ -43,7 +45,7 @@ public class TableTrip {
             ContentValues cv2 = new ContentValues();
             cv2.put(Namespace.FIELD_PROCESSED, "1");
 
-            db.update(Namespace.TABLE_TRIPS, cv2, Namespace.FIELD_ID + " = " + t_id, null);
+            db.update(Namespace.TABLE_TRIPS, cv2, Namespace.FIELD_UUID + " = '" + uuid + "'", null);
         }
     }
 
@@ -52,6 +54,7 @@ public class TableTrip {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);
         cv.put(Namespace.FIELD_COMMENT, comment);
+        cv.put(Namespace.FIELD_UUID, UUID.randomUUID().toString());
 
 
         long rowID;
@@ -73,13 +76,6 @@ public class TableTrip {
             db.update(Namespace.TABLE_TRIPS, cv, Namespace.FIELD_ID + " = " + id, null);
         }
     }
-
-    public Boolean isAdded(String trip_name) {
-        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_NAME + " = '" + trip_name + "'";
-        QueryResult<TableRow> result = new QueryResult<>(sql, TableRow.class);
-        return result.hasRows();
-    }
-
 
     public void removeMemberInTrip(long trip_id, long member_id) {
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {

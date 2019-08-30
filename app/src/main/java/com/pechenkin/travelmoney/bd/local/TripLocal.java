@@ -4,16 +4,16 @@ import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
-import com.pechenkin.travelmoney.bd.local.table.TransactionTable;
 import com.pechenkin.travelmoney.bd.local.table.TableTrip;
+import com.pechenkin.travelmoney.bd.local.table.TransactionTable;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by pechenkin on 04.04.2018.
@@ -26,18 +26,20 @@ public class TripLocal implements Trip {
     private final String comment;
     private final long id;
     private final String name;
+    private final String uuid;
 
     public TripLocal(TripTableRow tripTableRow) {
 
         this.id = tripTableRow.id;
         this.comment = tripTableRow.comment;
         this.name = tripTableRow.name;
+        this.uuid = tripTableRow.uuid;
     }
 
 
     @Override
-    public long getId() {
-        return this.id;
+    public String getUUID() {
+        return this.uuid;
     }
 
     @Override
@@ -56,20 +58,22 @@ public class TripLocal implements Trip {
     }
 
     @Override
-    public List<Member> getAllMembers() {
-        return new ArrayList<>(
-                Arrays.asList(
-                        TableMembers.INSTANCE.getAll().getAllRows()
-                ));
+    public StreamList<Member> getAllMembers() {
+        return new StreamList<>(
+                new ArrayList<>(
+                        Arrays.asList(
+                                TableMembers.INSTANCE.getAll().getAllRows()
+                        )));
     }
 
     @Override
-    public List<Member> getActiveMembers() {
+    public StreamList<Member> getActiveMembers() {
 
-        return new ArrayList<>(
-                Arrays.asList(
-                        TableMembers.INSTANCE.getAllByTripId(this.id)
-                ));
+        return new StreamList<>(
+                new ArrayList<>(
+                        Arrays.asList(
+                                TableMembers.INSTANCE.getAllByTripId(this.id)
+                        )));
 
     }
 
@@ -89,17 +93,12 @@ public class TripLocal implements Trip {
 
 
     @Override
-    public boolean isActive() {
-        return TableTrip.INSTANCE.isActive(this.id);
-    }
-
-
-    @Override
-    public List<Transaction> getTransactions() {
-        return new ArrayList<>(
-                Arrays.asList(
-                        TransactionTable.INSTANCE.getTransactionsByTrip(this.id)
-                ));
+    public StreamList<Transaction> getTransactions() {
+        return new StreamList<>(
+                new ArrayList<>(
+                        Arrays.asList(
+                                TransactionTable.INSTANCE.getTransactionsByTrip(this.id)
+                        )));
     }
 
     @Override
@@ -124,6 +123,11 @@ public class TripLocal implements Trip {
     }
 
     @Override
+    public Member getMemberById(long id) {
+        return TableMembers.INSTANCE.getMemberById(id);
+    }
+
+    @Override
     public Date getStartDate() {
         return TableTrip.INSTANCE.getStartTripDate(this.id);
     }
@@ -131,5 +135,15 @@ public class TripLocal implements Trip {
     @Override
     public Date getEndDate() {
         return TableTrip.INSTANCE.getEndTripDate(this.id);
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof Trip) {
+            return getUUID().equals(((Trip) obj).getUUID());
+        }
+        return false;
     }
 }
