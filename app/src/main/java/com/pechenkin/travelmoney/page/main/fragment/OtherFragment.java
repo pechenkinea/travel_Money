@@ -8,6 +8,7 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.export.Export;
 import com.pechenkin.travelmoney.export.ExportFileTypes;
+import com.pechenkin.travelmoney.metering.TransactionManyCreator;
 import com.pechenkin.travelmoney.page.AboutPage;
 import com.pechenkin.travelmoney.page.DiagramsListPage;
 import com.pechenkin.travelmoney.page.FaqPage;
@@ -60,10 +61,10 @@ public class OtherFragment extends BaseMainPageFragment {
         Button faqButton = fragmentView.findViewById(R.id.faq_button);
         faqButton.setOnClickListener(v -> PageOpener.INSTANCE.open(FaqPage.class));
 
-        /*
-        Button add_many = fragmentView.findViewById(R.id.add_many);
-        add_many.setOnClickListener(v -> CostCreator.createBigCostList());
-        */
+
+        /*Button add_many = fragmentView.findViewById(R.id.add_many);
+        add_many.setOnClickListener(v -> TransactionManyCreator.createBigCostList());*/
+
     }
 
     @Override
