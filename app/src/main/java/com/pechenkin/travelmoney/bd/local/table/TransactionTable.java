@@ -14,7 +14,6 @@ import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,7 +78,32 @@ public class TransactionTable {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRANSACTION +
                 " WHERE " + Namespace.FIELD_ID + " = '" + transactionId + "';";
 
-        return new QueryResult<>(sql, LocalTransaction.class).getFirstRow();
+        String sqlTransactionItems = "SELECT * FROM " + Namespace.TABLE_TRANSACTION_ITEMS +
+                " WHERE " + Namespace.FIELD_TRANSACTION + " = '" + transactionId + "';";
+
+        LocalTransaction result = new QueryResult<>(sql, LocalTransaction.class).getFirstRow();
+
+        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getReadableDatabase()) {
+
+            try (Cursor sqlResult = db.rawQuery(sqlTransactionItems, null)) {
+                if (sqlResult.moveToFirst()) {
+                    do {
+                        LocalTransactionItem localTransactionItem = new LocalTransactionItem(sqlResult);
+                        if (localTransactionItem.getCredit() > 0) {
+                            result.addCreditItem(localTransactionItem);
+                        }
+
+                        if (localTransactionItem.getDebit() > 0) {
+                            result.addDebitItem(localTransactionItem);
+                        }
+                    }
+                    while (sqlResult.moveToNext());
+                }
+            }
+
+        }
+
+        return result;
     }
 
     public List<Transaction> getTransactionsByTrip(long tripId) {
@@ -111,7 +135,9 @@ public class TransactionTable {
                     while (sqlResult.moveToNext());
                 }
             }
+        }
 
+        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getReadableDatabase()) {
             //после того. как у нас появилась мапа транзакций добавляем в нее проводки
             try (Cursor sqlResult = db.rawQuery(sqlTransactionItems, null)) {
                 if (sqlResult.moveToFirst()) {
@@ -120,7 +146,15 @@ public class TransactionTable {
 
                         LocalTransaction transaction = localTransactionLongSparseArray.get(localTransactionItem.getTransactionId());
                         if (transaction != null) {
-                            transaction.addTransactionItem(localTransactionItem);
+
+                            if (localTransactionItem.getCredit() > 0) {
+                                transaction.addCreditItem(localTransactionItem);
+                            }
+
+                            if (localTransactionItem.getDebit() > 0) {
+                                transaction.addDebitItem(localTransactionItem);
+                            }
+
                         }
                     }
                     while (sqlResult.moveToNext());
@@ -139,7 +173,6 @@ public class TransactionTable {
         return result;
 
     }
-
 
 
     public void setTransactionState(long id, boolean active) {

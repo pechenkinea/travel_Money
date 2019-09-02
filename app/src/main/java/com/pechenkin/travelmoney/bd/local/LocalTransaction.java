@@ -21,7 +21,8 @@ public class LocalTransaction extends IdTableRow implements Transaction {
     private boolean active;
     private boolean repayment;
 
-    private StreamList<TransactionItem> allItems = new StreamList<>(new ArrayList<>());
+    private StreamList<TransactionItem> creditItems = new StreamList<>(new ArrayList<>());
+    private StreamList<TransactionItem> debitItems = new StreamList<>(new ArrayList<>());
 
     public LocalTransaction(Cursor c) {
         super(c);
@@ -35,8 +36,11 @@ public class LocalTransaction extends IdTableRow implements Transaction {
 
     }
 
-    public void addTransactionItem(TransactionItem transactionItem){
-        allItems.add(transactionItem);
+    public void addCreditItem(TransactionItem transactionItem){
+        creditItems.add(transactionItem);
+    }
+    public void addDebitItem(TransactionItem transactionItem){
+        debitItems.add(transactionItem);
     }
 
     @Override
@@ -57,12 +61,12 @@ public class LocalTransaction extends IdTableRow implements Transaction {
 
     @Override
     public StreamList<TransactionItem> getDebitItems() {
-        return allItems.Filter(transactionItem -> transactionItem.getCredit() == 0);
+        return debitItems;
     }
 
     @Override
     public StreamList<TransactionItem> getCreditItems() {
-        return allItems.Filter(transactionItem -> transactionItem.getDebit() == 0);
+        return creditItems;
     }
 
     @Override

@@ -16,7 +16,8 @@ public class LocalTransactionItem extends IdTableRow implements TransactionItem 
 
 
 
-    private Member member;
+    private long memberId;
+    private Member member = null;
     private int debit;
     private int credit;
     private long transactionId;
@@ -25,17 +26,19 @@ public class LocalTransactionItem extends IdTableRow implements TransactionItem 
     public LocalTransactionItem(Cursor c) {
         super(c);
 
-        this.member = TripManager.INSTANCE.getActiveTrip().getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
+        this.memberId = getLongColumnValue(Namespace.FIELD_MEMBER, c);
         this.debit = getIntColumnValue(Namespace.FIELD_DEBIT, c);
         this.credit = getIntColumnValue(Namespace.FIELD_CREDIT, c);
         this.transactionId = getLongColumnValue(Namespace.FIELD_TRANSACTION, c);
-
     }
 
 
     @NonNull
     @Override
     public Member getMember() {
+        if (member == null){
+            member = TripManager.INSTANCE.getActiveTrip().getMemberById(memberId);
+        }
         return member;
     }
 

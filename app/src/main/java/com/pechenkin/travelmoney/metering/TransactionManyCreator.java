@@ -18,6 +18,8 @@ import java.util.Random;
 
 public class TransactionManyCreator {
 
+    private static int number = 0;
+
     /*
      * Добавляет в текущую поездку 1000 транзакций разом.
      */
@@ -36,11 +38,11 @@ public class TransactionManyCreator {
 
                 DraftTransaction draftTransaction = new DraftTransaction();
 
-                draftTransaction.addCreditItem(new DraftTransactionItem(members.get(memberRandom.nextInt(members.size())), 0, new Random().nextInt(300)))
+                draftTransaction.addCreditItem(new DraftTransactionItem(members.get(memberRandom.nextInt(members.size())), 0, new Random().nextInt(500_00)))
                         .addDebitItem(new DraftTransactionItem(members.get(memberRandom.nextInt(members.size())), 0, 0))
                         .addDebitItem(new DraftTransactionItem(members.get(memberRandom.nextInt(members.size())), 0, 0))
                         .addDebitItem(new DraftTransactionItem(members.get(memberRandom.nextInt(members.size())), 0, 0))
-                        .setComment("comment " + i)
+                        .setComment("comment " + number++)
                         .updateSum();
 
                 TripManager.INSTANCE.getActiveTrip().addTransaction(draftTransaction);
