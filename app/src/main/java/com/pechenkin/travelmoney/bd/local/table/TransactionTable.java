@@ -1,7 +1,9 @@
 package com.pechenkin.travelmoney.bd.local.table;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.LongSparseArray;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.local.LocalTransaction;
@@ -11,6 +13,11 @@ import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TransactionTable {
 
@@ -75,22 +82,65 @@ public class TransactionTable {
         return new QueryResult<>(sql, LocalTransaction.class).getFirstRow();
     }
 
-    public Transaction[] getTransactionsByTrip(long tripId) {
+    public List<Transaction> getTransactionsByTrip(long tripId) {
 
-        String sql = "SELECT * FROM " + Namespace.TABLE_TRANSACTION +
-                " WHERE " + Namespace.FIELD_TRIP + " = '" + tripId + "'" +
-                " ORDER BY " + Namespace.FIELD_DATE + " DESC";
+        String sql = "SELECT * FROM " + Namespace.TABLE_TRANSACTION + " WHERE " + Namespace.FIELD_TRIP + " = '" + tripId + "'";
 
-        return new QueryResult<>(sql, LocalTransaction.class).getAllRows();
+        String sqlTransactionItems = "SELECT " +
+                "  i." + Namespace.FIELD_ID +
+                ", i." + Namespace.FIELD_MEMBER +
+                ", i." + Namespace.FIELD_CREDIT +
+                ", i." + Namespace.FIELD_DEBIT +
+                ", i." + Namespace.FIELD_TRANSACTION +
+
+                " FROM " + Namespace.TABLE_TRANSACTION_ITEMS + " as i" +
+                " INNER JOIN " + Namespace.TABLE_TRANSACTION + " as t ON t." + Namespace.FIELD_ID + " = i." + Namespace.FIELD_TRANSACTION +
+                " WHERE t." + Namespace.FIELD_TRIP + " = '" + tripId + "';";
+
+        LongSparseArray<LocalTransaction> localTransactionLongSparseArray = new LongSparseArray<>();
+
+        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getReadableDatabase()) {
+
+            //Сначала считываем все транзакции
+            try (Cursor sqlResult = db.rawQuery(sql, null)) {
+                if (sqlResult.moveToFirst()) {
+                    do {
+                        LocalTransaction localTransaction = new LocalTransaction(sqlResult);
+                        localTransactionLongSparseArray.put(localTransaction.getId(), localTransaction);
+                    }
+                    while (sqlResult.moveToNext());
+                }
+            }
+
+            //после того. как у нас появилась мапа транзакций добавляем в нее проводки
+            try (Cursor sqlResult = db.rawQuery(sqlTransactionItems, null)) {
+                if (sqlResult.moveToFirst()) {
+                    do {
+                        LocalTransactionItem localTransactionItem = new LocalTransactionItem(sqlResult);
+
+                        LocalTransaction transaction = localTransactionLongSparseArray.get(localTransactionItem.getTransactionId());
+                        if (transaction != null) {
+                            transaction.addTransactionItem(localTransactionItem);
+                        }
+                    }
+                    while (sqlResult.moveToNext());
+                }
+            }
+        }
+
+
+        List<Transaction> result = new ArrayList<>(localTransactionLongSparseArray.size());
+        for (int i = 0; i < localTransactionLongSparseArray.size(); i++) {
+            result.add(localTransactionLongSparseArray.valueAt(i));
+        }
+
+        Collections.sort(result, (left, right) -> right.getDate().compareTo(left.getDate()));
+
+        return result;
+
     }
 
-    public TransactionItem[] getTransactionItemByTransaction(long transactionId) {
 
-        String sql = "SELECT * FROM " + Namespace.TABLE_TRANSACTION_ITEMS +
-                " WHERE " + Namespace.FIELD_TRANSACTION + " = '" + transactionId + "';";
-
-        return new QueryResult<>(sql, LocalTransactionItem.class).getAllRows();
-    }
 
     public void setTransactionState(long id, boolean active) {
         ContentValues cv = new ContentValues();

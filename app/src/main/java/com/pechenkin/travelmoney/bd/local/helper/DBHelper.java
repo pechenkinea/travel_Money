@@ -82,7 +82,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Namespace.FIELD_MEMBER + " integer, "
                 + Namespace.FIELD_CREDIT + " integer, "
                 + Namespace.FIELD_DEBIT + " integer, "
-                + Namespace.FIELD_REPAYMENT + " integer, "
                 + Namespace.FIELD_TRANSACTION + " integer, "
                 + "FOREIGN KEY(" + Namespace.FIELD_MEMBER + ") REFERENCES " + Namespace.TABLE_MEMBERS + "(_id),"
                 + "FOREIGN KEY(" + Namespace.FIELD_TRANSACTION + ") REFERENCES " + Namespace.TABLE_TRANSACTION + "(_id)"

@@ -95,10 +95,8 @@ public class TripLocal implements Trip {
     @Override
     public StreamList<Transaction> getTransactions() {
         return new StreamList<>(
-                new ArrayList<>(
-                        Arrays.asList(
-                                TransactionTable.INSTANCE.getTransactionsByTrip(this.id)
-                        )));
+                TransactionTable.INSTANCE.getTransactionsByTrip(this.id)
+        );
     }
 
     @Override

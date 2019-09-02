@@ -62,8 +62,9 @@ public class OtherFragment extends BaseMainPageFragment {
         faqButton.setOnClickListener(v -> PageOpener.INSTANCE.open(FaqPage.class));
 
 
-        /*Button add_many = fragmentView.findViewById(R.id.add_many);
-        add_many.setOnClickListener(v -> TransactionManyCreator.createBigCostList());*/
+        //TODO не забыть убрать
+        Button add_many = fragmentView.findViewById(R.id.add_many);
+        add_many.setOnClickListener(v -> TransactionManyCreator.createBigCostList());
 
     }
 

@@ -21,7 +21,7 @@ public class LocalTransaction extends IdTableRow implements Transaction {
     private boolean active;
     private boolean repayment;
 
-    private StreamList<TransactionItem> allItems;
+    private StreamList<TransactionItem> allItems = new StreamList<>(new ArrayList<>());
 
     public LocalTransaction(Cursor c) {
         super(c);
@@ -33,11 +33,10 @@ public class LocalTransaction extends IdTableRow implements Transaction {
         this.active = getIntColumnValue(Namespace.FIELD_ACTIVE, c) != 0;
         this.repayment = getIntColumnValue(Namespace.FIELD_REPAYMENT, c) != 0;
 
-        allItems = new StreamList<>(
-                new ArrayList<>(
-                        Arrays.asList(TransactionTable.INSTANCE.getTransactionItemByTransaction(this.id))
-                ));
+    }
 
+    public void addTransactionItem(TransactionItem transactionItem){
+        allItems.add(transactionItem);
     }
 
     @Override
