@@ -10,7 +10,6 @@ import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 public class LocalTransaction extends IdTableRow implements Transaction {

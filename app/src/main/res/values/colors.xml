@@ -8,8 +8,6 @@
     <color name="link">#0470D3</color>
 
     <!--Для страницы статистики-->
-    <color name="green">#3db432</color>
-    <color name="red">#b43232</color>
 
     <string name="disableCost">#cccccc</string>
 

@@ -3,7 +3,6 @@ package com.pechenkin.travelmoney.page.main.fragment;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
@@ -11,9 +10,9 @@ import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.member.AddMemberPage;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
+import com.pechenkin.travelmoney.utils.Help;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +34,7 @@ public class MembersListFragment extends BaseMainPageFragment {
         list.setOnItemClickListener((parent, view, position, id) -> {
 
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-            Member member = adapter.getItem(position).getMember();
+            Member member = adapter.getItem(position);
 
 
             boolean isActive = TripManager.INSTANCE.getActiveTrip().memberIsActive(member);
@@ -46,7 +45,7 @@ public class MembersListFragment extends BaseMainPageFragment {
         });
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-            Member member = adapter.getItem(position).getMember();
+            Member member = adapter.getItem(position);
 
             PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam().setMember(member));
 
@@ -81,12 +80,11 @@ public class MembersListFragment extends BaseMainPageFragment {
                 });
 
 
-
-                AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(members, 0), true);
+                AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, members, true);
                 list.setAdapter(adapter);
 
                 for (int i = 0; i < adapter.getCount(); i++) {
-                    Member member = adapter.getItem(i).getMember();
+                    Member member = adapter.getItem(i);
 
                     if (TripManager.INSTANCE.getActiveTrip().memberIsActive(member)) {
                         list.setItemChecked(i, true);

@@ -6,7 +6,6 @@ import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 
 import java.util.Date;
 

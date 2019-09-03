@@ -1,34 +1,25 @@
 package com.pechenkin.travelmoney.list;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Html;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
-import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.dialog.EditSumDialog;
-import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
 import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.utils.MemberIcons;
-import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 public class TransactionList extends BaseAdapter {
 

@@ -55,7 +55,7 @@ public class WordCollection {
         words = new WrapperString(text.toLowerCase())
                 .replaceAll("[,\\.]", "") // убираем все запятые и точки для обработки 3.000
                 .replaceAll("(^|[^\\d])(\\d{1,2})\\s(\\d{3})($|[^\\d])", " $2$3") //убираем пробел между числами если певое 1 или 2 значное а второе 3 значное. Обработка 3 500 или 11 700
-                .replaceNumeric(NUMERIC_NAMES)
+                .replaceNumeric()
                 .replaceAll("(\\d+(\\.\\d+)?)", " $1 ") //все цифры отделяем пробелами для обработки таких строк как 350руб
                 .replaceAll(" и | за ", " ")  //убираем лишние слова в центре
                 .replaceAllWords(new String[]{"всех", "завсех", "всем"}, ALL) //ключ для обработки "за всех"
@@ -85,9 +85,6 @@ public class WordCollection {
         return getPosition(position + addPosition);
     }
 
-    public String viewBefore(int downPosition) {
-        return getPosition(position - downPosition);
-    }
 
     public void movePosition(int moveTo) {
         position += moveTo;
@@ -127,12 +124,12 @@ public class WordCollection {
             return new WrapperString(text.trim());
         }
 
-        WrapperString replaceNumeric(StringNumeric[] numeric) {
+        WrapperString replaceNumeric() {
             String returnText = text;
 
             //заменяем слова на экранированные цифры
             //две с пловиной тысячи -> {n}2{/n} {n}1.5{/n} {n}1000{/n}
-            for (StringNumeric sNumeric : numeric) {
+            for (StringNumeric sNumeric : WordCollection.NUMERIC_NAMES) {
                 returnText = returnText.replaceAll(sNumeric.regex, sNumeric.value);
             }
 

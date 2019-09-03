@@ -121,14 +121,6 @@ public class TableTrip {
     }
 
 
-    public Boolean isActive(long t_id) {
-        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_ID + " = '" + t_id + "' and " + Namespace.FIELD_PROCESSED + " = 1";
-
-        QueryResult result = new QueryResult<>(sql, TableRow.class);
-        return result.hasRows();
-    }
-
-
     public Date getStartTripDate(long t_id) {
         String query = String.format("SELECT MIN(%s) FROM %s WHERE %s = '%s'",
                 Namespace.FIELD_DATE,

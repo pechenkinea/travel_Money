@@ -14,6 +14,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -62,7 +63,7 @@ public class TotalItemDiagram extends Base {
         int i = 0;
         for (Total.MemberSum c : this.total) {
             Member member = c.getMember();
-            NoOfEmp.add(new PieEntry((float) c.getSumExpense()/100, member.getName(), member));
+            NoOfEmp.add(new PieEntry((float) c.getSumExpense(), member.getName(), member));
             pieColors[i++] = member.getColor();
         }
 
@@ -71,6 +72,13 @@ public class TotalItemDiagram extends Base {
         dataSet.setSliceSpace(2); //Отступы между группами
         dataSet.setColors(pieColors); // цвета зон
 
+
+        dataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return Help.kopToTextRub((int) value);
+            }
+        });
 
         //вынос названий за границы
         dataSet.setValueLinePart1OffsetPercentage(80f);

@@ -1,15 +1,5 @@
 package com.pechenkin.travelmoney.test.calculation;
 
-import com.pechenkin.travelmoney.transaction.processing.CostIterable;
-import com.pechenkin.travelmoney.transaction.processing.ProcessIterate;
-import com.pechenkin.travelmoney.transaction.processing.calculation.Calculation;
-import com.pechenkin.travelmoney.test.TestMembers;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.List;
-
 public class TestCalculation {
 
 

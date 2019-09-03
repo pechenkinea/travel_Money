@@ -12,6 +12,7 @@ import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Member;
@@ -58,7 +59,7 @@ public class BarDiagram extends Base {
         int i = 0;
         for (Total.MemberSum c : this.total) {
             Member member = c.getMember();
-            entries.add(new BarEntry(i, (float) c.getSumExpense()/100, member));
+            entries.add(new BarEntry(i, (float) c.getSumExpense() / 100, member));
 
             legendEntries[i] = new LegendEntry();
             legendEntries[i].label = member.getName();
@@ -69,6 +70,13 @@ public class BarDiagram extends Base {
 
 
         BarDataSet dataSet = new BarDataSet(entries, "");
+
+        dataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return Help.kopToTextRub((int) (value * 100));
+            }
+        });
 
         dataSet.setColors(pieColors); // цвета зон
 

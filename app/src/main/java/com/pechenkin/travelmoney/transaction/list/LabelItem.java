@@ -35,4 +35,8 @@ public class LabelItem implements CostListItem {
     }
 
 
+    @Override
+    public String toString() {
+        return label;
+    }
 }

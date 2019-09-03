@@ -1,6 +1,10 @@
 package com.pechenkin.travelmoney.page.cost.add.master;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -8,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.FileProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -28,6 +33,11 @@ import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
+
+import java.io.File;
+import java.util.Date;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by pechenkin on 15.05.2018.
@@ -83,11 +93,9 @@ public class MasterWhom extends ListPage {
                     .setText(Help.kopToTextRub(getParam().getDraftTransaction().getSum()).replaceAll(" ", ""));
         }
 
-        if (getParam().getDraftTransaction().getImageUrl().length() > 0) {
-            ((TextView) MainActivity.INSTANCE.findViewById(R.id.cost_dir_textView))
-                    .setText(getParam().getDraftTransaction().getImageUrl());
 
-            MainActivity.INSTANCE.findViewById(R.id.hasPhoto).setVisibility(View.VISIBLE);
+        if (getParam().getDraftTransaction().getImageUrl().length() > 0) {
+            setHasPhoto();
         }
 
         if (draftTransaction.getDebitItems().size() == 0) {
@@ -204,8 +212,7 @@ public class MasterWhom extends ListPage {
 
             if (changeSum[0] > sum) {
                 cost_sum.setTextColor(Color.RED);
-            }
-            else {
+            } else {
                 cost_sum.setTextColor(Color.BLACK);
             }
 
@@ -231,9 +238,56 @@ public class MasterWhom extends ListPage {
         //Кнопка для фотографии
         AppCompatImageView photoButton = MainActivity.INSTANCE.findViewById(R.id.buttonPhoto);
         photoButton.setOnClickListener(view -> {
-            Help.alert("Не реализовано"); //TODO сделать фото
+
+            Help.hideKeyboard();
+
+
+            if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                Help.alert("SD-карта не доступна: " + Environment.getExternalStorageState());
+                return;
+            }
+
+            Date now = new Date();
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+            File folderForPhoto = new File(path.getAbsolutePath() + "/travel_Money");
+            if (!folderForPhoto.exists() && !folderForPhoto.mkdirs()) {
+                Help.alert("Ошибка. Не удалось создать папку для хранения фото. " + folderForPhoto.getAbsolutePath() + MainActivity.INSTANCE.getString(R.string.fileError));
+                return;
+            }
+
+            File file = new File(folderForPhoto.getAbsolutePath(), now.getTime() + ".jpg");
+
+
+            //Создаем uri, через который будет доступен файл для intent камеры
+            Uri outputFileUri = FileProvider.getUriForFile(
+                    MainActivity.INSTANCE,
+                    MainActivity.INSTANCE.getApplicationContext().getPackageName() + ".provider", file);
+
+            if (outputFileUri == null) {
+                Help.alert("Ошибка. Не удалось создать файл для фото.");
+                return;
+            }
+
+            MainActivity.INSTANCE.setPhotoComplete(() -> {
+                getParam().getDraftTransaction().setImageUrl(file.getAbsolutePath());
+                setHasPhoto();
+            });
+
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            MainActivity.INSTANCE.setResult(RESULT_OK, intent);
+            MainActivity.INSTANCE.startActivityForResult(intent, MainActivity.TAKE_COST_PHOTO);
+
         });
 
+
+    }
+
+
+    private void setHasPhoto() {
+        MainActivity.INSTANCE.findViewById(R.id.hasPhoto).setVisibility(View.VISIBLE);
+        ((AppCompatImageView) MainActivity.INSTANCE.findViewById(R.id.buttonPhoto)).setImageResource(R.drawable.ic_camera_retake_24);
     }
 
 

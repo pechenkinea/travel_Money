@@ -5,6 +5,8 @@ import android.util.LongSparseArray;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
+import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
+import com.pechenkin.travelmoney.transaction.list.LabelItem;
 import com.pechenkin.travelmoney.transaction.list.TotalItem;
 import com.pechenkin.travelmoney.transaction.processing.CostIterable;
 
@@ -24,7 +26,7 @@ public class Calculation implements CostIterable {
     private static final float deviation = 0.01f;
 
     private LongSparseArray<MemberSum> members;
-    private List<TotalItem> result;
+    private List<CostListItem> result;
 
     //Нужно для того, что бы можно было считать не по id сотрудников а, например, по их цветам
     private MemberUidGetterID memberUidGetter;
@@ -96,7 +98,7 @@ public class Calculation implements CostIterable {
         // Формируем итоговый список
         // т.к. при добавлении суммы одному у другого такую же сумму отнимаем сумма положительных будет равна сумме отрицательных
         // остается только распределить эти суммы
-        ArrayList<TotalItem> resultList = new ArrayList<>();
+        ArrayList<CostListItem> resultList = new ArrayList<>();
 
         // перебираем участников с положительной суммой т.к. главное получить то что отдал а не отдать то, что получил
         for (MemberSum positive : positiveMember) {
@@ -144,8 +146,8 @@ public class Calculation implements CostIterable {
 
             // Если поле обхода всех должников сумма positive меньше нуля, значит где то был косяк и об этом говорим в приложении дополнительной строкой итога
             if (positive.sum < 0) {
-                //TODO заменить тут ShortCost на что то другое
-                //resultList.add(new ShortCost(positive.member.getName() + " (отрицательная сумма)"));
+                //TODO сделать отдельный класс для отображения ошибок LabelItem не очень подходит
+                resultList.add(new LabelItem(positive.member.getName() + " (отрицательная сумма)"));
             }
 
             // Если поле обхода всех должников сумма positive сильно больше погрешности,
@@ -153,8 +155,8 @@ public class Calculation implements CostIterable {
             // (например если более 100 участников должны кому то по 0.01)
             // говорим об этом в приложении дополнительной строкой итога
             if (positive.sum > deviation * 100) {
-                //TODO заменить тут ShortCost на что то другое
-                //resultList.add(new ShortCost(positive.member.getName() + " (Остаток " + positive.sum + ")"));
+                //TODO сделать отдельный класс для отображения ошибок LabelItem не очень подходит
+                resultList.add(new LabelItem(positive.member.getName() + " (Остаток " + positive.sum + ")"));
             }
         }
 
@@ -164,7 +166,7 @@ public class Calculation implements CostIterable {
     }
 
 
-    public List<TotalItem> getResult() {
+    public List<CostListItem> getResult() {
         return result;
     }
 
@@ -203,7 +205,7 @@ public class Calculation implements CostIterable {
         }
     }
 
-    public class MemberSumComparatorDesc implements Comparator<MemberSum> {
+    private class MemberSumComparatorDesc implements Comparator<MemberSum> {
         public int compare(MemberSum left, MemberSum right) {
             return Double.compare(right.sum, left.sum);
         }

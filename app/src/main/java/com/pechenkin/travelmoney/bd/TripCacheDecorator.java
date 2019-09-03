@@ -94,7 +94,7 @@ public class TripCacheDecorator extends TripDecorator {
     @Override
     public Transaction addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
         Transaction transaction = super.addTransaction(draftTransaction);
-        cacheTransactions.add(transaction);
+        cacheTransactions.add(0, transaction);
         return transaction;
     }
 

@@ -18,7 +18,6 @@ import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
 import com.pechenkin.travelmoney.transaction.list.LabelItem;
 import com.pechenkin.travelmoney.transaction.list.LabelItemWithMenu;
-import com.pechenkin.travelmoney.transaction.list.TotalItem;
 import com.pechenkin.travelmoney.transaction.list.TransactionListItem;
 import com.pechenkin.travelmoney.transaction.processing.CostIterable;
 import com.pechenkin.travelmoney.transaction.processing.ProcessIterate;
@@ -59,7 +58,7 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
             List<Transaction> costList = this.trip.getTransactions();
 
-            List<TotalItem> calculationList;
+            List<CostListItem> calculationList;
 
             if (costList.size() > 0) {
 

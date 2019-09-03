@@ -16,7 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 24);
+        super(context, Namespace.DB_NAME, null, 25);
     }
 
     @Override
@@ -44,12 +44,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS + " VALUES (1, '" + UUID.randomUUID().toString() + "','Отпуск', '1', 'Создана по умолчанию');");
 
-        db.execSQL("create table " + Namespace.TABLE_TRIPS_MEMBERS + " ("
-                + "trip text not null,"  //TODO надо int
-                + "member text not null" //TODO надо int
-                + ");");
-
-        db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " VALUES ('1', '1');");
+        createTableTripsMembers(db);
+        db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " VALUES (1, 1);");
 
 
         //createTableCost(db);
@@ -62,6 +58,13 @@ public class DBHelper extends SQLiteOpenHelper {
         createTableColors(db);
 
         createTableTransaction(db);
+    }
+
+    private void createTableTripsMembers(SQLiteDatabase db){
+        db.execSQL("create table " + Namespace.TABLE_TRIPS_MEMBERS + " ("
+                + "trip integer not null,"
+                + "member integer not null"
+                + ");");
     }
 
     private void createTableTransaction(SQLiteDatabase db) {
@@ -213,6 +216,14 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.NEED_ADD_TRIPS_UUID + "', '1');");
 
             db.execSQL("ALTER TABLE " + Namespace.TABLE_TRIPS + " ADD COLUMN " + Namespace.FIELD_UUID + " text;");
+        }
+
+        //Исправление типа в столюцах таблицы TABLE_TRIPS_MEMBERS
+        if (oldVersion < 25) {
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRIPS_MEMBERS + " RENAME TO tmp_table_name");
+            createTableTripsMembers(db);
+            db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " SELECT * FROM tmp_table_name;");
+            db.execSQL("DROP TABLE tmp_table_name;");
         }
 
 

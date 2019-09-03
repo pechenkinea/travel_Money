@@ -17,7 +17,6 @@ public class PageParam {
 
     private int fragmentId = 0;
     private DraftTransaction draftTransaction = null;
-    private String name = "";
     private Trip trip = null;
     private Member member = null;
     private Class<? extends Page> backPage = null;
@@ -37,10 +36,7 @@ public class PageParam {
         return this;
     }
 
-    public PageParam setName(String name) {
-        this.name = name;
-        return this;
-    }
+
 
     public PageParam setTrip(Trip trip) {
         this.trip = trip;
@@ -65,9 +61,6 @@ public class PageParam {
         return draftTransaction;
     }
 
-    public String getName() {
-        return name;
-    }
 
     public Trip getTrip() {
         return trip;

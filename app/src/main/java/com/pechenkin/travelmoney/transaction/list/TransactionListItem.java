@@ -10,9 +10,6 @@ public abstract class TransactionListItem implements CostListItem {
 
     protected Transaction transaction;
 
-    public Transaction getTransaction() {
-        return transaction;
-    }
 
     TransactionListItem(Transaction transaction) {
         this.transaction = transaction;

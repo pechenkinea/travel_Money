@@ -40,6 +40,11 @@ public class TotalItem extends TransactionListItem {
     }
 
     @Override
+    public String toString() {
+        return member.getName() + " --> " + toMember.getName() + " " + Help.kopToTextRub(sum);
+    }
+
+    @Override
     public void render(ListItemSummaryViewHolder holder) {
 
 

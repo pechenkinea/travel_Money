@@ -3,9 +3,6 @@ package com.pechenkin.travelmoney.page.cost.add.master;
 import android.view.View;
 import android.widget.ListView;
 
-import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
-import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
-import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
@@ -13,7 +10,9 @@ import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.list.AdapterMembersList;
 import com.pechenkin.travelmoney.page.ListPage;
 import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
+import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
+import com.pechenkin.travelmoney.utils.Help;
 
 import java.util.List;
 
@@ -48,14 +47,14 @@ public class MasterWho extends ListPage {
             Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
             return false;
         } else {
-            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, CostMember.createCostMemberBaseTableRow(tripMembers, 0), false);
+            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, tripMembers, false);
             adapter.setShowCheckBox(false);
 
             list1.setAdapter(adapter);
 
             if (hasParam() && getParam().getMember() != null) {
                 for (int i = 0; i < adapter.getCount(); i++) {
-                    if (adapter.getItem(i).getMember().equals(getParam().getMember())) {
+                    if (adapter.getItem(i).equals(getParam().getMember())) {
                         list1.setItemChecked(i, true);
                         break;
                     }
@@ -76,13 +75,12 @@ public class MasterWho extends ListPage {
     protected void onItemClick(ListView list, int position) {
 
         AdapterMembersList adapter = (AdapterMembersList) list.getAdapter();
-        Member member = adapter.getItem(position).getMember();
+        Member member = adapter.getItem(position);
 
         DraftTransaction draftTransaction = getParam().getDraftTransaction();
         if (draftTransaction.getCreditItems().size() == 0) {
             draftTransaction.addCreditItem(new DraftTransactionItem(member, 0, 0));
-        }
-        else {
+        } else {
             DraftTransactionItem draftTransactionItem = (DraftTransactionItem) draftTransaction.getCreditItems().First();
             draftTransactionItem.setMember(member);
         }

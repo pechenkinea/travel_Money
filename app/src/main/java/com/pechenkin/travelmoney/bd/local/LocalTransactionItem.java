@@ -8,8 +8,6 @@ import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.TableMembers;
-import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 
 public class LocalTransactionItem extends IdTableRow implements TransactionItem {

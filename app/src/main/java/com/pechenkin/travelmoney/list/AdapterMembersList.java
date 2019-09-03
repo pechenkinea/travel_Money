@@ -17,7 +17,6 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
-import com.pechenkin.travelmoney.page.cost.add.data.CostMember;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 import com.pechenkin.travelmoney.utils.MemberIcons;
 
@@ -25,7 +24,7 @@ import java.util.List;
 
 public class AdapterMembersList extends BaseAdapter {
 
-    private final List<CostMember> data;
+    private final List<Member> data;
     private static LayoutInflater inflater = null;
     private boolean showEditButton;
     private boolean showCheckBox = true;
@@ -34,12 +33,11 @@ public class AdapterMembersList extends BaseAdapter {
         this.showCheckBox = showCheckBox;
     }
 
-    public AdapterMembersList(Activity a, List<CostMember> dataList, boolean showEditButton) {
+    public AdapterMembersList(Activity a, List<Member> dataList, boolean showEditButton) {
         data = dataList;
         inflater = (LayoutInflater) a.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showEditButton = showEditButton;
     }
-
 
 
     public int getCount() {
@@ -47,7 +45,7 @@ public class AdapterMembersList extends BaseAdapter {
     }
 
 
-    public CostMember getItem(int position) {
+    public Member getItem(int position) {
         try {
             return data.get(position);
         } catch (Exception ex) {
@@ -57,7 +55,7 @@ public class AdapterMembersList extends BaseAdapter {
 
     public long getItemId(int position) {
         try {
-            return data.get(position).getMember().getId();
+            return data.get(position).getId();
         } catch (Exception ex) {
             return -1;
         }
@@ -66,7 +64,7 @@ public class AdapterMembersList extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        CostMember item = data.get(position);
+        Member item = data.get(position);
 
 
         ViewHolder holder;
@@ -81,14 +79,12 @@ public class AdapterMembersList extends BaseAdapter {
 
 
         if (showEditButton) {
-            holder.editButton.setOnClickListener(v ->
-                    PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam().setMember(item.getMember()))
-            );
-        }
-
-
-        if (showEditButton) {
             holder.editButton.setVisibility(View.VISIBLE);
+
+            holder.editButton.setOnClickListener(v ->
+                    PageOpener.INSTANCE.open(EditMemberPage.class, new PageParam().setMember(item))
+            );
+
         } else {
             holder.editButton.setVisibility(View.INVISIBLE);
         }
@@ -98,27 +94,23 @@ public class AdapterMembersList extends BaseAdapter {
         }
 
 
-        Member row = item.getMember();
-        if (row != null) {
-            holder.name.setText(row.getName());
+        holder.name.setText(item.getName());
 
-            holder.name.setTextColor(row.getColor());
+        holder.name.setTextColor(item.getColor());
 
-            holder.icon.setVisibility(View.VISIBLE);
-            holder.icon.setImageDrawable(MemberIcons.getIconById(row.getIcon()));
-            holder.icon.setColorFilter(row.getColor());
+        holder.icon.setVisibility(View.VISIBLE);
+        holder.icon.setImageDrawable(MemberIcons.getIconById(item.getIcon()));
+        holder.icon.setColorFilter(item.getColor());
 
 
-            final ListView lv = (ListView) parent;
-            SparseBooleanArray sbArray = lv.getCheckedItemPositions();
-            boolean checked = sbArray.get(position, false);
-            holder.memberSumText.setVisibility(View.INVISIBLE);
-            if (checked) {
-                holder.check.setImageResource(R.drawable.ic_check_on_24);
-            } else {
-                holder.check.setImageResource(R.drawable.ic_check_off_24);
-            }
-
+        final ListView lv = (ListView) parent;
+        SparseBooleanArray sbArray = lv.getCheckedItemPositions();
+        boolean checked = sbArray.get(position, false);
+        holder.memberSumText.setVisibility(View.INVISIBLE);
+        if (checked) {
+            holder.check.setImageResource(R.drawable.ic_check_on_24);
+        } else {
+            holder.check.setImageResource(R.drawable.ic_check_off_24);
         }
 
 

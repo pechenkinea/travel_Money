@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.export.formats;
 
 import com.pechenkin.travelmoney.BuildConfig;
+import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
 import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
@@ -8,7 +9,6 @@ import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.transaction.Transaction;
-import com.pechenkin.travelmoney.transaction.list.TotalItem;
 import com.pechenkin.travelmoney.transaction.processing.CostIterable;
 import com.pechenkin.travelmoney.transaction.processing.ProcessIterate;
 import com.pechenkin.travelmoney.transaction.processing.calculation.Calculation;
@@ -34,7 +34,7 @@ public class TotalDebt implements ExportFormat {
         AllSum allSumIteration = new AllSum();
 
         ProcessIterate.doIterate(allTransactions, new CostIterable[]{calc, total, allSumIteration});
-        List<TotalItem> calculateCosts = calc.getResult();
+        List<CostListItem> calculateCosts = calc.getResult();
         List<Total.MemberSum> totalResult = total.getResult();
         int allSum = allSumIteration.getSum();
 
@@ -52,11 +52,8 @@ public class TotalDebt implements ExportFormat {
 
             result.append("Кто кому сколько должен:\n");
 
-            for (TotalItem totalItem : calculateCosts) {
-                Member member = totalItem.getTransaction().getCreditItems().First().getMember();
-                Member toMember =  totalItem.getTransaction().getDebitItems().First().getMember();
-
-                result.append(member.getName()).append(" --> ").append(toMember.getName()).append(" ").append(Help.kopToTextRub(totalItem.getTransaction().getSum())).append("\n");
+            for (CostListItem totalItem : calculateCosts) {
+                result.append(totalItem.toString()).append("\n");
             }
         }
 

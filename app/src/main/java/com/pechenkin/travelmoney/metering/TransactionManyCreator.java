@@ -1,8 +1,6 @@
 package com.pechenkin.travelmoney.metering;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
@@ -10,9 +8,7 @@ import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.TripManager;
-import com.pechenkin.travelmoney.bd.local.table.Namespace;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 

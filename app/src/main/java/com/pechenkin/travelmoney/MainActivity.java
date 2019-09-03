@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -79,28 +77,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public String photoFileUri = null;
-
     public static final int TAKE_COST_PHOTO = 2;
     public static final int VOICE_RECOGNITION_REQUEST_CODE = 3;
+
+    private PhotoComplete photoComplete = null;
+
+    public void setPhotoComplete(PhotoComplete photoComplete) {
+        this.photoComplete = photoComplete;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-
-            // если это результаты отправки на получение фото
-            if (requestCode == TAKE_COST_PHOTO) {
-                TextView textDir = findViewById(R.id.cost_dir_textView);
-                if (photoFileUri != null) {
-                    textDir.setText(photoFileUri);
-                    MainActivity.INSTANCE.findViewById(R.id.hasPhoto).setVisibility(View.VISIBLE);
-                    photoFileUri = null;
+        // если это результаты отправки на получение фото
+        if (requestCode == TAKE_COST_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                if (photoComplete != null) {
+                    photoComplete.run();
                 }
             }
-            // если это результаты распознавания речи
-            else if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
+            photoComplete = null;
+        }
+
+        // если это результаты распознавания речи
+        if (requestCode == VOICE_RECOGNITION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
                 // получаем список текстовых строк - результат распознавания
                 // строк может быть несколько, так как не всегда удается точно распознать речь
                 // более релевантные результаты идут в начале списка
@@ -148,5 +151,9 @@ public class MainActivity extends AppCompatActivity {
 
     public interface RefreshActon {
         void refresh();
+    }
+
+    public interface PhotoComplete {
+        void run();
     }
 }
