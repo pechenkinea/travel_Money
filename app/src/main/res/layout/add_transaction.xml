@@ -10,15 +10,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/memberCostInfo"
@@ -64,7 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/Sum"
-                        android:imeOptions="actionNext"
+                        android:imeOptions="actionDone"
                         android:inputType="numberDecimal"
                         tools:text="234.56" />
 
@@ -78,11 +78,9 @@
                     android:layout_weight="1"
                     android:background="@drawable/edit_button_background"
                     android:padding="12dp"
-                    app:srcCompat="@drawable/ic_camera_add_24"
-                    />
+                    app:srcCompat="@drawable/ic_camera_add_24" />
 
             </LinearLayout>
-
 
 
             <TextView
@@ -91,7 +89,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/photo"
                 android:visibility="gone" />
-
 
 
         </LinearLayout>
@@ -121,7 +118,6 @@
             android:id="@+id/member_checkAll_button"
             style="@style/secondFab"
             app:srcCompat="@drawable/ic_list_24dp" />
-
 
 
     </FrameLayout>

@@ -28,7 +28,7 @@ public interface Namespace {
     String FIELD_PROCESSED = "processed";
     String FIELD_TRIP = "trip";
     String FIELD_MEMBER = "member";
-    String FIELD_TO_MEMBER = "to_member";
+    //String FIELD_TO_MEMBER = "to_member";
     String FIELD_SUM = "sum";
 
     String FIELD_CREDIT = "credit";

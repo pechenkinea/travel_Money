@@ -27,8 +27,7 @@ public class OneItem extends TransactionListItem {
         Member member = this.transaction.getCreditItems().First().getMember();
         Member toMember = this.transaction.getDebitItems().First().getMember();
 
-        String dateText = "";
-        dateText = Help.dateToDateTimeStr(this.transaction.getDate());
+        String dateText = Help.dateToDateTimeStr(this.transaction.getDate());
 
         String comment = dateText + "  " + this.transaction.getComment();
         holder.setComment(comment);

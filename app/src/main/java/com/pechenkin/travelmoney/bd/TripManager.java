@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class TripManager {
 
-    public static TripManager INSTANCE = new TripManager();
+    public static final TripManager INSTANCE = new TripManager();
 
     private Trip activeTrip = null;
 

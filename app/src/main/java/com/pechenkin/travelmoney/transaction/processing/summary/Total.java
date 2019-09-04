@@ -18,8 +18,8 @@ import java.util.Objects;
 
 public class Total implements CostIterable {
 
-    private LongSparseArray<MemberSum> members;
-    private List<MemberSum> result = new ArrayList<>();
+    private final LongSparseArray<MemberSum> members;
+    private final List<MemberSum> result = new ArrayList<>();
 
     public Total() {
         members = new LongSparseArray<>();

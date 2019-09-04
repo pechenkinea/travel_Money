@@ -33,8 +33,8 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
 
     private final Trip trip;
     private ProgressDialog processDialog;
-    private List<CostListItem> finalList = new ArrayList<>();
-    private boolean readOnly;
+    private final List<CostListItem> finalList = new ArrayList<>();
+    private final boolean readOnly;
 
     private final DoOnPostExecute doOnPostExecute;
 

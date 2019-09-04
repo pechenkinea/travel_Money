@@ -51,8 +51,6 @@ public class LineDiagram extends Base {
         int[] pieColors = new int[this.total.size() * 2];
         LegendEntry[] legendEntries = new LegendEntry[this.total.size()];
 
-
-        //String[] xValsLabels = new String[this.total.length * 2];
         int valuesIndex = 0;
         int legendEntriesIndex = 0;
         float[] values = new float[(this.total.size() * 2) - 1];

@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class TableTrip {
 
-    public static TableTrip INSTANCE = new TableTrip();
+    public static final TableTrip INSTANCE = new TableTrip();
 
     private TableTrip() {
 
@@ -124,10 +124,11 @@ public class TableTrip {
     public Date getStartTripDate(long t_id) {
         String query = String.format("SELECT MIN(%s) FROM %s WHERE %s = '%s'",
                 Namespace.FIELD_DATE,
-                Namespace.TABLE_COSTS,
+                Namespace.TABLE_TRANSACTION,
                 Namespace.FIELD_TRIP,
                 t_id
         );
+
         Date result = null;
 
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getReadableDatabase()) {
@@ -145,7 +146,7 @@ public class TableTrip {
     public Date getEndTripDate(long t_id) {
         String query = String.format("SELECT MAX(%s) FROM %s WHERE %s = '%s'",
                 Namespace.FIELD_DATE,
-                Namespace.TABLE_COSTS,
+                Namespace.TABLE_TRANSACTION,
                 Namespace.FIELD_TRIP,
                 t_id
         );

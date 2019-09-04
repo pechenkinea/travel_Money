@@ -6,9 +6,9 @@ public class MemberForTest implements Member {
 
     private static int idCounter = 1;
 
-    private int id;
-    private int color;
-    private String name;
+    private final int id;
+    private final int color;
+    private final String name;
 
     public MemberForTest(String name, int color){
         this.id = idCounter++;

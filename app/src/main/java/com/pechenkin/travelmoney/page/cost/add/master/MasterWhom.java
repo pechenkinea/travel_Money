@@ -189,7 +189,7 @@ public class MasterWhom extends ListPage {
         cost_sum.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(6, 2)});
 
         cost_sum.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 Help.hideKeyboard();
                 MainActivity.INSTANCE.findViewById(R.id.cost_sum).clearFocus();
                 MainActivity.INSTANCE.findViewById(R.id.cost_comment).clearFocus();

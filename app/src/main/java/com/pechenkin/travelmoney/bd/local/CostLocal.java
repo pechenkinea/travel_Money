@@ -22,8 +22,8 @@ public class CostLocal extends IdTableRow {
     public final Date date;
     public final Member member;
     public final Member to_member;
-    public boolean active;
-    public boolean repayment;
+    public final boolean active;
+    public final boolean repayment;
 
     public final double sum;
 

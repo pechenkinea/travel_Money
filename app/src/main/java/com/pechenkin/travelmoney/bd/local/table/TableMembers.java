@@ -12,7 +12,7 @@ import com.pechenkin.travelmoney.bd.local.MemberLocal;
 
 public class TableMembers {
 
-    public static TableMembers INSTANCE = new TableMembers();
+    public static final TableMembers INSTANCE = new TableMembers();
 
     private TableMembers() {
 

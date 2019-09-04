@@ -28,7 +28,7 @@ public class CostCreator {
     private final List<String> commentsList = new ArrayList<>();
 
 
-    private String comment;
+    private final String comment;
     private WordAction lastAction = WordAction.none;
 
     public CostCreator(String text, String comment) {
@@ -39,13 +39,13 @@ public class CostCreator {
     }
 
 
-    private DraftTransaction draftTransaction = new DraftTransaction();
+    private final DraftTransaction draftTransaction = new DraftTransaction();
 
     public DraftTransaction getDraftTransaction() {
         return draftTransaction;
     }
 
-    public String getComment() {
+    private String getComment() {
         if (comment.length() == 0) {
             return TextUtils.join(" ", commentsList).replaceAll(" {2}", " ").trim();
         } else {
@@ -65,6 +65,8 @@ public class CostCreator {
         }
 
         createCosts();
+
+        draftTransaction.setComment(getComment());
     }
 
     private void createCosts() {
@@ -254,11 +256,5 @@ public class CostCreator {
         }
         return null;
     }
-
-
-    public String getText() {
-        return text;
-    }
-
 
 }

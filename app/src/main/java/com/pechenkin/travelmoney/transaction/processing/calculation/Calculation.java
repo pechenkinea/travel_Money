@@ -25,11 +25,11 @@ public class Calculation implements CostIterable {
     //Погрешность
     private static final float deviation = 0.01f;
 
-    private LongSparseArray<MemberSum> members;
+    private final LongSparseArray<MemberSum> members;
     private List<CostListItem> result;
 
     //Нужно для того, что бы можно было считать не по id сотрудников а, например, по их цветам
-    private MemberUidGetterID memberUidGetter;
+    private final MemberUidGetterID memberUidGetter;
 
 
     public Calculation(boolean needGroupByColor) {

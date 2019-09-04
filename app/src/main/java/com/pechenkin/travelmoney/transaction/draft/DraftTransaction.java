@@ -16,8 +16,8 @@ public class DraftTransaction implements Transaction {
     private Date date = new Date();
     private String imageUrl = "";
     private boolean repayment = false;
-    private StreamList<TransactionItem> creditItems = new StreamList<>(new ArrayList<>());
-    private StreamList<TransactionItem> debitItems = new StreamList<>(new ArrayList<>());
+    private final StreamList<TransactionItem> creditItems = new StreamList<>(new ArrayList<>());
+    private final StreamList<TransactionItem> debitItems = new StreamList<>(new ArrayList<>());
 
     private DraftUpdateListener draftUpdateListener = null;
 
@@ -63,9 +63,7 @@ public class DraftTransaction implements Transaction {
     public void updateSum() {
         final int[] creditSum = new int[]{0};
 
-        getCreditItems().ForEach(transactionItem -> {
-            creditSum[0] += transactionItem.getCredit();
-        });
+        getCreditItems().ForEach(transactionItem -> creditSum[0] += transactionItem.getCredit());
 
 
         List<DraftTransactionItem> noChangeItems = new ArrayList<>();

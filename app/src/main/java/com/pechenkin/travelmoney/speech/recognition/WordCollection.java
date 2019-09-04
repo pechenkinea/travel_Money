@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * Created by pechenkin on 22.05.2018.
  */
 
-public class WordCollection {
+class WordCollection {
 
     static final String ME = "{me}";
     static final String ALL = "{all}";
@@ -19,8 +19,8 @@ public class WordCollection {
 
     private static final String HALF = "<half>";
 
-    private String[] words;
-    private int length;
+    private final String[] words;
+    private final int length;
     private int position = -1;
 
     private static final StringNumeric[] NUMERIC_NAMES = {

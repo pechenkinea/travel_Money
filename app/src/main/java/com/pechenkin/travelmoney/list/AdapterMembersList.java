@@ -26,7 +26,7 @@ public class AdapterMembersList extends BaseAdapter {
 
     private final List<Member> data;
     private static LayoutInflater inflater = null;
-    private boolean showEditButton;
+    private final boolean showEditButton;
     private boolean showCheckBox = true;
 
     public void setShowCheckBox(boolean showCheckBox) {

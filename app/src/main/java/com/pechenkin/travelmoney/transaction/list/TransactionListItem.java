@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class TransactionListItem implements CostListItem {
 
-    protected Transaction transaction;
+    Transaction transaction;
 
 
     TransactionListItem(Transaction transaction) {

@@ -14,11 +14,11 @@ public class LocalTransactionItem extends IdTableRow implements TransactionItem 
 
 
 
-    private long memberId;
+    private final long memberId;
     private Member member = null;
-    private int debit;
-    private int credit;
-    private long transactionId;
+    private final int debit;
+    private final int credit;
+    private final long transactionId;
 
 
     public LocalTransactionItem(Cursor c) {

@@ -20,7 +20,7 @@ import java.util.List;
 
 public class TransactionTable {
 
-    public static TransactionTable INSTANCE = new TransactionTable();
+    public static final TransactionTable INSTANCE = new TransactionTable();
 
     private TransactionTable() {
 

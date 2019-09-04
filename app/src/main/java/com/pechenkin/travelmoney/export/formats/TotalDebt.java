@@ -1,20 +1,23 @@
 package com.pechenkin.travelmoney.export.formats;
 
+import android.util.SparseArray;
+
 import com.pechenkin.travelmoney.BuildConfig;
-import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
-import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.transaction.Transaction;
+import com.pechenkin.travelmoney.transaction.adapter.CostListItem;
 import com.pechenkin.travelmoney.transaction.processing.CostIterable;
 import com.pechenkin.travelmoney.transaction.processing.ProcessIterate;
 import com.pechenkin.travelmoney.transaction.processing.calculation.Calculation;
 import com.pechenkin.travelmoney.transaction.processing.summary.AllSum;
 import com.pechenkin.travelmoney.transaction.processing.summary.Total;
+import com.pechenkin.travelmoney.utils.Help;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +57,43 @@ public class TotalDebt implements ExportFormat {
 
             for (CostListItem totalItem : calculateCosts) {
                 result.append(totalItem.toString()).append("\n");
+            }
+        }
+
+        // если есть группировка по цвету то в итог пишем кто имеет общий бюджет
+        if (TableSettings.INSTANCE.active(NamespaceSettings.GROUP_BY_COLOR)) {
+
+            SparseArray<List<Member>> membersGroupByColor = new SparseArray<>();
+
+            for (Total.MemberSum memberSum : totalResult) {
+                List<Member> colorMemberList = membersGroupByColor.get(memberSum.getMember().getColor());
+                if (colorMemberList == null) {
+                    colorMemberList = new ArrayList<>();
+                    membersGroupByColor.put(memberSum.getMember().getColor(), colorMemberList);
+                }
+                colorMemberList.add(memberSum.getMember());
+            }
+
+            StringBuilder groupColorText = new StringBuilder();
+            for (int i = 0; i < membersGroupByColor.size(); i++) {
+                List<Member> colorMemberList = membersGroupByColor.valueAt(i);
+                if (colorMemberList.size() > 1) {
+
+                    groupColorText.append(colorMemberList.get(0).getName());
+
+                    for (int mIndex = 1; mIndex < colorMemberList.size(); mIndex++){
+                        Member member = colorMemberList.get(mIndex);
+
+                        groupColorText.append(" + ").append(member.getName());
+                    }
+
+                    groupColorText.append("\n");
+                }
+            }
+
+
+            if (groupColorText.length() > 0){
+                result.append("\n\nОбщий бюджет:\n").append(groupColorText);
             }
         }
 

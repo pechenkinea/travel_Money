@@ -42,7 +42,7 @@ public class DefaultDiagram {
 
     }
 
-    private static Map<String, Class<? extends Diagram>> classCache = new HashMap<>();
+    private static final Map<String, Class<? extends Diagram>> classCache = new HashMap<>();
 
     private static Class<? extends Diagram> getDiagramClassByName(String diagramName) {
 

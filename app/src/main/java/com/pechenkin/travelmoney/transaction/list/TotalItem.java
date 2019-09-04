@@ -19,9 +19,9 @@ import com.pechenkin.travelmoney.utils.Help;
  */
 public class TotalItem extends TransactionListItem {
 
-    private Member member;
-    private Member toMember;
-    private int sum;
+    private final Member member;
+    private final Member toMember;
+    private final int sum;
 
 
     public TotalItem(Member member, Member toMember, int sum) {

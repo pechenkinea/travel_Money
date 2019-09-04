@@ -25,8 +25,8 @@ import java.util.List;
 
 public abstract class Base implements Diagram {
 
-    protected List<Total.MemberSum> total;
-    protected int sum;
+    protected final List<Total.MemberSum> total;
+    protected final int sum;
     protected Chart diagram = null;
     private OnDiagramSelect onDiagramSelect = null;
 
@@ -42,7 +42,7 @@ public abstract class Base implements Diagram {
         this.onDiagramSelectItem = onDiagramSelectItem;
     }
 
-    public Base(int sum, List<Total.MemberSum> total) {
+    protected Base(int sum, List<Total.MemberSum> total) {
         this.sum = sum;
         Collections.sort(total, (t1, t2) -> Integer.compare(t1.getMember().getColor(), t2.getMember().getColor()));
 

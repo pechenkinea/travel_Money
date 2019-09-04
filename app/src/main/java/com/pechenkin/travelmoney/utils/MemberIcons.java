@@ -13,7 +13,7 @@ public enum MemberIcons {
     MALE(0, R.drawable.ic_human_male_20x7),
     FEMALE(1, R.drawable.ic_human_female_20x9),
     MAN(2, R.drawable.ic_man_20x10),
-    HIKING(3, R.drawable.ic_hiking_24),
+    HIKING(3, R.drawable.ic_hiking_20x11),
     HAI(4, R.drawable.ic_hai_20x15),
     FAT(5, R.drawable.ic_human_fat_20x12);
 

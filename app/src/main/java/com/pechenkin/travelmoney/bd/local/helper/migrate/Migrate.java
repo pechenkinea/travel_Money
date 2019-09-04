@@ -88,10 +88,10 @@ public class Migrate {
     }
 
     public static class Sumator {
-        private double sumOne;
+        private final double sumOne;
         int returnValues = 0;
         int minGroupCount = 1;
-        int addOneCountInGroup;
+        final int addOneCountInGroup;
 
         public Sumator(double sumOne) {
             this.sumOne = sumOne;

@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class TripDecorator implements Trip {
 
-    protected Trip trip;
+    private final Trip trip;
 
     TripDecorator(Trip trip) {
         this.trip = trip;

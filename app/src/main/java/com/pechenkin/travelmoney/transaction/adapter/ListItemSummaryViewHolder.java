@@ -176,10 +176,6 @@ public class ListItemSummaryViewHolder {
         }
     }
 
-    void setEditButtonClickListener(View.OnClickListener clickListener){
-        this.listEditButton.setVisibility(View.VISIBLE);
-        this.listEditButton.setOnClickListener(clickListener);
-    }
 
     public TextView getTitle() {
         return title;

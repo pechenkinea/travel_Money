@@ -6,7 +6,7 @@ import com.pechenkin.travelmoney.bd.local.query.QueryResult;
 @Deprecated
 public class CostTable {
 
-    public static CostTable INSTANCE = new CostTable();
+    public static final CostTable INSTANCE = new CostTable();
 
     private CostTable() {
     }

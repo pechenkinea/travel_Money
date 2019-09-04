@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class DecimalDigitsInputFilter implements InputFilter {
 
 
-    private Pattern mPattern;
+    private final Pattern mPattern;
 
     public DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
         String regexp = "^\\d{1," + (digitsBeforeZero) + "}((\\.\\d{0," + digitsAfterZero + "})?|(\\.)?)";

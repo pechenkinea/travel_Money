@@ -6,7 +6,7 @@ import android.util.Log;
 /**
  * Created by pechenkin on 09.04.2018.
  */
-
+@SuppressWarnings("unused")
 class TimeMeter {
 
     private final String name;

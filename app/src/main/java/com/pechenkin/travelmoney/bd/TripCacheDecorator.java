@@ -48,7 +48,7 @@ public class TripCacheDecorator extends TripDecorator {
         return createdMember;
     }
 
-    private LongSparseArray<Member> memberByIdCache = new LongSparseArray<>();
+    private final LongSparseArray<Member> memberByIdCache = new LongSparseArray<>();
 
     @Override
     public Member getMemberById(long id) {

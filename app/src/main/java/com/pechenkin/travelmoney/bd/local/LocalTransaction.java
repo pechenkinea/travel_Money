@@ -18,10 +18,10 @@ public class LocalTransaction extends IdTableRow implements Transaction {
     private final String imageUrl;
     private final Date date;
     private boolean active;
-    private boolean repayment;
+    private final boolean repayment;
 
-    private StreamList<TransactionItem> creditItems = new StreamList<>(new ArrayList<>());
-    private StreamList<TransactionItem> debitItems = new StreamList<>(new ArrayList<>());
+    private final StreamList<TransactionItem> creditItems = new StreamList<>(new ArrayList<>());
+    private final StreamList<TransactionItem> debitItems = new StreamList<>(new ArrayList<>());
 
     public LocalTransaction(Cursor c) {
         super(c);

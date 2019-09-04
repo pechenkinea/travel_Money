@@ -12,6 +12,7 @@ import com.pechenkin.travelmoney.bd.TripManager;
 import java.util.List;
 import java.util.Random;
 
+@SuppressWarnings("unused ")
 public class TransactionManyCreator {
 
     private static int number = 0;

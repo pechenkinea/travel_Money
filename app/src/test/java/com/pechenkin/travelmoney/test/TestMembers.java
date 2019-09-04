@@ -20,7 +20,7 @@ public enum TestMembers {
 
 
 
-    private Member member;
+    private final Member member;
 
     TestMembers(Member member) {
         this.member = member;
