@@ -96,4 +96,16 @@ public class TotalItem extends TransactionListItem {
         return true;
     }
 
+
+    public Member getMember() {
+        return member;
+    }
+
+    public Member getToMember() {
+        return toMember;
+    }
+
+    public int getSum() {
+        return sum;
+    }
 }
