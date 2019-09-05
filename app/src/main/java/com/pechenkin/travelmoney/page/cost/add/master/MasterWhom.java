@@ -98,16 +98,18 @@ public class MasterWhom extends ListPage {
             setHasPhoto();
         }
 
-        if (draftTransaction.getDebitItems().size() == 0) {
+        StreamList<Member> tripMembers = new StreamList<>(TripManager.INSTANCE.getActiveTrip().getActiveMembers());
 
-            StreamList<Member> tripMembers = new StreamList<>(TripManager.INSTANCE.getActiveTrip().getActiveMembers());
+        if (draftTransaction.getDebitItems().size() == 0) {
 
             tripMembers.ForEach(member ->
                     draftTransaction.addDebitItem(new DraftTransactionItem(member, 0, 0))
             );
 
             draftTransaction.update();
-
+        } else {
+            tripMembers.Filter(member -> draftTransaction.getDebitItems().First(item -> item.getMember().equals(member)) == null)
+                    .ForEach(member -> draftTransaction.addDebitItem(new DraftTransactionItem(member, 0, 0).setDebit(0)));
         }
 
 

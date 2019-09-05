@@ -20,12 +20,13 @@ public class DraftTransactionItem implements TransactionItem {
         this.credit = credit;
     }
 
-    public void setDebit(int debit) {
+    public DraftTransactionItem setDebit(int debit) {
         this.debit = debit;
         isChange = true;
         if (updateListener != null) {
             updateListener.update();
         }
+        return this;
     }
 
     public void setMember(Member member) {
