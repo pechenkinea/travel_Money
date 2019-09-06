@@ -37,7 +37,7 @@ public class CostLocal extends IdTableRow {
         this.date = getDateColumnValue(Namespace.FIELD_DATE, c);
 
         this.member = TripManager.INSTANCE.getActiveTrip().getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
-        this.to_member = TripManager.INSTANCE.getActiveTrip().getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
+        this.to_member = TripManager.INSTANCE.getActiveTrip().getMemberById(getLongColumnValue(Namespace.FIELD_TO_MEMBER, c));
 
         this.active = getLongColumnValue(Namespace.FIELD_ACTIVE, c) == 1;
         this.repayment = getLongColumnValue(Namespace.FIELD_REPAYMENT, c) == 1;

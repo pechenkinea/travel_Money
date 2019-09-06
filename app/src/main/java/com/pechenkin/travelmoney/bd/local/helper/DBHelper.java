@@ -18,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 26);
+        super(context, Namespace.DB_NAME, null, 27);
     }
 
     @Override
@@ -229,10 +229,22 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE tmp_table_name;");
         }
 
-        //Отметка о том где лежат данные по поездке
+
+        //Исправление ошибки после обновления
         if (oldVersion < 26) {
+            db.execSQL("DELETE FROM " + Namespace.TABLE_TRANSACTION + ";");
+            db.execSQL("DELETE FROM " + Namespace.TABLE_TRANSACTION_ITEMS + ";");
+            db.execSQL("UPDATE " + Namespace.TABLE_SETTINGS +
+                    " SET " + Namespace.FIELD_VALUE + " = '1'" +
+                    " WHERE " + Namespace.FIELD_NAME + " = '" + NamespaceSettings.NEED_MIGRATION + "';"
+            );
+        }
+
+        //Отметка о том где лежат данные по поездке
+        if (oldVersion < 27) {
             db.execSQL("ALTER TABLE " + Namespace.TABLE_TRIPS + " ADD COLUMN " + Namespace.FIELD_STORE + " integer default '" + TripStore.LOCAL.toString() + "';");
         }
+
 
 
     }
