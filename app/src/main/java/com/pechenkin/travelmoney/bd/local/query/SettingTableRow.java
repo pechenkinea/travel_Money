@@ -14,7 +14,7 @@ public class SettingTableRow extends TableRow {
     public final String name;
     public final String value;
     public SettingTableRow(Cursor c) {
-        super();
+        super(c);
         this.value = getStringColumnValue(Namespace.FIELD_VALUE, c);
         name = getStringColumnValue(Namespace.FIELD_NAME, c);
     }

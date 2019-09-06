@@ -11,7 +11,8 @@ import java.util.Date;
 public class TableRow {
 
 
-    public TableRow() {
+    //Не удалять этот конструктор
+    public TableRow(Cursor c) {
 
     }
 

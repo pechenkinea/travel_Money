@@ -25,6 +25,7 @@ public interface Namespace {
     String FIELD_COLOR = "color";
     String FIELD_ICON = "icon";
     String FIELD_COMMENT = "comment";
+    String FIELD_STORE = "store";
     String FIELD_PROCESSED = "processed";
     String FIELD_TRIP = "trip";
     String FIELD_MEMBER = "member";

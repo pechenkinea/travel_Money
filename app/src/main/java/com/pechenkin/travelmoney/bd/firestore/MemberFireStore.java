@@ -1,0 +1,95 @@
+package com.pechenkin.travelmoney.bd.firestore;
+
+import android.graphics.Color;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.utils.Help;
+
+public class MemberFireStore implements Member {
+
+    private static int idCounter = 0;
+
+    private boolean active = true;
+    private String name;
+    private int color;
+    private int icon;
+    private final int id;
+    private final DocumentReference reference;
+
+    public MemberFireStore(String name, int color, int icon, DocumentReference reference) {
+        this.id = idCounter++;
+        this.name = name;
+        this.color = color;
+        this.icon = icon;
+        this.reference = reference;
+    }
+
+    public MemberFireStore(DocumentSnapshot member) {
+        this.id = idCounter++;
+        this.reference = member.getReference();
+        this.name = Help.toString(member.get("name"), "");
+        this.color = (int) Help.toLong(member.getLong("color"), Color.BLACK);
+        this.icon = (int) Help.toLong(member.getLong("icon"), 0);
+
+        this.active = Help.toBoolean(member.getBoolean("active"), true);
+
+    }
+
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public int getColor() {
+        return color;
+    }
+
+    @Override
+    public int getIcon() {
+        return icon;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void edit(String name, int color, int icon) {
+
+        this.reference.update(
+                "name", name,
+                "color", color,
+                "icon", icon
+        );
+
+        this.name = name;
+        this.color = color;
+        this.icon = icon;
+
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+
+        this.reference.update("active", active);
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof Member) {
+            return getId() == ((Member) obj).getId();
+        }
+        return false;
+    }
+}

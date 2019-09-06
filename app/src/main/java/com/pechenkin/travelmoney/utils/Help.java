@@ -32,6 +32,25 @@ public class Help {
     private Help() {
     }
 
+    static public String toString(Object o, String defaultValue) {
+        if (o != null) {
+            return o.toString();
+        }
+        return defaultValue;
+    }
+    static public long toLong(Long o, long defaultValue) {
+        if (o != null) {
+            return o;
+        }
+        return defaultValue;
+    }
+    static public boolean toBoolean(Boolean o, boolean defaultValue) {
+        if (o != null) {
+            return o;
+        }
+        return defaultValue;
+    }
+
     //скрыть клавиатуру с экрана
     static public void hideKeyboard() {
 
@@ -126,15 +145,16 @@ public class Help {
             return 0;
 
         double val = StringToDouble(value);
-        return (int)(val * 100);
+        return (int) (val * 100);
     }
 
     /**
      * Показывает пользователю число копеек в рублях
+     *
      * @param kop 12345
      * @return 123.45
      */
-    public static String kopToTextRub(int kop){
+    public static String kopToTextRub(int kop) {
         return doubleToString((double) kop / 100);
     }
 

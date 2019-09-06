@@ -33,7 +33,7 @@ public class TripCacheDecorator extends TripDecorator {
     @Override
     public StreamList<Member> getActiveMembers() {
         if (activeMembers == null) {
-            activeMembers = super.getActiveMembers();
+            activeMembers = getAllMembers().Filter(this::memberIsActive);
         }
         return activeMembers;
     }
@@ -62,13 +62,11 @@ public class TripCacheDecorator extends TripDecorator {
         return result;
     }
 
-    @Override
-    public boolean memberIsActive(Member member) {
-        return getActiveMembers().First(m -> m.equals(member)) != null;
-    }
 
     @Override
     public void setMemberActive(Member memberForDelete, boolean active) {
+
+        getActiveMembers();
 
         super.setMemberActive(memberForDelete, active);
 

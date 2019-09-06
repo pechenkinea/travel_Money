@@ -13,7 +13,7 @@ public class IdTableRow extends TableRow {
     public final long id;
 
     public IdTableRow(Cursor c) {
-        super();
+        super(c);
         id = getLongColumnValue(Namespace.FIELD_ID, c);
     }
 }

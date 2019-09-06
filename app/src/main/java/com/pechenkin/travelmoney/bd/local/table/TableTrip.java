@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.bd.TripStore;
 import com.pechenkin.travelmoney.bd.local.query.QueryResult;
 import com.pechenkin.travelmoney.bd.local.query.TableRow;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
@@ -50,11 +51,12 @@ public class TableTrip {
     }
 
 
-    public long add(String name, String comment) {
+    public TripTableRow add(String name, String comment, TripStore tripStore) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);
         cv.put(Namespace.FIELD_COMMENT, comment);
         cv.put(Namespace.FIELD_UUID, UUID.randomUUID().toString());
+        cv.put(Namespace.FIELD_STORE, tripStore.toString());
 
 
         long rowID;
@@ -62,7 +64,7 @@ public class TableTrip {
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
             rowID = db.insert(Namespace.TABLE_TRIPS, null, cv);
         }
-        return rowID;
+        return getById(rowID);
     }
 
     public void edit(long id, String name, String comment) {

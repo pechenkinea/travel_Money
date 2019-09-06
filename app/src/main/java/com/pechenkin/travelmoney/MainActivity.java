@@ -7,11 +7,11 @@ import android.speech.RecognizerIntent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.pechenkin.travelmoney.bd.local.helper.DBHelper;
+import com.pechenkin.travelmoney.bd.local.helper.migrate.Migrate;
 import com.pechenkin.travelmoney.bd.local.helper.migrate.TripsUpdate;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.TableSettings;
-import com.pechenkin.travelmoney.bd.local.helper.DBHelper;
-import com.pechenkin.travelmoney.bd.local.helper.migrate.Migrate;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterWhom;

@@ -7,6 +7,8 @@ import android.graphics.Color;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.TripStore;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 
@@ -16,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 25);
+        super(context, Namespace.DB_NAME, null, 26);
     }
 
     @Override
@@ -39,7 +41,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Namespace.FIELD_UUID + " text,"
                 + Namespace.FIELD_NAME + " text,"
                 + Namespace.FIELD_PROCESSED + " integer,"
-                + Namespace.FIELD_COMMENT + " text"
+                + Namespace.FIELD_COMMENT + " text,"
+                + Namespace.FIELD_STORE + " text"
                 + ");");
 
         db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS + " VALUES (1, '" + UUID.randomUUID().toString() + "','Отпуск', '1', 'Создана по умолчанию');");
@@ -60,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
         createTableTransaction(db);
     }
 
-    private void createTableTripsMembers(SQLiteDatabase db){
+    private void createTableTripsMembers(SQLiteDatabase db) {
         db.execSQL("create table " + Namespace.TABLE_TRIPS_MEMBERS + " ("
                 + "trip integer not null,"
                 + "member integer not null"
@@ -224,6 +227,11 @@ public class DBHelper extends SQLiteOpenHelper {
             createTableTripsMembers(db);
             db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " SELECT * FROM tmp_table_name;");
             db.execSQL("DROP TABLE tmp_table_name;");
+        }
+
+        //Отметка о том где лежат данные по поездке
+        if (oldVersion < 26) {
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRIPS + " ADD COLUMN " + Namespace.FIELD_STORE + " integer default '" + TripStore.LOCAL.toString() + "';");
         }
 
 

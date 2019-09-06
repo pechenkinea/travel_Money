@@ -1,5 +1,7 @@
 package com.pechenkin.travelmoney.bd;
 
+import com.pechenkin.travelmoney.bd.firestore.TripFireStore;
+import com.pechenkin.travelmoney.bd.firestore.documents.TripDocument;
 import com.pechenkin.travelmoney.bd.local.TripLocal;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 import com.pechenkin.travelmoney.bd.local.table.TableTrip;
@@ -25,9 +27,13 @@ public class TripManager {
         return activeTrip;
     }
 
-    public Trip add(String name, String comment) {
-        long id = TableTrip.INSTANCE.add(name, comment);
-        TripTableRow tripRow = TableTrip.INSTANCE.getById(id);
+    public Trip add(String name, String comment, TripStore tripStore) {
+        TripTableRow tripRow = TableTrip.INSTANCE.add(name, comment, tripStore);
+
+        if (tripStore == TripStore.FIRESTORE) {
+            TripDocument.INSTANCE.add(tripRow.uuid, tripRow.name, tripRow.comment);
+        }
+
         return createTripByTripRow(tripRow);
     }
 
@@ -57,7 +63,11 @@ public class TripManager {
      * Тут должны быть все проверки. Локальная или удаленная поездка
      */
     private Trip createTripByTripRow(TripTableRow trip) {
-        return new TripCacheDecorator(new TripLocal(trip));
+        if (trip.tripStore == TripStore.FIRESTORE) {
+            return new TripCacheDecorator(new TripFireStore(trip.uuid, trip.name, trip.comment));
+        } else {
+            return new TripCacheDecorator(new TripLocal(trip));
+        }
     }
 
 
