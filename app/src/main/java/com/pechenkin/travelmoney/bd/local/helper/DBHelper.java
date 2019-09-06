@@ -16,7 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 25);
+        super(context, Namespace.DB_NAME, null, 26);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
         createTableTransaction(db);
     }
 
-    private void createTableTripsMembers(SQLiteDatabase db){
+    private void createTableTripsMembers(SQLiteDatabase db) {
         db.execSQL("create table " + Namespace.TABLE_TRIPS_MEMBERS + " ("
                 + "trip integer not null,"
                 + "member integer not null"
@@ -224,6 +224,16 @@ public class DBHelper extends SQLiteOpenHelper {
             createTableTripsMembers(db);
             db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " SELECT * FROM tmp_table_name;");
             db.execSQL("DROP TABLE tmp_table_name;");
+        }
+
+        //Исправление ошибки после обновления
+        if (oldVersion < 26) {
+            db.execSQL("DELETE FROM " + Namespace.TABLE_TRANSACTION + ";");
+            db.execSQL("DELETE FROM " + Namespace.TABLE_TRANSACTION_ITEMS + ";");
+            db.execSQL("UPDATE " + Namespace.TABLE_SETTINGS +
+                    " SET " + Namespace.FIELD_VALUE + " = '1'" +
+                    " WHERE " + Namespace.FIELD_NAME + " = '" + NamespaceSettings.NEED_MIGRATION + "';"
+            );
         }
 
 
