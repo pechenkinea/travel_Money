@@ -27,8 +27,8 @@ public class TripManager {
         return activeTrip;
     }
 
-    public Trip add(String name, String comment, TripStore tripStore) {
-        TripTableRow tripRow = TableTrip.INSTANCE.add(name, comment, tripStore);
+    public Trip add(String name, String comment, TripStore tripStore, String uuid) {
+        TripTableRow tripRow = TableTrip.INSTANCE.add(name, comment, tripStore, uuid);
 
         if (tripStore == TripStore.FIRESTORE) {
             TripDocument.INSTANCE.add(tripRow.uuid);

@@ -51,11 +51,15 @@ public class TableTrip {
     }
 
 
-    public TripTableRow add(String name, String comment, TripStore tripStore) {
+    public TripTableRow add(String name, String comment, TripStore tripStore, String uuid) {
+
+        if (uuid.length() == 0){
+            uuid = UUID.randomUUID().toString();
+        }
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);
         cv.put(Namespace.FIELD_COMMENT, comment);
-        cv.put(Namespace.FIELD_UUID, UUID.randomUUID().toString());
+        cv.put(Namespace.FIELD_UUID, uuid);
         cv.put(Namespace.FIELD_STORE, tripStore.toString());
 
 

@@ -1,5 +1,6 @@
 package com.pechenkin.travelmoney.page.trip;
 
+import android.view.View;
 import android.widget.CheckBox;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,6 +26,20 @@ public class AddTripPage extends BaseTripPage {
     @Override
     public void addEvents() {
 
+        CheckBox isRemote = MainActivity.INSTANCE.findViewById(R.id.trip_remote_check);
+
+        TextInputEditText remoteUuid = MainActivity.INSTANCE.findViewById(R.id.trip_remote_uuid);
+
+        isRemote.setOnCheckedChangeListener((compoundButton, check) -> {
+
+            if (check){
+                remoteUuid.setVisibility(View.VISIBLE);
+            } else {
+                remoteUuid.setText("");
+                remoteUuid.setVisibility(View.GONE);
+            }
+
+        });
 
         FloatingActionButton commitButton = MainActivity.INSTANCE.findViewById(R.id.trip_commit_button);
         commitButton.setOnClickListener(v -> {
@@ -37,15 +52,15 @@ public class AddTripPage extends BaseTripPage {
             }
 
             TripStore tripStore;
-            CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.trip_remote_check);
-            if (isActive.isChecked()) {
+
+            if (isRemote.isChecked()) {
                 tripStore = TripStore.FIRESTORE;
             } else {
                 tripStore = TripStore.LOCAL;
             }
 
 
-            Trip t = TripManager.INSTANCE.add(strName, getTextInputEditText(trComment), tripStore);
+            Trip t = TripManager.INSTANCE.add(strName, getTextInputEditText(trComment), tripStore, getTextInputEditText(remoteUuid));
             TripManager.INSTANCE.setActive(t);
             PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members));
         });

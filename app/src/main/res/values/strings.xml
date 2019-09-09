@@ -54,5 +54,6 @@
     <string name="repayment">Возврат долга</string>
     <string name="other_lib">Сторонее ПО</string>
     <string name="isRemoteTrip">С возможностью синхронизации</string>
+    <string name="uuid">Идентификатор поездки для подключения</string>
 
 </resources>
