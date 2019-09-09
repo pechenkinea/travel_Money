@@ -115,6 +115,13 @@ public class TableTrip {
 
         return result.getFirstRow();
     }
+    public TripTableRow getByUuid(String uuid) {
+        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_UUID + " = '" + uuid + "'";
+
+        QueryResult<TripTableRow> result = new QueryResult<>(sql, TripTableRow.class);
+
+        return result.getFirstRow();
+    }
 
     public Boolean isMemberInTrip(long tripId, long memberId) {
         if (tripId < 0 || memberId < 0)

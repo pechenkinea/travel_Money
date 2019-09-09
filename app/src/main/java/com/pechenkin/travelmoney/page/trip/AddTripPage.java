@@ -10,6 +10,8 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.bd.TripStore;
+import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
+import com.pechenkin.travelmoney.bd.local.table.TableTrip;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
@@ -32,7 +34,7 @@ public class AddTripPage extends BaseTripPage {
 
         isRemote.setOnCheckedChangeListener((compoundButton, check) -> {
 
-            if (check){
+            if (check) {
                 remoteUuid.setVisibility(View.VISIBLE);
             } else {
                 remoteUuid.setText("");
@@ -49,6 +51,18 @@ public class AddTripPage extends BaseTripPage {
             if (strName.length() == 0) {
                 Help.message("Введите название");
                 Help.setActiveEditText(R.id.trip_name);
+                return;
+            }
+
+            String uuid = getTextInputEditText(remoteUuid).trim();
+
+            if (uuid.length() > 0) {
+                TripTableRow existTrip = TableTrip.INSTANCE.getByUuid(uuid);
+                if (existTrip != null) {
+                    Help.message("Поездка с таким id уже добавлена. (" + existTrip.name + ")");
+                    Help.setActiveEditText(R.id.trip_remote_uuid);
+                    return;
+                }
             }
 
             TripStore tripStore;
@@ -59,8 +73,7 @@ public class AddTripPage extends BaseTripPage {
                 tripStore = TripStore.LOCAL;
             }
 
-
-            Trip t = TripManager.INSTANCE.add(strName, getTextInputEditText(trComment), tripStore, getTextInputEditText(remoteUuid));
+            Trip t = TripManager.INSTANCE.add(strName, getTextInputEditText(trComment), tripStore, uuid);
             TripManager.INSTANCE.setActive(t);
             PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members));
         });

@@ -93,6 +93,16 @@ public class EditTripPage extends BaseTripPage {
             isActive.setChecked(false);
 
 
+
+
+        if (trip.getUUID().length() > 0) {
+            TextInputEditText remoteUuid = MainActivity.INSTANCE.findViewById(R.id.trip_remote_uuid);
+            remoteUuid.setText(trip.getUUID());
+            remoteUuid.setVisibility(View.VISIBLE);
+            remoteUuid.setEnabled(false);
+        }
+
+
         return true;
     }
 
