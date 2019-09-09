@@ -3,24 +3,31 @@ package com.pechenkin.travelmoney.bd.firestore;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.firestore.documents.MemberDocument;
+import com.pechenkin.travelmoney.bd.firestore.documents.TransactionDocument;
+import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
+import com.pechenkin.travelmoney.bd.local.table.TableTrip;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class TripFireStore implements Trip {
 
-    private final String comment;
-    private final String name;
+    private String comment;
+    private String name;
     private final String uuid;
+    private final long id;
 
-    public TripFireStore(String uuid, String name, String comment) {
-        this.comment = comment;
-        this.name = name;
-        this.uuid = uuid;
+
+    public TripFireStore(TripTableRow trip) {
+
+        this.comment = trip.comment;
+        this.name = trip.name;
+        this.uuid = trip.uuid;
+        this.id = trip.id;
+
     }
 
     @Override
@@ -40,7 +47,9 @@ public class TripFireStore implements Trip {
 
     @Override
     public void edit(String name, String comment) {
-        //TODO реализовать
+        TableTrip.INSTANCE.edit(this.id, name, comment);
+        this.name = name;
+        this.comment = comment;
     }
 
     @Override
@@ -97,12 +106,14 @@ public class TripFireStore implements Trip {
 
     @Override
     public StreamList<Transaction> getTransactions() {
-        return new StreamList<>(new ArrayList<>()); //TODO реализовать
+        return new StreamList<>(
+                TransactionDocument.INSTANCE.getTransactionsByTrip(this.uuid)
+        );
     }
 
     @Override
     public Transaction addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
-        return null; //TODO реализовать
+        return TransactionDocument.INSTANCE.addTransaction(this.uuid, draftTransaction);
     }
 
 

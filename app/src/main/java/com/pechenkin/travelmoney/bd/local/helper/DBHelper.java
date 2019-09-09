@@ -7,7 +7,6 @@ import android.graphics.Color;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.TripStore;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;

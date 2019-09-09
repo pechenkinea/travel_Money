@@ -31,7 +31,7 @@ public class TripManager {
         TripTableRow tripRow = TableTrip.INSTANCE.add(name, comment, tripStore);
 
         if (tripStore == TripStore.FIRESTORE) {
-            TripDocument.INSTANCE.add(tripRow.uuid, tripRow.name, tripRow.comment);
+            TripDocument.INSTANCE.add(tripRow.uuid);
         }
 
         return createTripByTripRow(tripRow);
@@ -64,7 +64,7 @@ public class TripManager {
      */
     private Trip createTripByTripRow(TripTableRow trip) {
         if (trip.tripStore == TripStore.FIRESTORE) {
-            return new TripCacheDecorator(new TripFireStore(trip.uuid, trip.name, trip.comment));
+            return new TripCacheDecorator(new TripFireStore(trip));
         } else {
             return new TripCacheDecorator(new TripLocal(trip));
         }

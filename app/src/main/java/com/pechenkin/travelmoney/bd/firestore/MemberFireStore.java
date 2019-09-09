@@ -17,13 +17,15 @@ public class MemberFireStore implements Member {
     private int icon;
     private final int id;
     private final DocumentReference reference;
+    private final String uuid;
 
-    public MemberFireStore(String name, int color, int icon, DocumentReference reference) {
+    public MemberFireStore(String name, int color, int icon, String uuid, DocumentReference reference) {
         this.id = idCounter++;
         this.name = name;
         this.color = color;
         this.icon = icon;
         this.reference = reference;
+        this.uuid = uuid;
     }
 
     public MemberFireStore(DocumentSnapshot member) {
@@ -35,8 +37,13 @@ public class MemberFireStore implements Member {
 
         this.active = Help.toBoolean(member.getBoolean("active"), true);
 
+        this.uuid = member.getId();
+
     }
 
+    public String getUuid() {
+        return uuid;
+    }
 
     @Override
     public long getId() {
@@ -87,8 +94,8 @@ public class MemberFireStore implements Member {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj instanceof Member) {
-            return getId() == ((Member) obj).getId();
+        if (obj instanceof MemberFireStore) {
+            return uuid.equals(((MemberFireStore) obj).uuid);
         }
         return false;
     }

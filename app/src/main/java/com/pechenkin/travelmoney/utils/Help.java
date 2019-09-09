@@ -51,6 +51,13 @@ public class Help {
         return defaultValue;
     }
 
+    static public Date toDate(Date o, Date defaultValue) {
+        if (o != null) {
+            return o;
+        }
+        return defaultValue;
+    }
+
     //скрыть клавиатуру с экрана
     static public void hideKeyboard() {
 

@@ -15,14 +15,9 @@ public class TripDocument {
 
     }
 
-    public void add(String uuid, String name, String comment) {
+    public void add(String uuid) {
         Map<String, Object> data1 = new HashMap<>();
-        data1.put("name", name);
-        data1.put("comment", comment);
-
         db.collection("trips").document(uuid).set(data1);
     }
-
-
 
 }
