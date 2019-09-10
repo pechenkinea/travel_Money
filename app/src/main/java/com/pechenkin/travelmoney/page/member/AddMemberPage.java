@@ -11,6 +11,7 @@ import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.TripManager;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 
 /**
@@ -39,18 +40,26 @@ public class AddMemberPage extends BaseMemberPage {
         if (name.length() > 0) {
             Button buttonColor = MainActivity.INSTANCE.findViewById(R.id.buttonSelectColor);
             Drawable background = buttonColor.getBackground();
-            int color = 0;
-            if (background instanceof ColorDrawable)
+            int color;
+            if (background instanceof ColorDrawable) {
                 color = ((ColorDrawable) background).getColor();
+            } else {
+                color = 0;
+            }
 
 
             String icon = ((TextView) MainActivity.INSTANCE.findViewById(R.id.iconId)).getText().toString();
 
-            Member member = TripManager.INSTANCE.getActiveTrip().createMember(name, color, (int) Help.StringToDouble(icon));
-            TripManager.INSTANCE.getActiveTrip().setMemberActive(member, true);
-            Help.message("Успешно");
+            new RunWithProgressBar<>(
+                    () -> {
+                        Member member = TripManager.INSTANCE.getActiveTrip().createMember(name, color, (int) Help.StringToDouble(icon));
+                        TripManager.INSTANCE.getActiveTrip().setMemberActive(member, true);
 
-            clickBackButton();
+                        return null;
+                    },
+                    o -> clickBackButton()
+            );
+
         } else {
             Help.message("Введите имя");
             Help.setActiveEditText(getFocusFieldId());

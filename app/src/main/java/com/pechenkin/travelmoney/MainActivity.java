@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             TripsUpdate.updateUUID();
             TableSettings.INSTANCE.setActive(NamespaceSettings.NEED_ADD_TRIPS_UUID, false);
         }
+
         PageOpener.INSTANCE.open(MainPage.class);
 
 

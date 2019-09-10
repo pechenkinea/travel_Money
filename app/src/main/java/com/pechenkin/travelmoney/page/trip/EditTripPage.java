@@ -13,6 +13,7 @@ import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.utils.Help;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -39,19 +40,24 @@ public class EditTripPage extends BaseTripPage {
             }
 
 
-
             Trip trip = getParam().getTrip();
 
             if (trip != null) {
-                trip.edit(strName, getTextInputEditText(trComment));
-                CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
 
-                if (isActive.isChecked())
-                    TripManager.INSTANCE.setActive(getParam().getTrip());
+                new RunWithProgressBar<>(
+                        () -> {
+                            trip.edit(strName, getTextInputEditText(trComment));
+                            CheckBox isActive = MainActivity.INSTANCE.findViewById(R.id.edit_trip_checkAction);
 
-                Help.message("Сохранено");
+                            if (isActive.isChecked()) {
+                                TripManager.INSTANCE.setActive(getParam().getTrip());
+                            }
+                            return null;
+                        },
+                        o -> PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members))
+                );
 
-                PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members));
+
             } else {
                 Help.message("Ошибка");
             }
@@ -91,8 +97,6 @@ public class EditTripPage extends BaseTripPage {
             isActive.setChecked(true);
         else
             isActive.setChecked(false);
-
-
 
 
         if (trip.getUUID().length() > 0) {

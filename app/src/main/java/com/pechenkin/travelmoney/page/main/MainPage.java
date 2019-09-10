@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.page.BasePage;
 import com.pechenkin.travelmoney.page.main.fragment.BaseMainPageFragment;
@@ -13,8 +12,7 @@ import com.pechenkin.travelmoney.page.main.fragment.CostListFragment;
 import com.pechenkin.travelmoney.page.main.fragment.MembersListFragment;
 import com.pechenkin.travelmoney.page.main.fragment.OtherFragment;
 import com.pechenkin.travelmoney.page.main.fragment.TripsListFragment;
-
-import java.util.List;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 public class MainPage extends BasePage {
     @Override
@@ -47,15 +45,21 @@ public class MainPage extends BasePage {
                 renderFragment(new MembersListFragment());
             }
         } else {
-            List<Member> membersByActiveTrip = TripManager.INSTANCE.getActiveTrip().getActiveMembers();
-            //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
-            if (membersByActiveTrip.size() < 2) {
-                navView.setSelectedItemId(R.id.navigation_members);
-                renderFragment(new MembersListFragment());
-            } else {
-                navView.setSelectedItemId(R.id.navigation_list);
-                renderFragment(new CostListFragment());
-            }
+
+            new RunWithProgressBar<>(
+                    () -> TripManager.INSTANCE.getActiveTrip().getActiveMembers(),
+                    membersByActiveTrip -> {
+                        //Если в текущей поездке не указаны участники то по умолчанию открываем страничку с перечнем участников
+                        if (membersByActiveTrip.size() < 2) {
+                            navView.setSelectedItemId(R.id.navigation_members);
+                            renderFragment(new MembersListFragment());
+                        } else {
+                            navView.setSelectedItemId(R.id.navigation_list);
+                            renderFragment(new CostListFragment());
+                        }
+                    }
+            );
+
         }
 
 
@@ -76,7 +80,6 @@ public class MainPage extends BasePage {
             navView.setSelectedItemId(R.id.navigation_list);
         }
     }
-
 
 
     @Override
@@ -117,7 +120,7 @@ public class MainPage extends BasePage {
     /**
      * Запускает отрисовку фрагмента в отдельном потоке, что бы не лагали кнопки меню ели долго отрисовывается фрагмент
      */
-    private void renderFragment(BaseMainPageFragment fragment){
+    private void renderFragment(BaseMainPageFragment fragment) {
         Runnable runnable = new FragmentLoader(fragment);
         new Thread(runnable).start();
     }

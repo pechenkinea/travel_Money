@@ -13,6 +13,7 @@ import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 /**
  * Created by pechenkin on 20.04.2018.
@@ -35,7 +36,7 @@ public class EditMemberPage extends BaseMemberPage {
 
 
         Member findMember = TripManager.INSTANCE.getActiveTrip().getMemberByName(name);
-        if (findMember != null && !findMember.equals(getParam().getMember())){
+        if (findMember != null && !findMember.equals(getParam().getMember())) {
             Help.message("Имя занято другим участником");
             Help.setActiveEditText(getFocusFieldId());
             return;
@@ -50,9 +51,16 @@ public class EditMemberPage extends BaseMemberPage {
 
         Member member = getParam().getMember();
         if (member != null) {
-            member.edit(name, color, (int) Help.StringToDouble(icon));
-            Help.message("Успешно");
-            PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members));
+
+            new RunWithProgressBar<>(
+                    () -> {
+                        member.edit(name, color, (int) Help.StringToDouble(icon));
+                        return null;
+                    },
+                    o -> PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members))
+            );
+
+
         } else {
             Help.message("Ошибка");
         }

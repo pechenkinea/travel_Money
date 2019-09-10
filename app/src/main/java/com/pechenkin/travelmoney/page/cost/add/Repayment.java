@@ -18,6 +18,7 @@ import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
 import com.pechenkin.travelmoney.utils.AfterTextWatcher;
 import com.pechenkin.travelmoney.utils.DecimalDigitsInputFilter;
 import com.pechenkin.travelmoney.utils.Help;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 public class Repayment extends BasePage {
 
@@ -55,8 +56,14 @@ public class Repayment extends BasePage {
             ((DraftTransactionItem) draftTransaction.getCreditItems().get(0)).setCredit(sumInt);
         }
 
-        TripManager.INSTANCE.getActiveTrip().addTransaction(draftTransaction);
-        PageOpener.INSTANCE.open(MainPage.class);
+        new RunWithProgressBar<>(
+                () -> {
+                    TripManager.INSTANCE.getActiveTrip().addTransaction(draftTransaction);
+                    return null;
+                },
+                o -> PageOpener.INSTANCE.open(MainPage.class)
+        );
+
 
     }
 

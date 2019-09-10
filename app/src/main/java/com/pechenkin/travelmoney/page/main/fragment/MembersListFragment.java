@@ -13,6 +13,7 @@ import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.member.AddMemberPage;
 import com.pechenkin.travelmoney.page.member.EditMemberPage;
 import com.pechenkin.travelmoney.utils.Help;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,43 +57,48 @@ public class MembersListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        List<Member> members = TripManager.INSTANCE.getActiveTrip().getAllMembers();
-        ListView list = fragmentView.findViewById(R.id.list_members);
-        if (list != null) {
-            if (members.size() == 0) {
-                Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
-                list.setAdapter(null);
-            } else {
 
-                // сортируем так, что бы те, кто в текущей поездке отображались сверху
-                Collections.sort(members, (m1, m2) -> {
+        new RunWithProgressBar<>(
+                () -> TripManager.INSTANCE.getActiveTrip().getAllMembers(),
+                members -> {
 
-                    boolean m1InTRip = TripManager.INSTANCE.getActiveTrip().memberIsActive(m1);
-                    boolean m2InTRip = TripManager.INSTANCE.getActiveTrip().memberIsActive(m2);
+                    ListView list = fragmentView.findViewById(R.id.list_members);
+                    if (list != null) {
+                        if (members.size() == 0) {
+                            Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
+                            list.setAdapter(null);
+                        } else {
 
-                    if (m1InTRip && !m2InTRip) {
-                        return -1;
-                    } else if (!m1InTRip && m2InTRip) {
-                        return 1;
+                            // сортируем так, что бы те, кто в текущей поездке отображались сверху
+                            Collections.sort(members, (m1, m2) -> {
+
+                                boolean m1InTRip = TripManager.INSTANCE.getActiveTrip().memberIsActive(m1);
+                                boolean m2InTRip = TripManager.INSTANCE.getActiveTrip().memberIsActive(m2);
+
+                                if (m1InTRip && !m2InTRip) {
+                                    return -1;
+                                } else if (!m1InTRip && m2InTRip) {
+                                    return 1;
+                                }
+
+                                return Long.compare(m1.getId(), m2.getId());
+                            });
+
+
+                            AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, members, true);
+                            list.setAdapter(adapter);
+
+                            for (int i = 0; i < adapter.getCount(); i++) {
+                                Member member = adapter.getItem(i);
+
+                                if (TripManager.INSTANCE.getActiveTrip().memberIsActive(member)) {
+                                    list.setItemChecked(i, true);
+                                }
+                            }
+                        }
                     }
 
-                    return Long.compare(m1.getId(), m2.getId());
                 });
-
-
-                AdapterMembersList adapter = new AdapterMembersList(MainActivity.INSTANCE, members, true);
-                list.setAdapter(adapter);
-
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    Member member = adapter.getItem(i);
-
-                    if (TripManager.INSTANCE.getActiveTrip().memberIsActive(member)) {
-                        list.setItemChecked(i, true);
-                    }
-                }
-            }
-        }
-
     }
 
     @Override

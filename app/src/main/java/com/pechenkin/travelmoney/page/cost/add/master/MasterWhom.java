@@ -16,7 +16,14 @@ import androidx.core.content.FileProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.pechenkin.travelmoney.MainActivity;
+import com.pechenkin.travelmoney.R;
+import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.TripManager;
 import com.pechenkin.travelmoney.list.TransactionList;
+import com.pechenkin.travelmoney.page.ListPage;
+import com.pechenkin.travelmoney.page.PageOpener;
+import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransactionItem;
@@ -25,13 +32,7 @@ import com.pechenkin.travelmoney.transaction.draft.ValidateException;
 import com.pechenkin.travelmoney.utils.AfterTextWatcher;
 import com.pechenkin.travelmoney.utils.DecimalDigitsInputFilter;
 import com.pechenkin.travelmoney.utils.Help;
-import com.pechenkin.travelmoney.MainActivity;
-import com.pechenkin.travelmoney.R;
-import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.TripManager;
-import com.pechenkin.travelmoney.page.ListPage;
-import com.pechenkin.travelmoney.page.PageOpener;
-import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.io.File;
@@ -136,10 +137,14 @@ public class MasterWhom extends ListPage {
                 return;
             }
 
-            TripManager.INSTANCE.getActiveTrip().addTransaction(getParam().getDraftTransaction());
+            new RunWithProgressBar<>(
+                    () -> TripManager.INSTANCE.getActiveTrip().addTransaction(getParam().getDraftTransaction()),
+                    transaction -> {
+                        Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
+                        PageOpener.INSTANCE.open(MainPage.class);
+                    }
+            );
 
-            Help.message(MainActivity.INSTANCE.getString(R.string.messageAddCost));
-            PageOpener.INSTANCE.open(MainPage.class);
 
         });
 

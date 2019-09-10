@@ -13,6 +13,7 @@ import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.trip.AddTripPage;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
 import com.pechenkin.travelmoney.utils.Help;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 import java.util.List;
 
@@ -53,16 +54,20 @@ public class TripsListFragment extends BaseMainPageFragment {
     @Override
     public void doAfterRender() {
 
-        List<Trip> allTrips = TripManager.INSTANCE.getAll();
-        ListView list = fragmentView.findViewById(R.id.catalog_trips_list);
+        new RunWithProgressBar<>(
+                TripManager.INSTANCE::getAll,
+                allTrips -> {
 
-        if (allTrips.size() == 0) {
-            Help.message("Нет данных");
-            list.setAdapter(null);
-        } else {
-            AdapterTripsList tripAdapter = new AdapterTripsList(MainActivity.INSTANCE, allTrips, true);
-            list.setAdapter(tripAdapter);
-        }
+                    ListView list = fragmentView.findViewById(R.id.catalog_trips_list);
+
+                    if (allTrips.size() == 0) {
+                        Help.message("Нет данных");
+                        list.setAdapter(null);
+                    } else {
+                        AdapterTripsList tripAdapter = new AdapterTripsList(MainActivity.INSTANCE, allTrips, true);
+                        list.setAdapter(tripAdapter);
+                    }
+                });
     }
 
     @Override
