@@ -21,6 +21,7 @@ android {
         versionName travelMoneyVersionName
         project.ext.set("archivesBaseName", "TravelMoney-" + defaultConfig.versionName)
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
 
     }
 
@@ -46,11 +47,11 @@ apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle p
 dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-    implementation 'com.google.firebase:firebase-firestore:21.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.1.0'
 
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.12'
