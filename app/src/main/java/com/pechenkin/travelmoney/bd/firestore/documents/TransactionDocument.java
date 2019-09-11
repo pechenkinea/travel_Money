@@ -7,12 +7,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
-import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.firestore.FireBaseData;
-import com.pechenkin.travelmoney.bd.firestore.MemberFireStore;
 import com.pechenkin.travelmoney.bd.firestore.TransactionFireStore;
 import com.pechenkin.travelmoney.bd.firestore.TransactionItemFireStore;
-import com.pechenkin.travelmoney.bd.local.table.Namespace;
+import com.pechenkin.travelmoney.bd.firestore.documents.cache.TransactionLocalCache;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
@@ -24,16 +22,21 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
 
 public class TransactionDocument {
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    protected FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public static TransactionDocument INSTANCE = new TransactionDocument();
+    private static TransactionDocument INSTANCE = null;
 
-    private TransactionDocument() {
+    public static TransactionDocument getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new TransactionLocalCache();
+        }
+        return INSTANCE;
+    }
+
+    public TransactionDocument() {
 
     }
 
@@ -50,10 +53,9 @@ public class TransactionDocument {
         data1.put("trip", tripUuid);
 
 
-        String transactionUuid = UUID.randomUUID().toString();
         WriteBatch batch = db.batch();
 
-        DocumentReference transactionRef = db.collection("trips").document(tripUuid).collection("transactions").document(transactionUuid);
+        DocumentReference transactionRef = db.collection("trips").document(tripUuid).collection("transactions").document(draftTransaction.getUuid());
         batch.set(transactionRef, data1);
 
         TransactionFireStore result = new TransactionFireStore(draftTransaction, transactionRef);
@@ -61,19 +63,27 @@ public class TransactionDocument {
 
         StreamList.ForEach<TransactionItem> transactionItemForEach = transactionItem -> {
             Map<String, Object> dataTransactionItem = new HashMap<>();
-            dataTransactionItem.put("member", ((MemberFireStore) transactionItem.getMember()).getUuid());
+            dataTransactionItem.put("member", transactionItem.getMemberUuid());
             dataTransactionItem.put("debit", transactionItem.getDebit());
             dataTransactionItem.put("credit", transactionItem.getCredit());
             dataTransactionItem.put("trip", tripUuid);
-            dataTransactionItem.put("transaction", transactionUuid);
+            dataTransactionItem.put("transaction", draftTransaction.getUuid());
 
-            batch.set(transactionRef.collection("transactionItems").document(UUID.randomUUID().toString()), dataTransactionItem);
 
-            if (transactionItem.getCredit() > 0) {
-                result.addCreditItem(new TransactionItemFireStore(transactionItem.getMember(), transactionItem.getDebit(), transactionItem.getCredit()));
+            batch.set(transactionRef.collection("transactionItems").document(transactionItem.getUuid()), dataTransactionItem);
+
+            TransactionItemFireStore transactionItemForResult = new TransactionItemFireStore(
+                    transactionItem.getMember(),
+                    transactionItem.getDebit(),
+                    transactionItem.getCredit(),
+                    transactionItem.getUuid()
+            );
+
+            if (transactionItemForResult.getCredit() > 0) {
+                result.addCreditItem(transactionItemForResult);
             }
-            if (transactionItem.getDebit() > 0) {
-                result.addDebitItem(new TransactionItemFireStore(transactionItem.getMember(), transactionItem.getDebit(), transactionItem.getCredit()));
+            if (transactionItemForResult.getDebit() > 0) {
+                result.addDebitItem(transactionItemForResult);
             }
 
         };

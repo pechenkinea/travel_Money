@@ -24,7 +24,7 @@ public class CSV implements ExportFormat {
                 StreamList.ForEach<TransactionItem> transactionItemForEach = transactionItem -> {
 
                     String line = ((transaction.getDate() != null) ? Help.dateToDateTimeStr(transaction.getDate()) : "") + ";"
-                            + transactionItem.getMember().getId() + ";"
+                            + transactionItem.getMemberUuid() + ";"
                             + transactionItem.getDebit() + ";"
                             + transactionItem.getCredit() + ";"
                             + transaction.isActive() + ";"

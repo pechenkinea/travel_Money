@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd.local.helper.migrate;
+package com.pechenkin.travelmoney.bd.local.helper.update;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;

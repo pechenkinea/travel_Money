@@ -5,7 +5,7 @@ import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 import com.pechenkin.travelmoney.bd.local.table.TableTrip;
-import com.pechenkin.travelmoney.bd.local.table.TransactionTable;
+import com.pechenkin.travelmoney.bd.local.table.TableTransaction;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
@@ -37,6 +37,10 @@ public class TripLocal implements Trip {
     }
 
 
+    public long getId() {
+        return id;
+    }
+
     @Override
     public String getUUID() {
         return this.uuid;
@@ -62,7 +66,7 @@ public class TripLocal implements Trip {
         return new StreamList<>(
                 new ArrayList<>(
                         Arrays.asList(
-                                TableMembers.INSTANCE.getAll().getAllRows()
+                                TableMembers.INSTANCE.getAllWithOutTrip()
                         )));
     }
 
@@ -72,22 +76,22 @@ public class TripLocal implements Trip {
         return new StreamList<>(
                 new ArrayList<>(
                         Arrays.asList(
-                                TableMembers.INSTANCE.getAllByTripId(this.id)
+                                TableMembers.INSTANCE.getAllByTripUuid(this.uuid)
                         )));
 
     }
 
     @Override
     public boolean memberIsActive(Member member) {
-        return TableTrip.INSTANCE.isMemberInTrip(this.id, member.getId());
+        return TableTrip.INSTANCE.isMemberInTrip(this.uuid, member.getUuid());
     }
 
     @Override
     public void setMemberActive(Member member, boolean active) {
         if (active) {
-            TableTrip.INSTANCE.addMemberInTrip(this.id, member.getId());
+            TableTrip.INSTANCE.addMemberInTrip(this.uuid, member.getUuid());
         } else {
-            TableTrip.INSTANCE.removeMemberInTrip(this.id, member.getId());
+            TableTrip.INSTANCE.removeMemberInTrip(this.uuid, member.getUuid());
         }
     }
 
@@ -95,13 +99,13 @@ public class TripLocal implements Trip {
     @Override
     public StreamList<Transaction> getTransactions() {
         return new StreamList<>(
-                TransactionTable.INSTANCE.getTransactionsByTrip(this.id)
+                TableTransaction.INSTANCE.getTransactionsByTrip(this.uuid)
         );
     }
 
     @Override
     public Transaction addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
-        return TransactionTable.INSTANCE.addTransaction(this.id, draftTransaction);
+        return TableTransaction.INSTANCE.addTransaction(this.uuid, draftTransaction);
     }
 
     @Override
@@ -117,22 +121,23 @@ public class TripLocal implements Trip {
 
     @Override
     public Member getMemberByName(String name) {
-        return TableMembers.INSTANCE.getMemberByName(name);
+        return TableMembers.INSTANCE.getMemberByNameWithOutTrip(name);
     }
 
     @Override
-    public Member getMemberById(long id) {
-        return TableMembers.INSTANCE.getMemberById(id);
+    public Member getMemberByUuid(String uuid) {
+        return TableMembers.INSTANCE.getMemberByUuid(uuid);
     }
+
 
     @Override
     public Date getStartDate() {
-        return TableTrip.INSTANCE.getStartTripDate(this.id);
+        return TableTrip.INSTANCE.getStartTripDate(this.uuid);
     }
 
     @Override
     public Date getEndDate() {
-        return TableTrip.INSTANCE.getEndTripDate(this.id);
+        return TableTrip.INSTANCE.getEndTripDate(this.uuid);
     }
 
 

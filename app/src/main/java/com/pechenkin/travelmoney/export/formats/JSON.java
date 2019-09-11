@@ -38,7 +38,7 @@ public class JSON implements ExportFormat {
                     transaction.getCreditItems().ForEach(transactionItem -> {
                         JSONObject item = new JSONObject();
                         try {
-                            item.put("member", transactionItem.getMember().getId());
+                            item.put("member", transactionItem.getMemberUuid());
                             item.put("sum", transactionItem.getCredit());
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -56,7 +56,7 @@ public class JSON implements ExportFormat {
                     transaction.getDebitItems().ForEach(transactionItem -> {
                         JSONObject item = new JSONObject();
                         try {
-                            item.put("member", transactionItem.getMember().getId());
+                            item.put("member", transactionItem.getMemberUuid());
                             item.put("sum", transactionItem.getCredit());
                         } catch (JSONException e) {
                             e.printStackTrace();

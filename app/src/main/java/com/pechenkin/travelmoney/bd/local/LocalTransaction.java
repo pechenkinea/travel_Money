@@ -4,7 +4,7 @@ import android.database.Cursor;
 
 import com.pechenkin.travelmoney.bd.local.query.IdTableRow;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
-import com.pechenkin.travelmoney.bd.local.table.TransactionTable;
+import com.pechenkin.travelmoney.bd.local.table.TableTransaction;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
@@ -16,6 +16,7 @@ public class LocalTransaction extends IdTableRow implements Transaction {
 
     private final String comment;
     private final String imageUrl;
+    private final String uuid;
     private final Date date;
     private boolean active;
     private final boolean repayment;
@@ -28,6 +29,7 @@ public class LocalTransaction extends IdTableRow implements Transaction {
 
         this.comment = getStringColumnValue(Namespace.FIELD_COMMENT, c);
         this.imageUrl = getStringColumnValue(Namespace.FIELD_IMAGE_DIR, c);
+        this.uuid = getStringColumnValue(Namespace.FIELD_UUID, c);
         this.date = getDateColumnValue(Namespace.FIELD_DATE, c);
 
         this.active = getIntColumnValue(Namespace.FIELD_ACTIVE, c) != 0;
@@ -35,10 +37,11 @@ public class LocalTransaction extends IdTableRow implements Transaction {
 
     }
 
-    public void addCreditItem(TransactionItem transactionItem){
+    public void addCreditItem(TransactionItem transactionItem) {
         creditItems.add(transactionItem);
     }
-    public void addDebitItem(TransactionItem transactionItem){
+
+    public void addDebitItem(TransactionItem transactionItem) {
         debitItems.add(transactionItem);
     }
 
@@ -55,6 +58,11 @@ public class LocalTransaction extends IdTableRow implements Transaction {
     @Override
     public String getComment() {
         return this.comment;
+    }
+
+    @Override
+    public String getUuid() {
+        return uuid;
     }
 
 
@@ -80,14 +88,16 @@ public class LocalTransaction extends IdTableRow implements Transaction {
 
     @Override
     public void setActive(boolean value) {
-        TransactionTable.INSTANCE.setTransactionState(this.id, value);
-        this.active = value;
+        if (value != this.active) {
+            TableTransaction.INSTANCE.setTransactionState(this.uuid, value);
+            this.active = value;
+        }
     }
 
     @Override
     public int getSum() {
         int[] sum = new int[]{0};
-        getCreditItems().ForEach(transactionItem -> sum[0]+= transactionItem.getCredit());
+        getCreditItems().ForEach(transactionItem -> sum[0] += transactionItem.getCredit());
         return sum[0];
     }
 

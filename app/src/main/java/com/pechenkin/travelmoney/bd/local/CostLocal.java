@@ -36,11 +36,15 @@ public class CostLocal extends IdTableRow {
         this.image_dir = getStringColumnValue(Namespace.FIELD_IMAGE_DIR, c);
         this.date = getDateColumnValue(Namespace.FIELD_DATE, c);
 
-        this.member = TripManager.INSTANCE.getActiveTrip().getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
-        this.to_member = TripManager.INSTANCE.getActiveTrip().getMemberById(getLongColumnValue(Namespace.FIELD_TO_MEMBER, c));
+        this.member = getMemberById(getLongColumnValue(Namespace.FIELD_MEMBER, c));
+        this.to_member = getMemberById(getLongColumnValue(Namespace.FIELD_TO_MEMBER, c));
 
         this.active = getLongColumnValue(Namespace.FIELD_ACTIVE, c) == 1;
         this.repayment = getLongColumnValue(Namespace.FIELD_REPAYMENT, c) == 1;
+    }
+
+    private Member getMemberById(long id){
+        return TripManager.INSTANCE.getActiveTrip().getAllMembers().First(member -> member.getId() == id);
     }
 
 

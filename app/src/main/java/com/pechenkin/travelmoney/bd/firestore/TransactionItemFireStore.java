@@ -2,44 +2,51 @@ package com.pechenkin.travelmoney.bd.firestore;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.TripManager;
-import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
-import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.utils.Help;
-import com.pechenkin.travelmoney.utils.stream.StreamList;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 public class TransactionItemFireStore implements TransactionItem {
 
-    private final Member member;
+    private Member member;
     private final int debit;
     private final int credit;
+    private final String uuid;
+    private final String memberUuid;
 
 
-    public TransactionItemFireStore(Member member, int debit, int credit) {
+    public TransactionItemFireStore(Member member, int debit, int credit, String uuid) {
         this.member = member;
         this.debit = debit;
         this.credit = credit;
+        this.uuid = uuid;
+        this.memberUuid = member.getUuid();
     }
 
     public TransactionItemFireStore(DocumentSnapshot transactionItem) {
         this.debit = (int) Help.toLong(transactionItem.getLong("debit"), 0);
         this.credit = (int) Help.toLong(transactionItem.getLong("credit"), 0);
 
-        String memberUuid = Help.toString(transactionItem.get("member"), "");
-        this.member = TripManager.INSTANCE.getActiveTrip().getAllMembers().First(member1 -> ((MemberFireStore) member1).getUuid().equals(memberUuid));
+        this.memberUuid = Help.toString(transactionItem.get("member"), "");
+
+        this.uuid = transactionItem.getId();
     }
 
     @NonNull
     @Override
     public Member getMember() {
+        if (member == null){
+            member =  TripManager.INSTANCE.getActiveTrip().getAllMembers().First(member1 -> member1.getUuid().equals(memberUuid));
+        }
+
         return member;
+    }
+
+    @Override
+    public String getMemberUuid() {
+        return memberUuid;
     }
 
     @Override
@@ -50,5 +57,10 @@ public class TransactionItemFireStore implements TransactionItem {
     @Override
     public int getCredit() {
         return credit;
+    }
+
+    @Override
+    public String getUuid() {
+        return uuid;
     }
 }

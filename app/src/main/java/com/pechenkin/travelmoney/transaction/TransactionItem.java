@@ -6,11 +6,14 @@ import com.pechenkin.travelmoney.bd.Member;
 
 public interface TransactionItem {
 
-    @NonNull
     Member getMember();
+
+    String getMemberUuid();
 
     int getDebit();
 
     int getCredit();
+
+    String getUuid();
 
 }

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.TripStore;
+import com.pechenkin.travelmoney.bd.local.helper.update.ToUUID;
 import com.pechenkin.travelmoney.bd.local.table.Namespace;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 
@@ -17,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public DBHelper(Context context) {
-        super(context, Namespace.DB_NAME, null, 27);
+        super(context, Namespace.DB_NAME, null, 29);
     }
 
     @Override
@@ -25,6 +26,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("create table " + Namespace.TABLE_MEMBERS + " ("
                 + Namespace.FIELD_ID + " integer primary key autoincrement,"
+                + Namespace.FIELD_UUID + " text,"
+                + Namespace.FIELD_TRIP_UUID + " text,"
                 + Namespace.FIELD_NAME + " text,"
                 + Namespace.FIELD_COLOR + " integer,"
                 + Namespace.FIELD_ICON + " integer,"
@@ -32,7 +35,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + ");");
 
 
-        db.execSQL("INSERT INTO " + Namespace.TABLE_MEMBERS + " VALUES (1, 'Я', 0, 0, 1);");
+        String firstMemberUuid = UUID.randomUUID().toString();
+        db.execSQL("INSERT INTO " + Namespace.TABLE_MEMBERS + " VALUES (1, '" + firstMemberUuid + "', '', 'Я', 0, 0, 1);");
 
 
         db.execSQL("create table " + Namespace.TABLE_TRIPS + " ("
@@ -44,13 +48,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Namespace.FIELD_STORE + " text"
                 + ");");
 
-        db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS + " VALUES (1, '" + UUID.randomUUID().toString() + "','Отпуск', '1', 'Создана по умолчанию');");
+        String firstTripUuid = UUID.randomUUID().toString();
+        db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS + " VALUES (1, '" + firstTripUuid + "','Отпуск', '1', 'Создана по умолчанию', '" + TripStore.LOCAL + "');");
 
         createTableTripsMembers(db);
-        db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " VALUES (1, 1);");
+        db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " VALUES ('" + firstTripUuid + "', '" + firstMemberUuid + "');");
 
-
-        //createTableCost(db);
 
         addSettingTable(db);
         db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.DELETE_COST_SHOWED_HELP + "', '0');");
@@ -62,10 +65,11 @@ public class DBHelper extends SQLiteOpenHelper {
         createTableTransaction(db);
     }
 
-    private void createTableTripsMembers(SQLiteDatabase db) {
+    public static void createTableTripsMembers(SQLiteDatabase db) {
+
         db.execSQL("create table " + Namespace.TABLE_TRIPS_MEMBERS + " ("
-                + "trip integer not null,"
-                + "member integer not null"
+                + Namespace.FIELD_TRIP_UUID + " text,"
+                + Namespace.FIELD_MEMBER_UUID + " text"
                 + ");");
     }
 
@@ -73,28 +77,28 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("create table " + Namespace.TABLE_TRANSACTION + " ("
                 + Namespace.FIELD_ID + " integer primary key autoincrement, "
+                + Namespace.FIELD_UUID + " text,"
                 + Namespace.FIELD_COMMENT + " text, "
                 + Namespace.FIELD_IMAGE_DIR + " text, "
                 + Namespace.FIELD_ACTIVE + " integer, "
                 + Namespace.FIELD_REPAYMENT + " integer, "
-                + Namespace.FIELD_TRIP + " integer, "
-                + Namespace.FIELD_DATE + " integer, "
-                + "FOREIGN KEY(trip) REFERENCES trips(_id)"
+                + Namespace.FIELD_TRIP_UUID + " text, "
+                + Namespace.FIELD_DATE + " integer"
                 + ");");
 
         db.execSQL("create table " + Namespace.TABLE_TRANSACTION_ITEMS + " ("
                 + Namespace.FIELD_ID + " integer primary key autoincrement, "
-                + Namespace.FIELD_MEMBER + " integer, "
+                + Namespace.FIELD_UUID + " text,"
+                + Namespace.FIELD_MEMBER_UUID + " text, "
                 + Namespace.FIELD_CREDIT + " integer, "
                 + Namespace.FIELD_DEBIT + " integer, "
-                + Namespace.FIELD_TRANSACTION + " integer, "
-                + "FOREIGN KEY(" + Namespace.FIELD_MEMBER + ") REFERENCES " + Namespace.TABLE_MEMBERS + "(_id),"
-                + "FOREIGN KEY(" + Namespace.FIELD_TRANSACTION + ") REFERENCES " + Namespace.TABLE_TRANSACTION + "(_id)"
+                + Namespace.FIELD_TRANSACTION_UUID + " text"
                 + ");");
 
 
     }
 
+    @Deprecated
     private void createTableCost(SQLiteDatabase db) {
 
         db.execSQL("create table " + Namespace.TABLE_COSTS + " ("
@@ -120,8 +124,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Namespace.FIELD_NAME + " text primary key not null,"
                 + Namespace.FIELD_VALUE + " text not null"
                 + ");");
-
-
     }
 
 
@@ -244,6 +246,21 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + Namespace.TABLE_TRIPS + " ADD COLUMN " + Namespace.FIELD_STORE + " integer default '" + TripStore.LOCAL.toString() + "';");
         }
 
+        //Добавление поля uuid
+        if (oldVersion < 28) {
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_MEMBERS + " ADD COLUMN " + Namespace.FIELD_UUID + " text default '';");
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION + " ADD COLUMN " + Namespace.FIELD_UUID + " text default '';");
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION_ITEMS + " ADD COLUMN " + Namespace.FIELD_UUID + " text default '';");
+        }
+        // перевод id на uuid
+        if (oldVersion < 29) {
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION_ITEMS + " ADD COLUMN " + Namespace.FIELD_MEMBER_UUID + " text default '';");
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION_ITEMS + " ADD COLUMN " + Namespace.FIELD_TRANSACTION_UUID + " text default '';");
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_MEMBERS + " ADD COLUMN " + Namespace.FIELD_TRIP_UUID + " text default '';");
+            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION + " ADD COLUMN " + Namespace.FIELD_TRIP_UUID + " text default '';");
+
+            ToUUID.execute(db);
+        }
 
 
     }

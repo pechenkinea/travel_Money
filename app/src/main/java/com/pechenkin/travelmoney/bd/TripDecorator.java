@@ -76,8 +76,8 @@ public class TripDecorator implements Trip {
     }
 
     @Override
-    public Member getMemberById(long id) {
-        return this.trip.getMemberById(id);
+    public Member getMemberByUuid(String uuid) {
+        return this.trip.getMemberByUuid(uuid);
     }
 
     @Override

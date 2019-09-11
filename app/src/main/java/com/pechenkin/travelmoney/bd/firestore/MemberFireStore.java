@@ -5,6 +5,7 @@ import android.graphics.Color;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.pechenkin.travelmoney.bd.Member;
+import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 import com.pechenkin.travelmoney.utils.Help;
 
 public class MemberFireStore implements Member {
@@ -15,18 +16,28 @@ public class MemberFireStore implements Member {
     private String name;
     private int color;
     private int icon;
-    private final int id;
+    private final long id;
     private final DocumentReference reference;
     private final String uuid;
 
-    public MemberFireStore(String name, int color, int icon, String uuid, DocumentReference reference) {
+    public MemberFireStore(String name, int color, int icon, DocumentReference reference) {
         this.id = idCounter++;
         this.name = name;
         this.color = color;
         this.icon = icon;
         this.reference = reference;
-        this.uuid = uuid;
+        this.uuid = reference.getId();
     }
+
+    public MemberFireStore(long id, String name, int color, int icon, DocumentReference reference) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+        this.icon = icon;
+        this.reference = reference;
+        this.uuid = reference.getId();
+    }
+
 
     public MemberFireStore(DocumentSnapshot member) {
         this.id = idCounter++;
@@ -74,12 +85,15 @@ public class MemberFireStore implements Member {
                 "icon", icon
         );
 
+        TableMembers.INSTANCE.edit(uuid, name, color, icon);
+
         this.name = name;
         this.color = color;
         this.icon = icon;
 
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }

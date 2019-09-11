@@ -1,6 +1,7 @@
 package com.pechenkin.travelmoney.bd;
 
 import com.pechenkin.travelmoney.bd.firestore.TripFireStore;
+import com.pechenkin.travelmoney.bd.firestore.TripSync;
 import com.pechenkin.travelmoney.bd.firestore.documents.TripDocument;
 import com.pechenkin.travelmoney.bd.local.TripLocal;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
@@ -32,6 +33,8 @@ public class TripManager {
 
         if (tripStore == TripStore.FIRESTORE) {
             TripDocument.INSTANCE.add(tripRow.uuid);
+
+            TripSync.sync(tripRow.uuid);
         }
 
         return createTripByTripRow(tripRow);

@@ -4,7 +4,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
-import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
 
@@ -20,6 +19,7 @@ public class TransactionFireStore implements Transaction {
     private final Date date;
     private final String comment;
     private final String imageUrl;
+    private final String uuid;
     private boolean active;
     private boolean repayment;
 
@@ -27,7 +27,7 @@ public class TransactionFireStore implements Transaction {
     private final StreamList<TransactionItem> debitItems = new StreamList<>(new ArrayList<>());
 
 
-    public TransactionFireStore(DraftTransaction draftTransaction, DocumentReference reference) {
+    public TransactionFireStore(Transaction draftTransaction, DocumentReference reference) {
 
         this.id = idCounter++;
         this.reference = reference;
@@ -37,6 +37,7 @@ public class TransactionFireStore implements Transaction {
         this.imageUrl = draftTransaction.getImageUrl();
         this.active = draftTransaction.isActive();
         this.repayment = draftTransaction.isRepayment();
+        this.uuid = reference.getId();
 
     }
 
@@ -49,6 +50,8 @@ public class TransactionFireStore implements Transaction {
         this.imageUrl = Help.toString(transaction.get("imageUrl"), "");
         this.active =  Help.toBoolean(transaction.getBoolean("active"), true);
         this.repayment =  Help.toBoolean(transaction.getBoolean("repayment"), false);
+
+        this.uuid = reference.getId();
 
     }
 
@@ -74,6 +77,11 @@ public class TransactionFireStore implements Transaction {
     @Override
     public String getComment() {
         return comment;
+    }
+
+    @Override
+    public String getUuid() {
+        return uuid;
     }
 
     @Override

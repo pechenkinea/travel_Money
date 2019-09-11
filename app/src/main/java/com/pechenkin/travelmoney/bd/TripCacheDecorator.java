@@ -1,13 +1,13 @@
 package com.pechenkin.travelmoney.bd;
 
 
-import androidx.collection.LongSparseArray;
-
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.draft.DraftTransaction;
 import com.pechenkin.travelmoney.utils.stream.StreamList;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Кеширование значений методов. Нужно, что бы лишний раз не лазить в базу (для удаленной БД особенно актуально).
@@ -48,33 +48,39 @@ public class TripCacheDecorator extends TripDecorator {
         return createdMember;
     }
 
-    private final LongSparseArray<Member> memberByIdCache = new LongSparseArray<>();
+    private final Map<String, Member> memberByIdCache = new HashMap<>();
+
 
     @Override
-    public Member getMemberById(long id) {
-        Member result = memberByIdCache.get(id);
+    public Member getMemberByUuid(String uuid) {
+        Member result = memberByIdCache.get(uuid);
         if (result == null) {
-            result = getAllMembers().First(member -> member.getId() == id);
+            result = getAllMembers().First(member -> member.getUuid().equals(uuid));
             if (result != null) {
-                memberByIdCache.put(id, result);
+                memberByIdCache.put(uuid, result);
             }
         }
         return result;
     }
 
-
     @Override
-    public void setMemberActive(Member memberForDelete, boolean active) {
+    public void setMemberActive(Member memberForChangeActive, boolean active) {
+
+        super.setMemberActive(memberForChangeActive, active);
 
         getActiveMembers();
 
-        super.setMemberActive(memberForDelete, active);
-
         if (!active) {
-            getActiveMembers().Remove(m -> m.equals(memberForDelete));
-        } else if (!memberIsActive(memberForDelete)) {
-            activeMembers.add(memberForDelete);
+            getActiveMembers().Remove(m -> m.equals(memberForChangeActive));
+        } else {
+
+            Member exist = activeMembers.First(member -> member.equals(memberForChangeActive));
+            if (exist == null) {
+                activeMembers.add(memberForChangeActive);
+            }
         }
+
+
 
     }
 

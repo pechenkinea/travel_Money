@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 
+import java.util.UUID;
+
 public class DraftTransactionItem implements TransactionItem {
 
     private Member member;
@@ -12,6 +14,7 @@ public class DraftTransactionItem implements TransactionItem {
     private int credit;
     private boolean isChange = false;
     private DraftUpdateListener updateListener = null;
+    private final String uuid = UUID.randomUUID().toString();
 
 
     public DraftTransactionItem(Member member, int debit, int credit) {
@@ -62,6 +65,11 @@ public class DraftTransactionItem implements TransactionItem {
     }
 
     @Override
+    public String getMemberUuid() {
+        return getMember().getUuid();
+    }
+
+    @Override
     public int getDebit() {
         return this.debit;
     }
@@ -69,6 +77,11 @@ public class DraftTransactionItem implements TransactionItem {
     @Override
     public int getCredit() {
         return this.credit;
+    }
+
+    @Override
+    public String getUuid() {
+        return uuid;
     }
 
     public DraftTransactionItem setUpdateListener(DraftUpdateListener draftUpdateListener) {

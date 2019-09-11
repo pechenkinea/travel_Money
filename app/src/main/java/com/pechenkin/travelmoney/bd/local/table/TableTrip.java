@@ -53,7 +53,7 @@ public class TableTrip {
 
     public TripTableRow add(String name, String comment, TripStore tripStore, String uuid) {
 
-        if (uuid.length() == 0){
+        if (uuid.length() == 0) {
             uuid = UUID.randomUUID().toString();
         }
         ContentValues cv = new ContentValues();
@@ -83,20 +83,20 @@ public class TableTrip {
         }
     }
 
-    public void removeMemberInTrip(long trip_id, long member_id) {
+    public void removeMemberInTrip(String tripUuid, String memberUuid) {
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
 
-            db.delete(Namespace.TABLE_TRIPS_MEMBERS, Namespace.FIELD_TRIP + " = " + trip_id + " and " + Namespace.FIELD_MEMBER + " = " + member_id, null);
+            db.delete(Namespace.TABLE_TRIPS_MEMBERS, Namespace.FIELD_TRIP_UUID + " = '" + tripUuid + "' and " + Namespace.FIELD_MEMBER_UUID + " = '" + memberUuid + "'", null);
         }
 
     }
 
-    public void addMemberInTrip(long trip_id, long member_id) {
-        removeMemberInTrip(trip_id, member_id);
+    public void addMemberInTrip(String tripUuid, String memberUuid) {
+        removeMemberInTrip(tripUuid, memberUuid);
 
         ContentValues cv = new ContentValues();
-        cv.put(Namespace.FIELD_TRIP, trip_id);
-        cv.put(Namespace.FIELD_MEMBER, member_id);
+        cv.put(Namespace.FIELD_TRIP_UUID, tripUuid);
+        cv.put(Namespace.FIELD_MEMBER_UUID, memberUuid);
 
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
             db.insert(Namespace.TABLE_TRIPS_MEMBERS, null, cv);
@@ -108,13 +108,7 @@ public class TableTrip {
         return new QueryResult<>(sql, TripTableRow.class).getAllRows();
     }
 
-    public TripTableRow getById(long id) {
-        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_ID + " = '" + id + "'";
 
-        QueryResult<TripTableRow> result = new QueryResult<>(sql, TripTableRow.class);
-
-        return result.getFirstRow();
-    }
     public TripTableRow getByUuid(String uuid) {
         String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_UUID + " = '" + uuid + "'";
 
@@ -123,23 +117,21 @@ public class TableTrip {
         return result.getFirstRow();
     }
 
-    public Boolean isMemberInTrip(long tripId, long memberId) {
-        if (tripId < 0 || memberId < 0)
-            return false;
+    public Boolean isMemberInTrip(String tripUuid, String memberUuid) {
 
-        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS_MEMBERS + " WHERE " + Namespace.FIELD_TRIP + " = '" + tripId + "' and " + Namespace.FIELD_MEMBER + " = '" + memberId + "'";
+        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS_MEMBERS + " WHERE " + Namespace.FIELD_TRIP_UUID + " = '" + tripUuid + "' and " + Namespace.FIELD_MEMBER_UUID + " = '" + memberUuid + "'";
         QueryResult result = new QueryResult<>(sql, TableRow.class);
 
         return result.hasRows();
     }
 
 
-    public Date getStartTripDate(long t_id) {
+    public Date getStartTripDate(String tripUuid) {
         String query = String.format("SELECT MIN(%s) FROM %s WHERE %s = '%s'",
                 Namespace.FIELD_DATE,
                 Namespace.TABLE_TRANSACTION,
-                Namespace.FIELD_TRIP,
-                t_id
+                Namespace.FIELD_TRIP_UUID,
+                tripUuid
         );
 
         Date result = null;
@@ -156,12 +148,12 @@ public class TableTrip {
         return result;
     }
 
-    public Date getEndTripDate(long t_id) {
+    public Date getEndTripDate(String tripUuid) {
         String query = String.format("SELECT MAX(%s) FROM %s WHERE %s = '%s'",
                 Namespace.FIELD_DATE,
                 Namespace.TABLE_TRANSACTION,
-                Namespace.FIELD_TRIP,
-                t_id
+                Namespace.FIELD_TRIP_UUID,
+                tripUuid
         );
         Date result = null;
 
@@ -175,6 +167,15 @@ public class TableTrip {
             }
         }
         return result;
+    }
+
+
+    private TripTableRow getById(long id) {
+        String sql = "SELECT * FROM " + Namespace.TABLE_TRIPS + " WHERE " + Namespace.FIELD_ID + " = '" + id + "'";
+
+        QueryResult<TripTableRow> result = new QueryResult<>(sql, TripTableRow.class);
+
+        return result.getFirstRow();
     }
 
 

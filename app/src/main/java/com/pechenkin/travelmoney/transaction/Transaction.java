@@ -12,6 +12,8 @@ public interface Transaction {
 
     String getComment();
 
+    String getUuid();
+
     StreamList<TransactionItem> getDebitItems();
 
     StreamList<TransactionItem> getCreditItems();

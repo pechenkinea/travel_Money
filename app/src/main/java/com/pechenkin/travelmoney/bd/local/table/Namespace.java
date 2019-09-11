@@ -27,14 +27,20 @@ public interface Namespace {
     String FIELD_COMMENT = "comment";
     String FIELD_STORE = "store";
     String FIELD_PROCESSED = "processed";
+    @Deprecated
     String FIELD_TRIP = "trip";
+    String FIELD_TRIP_UUID = "trip_uuid";
+    @Deprecated
     String FIELD_MEMBER = "member";
+    String FIELD_MEMBER_UUID = "member_uuid";
     String FIELD_TO_MEMBER = "to_member";
     String FIELD_SUM = "sum";
 
     String FIELD_CREDIT = "credit";
     String FIELD_DEBIT = "debit";
+    @Deprecated
     String FIELD_TRANSACTION = "transactionId";
+    String FIELD_TRANSACTION_UUID = "transaction_uuid";
 
     String FIELD_IMAGE_DIR = "image_dir";
     String FIELD_DATE = "date";

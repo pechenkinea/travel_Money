@@ -8,6 +8,7 @@ import com.pechenkin.travelmoney.utils.stream.StreamList;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class DraftTransaction implements Transaction {
 
@@ -18,6 +19,7 @@ public class DraftTransaction implements Transaction {
     private boolean repayment = false;
     private final StreamList<TransactionItem> creditItems = new StreamList<>(new ArrayList<>());
     private final StreamList<TransactionItem> debitItems = new StreamList<>(new ArrayList<>());
+    private final String uuid = UUID.randomUUID().toString();
 
     private DraftUpdateListener draftUpdateListener = null;
 
@@ -150,6 +152,11 @@ public class DraftTransaction implements Transaction {
     @Override
     public String getComment() {
         return this.comment;
+    }
+
+    @Override
+    public String getUuid() {
+        return uuid;
     }
 
     @Override

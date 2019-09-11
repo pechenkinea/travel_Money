@@ -1,6 +1,6 @@
 package com.pechenkin.travelmoney.test.migrate;
 
-import com.pechenkin.travelmoney.bd.local.helper.migrate.Migrate;
+import com.pechenkin.travelmoney.bd.local.helper.update.Migrate;
 
 import org.junit.Assert;
 import org.junit.Test;

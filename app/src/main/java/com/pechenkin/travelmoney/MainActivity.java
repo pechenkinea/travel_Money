@@ -8,8 +8,8 @@ import android.speech.RecognizerIntent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pechenkin.travelmoney.bd.local.helper.DBHelper;
-import com.pechenkin.travelmoney.bd.local.helper.migrate.Migrate;
-import com.pechenkin.travelmoney.bd.local.helper.migrate.TripsUpdate;
+import com.pechenkin.travelmoney.bd.local.helper.update.Migrate;
+import com.pechenkin.travelmoney.bd.local.helper.update.TripsUpdate;
 import com.pechenkin.travelmoney.bd.local.table.NamespaceSettings;
 import com.pechenkin.travelmoney.bd.local.table.TableSettings;
 import com.pechenkin.travelmoney.page.PageOpener;
@@ -18,6 +18,7 @@ import com.pechenkin.travelmoney.page.cost.add.master.MasterWhom;
 import com.pechenkin.travelmoney.page.main.MainPage;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 import java.util.ArrayList;
 
@@ -51,28 +52,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         INSTANCE = this;
         super.onCreate(savedInstanceState);
-        dbHelper = new DBHelper(getApplicationContext());
 
-        if (TableSettings.INSTANCE.active(NamespaceSettings.NEED_MIGRATION)) {
-            Migrate.costToTransaction();
-            TableSettings.INSTANCE.setActive(NamespaceSettings.NEED_MIGRATION, false);
-        }
+        new RunWithProgressBar<>(
+                () -> {
+                    dbHelper = new DBHelper(getApplicationContext());
 
-        if (TableSettings.INSTANCE.active(NamespaceSettings.NEED_ADD_TRIPS_UUID)) {
-            TripsUpdate.updateUUID();
-            TableSettings.INSTANCE.setActive(NamespaceSettings.NEED_ADD_TRIPS_UUID, false);
-        }
+                    if (TableSettings.INSTANCE.active(NamespaceSettings.NEED_MIGRATION)) {
+                        Migrate.costToTransaction();
+                        TableSettings.INSTANCE.setActive(NamespaceSettings.NEED_MIGRATION, false);
+                    }
 
-        PageOpener.INSTANCE.open(MainPage.class);
+                    if (TableSettings.INSTANCE.active(NamespaceSettings.NEED_ADD_TRIPS_UUID)) {
+                        TripsUpdate.updateUUID();
+                        TableSettings.INSTANCE.setActive(NamespaceSettings.NEED_ADD_TRIPS_UUID, false);
+                    }
 
+                    return null;
+                },
+                o -> {
+                    PageOpener.INSTANCE.open(MainPage.class);
 
-        /*
-        //CostCreator c = new CostCreator("Я за всех 100 магазин", "");
-        CostCreator c = new CostCreator("Я Пете 100 магазин", "");
-        PageParam param = new PageParam().setDraftTransaction(c.getDraftTransaction()).setBackPage(MainPage.class);
-        PageOpener.INSTANCE.open(MasterWhom.class, param);
-        */
-
+                    /*
+                    //CostCreator c = new CostCreator("Я за всех 100 магазин", "");
+                    CostCreator c = new CostCreator("Я Пете 100 магазин", "");
+                    PageParam param = new PageParam().setDraftTransaction(c.getDraftTransaction()).setBackPage(MainPage.class);
+                    PageOpener.INSTANCE.open(MasterWhom.class, param);
+                    */
+                });
     }
 
     @Override

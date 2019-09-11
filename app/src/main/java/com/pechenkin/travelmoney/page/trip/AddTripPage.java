@@ -81,7 +81,7 @@ public class AddTripPage extends BaseTripPage {
                         return null;
                     },
                     o -> PageOpener.INSTANCE.open(MainPage.class, new PageParam().setFragmentId(R.id.navigation_members))
-            ).execute();
+            );
 
 
         });

@@ -19,6 +19,9 @@ public class MemberLocal extends IdAndNameTableRow implements Member {
 
     private int color;
     private int icon;
+    private String uuid;
+    private boolean active = true;
+    //private String tripUuid;
 
     public MemberLocal(Cursor c) {
         super(c);
@@ -30,9 +33,9 @@ public class MemberLocal extends IdAndNameTableRow implements Member {
         this.color = col;
 
         this.icon = getIntColumnValue(Namespace.FIELD_ICON, c);
+        this.uuid = getStringColumnValue(Namespace.FIELD_UUID, c);
+        this.active = getIntColumnValue(Namespace.FIELD_ACTIVE, c) == 1;
     }
-
-
 
     @Override
     public long getId() {
@@ -55,11 +58,31 @@ public class MemberLocal extends IdAndNameTableRow implements Member {
     }
 
     @Override
-    public void edit(String name, int color, int icon) {
-        TableMembers.INSTANCE.edit(this.id, name, color, icon);
-        this.color = color;
-        this.icon = icon;
+    public String getUuid() {
+        return this.uuid;
+    }
 
+
+    @Override
+    public void edit(String name, int color, int icon) {
+
+        if (!name.equals(this.name) || color != this.color || icon != this.icon) {
+
+            TableMembers.INSTANCE.edit(this.id, name, color, icon);
+            this.color = color;
+            this.icon = icon;
+        }
+
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        TableMembers.INSTANCE.setActive(this.uuid, active);
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
     }
 
     @Override

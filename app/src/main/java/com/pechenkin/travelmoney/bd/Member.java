@@ -10,5 +10,11 @@ public interface Member {
 
     String getName();
 
+    String getUuid();
+
     void edit(String name, int color, int icon);
+
+    void setActive(boolean active);
+
+    boolean isActive();
 }

@@ -1,14 +1,14 @@
 package com.pechenkin.travelmoney.transaction.processing.summary;
 
-import androidx.collection.LongSparseArray;
-
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.transaction.processing.CostIterable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -18,11 +18,11 @@ import java.util.Objects;
 
 public class Total implements CostIterable {
 
-    private final LongSparseArray<MemberSum> members;
+    private final Map<String, MemberSum> members;
     private final List<MemberSum> result = new ArrayList<>();
 
     public Total() {
-        members = new LongSparseArray<>();
+        members = new HashMap<>();
     }
 
 
@@ -34,25 +34,25 @@ public class Total implements CostIterable {
 
         for (TransactionItem item : transaction.getDebitItems()) {
 
-            if (!members.containsKey(item.getMember().getId()))
-                members.put(item.getMember().getId(), new MemberSum(item.getMember()));
+            if (!members.containsKey(item.getMemberUuid()))
+                members.put(item.getMemberUuid(), new MemberSum(item.getMember()));
 
 
             if (!transaction.isRepayment()) {  //операции возврата не считаем тратой, поэтому не добавляем
-                Objects.requireNonNull(members.get(item.getMember().getId())).addSumExpense(item.getDebit());
+                Objects.requireNonNull(members.get(item.getMemberUuid())).addSumExpense(item.getDebit());
             } else {
                 //но операция возврата уменьшает "дебет" того, кому отдали долг
-                Objects.requireNonNull(members.get(item.getMember().getId())).removeSumPay(item.getDebit());
+                Objects.requireNonNull(members.get(item.getMemberUuid())).removeSumPay(item.getDebit());
             }
         }
 
 
         for (TransactionItem item : transaction.getCreditItems()) {
 
-            if (!members.containsKey(item.getMember().getId()))
-                members.put(item.getMember().getId(), new MemberSum(item.getMember()));
+            if (!members.containsKey(item.getMemberUuid()))
+                members.put(item.getMemberUuid(), new MemberSum(item.getMember()));
 
-            Objects.requireNonNull(members.get(item.getMember().getId())).addSumPay(item.getCredit());
+            Objects.requireNonNull(members.get(item.getMemberUuid())).addSumPay(item.getCredit());
         }
 
 
@@ -61,9 +61,7 @@ public class Total implements CostIterable {
     @Override
     public void postIterate() {
 
-        for (int i = 0; i < members.size(); i++) {
-            long key = members.keyAt(i);
-            MemberSum value = members.get(key);
+        for (MemberSum value : members.values()) {
             if (value != null) {
                 result.add(new MemberSum(value.member, value.sumExpense, value.sumPay));
             }

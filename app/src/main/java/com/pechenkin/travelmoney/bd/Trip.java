@@ -33,7 +33,7 @@ public interface Trip {
 
     Member getMemberByName(String name);
 
-    Member getMemberById(long id);
+    Member getMemberByUuid(String uuid);
 
     boolean memberIsActive(Member member);
 

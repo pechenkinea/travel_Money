@@ -3,12 +3,13 @@ package com.pechenkin.travelmoney.bd.local.table;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.util.LongSparseArray;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.bd.Member;
-import com.pechenkin.travelmoney.bd.local.query.QueryResult;
 import com.pechenkin.travelmoney.bd.local.MemberLocal;
+import com.pechenkin.travelmoney.bd.local.query.QueryResult;
+
+import java.util.UUID;
 
 public class TableMembers {
 
@@ -19,9 +20,15 @@ public class TableMembers {
     }
 
     public Member add(String name, int color, int icon) {
+        return add(name, color, icon, "", UUID.randomUUID().toString());
+    }
+
+    public Member add(String name, int color, int icon, String tripUuid, String uuid) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);
         cv.put(Namespace.FIELD_ICON, icon);
+        cv.put(Namespace.FIELD_TRIP_UUID, tripUuid);
+        cv.put(Namespace.FIELD_UUID, uuid);
 
         if (color != 0) {
             cv.put(Namespace.FIELD_COLOR, color);
@@ -52,47 +59,78 @@ public class TableMembers {
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
             db.update(Namespace.TABLE_MEMBERS, cv, Namespace.FIELD_ID + " = " + id, null);
         }
-
-        memberCache.remove(id);
     }
 
-    public QueryResult<MemberLocal> getAll() {
-        String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS;
-        return new QueryResult<>(sql, MemberLocal.class);
+    public void edit(String uuid, String name, int color, int icon) {
+        ContentValues cv = new ContentValues();
+        cv.put(Namespace.FIELD_NAME, name);
+        cv.put(Namespace.FIELD_ICON, icon);
+        cv.put(Namespace.FIELD_UUID, "");
+
+        if (color != 0) {
+            cv.put(Namespace.FIELD_COLOR, color);
+        } else {
+            cv.put(Namespace.FIELD_COLOR, Color.BLACK);
+        }
+
+        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
+            db.update(Namespace.TABLE_MEMBERS, cv, Namespace.FIELD_UUID + " = " + uuid, null);
+        }
+    }
+
+    public Member[] getAllWithOutTrip() {
+        String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_TRIP_UUID + " = '';";
+        return new QueryResult<>(sql, MemberLocal.class).getAllRows();
 
     }
 
 
-    public Member getMemberByName(String name) {
+    public Member getMemberByNameWithOutTrip(String name) {
 
-        String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + name + "'";
+        String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_NAME + " = '" + name + "' AND " + Namespace.FIELD_TRIP_UUID + " = '';";
         QueryResult<MemberLocal> result = new QueryResult<>(sql, MemberLocal.class);
         return result.getFirstRow();
 
     }
-
-
-    private final LongSparseArray<Member> memberCache = new LongSparseArray<>();
+    public Member[] getMemberByTripUuid(String tripUuid) {
+        String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_TRIP_UUID + " = '" + tripUuid + "';";
+        return new QueryResult<>(sql, MemberLocal.class).getAllRows();
+    }
 
 
     public Member getMemberById(long _id) {
-        Member result = memberCache.get(_id);
-        if (result == null) {
-            String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_ID + " = '" + _id + "'";
-            QueryResult<MemberLocal> find = new QueryResult<>(sql, MemberLocal.class);
-            result = find.getFirstRow();
-            memberCache.put(_id, result);
-        }
-        return result;
+        String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_ID + " = '" + _id + "'";
+        QueryResult<MemberLocal> find = new QueryResult<>(sql, MemberLocal.class);
+        return find.getFirstRow();
+    }
+    public Member getMemberByUuid(String uuid) {
+        String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_UUID + " = '" + uuid + "'";
+        QueryResult<MemberLocal> find = new QueryResult<>(sql, MemberLocal.class);
+        return find.getFirstRow();
     }
 
-    public Member[] getAllByTripId(long t_id) {
-        String sql = "SELECT m." + Namespace.FIELD_ID + ", m." + Namespace.FIELD_NAME + ", m." + Namespace.FIELD_COLOR + ", m." + Namespace.FIELD_ICON
-                + " FROM " + Namespace.TABLE_TRIPS_MEMBERS + " as t"
-                + " inner join " + Namespace.TABLE_MEMBERS + " as m"
-                + " on t." + Namespace.FIELD_MEMBER + " = m." + Namespace.FIELD_ID + " and t." + Namespace.FIELD_TRIP + " = '" + t_id + "'";
+    public MemberLocal[] getAllByTripUuid(String uuid) {
+        String sql = "SELECT " +
+                "  m." + Namespace.FIELD_ID +
+                ", m." + Namespace.FIELD_UUID +
+                ", m." + Namespace.FIELD_NAME +
+                ", m." + Namespace.FIELD_COLOR +
+                ", m." + Namespace.FIELD_ICON +
+                " FROM " + Namespace.TABLE_TRIPS_MEMBERS + " as t" +
+                " inner join " + Namespace.TABLE_MEMBERS + " as m" +
+                " on t." + Namespace.FIELD_MEMBER_UUID + " = m." + Namespace.FIELD_UUID + " and t." + Namespace.FIELD_TRIP_UUID + " = '" + uuid + "'";
 
         return new QueryResult<>(sql, MemberLocal.class).getAllRows();
+    }
+
+
+    public void setActive(String uuid, boolean active) {
+        ContentValues cv = new ContentValues();
+        cv.put(Namespace.FIELD_ACTIVE, active ? 1 : 0);
+
+        try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
+            db.update(Namespace.TABLE_MEMBERS, cv, Namespace.FIELD_UUID + " = " + uuid, null);
+        }
     }
 
 }

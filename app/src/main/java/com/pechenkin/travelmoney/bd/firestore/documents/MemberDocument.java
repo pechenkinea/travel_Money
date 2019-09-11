@@ -8,21 +8,27 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.firestore.FireBaseData;
 import com.pechenkin.travelmoney.bd.firestore.MemberFireStore;
+import com.pechenkin.travelmoney.bd.firestore.documents.cache.MemberLocalCache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
 
 public class MemberDocument {
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    protected FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public static MemberDocument INSTANCE = new MemberDocument();
+    private static MemberDocument INSTANCE = null;
+    public static MemberDocument getInstance(){
+        if (INSTANCE == null){
+            INSTANCE = new MemberLocalCache();
+        }
+        return INSTANCE;
+    }
 
-    private MemberDocument() {
+    public MemberDocument() {
 
     }
 
@@ -35,22 +41,20 @@ public class MemberDocument {
         data1.put("icon", icon);
         String memberUuid = UUID.randomUUID().toString();
 
-        CountDownLatch done = new CountDownLatch(1);
-
         DocumentReference memberRef = db.collection("trips").document(tripUuid).collection("members").document(memberUuid);
-
         memberRef.set(data1);
-        return new MemberFireStore(name, color, icon, memberUuid, memberRef);
+
+        return new MemberFireStore(name, color, icon, memberRef);
     }
 
 
     public List<Member> getAllMembersByUuidTrip(String tripUuid) {
 
-        List<Member> memberDocuments = new ArrayList<>();
         CollectionReference membersCollection = db.collection("trips").document(tripUuid).collection("members");
 
         QuerySnapshot queryDocumentSnapshots = FireBaseData.getSync(membersCollection.get());
 
+        List<Member> memberDocuments = new ArrayList<>(queryDocumentSnapshots.size());
         for (DocumentSnapshot member : queryDocumentSnapshots.getDocuments()) {
             memberDocuments.add(new MemberFireStore(member));
         }

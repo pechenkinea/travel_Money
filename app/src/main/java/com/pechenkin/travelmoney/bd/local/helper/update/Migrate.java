@@ -1,4 +1,4 @@
-package com.pechenkin.travelmoney.bd.local.helper.migrate;
+package com.pechenkin.travelmoney.bd.local.helper.update;
 
 import com.pechenkin.travelmoney.bd.local.CostLocal;
 import com.pechenkin.travelmoney.bd.local.TripLocal;

@@ -65,7 +65,7 @@ public class TripFireStore implements Trip {
     @Override
     public StreamList<Member> getAllMembers() {
         return new StreamList<>(
-                MemberDocument.INSTANCE.getAllMembersByUuidTrip(this.uuid)
+                MemberDocument.getInstance().getAllMembersByUuidTrip(this.uuid)
         );
     }
 
@@ -76,7 +76,7 @@ public class TripFireStore implements Trip {
 
     @Override
     public Member createMember(String name, int color, int icon) {
-        return MemberDocument.INSTANCE.add(uuid, name, color, icon);
+        return MemberDocument.getInstance().add(uuid, name, color, icon);
     }
 
     @Override
@@ -85,14 +85,15 @@ public class TripFireStore implements Trip {
     }
 
     @Override
-    public Member getMemberByName(String name) {
-        return getAllMembers().First(member -> member.getName().equals(name));
+    public Member getMemberByName(String memberName) {
+        return getAllMembers().First(member -> member.getName().equals(memberName));
     }
 
     @Override
-    public Member getMemberById(long id) {
-        return getAllMembers().First(member -> member.getId() == id);
+    public Member getMemberByUuid(String memberUuid) {
+        return getAllMembers().First(member -> member.getUuid().equals(memberUuid));
     }
+
 
     @Override
     public boolean memberIsActive(Member member) {
@@ -107,13 +108,13 @@ public class TripFireStore implements Trip {
     @Override
     public StreamList<Transaction> getTransactions() {
         return new StreamList<>(
-                TransactionDocument.INSTANCE.getTransactionsByTrip(this.uuid)
+                TransactionDocument.getInstance().getTransactionsByTrip(this.uuid)
         );
     }
 
     @Override
     public Transaction addTransaction(DraftTransaction draftTransaction) throws InvalidParameterException {
-        return TransactionDocument.INSTANCE.addTransaction(this.uuid, draftTransaction);
+        return TransactionDocument.getInstance().addTransaction(this.uuid, draftTransaction);
     }
 
 
