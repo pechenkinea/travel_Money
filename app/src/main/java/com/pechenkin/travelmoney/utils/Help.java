@@ -38,12 +38,14 @@ public class Help {
         }
         return defaultValue;
     }
+
     static public long toLong(Long o, long defaultValue) {
         if (o != null) {
             return o;
         }
         return defaultValue;
     }
+
     static public boolean toBoolean(Boolean o, boolean defaultValue) {
         if (o != null) {
             return o;
@@ -265,5 +267,11 @@ public class Help {
         return dialog;
     }
 
+
+    public static void setClipboard(String text) {
+        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) MainActivity.INSTANCE.getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
+        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+    }
 
 }

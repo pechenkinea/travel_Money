@@ -95,6 +95,16 @@ public class AddTripPage extends BaseTripPage {
     @Override
     protected boolean fillFields() {
         MainActivity.INSTANCE.findViewById(R.id.trip_remote_check).setEnabled(true);
+
+        if (getParam().getUri() != null){
+            CheckBox remoteCheck = MainActivity.INSTANCE.findViewById(R.id.trip_remote_check);
+            remoteCheck.setChecked(true);
+
+            TextInputEditText remoteUuid = MainActivity.INSTANCE.findViewById(R.id.trip_remote_uuid);
+            remoteUuid.setVisibility(View.VISIBLE);
+            remoteUuid.setText(getParam().getUri().getQueryParameter("id"));
+
+        }
         return true;
     }
 

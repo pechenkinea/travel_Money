@@ -1,5 +1,7 @@
 package com.pechenkin.travelmoney.page;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
 import com.pechenkin.travelmoney.bd.Member;
@@ -15,6 +17,7 @@ public class PageParam {
     public PageParam() {
     }
 
+    private Uri uri = null;
     private int fragmentId = 0;
     private DraftTransaction draftTransaction = null;
     private Trip trip = null;
@@ -48,6 +51,10 @@ public class PageParam {
         return this;
     }
 
+    public PageParam setUri(Uri uri) {
+        this.uri = uri;
+        return this;
+    }
 
     public int getFragmentId() {
         return fragmentId;
@@ -72,5 +79,9 @@ public class PageParam {
 
     public Member getMember() {
         return member;
+    }
+
+    public Uri getUri() {
+        return uri;
     }
 }

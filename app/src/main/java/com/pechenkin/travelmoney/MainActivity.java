@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 
@@ -16,6 +17,7 @@ import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.cost.add.master.MasterWhom;
 import com.pechenkin.travelmoney.page.main.MainPage;
+import com.pechenkin.travelmoney.page.trip.AddTripPage;
 import com.pechenkin.travelmoney.speech.recognition.CostCreator;
 import com.pechenkin.travelmoney.speech.recognition.SpeechRecognitionHelper;
 import com.pechenkin.travelmoney.utils.RunWithProgressBar;
@@ -53,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         INSTANCE = this;
         super.onCreate(savedInstanceState);
 
+
+
+
         new RunWithProgressBar<>(
                 () -> {
                     dbHelper = new DBHelper(getApplicationContext());
@@ -70,7 +75,17 @@ public class MainActivity extends AppCompatActivity {
                     return null;
                 },
                 o -> {
-                    PageOpener.INSTANCE.open(MainPage.class);
+
+
+                    Intent intent = getIntent();
+                    Uri data = intent.getData();
+
+                    if (data == null){
+                        PageOpener.INSTANCE.open(MainPage.class);
+                    }
+                    else {
+                        PageOpener.INSTANCE.open(AddTripPage.class, new PageParam().setUri(data));
+                    }
 
                     /*
                     //CostCreator c = new CostCreator("Я за всех 100 магазин", "");

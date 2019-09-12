@@ -18,4 +18,15 @@ public class SimpleText implements SendType {
                 .startChooser();
 
     }
+
+    public void send(String text) {
+
+        ShareCompat.IntentBuilder.from(MainActivity.INSTANCE)
+                .setType("text/plain")
+                .setText(text)
+                .startChooser();
+
+    }
+
+
 }
