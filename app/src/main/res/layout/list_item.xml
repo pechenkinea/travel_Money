@@ -52,11 +52,20 @@
 
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/updateProject"
+        style="@style/listImageButton"
+        android:layout_marginEnd="100dp"
+        android:contentDescription="@string/edit"
+        android:padding="12dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_cloud_download_24"
+        tools:visibility="visible" />
 
     <ImageButton
         android:id="@+id/listViewButton"
         style="@style/listImageButton"
-        android:layout_marginEnd="56dp"
+        android:layout_marginEnd="50dp"
         android:contentDescription="@string/edit"
         android:padding="12dp"
         android:visibility="invisible"

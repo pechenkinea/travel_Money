@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney.bd.local;
 
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.TripStore;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
 import com.pechenkin.travelmoney.bd.local.table.TableMembers;
 import com.pechenkin.travelmoney.bd.local.table.TableTrip;
@@ -27,6 +28,7 @@ public class TripLocal implements Trip {
     private final long id;
     private final String name;
     private final String uuid;
+    private final TripStore tripStore;
 
     public TripLocal(TripTableRow tripTableRow) {
 
@@ -34,6 +36,7 @@ public class TripLocal implements Trip {
         this.comment = tripTableRow.comment;
         this.name = tripTableRow.name;
         this.uuid = tripTableRow.uuid;
+        this.tripStore = tripTableRow.tripStore;
     }
 
 
@@ -93,6 +96,11 @@ public class TripLocal implements Trip {
         } else {
             TableTrip.INSTANCE.removeMemberInTrip(this.uuid, member.getUuid());
         }
+    }
+
+    @Override
+    public TripStore getTripStore() {
+        return this.tripStore;
     }
 
 

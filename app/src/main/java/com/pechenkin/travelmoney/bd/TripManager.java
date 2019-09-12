@@ -21,11 +21,14 @@ public class TripManager {
 
     public Trip getActiveTrip() {
         if (activeTrip == null) {
-            TripTableRow activeTripRow = TableTrip.INSTANCE.getActiveTrip();
-
-            activeTrip = createTripByTripRow(activeTripRow);
+            updateActiveTrip();
         }
         return activeTrip;
+    }
+
+    public void updateActiveTrip(){
+        TripTableRow activeTripRow = TableTrip.INSTANCE.getActiveTrip();
+        activeTrip = createTripByTripRow(activeTripRow);
     }
 
     public Trip add(String name, String comment, TripStore tripStore, String uuid) {

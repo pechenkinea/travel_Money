@@ -13,10 +13,13 @@ import android.widget.TextView;
 import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.TripManager;
+import com.pechenkin.travelmoney.bd.TripStore;
+import com.pechenkin.travelmoney.bd.firestore.TripSync;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.ViewTripPage;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
+import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 import java.util.List;
 
@@ -78,6 +81,22 @@ public class AdapterTripsList extends BaseAdapter {
             holder.check.setImageResource(R.drawable.radio_button_unchecked_black_18dp);
         }
 
+        if (row.getTripStore() == TripStore.FIRESTORE) {
+            holder.updateProject.setVisibility(View.VISIBLE);
+
+            holder.updateProject.setOnClickListener(view -> new RunWithProgressBar<>(
+                    () -> {
+                        TripSync.sync(row.getUUID());
+                        if (TripManager.INSTANCE.isActive(row)) {
+                            TripManager.INSTANCE.updateActiveTrip();
+                        }
+                        return null;
+                    },
+                    null));
+        } else {
+            holder.updateProject.setVisibility(View.GONE);
+        }
+
         holder.name.setText(row.getName());
         return convertView;
     }
@@ -87,12 +106,14 @@ public class AdapterTripsList extends BaseAdapter {
         final ImageButton check;
         final ImageButton editButton;
         final ImageButton viewButton;
+        final ImageButton updateProject;
 
         ViewHolder(View convertView) {
             this.name = convertView.findViewById(R.id.lm_name);
             this.check = convertView.findViewById(R.id.lm_check);
             this.editButton = convertView.findViewById(R.id.listEditButton);
             this.viewButton = convertView.findViewById(R.id.listViewButton);
+            this.updateProject = convertView.findViewById(R.id.updateProject);
             this.viewButton.setVisibility(View.VISIBLE);
         }
     }

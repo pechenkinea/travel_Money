@@ -179,7 +179,7 @@ public class TableTransaction {
         cv.put(Namespace.FIELD_ACTIVE, active ? 1 : 0);
 
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
-            db.update(Namespace.TABLE_TRANSACTION, cv, Namespace.FIELD_UUID + " = " + uuid, null);
+            db.update(Namespace.TABLE_TRANSACTION, cv, Namespace.FIELD_UUID + " = '" + uuid + "'", null);
         }
     }
 }

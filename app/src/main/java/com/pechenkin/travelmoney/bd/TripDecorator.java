@@ -91,6 +91,11 @@ public class TripDecorator implements Trip {
     }
 
     @Override
+    public TripStore getTripStore() {
+        return this.trip.getTripStore();
+    }
+
+    @Override
     public StreamList<Transaction> getTransactions() {
         return this.trip.getTransactions();
     }

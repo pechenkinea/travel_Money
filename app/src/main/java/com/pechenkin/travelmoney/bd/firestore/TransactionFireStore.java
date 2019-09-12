@@ -12,10 +12,7 @@ import java.util.Date;
 
 public class TransactionFireStore implements Transaction {
 
-    private static int idCounter = 0;
-
     private final DocumentReference reference;
-    private final int id;
     private final Date date;
     private final String comment;
     private final String imageUrl;
@@ -29,7 +26,6 @@ public class TransactionFireStore implements Transaction {
 
     public TransactionFireStore(Transaction draftTransaction, DocumentReference reference) {
 
-        this.id = idCounter++;
         this.reference = reference;
 
         this.date = draftTransaction.getDate();
@@ -42,7 +38,6 @@ public class TransactionFireStore implements Transaction {
     }
 
     public TransactionFireStore(DocumentSnapshot transaction) {
-        this.id = idCounter++;
         this.reference = transaction.getReference();
 
         this.date =  Help.toDate(transaction.getDate("date"), new Date());
@@ -63,11 +58,6 @@ public class TransactionFireStore implements Transaction {
         debitItems.add(transactionItemFireStore);
     }
 
-
-    @Override
-    public long getId() {
-        return id;
-    }
 
     @Override
     public Date getDate() {

@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney.bd.firestore;
 
 import com.pechenkin.travelmoney.bd.Member;
 import com.pechenkin.travelmoney.bd.Trip;
+import com.pechenkin.travelmoney.bd.TripStore;
 import com.pechenkin.travelmoney.bd.firestore.documents.MemberDocument;
 import com.pechenkin.travelmoney.bd.firestore.documents.TransactionDocument;
 import com.pechenkin.travelmoney.bd.local.query.TripTableRow;
@@ -19,6 +20,7 @@ public class TripFireStore implements Trip {
     private String name;
     private final String uuid;
     private final long id;
+    private final TripStore tripStore;
 
 
     public TripFireStore(TripTableRow trip) {
@@ -27,6 +29,7 @@ public class TripFireStore implements Trip {
         this.name = trip.name;
         this.uuid = trip.uuid;
         this.id = trip.id;
+        this.tripStore = trip.tripStore;
 
     }
 
@@ -97,12 +100,17 @@ public class TripFireStore implements Trip {
 
     @Override
     public boolean memberIsActive(Member member) {
-        return ((MemberFireStore) member).isActive();
+        return member.isActive();
     }
 
     @Override
     public void setMemberActive(Member member, boolean active) {
-        ((MemberFireStore) member).setActive(active);
+        member.setActive(active);
+    }
+
+    @Override
+    public TripStore getTripStore() {
+        return this.tripStore;
     }
 
     @Override

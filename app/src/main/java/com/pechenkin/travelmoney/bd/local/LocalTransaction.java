@@ -46,11 +46,6 @@ public class LocalTransaction extends IdTableRow implements Transaction {
     }
 
     @Override
-    public long getId() {
-        return this.id;
-    }
-
-    @Override
     public Date getDate() {
         return this.date;
     }

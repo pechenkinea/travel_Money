@@ -92,6 +92,7 @@ public class TableMembers {
         return result.getFirstRow();
 
     }
+
     public Member[] getMemberByTripUuid(String tripUuid) {
         String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_TRIP_UUID + " = '" + tripUuid + "';";
         return new QueryResult<>(sql, MemberLocal.class).getAllRows();
@@ -103,6 +104,7 @@ public class TableMembers {
         QueryResult<MemberLocal> find = new QueryResult<>(sql, MemberLocal.class);
         return find.getFirstRow();
     }
+
     public Member getMemberByUuid(String uuid) {
         String sql = "SELECT * FROM " + Namespace.TABLE_MEMBERS + " WHERE " + Namespace.FIELD_UUID + " = '" + uuid + "'";
         QueryResult<MemberLocal> find = new QueryResult<>(sql, MemberLocal.class);
@@ -129,7 +131,7 @@ public class TableMembers {
         cv.put(Namespace.FIELD_ACTIVE, active ? 1 : 0);
 
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
-            db.update(Namespace.TABLE_MEMBERS, cv, Namespace.FIELD_UUID + " = " + uuid, null);
+            db.update(Namespace.TABLE_MEMBERS, cv, Namespace.FIELD_UUID + " = '" + uuid + "'", null);
         }
     }
 

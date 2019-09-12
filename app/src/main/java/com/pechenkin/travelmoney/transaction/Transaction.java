@@ -6,8 +6,6 @@ import java.util.Date;
 
 public interface Transaction {
 
-    long getId();
-
     Date getDate();
 
     String getComment();

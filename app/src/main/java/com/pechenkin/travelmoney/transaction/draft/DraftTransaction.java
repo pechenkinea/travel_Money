@@ -140,11 +140,6 @@ public class DraftTransaction implements Transaction {
 
 
     @Override
-    public long getId() {
-        return 0;
-    }
-
-    @Override
     public Date getDate() {
         return this.date;
     }

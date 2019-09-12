@@ -63,13 +63,12 @@ public class StreamList<E> implements List<E> {
     }
 
     public void Remove(Filter<E> filter) {
-        for (int i = list.size() - 1; i > 0; i--) {
+        for (int i = list.size() - 1; i >= 0; i--) {
             if (filter.filter(list.get(i))) {
                 list.remove(i);
             }
         }
     }
-
 
 
     public interface ForEach<E> {

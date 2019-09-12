@@ -40,6 +40,7 @@ public interface Trip {
     void setMemberActive(Member member, boolean active);
 
 
+    TripStore getTripStore();
 
 
     StreamList<Transaction> getTransactions();

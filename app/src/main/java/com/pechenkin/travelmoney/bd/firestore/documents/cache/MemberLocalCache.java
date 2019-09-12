@@ -29,7 +29,7 @@ public class MemberLocalCache extends MemberDocument {
         List<Member> memberDocuments = new ArrayList<>(tripMembersLocal.length);
         for (Member member : tripMembersLocal) {
             DocumentReference memberRef = db.collection("trips").document(tripUuid).collection("members").document(member.getUuid());
-            memberDocuments.add(new MemberFireStore(member.getId(), member.getName(), member.getColor(), member.getIcon(), memberRef));
+            memberDocuments.add(new MemberFireStore(member, memberRef));
         }
 
         return memberDocuments;

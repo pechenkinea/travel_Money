@@ -29,13 +29,15 @@ public class MemberFireStore implements Member {
         this.uuid = reference.getId();
     }
 
-    public MemberFireStore(long id, String name, int color, int icon, DocumentReference reference) {
-        this.id = id;
-        this.name = name;
-        this.color = color;
-        this.icon = icon;
+    public MemberFireStore(Member member, DocumentReference reference) {
+        this.id = member.getId();
+        this.name = member.getName();
+        this.color = member.getColor();
+        this.icon = member.getIcon();
+        this.active = member.isActive();
+        this.uuid = member.getUuid();
+
         this.reference = reference;
-        this.uuid = reference.getId();
     }
 
 
