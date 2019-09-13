@@ -20,7 +20,7 @@ public class MemberLocal extends IdAndNameTableRow implements Member {
     private int color;
     private int icon;
     private String uuid;
-    private boolean active = true;
+    private boolean active;
     //private String tripUuid;
 
     public MemberLocal(Cursor c) {
@@ -77,7 +77,9 @@ public class MemberLocal extends IdAndNameTableRow implements Member {
 
     @Override
     public void setActive(boolean active) {
-        TableMembers.INSTANCE.setActive(this.uuid, active);
+        if (this.active != active) {
+            TableMembers.INSTANCE.setActive(this.uuid, active);
+        }
     }
 
     @Override

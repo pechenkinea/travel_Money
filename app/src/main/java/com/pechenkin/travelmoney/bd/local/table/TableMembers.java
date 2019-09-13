@@ -65,7 +65,6 @@ public class TableMembers {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_NAME, name);
         cv.put(Namespace.FIELD_ICON, icon);
-        cv.put(Namespace.FIELD_UUID, "");
 
         if (color != 0) {
             cv.put(Namespace.FIELD_COLOR, color);
@@ -74,7 +73,7 @@ public class TableMembers {
         }
 
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
-            db.update(Namespace.TABLE_MEMBERS, cv, Namespace.FIELD_UUID + " = " + uuid, null);
+            db.update(Namespace.TABLE_MEMBERS, cv, Namespace.FIELD_UUID + " = '" + uuid + "'", null);
         }
     }
 

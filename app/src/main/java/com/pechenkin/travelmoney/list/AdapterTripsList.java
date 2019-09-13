@@ -19,6 +19,7 @@ import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
 import com.pechenkin.travelmoney.page.ViewTripPage;
 import com.pechenkin.travelmoney.page.trip.EditTripPage;
+import com.pechenkin.travelmoney.utils.Help;
 import com.pechenkin.travelmoney.utils.RunWithProgressBar;
 
 import java.util.List;
@@ -86,13 +87,13 @@ public class AdapterTripsList extends BaseAdapter {
 
             holder.updateProject.setOnClickListener(view -> new RunWithProgressBar<>(
                     () -> {
-                        TripSync.sync(row.getUUID());
+                        String updateReport = TripSync.sync(row.getUUID());
                         if (TripManager.INSTANCE.isActive(row)) {
                             TripManager.INSTANCE.updateActiveTrip();
                         }
-                        return null;
+                        return updateReport;
                     },
-                    null));
+                    Help::alert));
         } else {
             holder.updateProject.setVisibility(View.GONE);
         }

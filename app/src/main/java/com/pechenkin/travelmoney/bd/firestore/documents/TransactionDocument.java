@@ -91,7 +91,7 @@ public class TransactionDocument {
         draftTransaction.getCreditItems().ForEach(transactionItemForEach);
         draftTransaction.getDebitItems().ForEach(transactionItemForEach);
 
-        FireBaseData.getSync(batch.commit());
+        batch.commit();
 
 
         return result;

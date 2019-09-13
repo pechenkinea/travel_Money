@@ -11,19 +11,23 @@ import java.util.List;
 
 public class TripSync {
 
-    public static void sync(String tripUuid) {
+    public static String sync(String tripUuid) {
+
+        StringBuilder result = new StringBuilder();
 
         List<Member> actualMembers = new MemberDocument().getAllMembersByUuidTrip(tripUuid);
 
+        int updateMembers = 0;
         for (Member actualMember : actualMembers) {
 
             Member localMember = TableMembers.INSTANCE.getMemberByUuid(actualMember.getUuid());
             if (localMember != null) {
-                localMember.edit(actualMember.getName(), actualMember.getColor(), actualMember.getIcon());
-
-                if (actualMember.isActive() != localMember.isActive()) {
+                if (memberHasChange(actualMember, localMember)) {
+                    localMember.edit(actualMember.getName(), actualMember.getColor(), actualMember.getIcon());
                     localMember.setActive(actualMember.isActive());
+                    updateMembers++;
                 }
+
             } else {
                 TableMembers.INSTANCE.add(
                         actualMember.getName(),
@@ -32,19 +36,42 @@ public class TripSync {
                         tripUuid,
                         actualMember.getUuid()
                 );
+                updateMembers++;
             }
         }
 
+
+        int updateTransactions = 0;
         List<Transaction> actualTransactions = new TransactionDocument().getTransactionsByTrip(tripUuid);
         for (Transaction actualTransaction : actualTransactions) {
             Transaction localTransaction = TableTransaction.INSTANCE.getTransactionByUuid(actualTransaction.getUuid());
             if (localTransaction != null) {
                 //TODO если будет механизм редактирования транзакций тут надо обновлять все изменения которые приехали
-                localTransaction.setActive(actualTransaction.isActive());
+
+                if (localTransaction.isActive() != actualTransaction.isActive()) {
+                    localTransaction.setActive(actualTransaction.isActive());
+                    updateTransactions++;
+                }
             } else {
                 TableTransaction.INSTANCE.addTransaction(tripUuid, actualTransaction);
+                updateTransactions++;
             }
         }
+
+        result.append("Обновлено участников: ").append(updateMembers).append("\n");
+        result.append("Обновлено трат: ").append(updateTransactions);
+
+
+        return result.toString();
+
+    }
+
+    private static boolean memberHasChange(Member actualMember, Member localMember){
+        return !actualMember.getName().equals(localMember.getName()) ||
+                actualMember.getColor() != localMember.getColor() ||
+                actualMember.getIcon() != localMember.getIcon() ||
+                actualMember.isActive() != localMember.isActive();
+
 
     }
 

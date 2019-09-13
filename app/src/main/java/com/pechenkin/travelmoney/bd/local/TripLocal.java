@@ -61,7 +61,7 @@ public class TripLocal implements Trip {
 
     @Override
     public void edit(String name, String comment) {
-        TableTrip.INSTANCE.edit(this.id, name, comment);
+        TableTrip.INSTANCE.edit(this.uuid, name, comment);
     }
 
     @Override

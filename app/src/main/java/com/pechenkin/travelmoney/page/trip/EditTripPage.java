@@ -3,6 +3,8 @@ package com.pechenkin.travelmoney.page.trip;
 import android.view.View;
 import android.widget.CheckBox;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pechenkin.travelmoney.BuildConfig;
@@ -11,6 +13,7 @@ import com.pechenkin.travelmoney.R;
 import com.pechenkin.travelmoney.TMConst;
 import com.pechenkin.travelmoney.bd.Trip;
 import com.pechenkin.travelmoney.bd.TripManager;
+import com.pechenkin.travelmoney.bd.TripStore;
 import com.pechenkin.travelmoney.export.formats.send.types.SimpleText;
 import com.pechenkin.travelmoney.page.PageOpener;
 import com.pechenkin.travelmoney.page.PageParam;
@@ -102,7 +105,7 @@ public class EditTripPage extends BaseTripPage {
             isActive.setChecked(false);
 
 
-        if (trip.getUUID().length() > 0) {
+        if (trip.getTripStore() == TripStore.FIRESTORE) {
 
             CheckBox remoteCheck = MainActivity.INSTANCE.findViewById(R.id.trip_remote_check);
             remoteCheck.setChecked(true);
@@ -111,25 +114,39 @@ public class EditTripPage extends BaseTripPage {
             remoteUuid.setText(trip.getUUID());
             remoteUuid.setVisibility(View.VISIBLE);
 
-            remoteUuid.setKeyListener(null);
-            remoteUuid.setOnFocusChangeListener((view, focus) -> {
-                if (focus) {
-                    remoteUuid.selectAll();
+            remoteUuid.setEnabled(false);
 
-                    String text = "Идентификатор для подключенгия к поездке " + trip.getName() + ":" +
-                            "\n" + getTextInputEditText(remoteUuid) +
-                            "\n" + "http://trevelmoney.ru/remote?id=" + getTextInputEditText(remoteUuid) +
-                            "\n\nСформировано в Travel Money " + BuildConfig.VERSION_NAME +
-                            "\n" + TMConst.TM_APP_URL;
-                    new SimpleText().send(text);
 
-                }
+            AppCompatImageView copyButton = MainActivity.INSTANCE.findViewById(R.id.copyButton);
+            copyButton.setVisibility(View.VISIBLE);
+
+            copyButton.setOnClickListener(view -> {
+                Help.setClipboard(getTextInputEditText(remoteUuid));
+                Help.message("Скопировано");
+            });
+
+            AppCompatImageView shareButton = MainActivity.INSTANCE.findViewById(R.id.shareButton);
+            shareButton.setVisibility(View.VISIBLE);
+
+            shareButton.setOnClickListener(view -> {
+                String text = "Идентификатор для подключенгия к поездке " + trip.getName() + ":" +
+                        "\n" + getTextInputEditText(remoteUuid) +
+                        "\n" + "http://trevelmoney.ru/remote?id=" + getTextInputEditText(remoteUuid) +
+                        "\n\nСформировано в Travel Money " + BuildConfig.VERSION_NAME +
+                        "\n" + TMConst.TM_APP_URL;
+                new SimpleText().send(text);
             });
 
         }
 
 
         return true;
+    }
+
+
+    @Override
+    protected int getFocusFieldId() {
+        return 0;
     }
 
 

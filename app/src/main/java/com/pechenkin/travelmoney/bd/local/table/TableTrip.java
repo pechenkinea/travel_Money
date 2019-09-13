@@ -71,7 +71,7 @@ public class TableTrip {
         return getById(rowID);
     }
 
-    public void edit(long id, String name, String comment) {
+    public void edit(String uuid, String name, String comment) {
 
 
         ContentValues cv = new ContentValues();
@@ -79,7 +79,7 @@ public class TableTrip {
         cv.put(Namespace.FIELD_COMMENT, comment);
 
         try (SQLiteDatabase db = MainActivity.INSTANCE.getDbHelper().getWritableDatabase()) {
-            db.update(Namespace.TABLE_TRIPS, cv, Namespace.FIELD_ID + " = " + id, null);
+            db.update(Namespace.TABLE_TRIPS, cv, Namespace.FIELD_UUID + " = '" + uuid + "'", null);
         }
     }
 

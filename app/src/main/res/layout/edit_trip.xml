@@ -86,9 +86,35 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/uuid"
                 android:inputType="textPersonName"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/copyButton"
+                style="@style/listImageButton"
+                android:background="@drawable/edit_button_background"
+                android:padding="12dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_copy_24"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/shareButton"
+                style="@style/listImageButton"
+                android:background="@drawable/edit_button_background"
+                android:padding="12dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_share_24"
+                tools:visibility="visible" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
