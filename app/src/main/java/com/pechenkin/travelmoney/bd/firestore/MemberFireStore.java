@@ -104,6 +104,8 @@ public class MemberFireStore implements Member {
         this.active = active;
 
         this.reference.update("active", active);
+        TableMembers.INSTANCE.setActive(this.uuid, active);
+
     }
 
 

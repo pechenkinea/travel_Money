@@ -18,6 +18,7 @@ public class TripSync {
         List<Member> actualMembers = new MemberDocument().getAllMembersByUuidTrip(tripUuid);
 
         int updateMembers = 0;
+        int addMembers = 0;
         for (Member actualMember : actualMembers) {
 
             Member localMember = TableMembers.INSTANCE.getMemberByUuid(actualMember.getUuid());
@@ -38,12 +39,13 @@ public class TripSync {
                 );
 
                 member.setActive(actualMember.isActive());
-                updateMembers++;
+                addMembers++;
             }
         }
 
 
         int updateTransactions = 0;
+        int addTransactions = 0;
         List<Transaction> actualTransactions = new TransactionDocument().getTransactionsByTrip(tripUuid);
         for (Transaction actualTransaction : actualTransactions) {
             Transaction localTransaction = TableTransaction.INSTANCE.getTransactionByUuid(actualTransaction.getUuid());
@@ -57,11 +59,13 @@ public class TripSync {
             } else {
                 Transaction transaction = TableTransaction.INSTANCE.addTransaction(tripUuid, actualTransaction);
                 transaction.setActive(actualTransaction.isActive());
-                updateTransactions++;
+                addTransactions++;
             }
         }
 
+        result.append("Добавлено участников: ").append(addMembers).append("\n");
         result.append("Обновлено участников: ").append(updateMembers).append("\n");
+        result.append("Добавлено трат: ").append(addTransactions).append("\n");
         result.append("Обновлено трат: ").append(updateTransactions);
 
 

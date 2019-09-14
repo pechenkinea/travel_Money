@@ -2,6 +2,7 @@ package com.pechenkin.travelmoney.bd.firestore;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.pechenkin.travelmoney.bd.local.table.TableTransaction;
 import com.pechenkin.travelmoney.transaction.Transaction;
 import com.pechenkin.travelmoney.transaction.TransactionItem;
 import com.pechenkin.travelmoney.utils.Help;
@@ -98,6 +99,7 @@ public class TransactionFireStore implements Transaction {
     public void setActive(boolean value) {
         this.reference.update("active", value);
         this.active = value;
+        TableTransaction.INSTANCE.setActive(this.uuid, value);
     }
 
     @Override

@@ -174,7 +174,7 @@ public class TableTransaction {
     }
 
 
-    public void setTransactionState(String uuid, boolean active) {
+    public void setActive(String uuid, boolean active) {
         ContentValues cv = new ContentValues();
         cv.put(Namespace.FIELD_ACTIVE, active ? 1 : 0);
 
