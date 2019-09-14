@@ -29,13 +29,15 @@ public class TripSync {
                 }
 
             } else {
-                TableMembers.INSTANCE.add(
+                Member member = TableMembers.INSTANCE.add(
                         actualMember.getName(),
                         actualMember.getColor(),
                         actualMember.getIcon(),
                         tripUuid,
                         actualMember.getUuid()
                 );
+
+                member.setActive(actualMember.isActive());
                 updateMembers++;
             }
         }
@@ -53,7 +55,8 @@ public class TripSync {
                     updateTransactions++;
                 }
             } else {
-                TableTransaction.INSTANCE.addTransaction(tripUuid, actualTransaction);
+                Transaction transaction = TableTransaction.INSTANCE.addTransaction(tripUuid, actualTransaction);
+                transaction.setActive(actualTransaction.isActive());
                 updateTransactions++;
             }
         }
