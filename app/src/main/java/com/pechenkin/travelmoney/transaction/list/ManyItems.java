@@ -121,6 +121,8 @@ public class ManyItems extends TransactionListItem {
             holder.getSum_sum().setText(Html.fromHtml(sumText.toString()), TextView.BufferType.SPANNABLE);
         }
 
+
+
         holder.photoImage(this.transaction.getImageUrl());
 
 
@@ -131,6 +133,7 @@ public class ManyItems extends TransactionListItem {
 
             holder.getSum_group_sum().setTextColor(DISABLE_COLOR);
             holder.getHave_photo().setColorFilter(DISABLE_COLOR);
+            holder.getSum_sum().setTextColor(DISABLE_COLOR);
         } else {
             holder.getTitle().setTextColor(member.getColor());
         }
