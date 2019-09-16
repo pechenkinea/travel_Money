@@ -72,23 +72,25 @@ public class CostListBackground extends AsyncTask<Void, Void, Void> {
                 List<Total.MemberSum> totalResult = total.getResult();
                 int allSum = allSumIteration.getSum();
 
+                if (totalResult.size() > 0) {
 
-                Diagram diagram = DefaultDiagram.createDefaultDiagram(allSum, totalResult);
+                    Diagram diagram = DefaultDiagram.createDefaultDiagram(allSum, totalResult);
 
-                if (!this.readOnly) {
-                    diagram.setOnDiagramSelectItem(itemId -> {
+                    if (!this.readOnly) {
+                        diagram.setOnDiagramSelectItem(itemId -> {
 
-                        DraftTransaction draftTransaction = new DraftTransaction()
-                                .addCreditItem(new DraftTransactionItem(itemId, 0, 0));
+                            DraftTransaction draftTransaction = new DraftTransaction()
+                                    .addCreditItem(new DraftTransactionItem(itemId, 0, 0));
 
-                        PageParam param = new PageParam().setDraftTransaction(draftTransaction).setBackPage(MainPage.class);
-                        PageOpener.INSTANCE.open(MasterWhom.class, param);
+                            PageParam param = new PageParam().setDraftTransaction(draftTransaction).setBackPage(MainPage.class);
+                            PageOpener.INSTANCE.open(MasterWhom.class, param);
 
-                    });
+                        });
+                    }
+
+
+                    finalList.add(diagram);
                 }
-
-
-                finalList.add(diagram);
 
 
             } else {

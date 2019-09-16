@@ -53,7 +53,12 @@ public class LineDiagram extends Base {
 
         int valuesIndex = 0;
         int legendEntriesIndex = 0;
-        float[] values = new float[(this.total.size() * 2) - 1];
+        float[] values;
+        if (this.total.size() > 0) {
+            values = new float[(this.total.size() * 2) - 1];
+        } else {
+            values = new float[0];
+        }
         float indent = (float) (this.sum / 100 / 80); // отступы
 
         for (Total.MemberSum c : this.total) {

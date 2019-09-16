@@ -71,6 +71,12 @@ public class DiagramsListPage extends ListPage {
             List<Total.MemberSum> totalResult = total.getResult();
             int allSum = allSumIteration.getSum();
 
+            if (totalResult.size() == 0){
+                Help.message(MainActivity.INSTANCE.getString(R.string.errorNoData));
+                list1.setAdapter(null);
+                return false;
+            }
+
             OnDiagramSelect onDiagramSelect = diagram -> {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.INSTANCE);
