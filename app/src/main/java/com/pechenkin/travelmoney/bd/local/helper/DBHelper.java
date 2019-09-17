@@ -2,8 +2,10 @@ package com.pechenkin.travelmoney.bd.local.helper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.pechenkin.travelmoney.MainActivity;
 import com.pechenkin.travelmoney.R;
@@ -194,7 +196,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Добавлены миниатюры для участников
         if (oldVersion < 13) {
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_MEMBERS + " ADD COLUMN " + Namespace.FIELD_ICON + " integer default 0;");
+            addColumn(db, Namespace.TABLE_MEMBERS, Namespace.FIELD_ICON, "integer", "0");
 
         }
         // новые цвета
@@ -204,7 +206,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //Добавлен параметр для операций возврата долга
         if (oldVersion < 16) {
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_COSTS + " ADD COLUMN " + Namespace.FIELD_REPAYMENT + " integer default 0;");
+            addColumn(db, Namespace.TABLE_COSTS, Namespace.FIELD_REPAYMENT, "integer", "0");
         }
 
         //перевод на трпнзакции
@@ -219,7 +221,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.NEED_MIGRATION + "', '1');");
             db.execSQL("INSERT INTO " + Namespace.TABLE_SETTINGS + " VALUES ('" + NamespaceSettings.NEED_ADD_TRIPS_UUID + "', '1');");
 
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRIPS + " ADD COLUMN " + Namespace.FIELD_UUID + " text;");
+            addColumn(db, Namespace.TABLE_TRIPS, Namespace.FIELD_UUID, "text", "''");
         }
 
         //Исправление типа в столюцах таблицы TABLE_TRIPS_MEMBERS
@@ -243,25 +245,36 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //Отметка о том где лежат данные по поездке
         if (oldVersion < 27) {
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRIPS + " ADD COLUMN " + Namespace.FIELD_STORE + " integer default '" + TripStore.LOCAL.toString() + "';");
+            addColumn(db, Namespace.TABLE_TRIPS, Namespace.FIELD_STORE, "text", "'" + TripStore.LOCAL.toString() + "'");
         }
 
         //Добавление поля uuid
         if (oldVersion < 28) {
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_MEMBERS + " ADD COLUMN " + Namespace.FIELD_UUID + " text default '';");
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION + " ADD COLUMN " + Namespace.FIELD_UUID + " text default '';");
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION_ITEMS + " ADD COLUMN " + Namespace.FIELD_UUID + " text default '';");
+            addColumn(db, Namespace.TABLE_MEMBERS, Namespace.FIELD_UUID, "text", "''");
+            addColumn(db, Namespace.TABLE_TRANSACTION, Namespace.FIELD_UUID, "text", "''");
+            addColumn(db, Namespace.TABLE_TRANSACTION_ITEMS, Namespace.FIELD_UUID, "text", "''");
+
         }
         // перевод id на uuid
         if (oldVersion < 29) {
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION_ITEMS + " ADD COLUMN " + Namespace.FIELD_MEMBER_UUID + " text default '';");
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION_ITEMS + " ADD COLUMN " + Namespace.FIELD_TRANSACTION_UUID + " text default '';");
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_MEMBERS + " ADD COLUMN " + Namespace.FIELD_TRIP_UUID + " text default '';");
-            db.execSQL("ALTER TABLE " + Namespace.TABLE_TRANSACTION + " ADD COLUMN " + Namespace.FIELD_TRIP_UUID + " text default '';");
+            addColumn(db, Namespace.TABLE_TRANSACTION_ITEMS, Namespace.FIELD_MEMBER_UUID, "text", "''");
+            addColumn(db, Namespace.TABLE_TRANSACTION_ITEMS, Namespace.FIELD_TRANSACTION_UUID, "text", "''");
+
+            addColumn(db, Namespace.TABLE_MEMBERS, Namespace.FIELD_TRIP_UUID, "text", "''");
+            addColumn(db, Namespace.TABLE_TRANSACTION, Namespace.FIELD_TRIP_UUID, "text", "''");
 
             ToUUID.execute(db);
         }
 
+
+    }
+
+    private void addColumn(SQLiteDatabase db, String tableName, String columnName, String type, String defaultValue) {
+        try {
+            db.execSQL("ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + type + " default " + defaultValue + ";");
+        } catch (SQLiteException ex) {
+            Log.w("DBHelper", "Altering " + tableName + ": " + ex.getMessage());
+        }
 
     }
 }
