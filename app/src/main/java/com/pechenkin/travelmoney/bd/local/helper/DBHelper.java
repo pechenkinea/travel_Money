@@ -224,13 +224,14 @@ public class DBHelper extends SQLiteOpenHelper {
             addColumn(db, Namespace.TABLE_TRIPS, Namespace.FIELD_UUID, "text", "''");
         }
 
+        /*
         //Исправление типа в столюцах таблицы TABLE_TRIPS_MEMBERS
         if (oldVersion < 25) {
             db.execSQL("ALTER TABLE " + Namespace.TABLE_TRIPS_MEMBERS + " RENAME TO tmp_table_name");
             createTableTripsMembers(db);
             db.execSQL("INSERT INTO " + Namespace.TABLE_TRIPS_MEMBERS + " SELECT * FROM tmp_table_name;");
             db.execSQL("DROP TABLE tmp_table_name;");
-        }
+        }*/
 
 
         //Исправление ошибки после обновления
@@ -253,7 +254,6 @@ public class DBHelper extends SQLiteOpenHelper {
             addColumn(db, Namespace.TABLE_MEMBERS, Namespace.FIELD_UUID, "text", "''");
             addColumn(db, Namespace.TABLE_TRANSACTION, Namespace.FIELD_UUID, "text", "''");
             addColumn(db, Namespace.TABLE_TRANSACTION_ITEMS, Namespace.FIELD_UUID, "text", "''");
-
         }
         // перевод id на uuid
         if (oldVersion < 29) {

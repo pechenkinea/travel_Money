@@ -129,9 +129,15 @@ public class ToUUID {
                     ContentValues cv = new ContentValues();
 
                     long tripId = getLongFieldValue(sqlResult, Namespace.FIELD_TRIP);
+                    if (tripId == -1)
+                        continue;
+
                     cv.put(Namespace.FIELD_TRIP_UUID, transactionMap.get(tripId));
 
                     long memberId = getLongFieldValue(sqlResult, Namespace.FIELD_MEMBER);
+                    if (memberId == -1)
+                        continue;
+
                     cv.put(Namespace.FIELD_MEMBER_UUID, memberMap.get(memberId));
 
                     db.insert(Namespace.TABLE_TRIPS_MEMBERS, null, cv);
@@ -147,6 +153,10 @@ public class ToUUID {
 
     private static long getLongFieldValue(Cursor sqlResult, String fieldName){
         int index = sqlResult.getColumnIndex(fieldName);
-        return sqlResult.getLong(index);
+        if (index > -1) {
+            return sqlResult.getLong(index);
+        }
+        else return -1;
+
     }
 }
